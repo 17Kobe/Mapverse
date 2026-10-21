@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#4fb8e8">
+<meta name="theme-color" content="#1a2b47">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>股市大冒險 · 世界指數地圖</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,19 +12,12 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header id="hud">
-  <div class="row1">
-    <div class="logo">🌏 <b>股市大冒險</b></div>
-    <div class="hp" title="全球情緒">
-      <span class="hpl">❤️</span>
-      <div class="bar"><i id="hpFill"></i></div>
-      <span id="hpText" class="hpt">--</span>
-    </div>
-    <button id="btnSet" class="icon gbtn" aria-label="設定">⚙️</button>
-  </div>
-  <nav id="chips" aria-label="區域篩選"></nav>
-  <div id="statusLine" class="sub">正在連線世界…</div>
-</header>
+<!-- 左側直式圖層列（手機版變成底部導覽列），內容由 app.js 的 LAYERS 產生 -->
+<nav id="rail" aria-label="地圖圖層">
+  <div class="brand" aria-hidden="true">🌏</div>
+  <div id="layers"></div>
+  <button id="btnSet" class="rl" aria-label="設定"><span class="ri">⚙️</span><span class="rt">設定</span></button>
+</nav>
 
 <main id="stage">
   <canvas id="terrain" aria-hidden="true"></canvas>
@@ -33,13 +26,25 @@
   <div class="cloud" style="top:12%;animation-duration:90s;animation-delay:-20s">☁️</div>
   <div class="cloud" style="top:48%;animation-duration:120s;animation-delay:-70s;font-size:34px">☁️</div>
   <div class="cloud" style="top:76%;animation-duration:100s;animation-delay:-40s;font-size:54px">☁️</div>
+
+  <!-- 浮在地圖上的介面（仿 Google 地圖的位置） -->
+  <div id="side">
+    <section id="hud" class="gpanel" aria-label="全球概況">
+      <div class="logo">🌏 <b>股市大冒險</b></div>
+      <div class="hp" title="全球情緒">
+        <span class="hpl">❤️</span>
+        <div class="bar"><i id="hpFill"></i></div>
+        <span id="hpText" class="hpt">--</span>
+      </div>
+      <div id="statusLine" class="sub">正在連線世界…</div>
+    </section>
+    <aside id="panel" class="gpanel" aria-label="其它指數" hidden></aside>
+  </div>
+  <nav id="chips" aria-label="篩選"></nav>
+  <div id="toast" role="status" aria-live="polite"></div>
+
   <div id="loading"><div class="spin">🌏</div><p>正在召喚世界地圖…</p></div>
 </main>
-
-<section id="dock">
-  <div id="dockTitle" class="dock-title">🎒 道具欄</div>
-  <div id="items"></div>
-</section>
 
 <div id="sheet" hidden></div>
 
