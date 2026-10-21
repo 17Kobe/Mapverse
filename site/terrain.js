@@ -425,14 +425,16 @@ function draw(ctx, t, S0, W, H, dpr) {
   const zf = Math.log2((world * dpr) / TS);
   const z = clamp(Math.ceil(zf - 0.2), 0, opt.maxZ);
   const n = 1 << z, ts = world / n;
-  const x0 = Math.max(0, Math.floor(-t.x / ts)), x1 = Math.min(n - 1, Math.floor((W - t.x) / ts));
+  // 東西向無限循環（像 Google 地圖）：x 不設上下限，取圖磚時再對 n 取餘數
+  const x0 = Math.floor(-t.x / ts), x1 = Math.floor((W - t.x) / ts);
   const y0 = Math.max(0, Math.floor(-t.y / ts)), y1 = Math.min(n - 1, Math.floor((H - t.y) / ts));
   const sprites = [];
   for (let y = y0; y <= y1; y++) {
     const Y0 = Math.round((t.y + y * ts) * dpr), Y1 = Math.round((t.y + (y + 1) * ts) * dpr);
     for (let x = x0; x <= x1; x++) {
       const X0 = Math.round((t.x + x * ts) * dpr), X1 = Math.round((t.x + (x + 1) * ts) * dpr);
-      const e = get(z, x, y, true);
+      const xi = ((x % n) + n) % n; // 繞回世界範圍內的實際圖磚編號
+      const e = get(z, xi, y, true);
       e.seen = frame;
       if (e.ready) {
         ctx.drawImage(e.base, X0, Y0, X1 - X0, Y1 - Y0);
@@ -441,10 +443,10 @@ function draw(ctx, t, S0, W, H, dpr) {
       }
       // 還沒處理好：先用已完成的上層圖磚放大頂替
       for (let d = 1; d <= Math.min(z, 12); d++) {
-        const p = get(z - d, x >> d, y >> d, false);
+        const p = get(z - d, xi >> d, y >> d, false);
         if (!p || !p.ready) continue;
         const s = TS / (1 << d);
-        ctx.drawImage(p.base, (x - ((x >> d) << d)) * s, (y - ((y >> d) << d)) * s, s, s, X0, Y0, X1 - X0, Y1 - Y0);
+        ctx.drawImage(p.base, (xi - ((xi >> d) << d)) * s, (y - ((y >> d) << d)) * s, s, s, X0, Y0, X1 - X0, Y1 - Y0);
         break;
       }
     }

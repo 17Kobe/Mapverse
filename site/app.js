@@ -210,7 +210,7 @@ function makeDemo() {
 }
 
 /* ================= 地圖 ================= */
-let svg, gZoom, gLand, gLine, gEdge, gDecor, gMk, zoomB, projection, path, W = 0, H = 0;
+let svg, gZoom, gWorlds, gLand, gLine, gEdge, gDecor, gMk, zoomB, projection, path, W = 0, H = 0;
 let S0 = 1, viewBox = [[0, 0], [1, 1]];
 
 /* ---------- 遊戲風地形（實作在 terrain.js） ---------- */
@@ -333,10 +333,20 @@ function buildSvg() {
   svg.append('rect').attr('class', 'hit').attr('fill', 'transparent');
 
   gZoom = svg.append('g');
-  gLand = gZoom.append('g').attr('class', 'land');
-  // 文明帝國式國界三層：寬而淡的漲跌色光暈（land）→ 清楚的漲跌色主線（line）→ 中央白色細線（edge）
-  gLine = gZoom.append('g').attr('class', 'line');
-  gEdge = gZoom.append('g').attr('class', 'edge');
+  // 東西向無限循環：國界畫兩份真的路徑（本體 + 右邊副本），平移時接在一起。
+  // 不用 SVG <use> 複製，因為 Chrome 重建 <use> 副本時半透明填色會掉成預設的黑色。
+  // gLand / gLine / gEdge 各是「兩個群組」的選取，資料綁定和上色會同時套到兩份。
+  for (let i = 0; i < 2; i++) {
+    const w = gZoom.append('g').attr('class', 'world');
+    // 文明帝國式國界三層：寬而淡的漲跌色光暈（land）→ 清楚的漲跌色主線（line）→ 中央白色細線（edge）
+    w.append('g').attr('class', 'land');
+    w.append('g').attr('class', 'line');
+    w.append('g').attr('class', 'edge');
+  }
+  gWorlds = gZoom.selectAll('g.world');
+  gLand = gZoom.selectAll('g.land');
+  gLine = gZoom.selectAll('g.line');
+  gEdge = gZoom.selectAll('g.edge');
   gDecor = svg.append('g').attr('class', 'decor').style('pointer-events', 'none');
   gMk = svg.append('g').attr('class', 'markers');
 
@@ -401,7 +411,8 @@ function buildSvg() {
     }
   });
 
-  zoomB = d3.zoom().scaleExtent([1, 16]).on('zoom', (e) => { state.t = e.transform; onTransform(); });
+  // d3 zoom 內部的 x 可以一直往左右累加；畫面上只用「繞回一圈內」的版本（state.t），世界就能無限循環
+  zoomB = d3.zoom().scaleExtent([1, 16]).on('zoom', (e) => { state.t = wrapT(e.transform); onTransform(); });
   svg.call(zoomB);
 }
 
@@ -429,9 +440,26 @@ function layoutGeometry() {
   const hot = state.countries.filter((d) => state.byId[pad3(d.id)]);
   gLine.selectAll('path').data(hot).join('path').attr('d', path);
   gEdge.selectAll('path').data(hot).join('path').attr('d', path);
+  gWorlds.attr('transform', (_, i) => (i ? `translate(${S0},0)` : null)); // 第二份接在世界右邊
   const maxK = (Math.pow(2, MAX_TILE_Z + 1) * 256) / (S0 * dpr); // 最高層級再多放大 2 倍
-  zoomB.extent([[0, 0], [W, H]]).translateExtent(viewBox).scaleExtent([1, maxK]);
+  zoomB.extent([[0, 0], [W, H]]).translateExtent(panExtent()).scaleExtent([1, maxK]);
   paintLand();
+}
+// 東西向不限制（無限循環），南北仍限制在可視緯度內
+const panExtent = () => [[-Infinity, viewBox[0][1]], [Infinity, viewBox[1][1]]];
+// 把 x 繞回 (-世界寬, 0]，讓世界本體從畫面左緣（或更左）開始，右邊接一份副本
+function wrapT(t) {
+  const ww = S0 * t.k;
+  let x = t.x % ww;
+  if (x > 0) x -= ww;
+  return x === t.x ? t : d3.zoomIdentity.translate(x, t.y).scale(t.k);
+}
+// 地理座標 → 螢幕座標；世界有兩份（本體 + 右邊副本），回傳在畫面內的那一份
+function screenXY(lon, lat) {
+  const p = projection([lon, lat]), t = state.t;
+  let x = t.applyX(p[0]);
+  if (x < -40) x += S0 * t.k;
+  return [x, t.applyY(p[1])];
 }
 function paintLand() {
   if (!gLand) return;
@@ -463,7 +491,7 @@ function overlayInsets() {
 // 若再加入某個市場會讓放大倍率低於 REGION_MIN_K，就跳過它（例如手機直式畫面的紐西蘭）。
 // 舊版用涵蓋整片海洋的經緯度框，加上上下兩條欄位吃掉高度，亞太、美洲幾乎沒有放大。
 function regionTransform(key) {
-  const world = () => zoomB.constrain()(d3.zoomIdentity, [[0, 0], [W, H]], viewBox);
+  const world = () => zoomB.constrain()(d3.zoomIdentity, [[0, 0], [W, H]], panExtent());
   const ms = state.maps.filter((m) => m.r === key).sort((a, b) => b.w - a.w);
   if (!ms.length) return world();
   const ins = overlayInsets();
@@ -482,11 +510,18 @@ function regionTransform(key) {
   // 對齊可用區域的中心（扣掉被介面蓋住的部分）
   const sx = ins.l + px + aw / 2, sy = ins.t + pt + ah / 2;
   const tr = d3.zoomIdentity.translate(sx - k * cx, sy - k * cy).scale(k);
-  return zoomB.constrain()(tr, [[0, 0], [W, H]], viewBox);
+  return zoomB.constrain()(tr, [[0, 0], [W, H]], panExtent());
+}
+// 世界會循環，同一個區域在左右各有一份；挑離目前畫面最近的那份，動畫才不會繞地球好幾圈
+function nearestCopy(tr) {
+  const t0 = d3.zoomTransform(svg.node());
+  const c0 = (W / 2 - t0.x) / t0.k, c1 = (W / 2 - tr.x) / tr.k;
+  const m = Math.round((c0 - c1) / S0);
+  return m ? d3.zoomIdentity.translate(tr.x - tr.k * m * S0, tr.y).scale(tr.k) : tr;
 }
 function applyRegion(animate) {
   if (!projection) return;
-  const tr = regionTransform(state.activeRegion);
+  const tr = nearestCopy(regionTransform(state.activeRegion));
   const sel = animate && state.anim ? svg.transition().duration(900).ease(d3.easeCubicInOut) : svg;
   sel.call(zoomB.transform, tr);
 }
@@ -521,8 +556,7 @@ function layoutMarkers() {
 
   // 第一輪：放動物，太擠的先隱藏（放大後會出現）
   for (const m of arr) {
-    const p = projection([m.lon, m.lat]);
-    const x = t.applyX(p[0]), y = t.applyY(p[1]);
+    const [x, y] = screenXY(m.lon, m.lat);
     if (x < -20 || x > W + 20 || y < -20 || y > H + 20) continue;
     // 原點是腳下的地面，身體往上長；佔位框也包含牠走動的範圍
     const a = { x: x - size * 0.75, y: y - size * 1.05, w: size * 1.5, h: size * 1.35 };
@@ -640,8 +674,7 @@ function layoutMarkers() {
   // 裝飾：不壓住任何標記才顯示
   const ds = Math.max(15, Math.min(24, 14 + k * 1.6));
   gDecor.selectAll('text').each(function (d) {
-    const p = projection([d[1], d[2]]);
-    const x = t.applyX(p[0]), y = t.applyY(p[1]);
+    const [x, y] = screenXY(d[1], d[2]);
     const r = { x: x - ds / 2, y: y - ds / 2, w: ds, h: ds };
     // 放大後真實地形已經夠豐富，裝飾小圖示就收起來
     const hide = k > 4 || x < 0 || x > W || y < 0 || y > H || rects.some((z) => inter(r, z) > 0);
