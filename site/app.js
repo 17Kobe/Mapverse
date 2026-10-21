@@ -28,6 +28,30 @@ const DECOR = [
   ['🐙', -20, -30], ['🦈', 60, -35], ['🦭', -30, 65]
 ];
 
+// 地圖上的 3D 動物（Microsoft Fluent Emoji 3D，MIT 授權，已存在 assets/animals/）
+// face：圖片裡動物面向哪邊（L 左 / R 右 / F 正面不翻轉）；gait：走路方式
+const ANIMALS = {
+  '🦌': ['deer'], '🐕': ['dog'], '🐅': ['tiger'], '🐉': ['dragon', 'L', 'float'], '🐎': ['horse'],
+  '🦚': ['peacock', 'F', 'bird'], '🦘': ['kangaroo', 'L', 'hop'], '🐑': ['ewe'], '🐆': ['leopard'],
+  '🦧': ['orangutan', 'F'], '🐘': ['elephant', 'L', 'heavy'], '🐒': ['monkey'], '🦔': ['hedgehog'],
+  '🦡': ['badger'], '🐓': ['rooster', 'R', 'bird'], '🐂': ['ox', 'L', 'heavy'], '🐐': ['goat'],
+  '🐄': ['cow', 'L', 'heavy'], '🐇': ['rabbit', 'L', 'hop'], '🦃': ['turkey', 'L', 'bird'],
+  '🐪': ['camel', 'L', 'heavy'], '🦏': ['rhinoceros', 'L', 'heavy'], '🦅': ['eagle', 'L', 'bird'],
+  '🦫': ['beaver'], '🦜': ['parrot', 'L', 'bird'], '🦎': ['lizard', 'F'], '🐧': ['penguin', 'F', 'waddle'],
+  '🦙': ['llama']
+};
+const animalOf = (e) => {
+  const a = ANIMALS[e];
+  return a ? { src: `assets/animals/${a[0]}.png`, face: a[1] || 'L', gait: a[2] || 'walk' } : null;
+};
+// Windows 不會把國旗 emoji 畫成國旗（只顯示「TW」字母），所以改用 assets/flags/ 的國旗圖
+const flagCode = (e) => {
+  const cps = [...(e || '')].map((c) => c.codePointAt(0) - 0x1f1e6);
+  return cps.length === 2 && cps.every((c) => c >= 0 && c < 26) ? cps.map((c) => String.fromCharCode(97 + c)).join('') : null;
+};
+const flagSrc = (e) => { const c = flagCode(e); return c ? `assets/flags/${c}.png` : null; };
+const flagHtml = (e, cls = 'flg') => { const s = flagSrc(e); return s ? `<img class="${cls}" src="${s}" alt="">` : e; };
+
 const $ = (s) => document.querySelector(s);
 const hash = (s) => { let h = 0; for (const c of String(s)) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h; };
 const pad3 = (id) => String(id == null ? '' : id).padStart(3, '0');
@@ -135,7 +159,6 @@ const fmtN = (p, mode) => {
 };
 const fmtPct = (p, d = 2) => (p >= 0 ? '+' : '') + p.toFixed(d) + '%';
 const arrow = (p) => (p > 0 ? '▲' : p < 0 ? '▼' : '–');
-const mood = (p) => (p > 1.5 ? '🤩' : p > 0.05 ? '😊' : p > -0.05 ? '😐' : p > -1.5 ? '😟' : '😱');
 
 /* ================= 資料 ================= */
 async function fetchJSON(url) {
@@ -188,17 +211,13 @@ function drawTerrain() {
 /* ---------- 遊戲風元件用的 SVG 定義 ---------- */
 function buildDefs() {
   const defs = svg.insert('defs', ':first-child');
-  // 貼紙效果：白色外框 + 落地陰影，讓動物像遊戲棋子一樣從地圖上「浮」出來
-  const f = defs.append('filter').attr('id', 'sticker').attr('x', '-40%').attr('y', '-40%').attr('width', '180%').attr('height', '190%');
-  f.append('feMorphology').attr('in', 'SourceAlpha').attr('operator', 'dilate').attr('radius', 1.6).attr('result', 'd');
-  f.append('feFlood').attr('flood-color', '#fff8e6');
-  f.append('feComposite').attr('in2', 'd').attr('operator', 'in').attr('result', 'o');
-  f.append('feGaussianBlur').attr('in', 'd').attr('stdDeviation', 1.6).attr('result', 'b');
-  f.append('feOffset').attr('in', 'b').attr('dy', 2.5).attr('result', 'bo');
-  f.append('feFlood').attr('flood-color', '#0b1424').attr('flood-opacity', 0.5);
-  f.append('feComposite').attr('in2', 'bo').attr('operator', 'in').attr('result', 's');
-  const mg = f.append('feMerge');
-  ['s', 'o', 'SourceGraphic'].forEach((n) => mg.append('feMergeNode').attr('in', n));
+  // 動物腳下的柔和接地陰影（不用外框，讓動物像站在地形上而不是貼紙）
+  defs.append('filter').attr('id', 'soft').attr('x', '-50%').attr('y', '-100%').attr('width', '200%').attr('height', '300%')
+    .append('feGaussianBlur').attr('stdDeviation', 1.4);
+  // 動物本體的投影：和地形光影同方向（光從左上來，影子落在右下）
+  defs.append('filter').attr('id', 'cast').attr('x', '-30%').attr('y', '-30%').attr('width', '170%').attr('height', '170%')
+    .append('feDropShadow').attr('dx', 1.6).attr('dy', 1.2).attr('stdDeviation', 0.9)
+    .attr('flood-color', '#14210c').attr('flood-opacity', 0.45);
   // 旗幟底色（深藍漸層）
   const grad = (id, a, b) => {
     const lg = defs.append('linearGradient').attr('id', id).attr('x1', 0).attr('y1', 0).attr('x2', 0).attr('y2', 1);
@@ -211,6 +230,15 @@ function buildDefs() {
 
 /* ---------- 動物自然走動 ---------- */
 const walkers = new Map();
+// 各種走路方式：step 步頻、bob 上下起伏（相對身高）、rock 左右搖晃角度、speed 移動速度（身高 / 秒）
+const GAITS = {
+  walk:   { step: 10, bob: 0.045, rock: 2.5, speed: 0.55 },
+  heavy:  { step: 6.5, bob: 0.03, rock: 1.8, speed: 0.38 },
+  hop:    { step: 7, bob: 0.32, rock: 0, speed: 0.85 },
+  bird:   { step: 13, bob: 0.06, rock: 4, speed: 0.45 },
+  waddle: { step: 8, bob: 0.025, rock: 9, speed: 0.3 },
+  float:  { step: 5, bob: 0, rock: 2, speed: 0.5, float: true }
+};
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)'); // 系統要求減少動態時，動物就待在原地
 let walkRaf = 0, walkLast = 0;
 function startWalk() {
@@ -224,38 +252,46 @@ function walkStep(now) {
   for (const m of state.maps) {
     const w = walkers.get(m.s);
     if (!w || !w.vis) continue;
-    const st = w.st, R = w.size;
+    const st = w.st, R = w.size, G = GAITS[w.gait] || GAITS.walk;
     let hop = 0, rot = 0, sy = 1;
     if (st === 'closed' || !state.anim || reduceMotion.matches) {
-      // 休市：慢慢走回家，趴著睡覺（緩慢呼吸）
+      // 休市：慢慢走回家，趴下睡覺（身體壓低 + 緩慢呼吸）
       w.tx = 0; w.ty = 0;
       const d = Math.hypot(w.x, w.y);
       if (d > 0.5) { const sp = Math.min(d, R * 1.2 * dt); w.x -= (w.x / d) * sp; w.y -= (w.y / d) * sp; }
-      rot = state.anim ? -6 : 0;
-      sy = state.anim ? 1 + Math.sin(t * 1.6 + R) * 0.035 : 1;
+      sy = state.anim && !reduceMotion.matches ? 0.9 + Math.sin(t * 1.6 + R) * 0.025 : 0.9;
     } else {
-      const speed = R * (st === 'break' ? 0.35 : 0.8);
+      const speed = R * G.speed * (st === 'break' ? 0.5 : 1);
       const dx = w.tx - w.x, dy = w.ty - w.y, d = Math.hypot(dx, dy);
       if (w.wait > 0 || d < 0.6) {
         w.wait -= dt;
         if (w.wait <= 0 && d < 0.6) {
-          // 選下一個目的地（在自己國家附近的小範圍內），偶爾停下來東張西望
-          const a = Math.random() * Math.PI * 2, r = Math.sqrt(Math.random());
-          w.tx = Math.cos(a) * r * R * 1.0;
-          w.ty = Math.sin(a) * r * R * 0.4;
+          // 選下一個目的地（在自己國家附近的小範圍內），走到後會停下來東張西望
+          const a = Math.random() * Math.PI * 2, r = 0.35 + Math.sqrt(Math.random()) * 0.65;
+          w.tx = Math.cos(a) * r * R * 1.3;
+          w.ty = Math.sin(a) * r * R * 0.55;
           w.wait = 0;
         } else if (w.wait <= 0) w.wait = 0;
-        sy = 1 + Math.sin(t * 3 + R) * 0.03; // 待著時輕輕呼吸
+        sy = 1 + Math.sin(t * 2.4 + R) * 0.018; // 站著時輕輕呼吸
+        if (G.float) hop = -R * 0.12 + Math.sin(t * 2.2 + R) * R * 0.05;
       } else {
         const sp = Math.min(d, speed * dt);
         w.x += (dx / d) * sp; w.y += (dy / d) * sp;
-        if (Math.abs(dx) > 0.3) w.dir = dx > 0 ? -1 : 1; // emoji 動物大多面向左，往右走就翻面
-        w.ph += dt * (st === 'break' ? 7 : 12);
-        hop = -Math.abs(Math.sin(w.ph)) * R * 0.14;   // 一蹦一跳
-        rot = Math.sin(w.ph) * 7;                      // 左右搖擺
-        if (Math.hypot(w.tx - w.x, w.ty - w.y) < 0.6) w.wait = 0.8 + Math.random() * 2.8;
+        // 往右走就讓面向左的動物翻面（面向右的反過來，正面的不翻）
+        if (Math.abs(dx) > 0.3 && w.face !== 'F') w.dir = (dx > 0) === (w.face === 'L') ? -1 : 1;
+        w.ph += dt * G.step;
+        const s = Math.abs(Math.sin(w.ph));
+        if (G.float) hop = -R * 0.12 + Math.sin(w.ph * 0.5) * R * 0.06;
+        else hop = -s * R * G.bob;
+        rot = Math.sin(w.ph) * G.rock;
+        if (G.bob > 0.15) sy = 1 + s * 0.06 - Math.pow(1 - s, 6) * 0.1; // 跳躍型：騰空拉長、落地壓扁
+        if (Math.hypot(w.tx - w.x, w.ty - w.y) < 0.6) w.wait = 1 + Math.random() * 3.5;
       }
     }
+    // 跳得越高，地上的影子越小越淡
+    const lift = Math.min(1, -hop / (R * 0.35));
+    w.shadow.setAttribute('transform', `scale(${(1 - lift * 0.35).toFixed(3)})`);
+    w.shadow.style.opacity = (1 - lift * 0.5).toFixed(2);
     w.wk.setAttribute('transform', `translate(${w.x.toFixed(2)},${w.y.toFixed(2)})`);
     w.body.setAttribute('transform', `translate(0,${hop.toFixed(2)}) rotate(${rot.toFixed(1)}) scale(${w.dir},${sy.toFixed(3)})`);
   }
@@ -284,21 +320,35 @@ function buildSvg() {
     .on('click', (e, d) => openCard(d));
   g.each(function (d) {
     const s = d3.select(this);
-    // 動物棋子：會在自己國家附近走動，所以整組放在 walker 裡
+    // 3D 動物：原點就是牠腳踩的地面，會在自己國家附近走動，所以整組放在 walker 裡
     const an = s.append('g').attr('class', 'an');
     const wk = an.append('g').attr('class', 'walker');
-    wk.append('ellipse').attr('class', 'base');   // 遊戲棋子的底座（漲跌色）
-    wk.append('circle').attr('class', 'ring');    // 開盤中的脈衝光圈
+    wk.append('ellipse').attr('class', 'ring');   // 開盤中：地面上擴散的光圈
+    const shadow = wk.append('ellipse').attr('class', 'shadow').attr('filter', 'url(#soft)');
     const body = wk.append('g').attr('class', 'body');
-    body.append('text').attr('class', 'emoji').attr('filter', 'url(#sticker)').text(d.a);
+    const info = animalOf(d.a);
+    if (info) {
+      const img = body.append('image').attr('class', 'beast').attr('href', info.src).attr('filter', 'url(#cast)')
+        .attr('preserveAspectRatio', 'xMidYMax meet');
+      // 圖檔載入失敗就退回 emoji
+      img.on('error', () => { img.remove(); body.append('text').attr('class', 'emoji').text(d.a); scheduleLayout(); });
+    } else body.append('text').attr('class', 'emoji').text(d.a);
     wk.append('text').attr('class', 'mood');
-    walkers.set(d.s, { wk: wk.node(), body: body.node(), x: 0, y: 0, tx: 0, ty: 0, wait: hash(d.s) % 30 / 10, dir: 1, ph: 0 });
-    // 文明帝國式城市旗幟
+    walkers.set(d.s, {
+      wk: wk.node(), body: body.node(), shadow: shadow.node(), face: info ? info.face : 'L', gait: info ? info.gait : 'walk',
+      x: 0, y: 0, tx: 0, ty: 0, wait: hash(d.s) % 30 / 10, dir: 1, ph: 0
+    });
+    // 文明帝國式城市旗幟（左上角放國旗）
     const b = s.append('g').attr('class', 'bubble');
     b.append('rect').attr('class', 'bg').attr('rx', 8);
     b.append('rect').attr('class', 'band').attr('rx', 5);
     b.append('rect').attr('class', 'inner').attr('rx', 6);
     b.append('path').attr('class', 'tail');
+    const fs = flagSrc(d.flag);
+    if (fs) {
+      b.append('image').attr('class', 'flag').attr('href', fs).attr('preserveAspectRatio', 'none');
+      b.append('rect').attr('class', 'flag-b').attr('rx', 1.5);
+    }
     const t1 = b.append('text').attr('class', 't1');
     t1.append('tspan').attr('class', 'a');
     t1.append('tspan').attr('class', 'm');
@@ -391,7 +441,7 @@ const inter = (a, b) => {
 function layoutMarkers() {
   if (!projection || !state.maps.length) return;
   const t = state.t, k = t.k;
-  const size = Math.max(22, Math.min(34, 18 + k * 3.2));
+  const size = Math.max(19, Math.min(30, 14 + k * 2.8)); // 動物身高（px），放大地圖時略微變大
   const rects = [], vis = new Map();
   const arr = state.maps.slice().sort((a, b) => b.w - a.w);
 
@@ -400,7 +450,8 @@ function layoutMarkers() {
     const p = projection([m.lon, m.lat]);
     const x = t.applyX(p[0]), y = t.applyY(p[1]);
     if (x < -20 || x > W + 20 || y < -20 || y > H + 20) continue;
-    const a = { x: x - size * 0.6, y: y - size * 0.6, w: size * 1.2, h: size * 1.2 };
+    // 原點是腳下的地面，身體往上長；佔位框也包含牠走動的範圍
+    const a = { x: x - size * 0.75, y: y - size * 1.05, w: size * 1.5, h: size * 1.35 };
     const area = a.w * a.h;
     if (rects.some((r) => inter(a, r) / area > 0.3)) continue;
     rects.push(a);
@@ -410,7 +461,7 @@ function layoutMarkers() {
   for (const m of arr) {
     const o = vis.get(m.s);
     if (!o || !state.quotes[m.s]) continue;
-    const modes = [{ w: 112, h: 38, mode: 'full' }, { w: 70, h: 21, mode: 'mini' }];
+    const modes = [{ w: 118, h: 40, mode: 'full' }, { w: 80, h: 22, mode: 'mini' }];
     outer:
     for (const md of modes) {
       const cands = [
@@ -438,12 +489,13 @@ function layoutMarkers() {
     const pct = q ? q.pct : 0;
     if (wk) { wk.vis = true; wk.st = st; wk.size = o.size; }
     const an = s.select('.an').attr('class', 'an ' + st);
-    an.select('.ring').attr('r', o.size * 0.62);
-    an.select('.base').attr('cy', o.size * 0.42).attr('rx', o.size * 0.5).attr('ry', o.size * 0.17)
-      .style('stroke', q ? pctColor(pct) : '#c9b27a');
-    an.select('.emoji').attr('font-size', o.size);
-    an.select('.mood').attr('x', o.size * 0.5).attr('y', -o.size * 0.5).attr('font-size', o.size * 0.5)
-      .text(st === 'closed' ? '💤' : q ? mood(pct) : '');
+    const z = o.size;
+    an.select('.ring').attr('rx', z * 0.62).attr('ry', z * 0.22);
+    an.select('.shadow').attr('rx', z * 0.36).attr('ry', z * 0.1).attr('cy', -z * 0.02);
+    an.select('.beast').attr('x', -z / 2).attr('y', -z).attr('width', z).attr('height', z);
+    an.select('.emoji').attr('y', -z * 0.45).attr('font-size', z * 0.9);
+    an.select('.mood').attr('x', z * 0.42).attr('y', -z * 0.95).attr('font-size', Math.max(10, z * 0.42))
+      .text(st === 'closed' ? '💤' : '');
 
     const b = s.select('.bubble');
     if (!o.b || !q) { b.style('display', 'none'); return; }
@@ -452,20 +504,27 @@ function layoutMarkers() {
     b.select('.bg').attr('width', w).attr('height', h).attr('fill', st === 'closed' ? 'url(#bannerOff)' : 'url(#bannerBg)');
     b.select('.inner').attr('x', 2.5).attr('y', 2.5).attr('width', w - 5).attr('height', h - 5);
     // 旗幟上半部的名稱色帶（漲跌色；休市時變灰）
-    b.select('.band').style('display', full ? null : 'none').attr('x', 3).attr('y', 3).attr('width', w - 6).attr('height', 15)
+    b.select('.band').style('display', full ? null : 'none').attr('x', 3).attr('y', 3).attr('width', w - 6).attr('height', 18)
       .attr('fill', st === 'closed' ? '#4a5466' : bandColor(pct));
     b.select('.tail').style('display', o.b.pos === 'up' ? null : 'none')
       .attr('d', `M${w / 2 - 6},${h - 1} L${w / 2},${h + 6} L${w / 2 + 6},${h - 1}`);
-    const t1 = b.select('.t1').attr('x', w / 2).attr('y', full ? 10.5 : h / 2 + 0.5);
-    const t2 = b.select('.t2').attr('x', w / 2).attr('y', 28).style('display', full ? null : 'none');
+    // 國旗：完整版放在名稱色帶左側，迷你版放在漲跌幅左邊
+    const hasFlag = !b.select('.flag').empty();
+    const fw = full ? 24 : 18, fh = full ? 16 : 12, fx = full ? 6 : 5, fy = full ? 4 : 5;
+    b.select('.flag').attr('x', fx).attr('y', fy).attr('width', fw).attr('height', fh)
+      .style('opacity', st === 'closed' ? 0.75 : 1);
+    b.select('.flag-b').attr('x', fx - 0.5).attr('y', fy - 0.5).attr('width', fw + 1).attr('height', fh + 1);
+    const tx0 = hasFlag ? fx + fw + 2 : 0; // 文字置中在國旗右邊剩下的空間
+    const t1 = b.select('.t1').attr('x', tx0 + (w - tx0) / 2).attr('y', full ? 12.5 : h / 2 + 0.5);
+    const t2 = b.select('.t2').attr('x', w / 2).attr('y', 30).style('display', full ? null : 'none');
     if (full) {
-      t1.select('.a').text(`${m.flag} ${m.short}`);
+      t1.select('.a').text(hasFlag ? m.short : `${m.flag} ${m.short}`);
       t1.select('.m').text('');
       t2.select('.va').text(fmtN(q.p, 'short'));
       t2.select('.pc').attr('fill', col).text(`${arrow(pct)}${Math.abs(pct).toFixed(2)}%`);
     } else {
-      t1.select('.a').text(m.flag);
-      t1.select('.m').attr('fill', col).attr('dx', 3).text(fmtPct(pct, 1));
+      t1.select('.a').text(hasFlag ? '' : m.flag);
+      t1.select('.m').attr('fill', col).attr('dx', hasFlag ? 0 : 3).text(fmtPct(pct, 1));
     }
   });
 
@@ -531,7 +590,7 @@ function renderDock() {
     const q = state.quotes[i.s];
     const v = q ? fmtN(q.p) : '--';
     const p = q ? `<div class="ip" style="color:${pctColor(q.pct)}">${arrow(q.pct)}${Math.abs(q.pct).toFixed(2)}%</div>` : '<div class="ip">--</div>';
-    return `<button class="item gbtn${sep ? ' sep' : ''}" data-s="${i.s}"><div class="ie">${i.e}</div><div class="in">${i.zh}</div><div class="iv">${v}</div>${p}</button>`;
+    return `<button class="item gbtn${sep ? ' sep' : ''}" data-s="${i.s}"><div class="ie">${flagHtml(i.e)}</div><div class="in">${i.zh}</div><div class="iv">${v}</div>${p}</button>`;
   };
   const box = $('#items');
   const sl = box.scrollLeft;
@@ -569,10 +628,12 @@ function openCard(m) {
     }
   }
   if (q && q.t) meta += `<div><b>最後成交</b>　${new Date(q.t * 1000).toLocaleString('zh-TW', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false })}${q.stale ? '　⚠️ 本輪抓取失敗，沿用舊資料' : ''}</div>`;
+  const beast = isMap ? animalOf(m.a) : null;
+  const bigIcon = beast ? `<img class="beast3d" src="${beast.src}" alt="${m.a}">` : flagHtml(isMap ? m.a : m.e, 'flg big-flg');
   const chg = q ? `${arrow(q.pct)} ${q.c >= 0 ? '+' : '−'}${fmtN(Math.abs(q.c))}（${fmtPct(q.pct)}）` : '暫無資料';
   showSheet(`
-    <div class="hd"><span class="big">${isMap ? m.a : m.e}</span>
-      <div><div class="nm">${isMap ? m.flag + ' ' : ''}${m.zh}</div><div class="sym">${m.s}</div></div></div>
+    <div class="hd"><span class="big">${bigIcon}</span>
+      <div><div class="nm">${isMap ? flagHtml(m.flag) + ' ' : ''}${m.zh}</div><div class="sym">${m.s}</div></div></div>
     <div class="px">${q ? fmtN(q.p) : '--'}</div>
     <div class="chg" style="color:${col}">${chg}</div>
     ${q ? spark(q.spark, col) : ''}
@@ -584,7 +645,7 @@ function openSettings() {
     <button class="big-btn gbtn" data-act="color">${state.redUp ? '🔴 紅漲綠跌（點我切換）' : '🟢 綠漲紅跌（點我切換）'}</button>
     <button class="big-btn gbtn" data-act="anim">${state.anim ? '🎬 動畫：開（點我關閉）' : '⏸️ 動畫：關（點我開啟）'}</button>
     <p class="small">資料來自 Yahoo Finance，由 GitHub Actions 定時抓取，通常延遲 15 分鐘以上，僅供娛樂參考，不構成投資建議。開盤狀態按各交易所常規時段推算，遇到假日會在資料停止更新後自動變為休市。</p>
-    <p class="small">遊戲風地形由程式即時繪製：高度資料來自 AWS Terrain Tiles（Mapzen / SRTM 等），地貌判斷參考 Esri World Imagery（Esri、Maxar、Earthstar Geographics）。</p>`);
+    <p class="small">遊戲風地形由程式即時繪製：高度資料來自 AWS Terrain Tiles（Mapzen / SRTM 等），地貌判斷參考 Esri World Imagery（Esri、Maxar、Earthstar Geographics）。3D 動物圖來自 Microsoft Fluent Emoji（MIT 授權），國旗圖來自 flagcdn.com。</p>`);
 }
 function onSheetClick(e) {
   const s = $('#sheet');

@@ -81,12 +81,13 @@ button{font:inherit;color:inherit;cursor:pointer}
 .mk{cursor:pointer}
 .emoji{font-family:var(--emoji);text-anchor:middle;dominant-baseline:central}
 .mood{font-family:var(--emoji);text-anchor:middle;dominant-baseline:central}
-.an .base{fill:rgba(10,20,36,.42);stroke-width:2.5;stroke-opacity:.95}
-.an .ring{fill:none;stroke:#3dff9a;stroke-width:3;opacity:0;transform-box:fill-box;transform-origin:center}
-.an.open .ring{animation:ping 1.8s ease-out infinite}
-.an.break .ring{stroke:#ffc23d;animation:ping 2.6s ease-out infinite}
-.an.closed .emoji{opacity:.8}
-.an.closed .body{filter:saturate(.25)}
+/* 3D 動物：腳下柔和影子 + 開盤時地面擴散的光圈 */
+.an .shadow{fill:#0f1a08;opacity:.5;transform-box:fill-box;transform-origin:center}
+.an .ring{fill:none;stroke:#3dff9a;stroke-width:1.6;opacity:0;transform-box:fill-box;transform-origin:center}
+.an.open .ring{animation:ping 2.2s ease-out infinite}
+.an.break .ring{stroke:#ffc23d;animation:ping 3s ease-out infinite}
+.an.closed .body{filter:saturate(.75) brightness(.95)}
+.an .mood{opacity:.9}
 
 /* 城市旗幟（股價框） */
 .mk .bubble{filter:drop-shadow(0 3px 3px rgba(0,0,0,.5))}
@@ -95,8 +96,13 @@ button{font:inherit;color:inherit;cursor:pointer}
 .bubble .band{stroke:rgba(0,0,0,.25);stroke-width:1}
 .bubble .tail{stroke:var(--gold);stroke-width:2;fill:#14223a;stroke-linejoin:round}
 .bubble text{font-family:var(--font);font-weight:700;fill:var(--cream);text-anchor:middle;dominant-baseline:central;pointer-events:none;paint-order:stroke;stroke:rgba(0,0,0,.45);stroke-width:2px}
-.bubble .t1{font-size:11px}
+.bubble .t1{font-size:12px}
 .bubble .t2{font-size:12px;fill:#fff}
+.bubble .flag-b{fill:none;stroke:var(--gold-l);stroke-width:1;stroke-opacity:.85}
+/* HTML 裡的國旗圖（詳情卡標題、道具欄） */
+.flg{display:inline-block;height:.9em;width:auto;vertical-align:-.08em;border-radius:2px;box-shadow:0 0 0 1px rgba(255,231,163,.7),0 1px 2px rgba(0,0,0,.5)}
+.ie .flg{height:16px;vertical-align:middle}
+.beast3d{width:56px;height:56px;object-fit:contain;filter:drop-shadow(2px 3px 3px rgba(0,0,0,.45))}
 
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 @keyframes ping{0%{opacity:.95;transform:scale(.6)}100%{opacity:0;transform:scale(1.7)}}
