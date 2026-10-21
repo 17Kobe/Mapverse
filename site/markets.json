@@ -1,0 +1,56 @@
+{
+  "items": [
+    {"type":"map","s":"^TWII","zh":"台灣加權","short":"台灣","flag":"🇹🇼","a":"🦌","id":"158","lon":120.9,"lat":23.7,"r":"asia","tz":"Asia/Taipei","ses":[["09:00","13:30"]],"w":99},
+    {"type":"map","s":"^N225","zh":"日經225","short":"日經","flag":"🇯🇵","a":"🦊","id":"392","lon":138,"lat":36.5,"r":"asia","tz":"Asia/Tokyo","ses":[["09:00","11:30"],["12:30","15:30"]],"w":85},
+    {"type":"map","s":"^KS11","zh":"韓國KOSPI","short":"韓國","flag":"🇰🇷","a":"🐯","id":"410","lon":127.8,"lat":36.5,"r":"asia","tz":"Asia/Seoul","ses":[["09:00","15:30"]],"w":60},
+    {"type":"map","s":"^HSI","zh":"恒生指數","short":"香港","flag":"🇭🇰","a":"🐉","id":"344","lon":114.2,"lat":22.3,"r":"asia","tz":"Asia/Hong_Kong","ses":[["09:30","12:00"],["13:00","16:00"]],"w":62},
+    {"type":"map","s":"000001.SS","zh":"上證指數","short":"上證","flag":"🇨🇳","a":"🐼","id":"156","lon":108,"lat":34,"r":"asia","tz":"Asia/Shanghai","ses":[["09:30","11:30"],["13:00","15:00"]],"w":90},
+    {"type":"map","s":"^BSESN","zh":"印度Sensex","short":"印度","flag":"🇮🇳","a":"🦚","id":"356","lon":78.5,"lat":22.5,"r":"asia","tz":"Asia/Kolkata","ses":[["09:15","15:30"]],"w":65},
+    {"type":"map","s":"^AXJO","zh":"澳洲ASX200","short":"澳洲","flag":"🇦🇺","a":"🦘","id":"036","lon":134,"lat":-25.5,"r":"asia","tz":"Australia/Sydney","ses":[["10:00","16:00"]],"w":55},
+    {"type":"map","s":"^NZ50","zh":"紐西蘭NZX50","short":"紐西蘭","flag":"🇳🇿","a":"🐑","id":"554","lon":172,"lat":-41,"r":"asia","tz":"Pacific/Auckland","ses":[["10:00","16:45"]],"w":20},
+    {"type":"map","s":"^STI","zh":"新加坡STI","short":"新加坡","flag":"🇸🇬","a":"🦁","id":"702","lon":103.8,"lat":1.35,"r":"asia","tz":"Asia/Singapore","ses":[["09:00","17:00"]],"w":35},
+    {"type":"map","s":"^JKSE","zh":"印尼JCI","short":"印尼","flag":"🇮🇩","a":"🦧","id":"360","lon":110,"lat":-7,"r":"asia","tz":"Asia/Jakarta","ses":[["09:00","15:50"]],"w":38},
+    {"type":"map","s":"^SET.BK","zh":"泰國SET","short":"泰國","flag":"🇹🇭","a":"🐘","id":"764","lon":101,"lat":15.5,"r":"asia","tz":"Asia/Bangkok","ses":[["10:00","12:30"],["14:30","16:30"]],"w":36},
+    {"type":"map","s":"^KLSE","zh":"馬來西亞KLCI","short":"馬來","flag":"🇲🇾","a":"🐒","id":"458","lon":102,"lat":4.2,"r":"asia","tz":"Asia/Kuala_Lumpur","ses":[["09:00","12:30"],["14:30","17:00"]],"w":30},
+
+    {"type":"map","s":"^FTSE","zh":"英國富時100","short":"英國","flag":"🇬🇧","a":"🦄","id":"826","lon":-2,"lat":53,"r":"europe","tz":"Europe/London","ses":[["08:00","16:30"]],"w":70},
+    {"type":"map","s":"^GDAXI","zh":"德國DAX","short":"德國","flag":"🇩🇪","a":"🐻","id":"276","lon":10.3,"lat":51.2,"r":"europe","tz":"Europe/Berlin","ses":[["09:00","17:30"]],"w":70},
+    {"type":"map","s":"^FCHI","zh":"法國CAC40","short":"法國","flag":"🇫🇷","a":"🐓","id":"250","lon":2.5,"lat":46.6,"r":"europe","tz":"Europe/Paris","ses":[["09:00","17:30"]],"w":60},
+    {"type":"map","s":"^IBEX","zh":"西班牙IBEX35","short":"西班牙","flag":"🇪🇸","a":"🐂","id":"724","lon":-3.7,"lat":40,"r":"europe","tz":"Europe/Madrid","ses":[["09:00","17:30"]],"w":30},
+    {"type":"map","s":"FTSEMIB.MI","zh":"義大利MIB","short":"義大利","flag":"🇮🇹","a":"🐺","id":"380","lon":12.5,"lat":42.3,"r":"europe","tz":"Europe/Rome","ses":[["09:00","17:30"]],"w":34},
+    {"type":"map","s":"^SSMI","zh":"瑞士SMI","short":"瑞士","flag":"🇨🇭","a":"🐄","id":"756","lon":8.2,"lat":46.8,"r":"europe","tz":"Europe/Zurich","ses":[["09:00","17:30"]],"w":32},
+    {"type":"map","s":"^AEX","zh":"荷蘭AEX","short":"荷蘭","flag":"🇳🇱","a":"🐇","id":"528","lon":5.3,"lat":52.2,"r":"europe","tz":"Europe/Amsterdam","ses":[["09:00","17:30"]],"w":28},
+    {"type":"map","s":"XU100.IS","zh":"土耳其BIST100","short":"土耳其","flag":"🇹🇷","a":"🦃","id":"792","lon":35,"lat":39,"r":"europe","tz":"Europe/Istanbul","ses":[["10:00","18:00"]],"w":24},
+
+    {"type":"map","s":"^TASI.SR","zh":"沙烏地TASI","short":"沙烏地","flag":"🇸🇦","a":"🐪","id":"682","lon":45,"lat":24,"r":"mea","tz":"Asia/Riyadh","days":[0,1,2,3,4],"ses":[["10:00","15:00"]],"w":30},
+    {"type":"map","s":"^J200.JO","zh":"南非JSE Top40","short":"南非","flag":"🇿🇦","a":"🦏","id":"710","lon":24,"lat":-29,"r":"mea","tz":"Africa/Johannesburg","ses":[["09:00","17:00"]],"w":28},
+
+    {"type":"map","s":"^GSPC","zh":"標普500","short":"美國","flag":"🇺🇸","a":"🦅","id":"840","lon":-98,"lat":39,"r":"americas","tz":"America/New_York","ses":[["09:30","16:00"]],"w":100},
+    {"type":"map","s":"^GSPTSE","zh":"加拿大TSX","short":"加拿大","flag":"🇨🇦","a":"🦫","id":"124","lon":-100,"lat":57,"r":"americas","tz":"America/Toronto","ses":[["09:30","16:00"]],"w":55},
+    {"type":"map","s":"^BVSP","zh":"巴西Ibovespa","short":"巴西","flag":"🇧🇷","a":"🦜","id":"076","lon":-52,"lat":-10,"r":"americas","tz":"America/Sao_Paulo","ses":[["10:00","17:00"]],"w":50},
+    {"type":"map","s":"^MXX","zh":"墨西哥IPC","short":"墨西哥","flag":"🇲🇽","a":"🦎","id":"484","lon":-102,"lat":23,"r":"americas","tz":"America/Mexico_City","ses":[["08:30","15:00"]],"w":40},
+    {"type":"map","s":"^MERV","zh":"阿根廷Merval","short":"阿根廷","flag":"🇦🇷","a":"🐴","id":"032","lon":-64,"lat":-35,"r":"americas","tz":"America/Argentina/Buenos_Aires","ses":[["11:00","17:00"]],"w":26},
+    {"type":"map","s":"^IPSA","zh":"智利IPSA","short":"智利","flag":"🇨🇱","a":"🦙","id":"152","lon":-70.8,"lat":-30,"r":"americas","tz":"America/Santiago","ses":[["09:30","16:00"]],"w":22},
+
+    {"type":"bar","s":"GC=F","zh":"黃金","e":"🪙","r":"global"},
+    {"type":"bar","s":"CL=F","zh":"WTI原油","e":"🛢️","r":"global"},
+    {"type":"bar","s":"BZ=F","zh":"布倫特原油","e":"🛢️","r":"global"},
+    {"type":"bar","s":"SI=F","zh":"白銀","e":"🥈","r":"global"},
+    {"type":"bar","s":"HG=F","zh":"銅","e":"🟠","r":"global"},
+    {"type":"bar","s":"BTC-USD","zh":"比特幣","e":"₿","r":"global"},
+    {"type":"bar","s":"DX-Y.NYB","zh":"美元指數","e":"💵","r":"global"},
+    {"type":"bar","s":"^VIX","zh":"恐慌指數","e":"😱","r":"global"},
+    {"type":"bar","s":"TWD=X","zh":"美元/台幣","e":"💱","r":"global"},
+    {"type":"bar","s":"JPY=X","zh":"美元/日圓","e":"💴","r":"global"},
+    {"type":"bar","s":"^TNX","zh":"美債10年","e":"🏦","r":"global"},
+
+    {"type":"bar","s":"399001.SZ","zh":"深證成指","e":"🧧","r":"asia"},
+    {"type":"bar","s":"000300.SS","zh":"滬深300","e":"📈","r":"asia"},
+    {"type":"bar","s":"^TWOII","zh":"櫃買指數","e":"🌱","r":"asia"},
+    {"type":"bar","s":"^STOXX50E","zh":"歐洲斯托克50","e":"🇪🇺","r":"europe"},
+    {"type":"bar","s":"^FTMC","zh":"富時250","e":"🫖","r":"europe"},
+    {"type":"bar","s":"^IXIC","zh":"納斯達克","e":"💻","r":"americas"},
+    {"type":"bar","s":"^DJI","zh":"道瓊斯","e":"🏭","r":"americas"},
+    {"type":"bar","s":"^RUT","zh":"羅素2000","e":"🐎","r":"americas"}
+  ]
+}

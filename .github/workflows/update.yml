@@ -1,0 +1,54 @@
+name: 更新資料並部署
+
+on:
+  schedule:
+    - cron: "*/10 * * * 1-5"   # 工作日每 10 分鐘（GitHub 實際會延遲幾分鐘）
+    - cron: "17 */4 * * 0,6"   # 週末每 4 小時（加密貨幣、商品也會動）
+  workflow_dispatch: {}          # 可在 Actions 頁面手動點
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # 抓失敗的代碼會沿用線上上一版的資料
+      - name: 下載上一版 quotes.json（失敗也沒關係）
+        run: curl -fsSL "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/quotes.json" -o /tmp/prev_quotes.json || true
+
+      - name: 抓取報價
+        run: python scripts/fetch_quotes.py
+        env:
+          PREV_FILE: /tmp/prev_quotes.json
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
