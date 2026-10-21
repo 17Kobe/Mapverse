@@ -8,7 +8,11 @@
   --gold-d:#9a7630;
   --cream:#fff4dc;
   --ink:#2a1d07;
-  --panel:linear-gradient(180deg,#263d63 0%,#16253f 100%);
+  --panel:linear-gradient(180deg,#22365a 0%,#152440 60%,#101c33 100%);
+  --outline:#060b15;          /* 所有框線外側的深色描邊，讓金線更銳利 */
+  --rim:#d4ac57;              /* 金屬細框 */
+  /* 頂部 / 底部欄位的金色飾條：兩端漸隱、中間最亮 */
+  --trim:linear-gradient(90deg,rgba(0,0,0,0) 0%,#6e5120 4%,#cfa954 22%,#fff0bd 50%,#cfa954 78%,#6e5120 96%,rgba(0,0,0,0) 100%);
   --font:'Fredoka','Nunito','PingFang TC','Microsoft JhengHei','Microsoft YaHei',system-ui,sans-serif;
   --emoji:'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif;
 }
@@ -17,16 +21,16 @@ html,body{height:100%;margin:0;background:var(--navy-d);color:var(--cream);font-
 body{display:flex;flex-direction:column;height:100vh;height:100dvh;overflow:hidden}
 button{font:inherit;color:inherit;cursor:pointer}
 
-/* 共用：金框面板與按鈕 */
+/* 共用：金框按鈕。外層深色描邊 → 金色細框 → 內側深色縫 → 淡金內線，做出遊戲 UI 的雙線質感 */
 .gbtn{
-  border:2px solid var(--gold-d);
-  background:linear-gradient(180deg,#34527f 0%,#1c2f50 100%);
+  border:1px solid var(--rim);
+  background:linear-gradient(180deg,#2e4b76 0%,#1b2f50 55%,#132239 100%);
   color:var(--cream);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.22),inset 0 -2px 0 rgba(0,0,0,.25),0 0 0 1px var(--navy-d),0 3px 5px rgba(0,0,0,.45);
+  box-shadow:0 0 0 1px var(--outline),inset 0 0 0 1px rgba(6,11,21,.85),inset 0 0 0 2px rgba(255,230,170,.13),inset 0 3px 4px -2px rgba(255,255,255,.18),0 3px 5px rgba(0,0,0,.5);
   text-shadow:0 1px 1px rgba(0,0,0,.6);
   transition:filter .15s,transform .1s;
 }
-.gbtn:hover{filter:brightness(1.15);border-color:var(--gold)}
+.gbtn:hover{filter:brightness(1.15);border-color:var(--gold-l)}
 .gbtn:active{transform:translateY(1px)}
 .gbtn:focus-visible{outline:2px solid var(--gold-l);outline-offset:2px}
 
@@ -34,10 +38,22 @@ button{font:inherit;color:inherit;cursor:pointer}
 #hud{
   flex:none;z-index:5;padding:8px 10px 6px;padding-top:calc(8px + env(safe-area-inset-top));
   background:var(--panel);
-  border-bottom:3px solid var(--gold);
-  box-shadow:inset 0 -5px 0 -3px var(--gold-d),0 4px 12px rgba(0,0,0,.45);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 6px 14px rgba(0,0,0,.45);
   position:relative;
 }
+/* 金色飾條（深 1px + 金 2px + 深 1px）與中央的菱形飾釘；底部道具欄共用 */
+#hud::after,#dock::after{
+  content:'';position:absolute;left:0;right:0;height:4px;pointer-events:none;z-index:2;
+  background:linear-gradient(var(--outline),var(--outline)) 0 0/100% 1px no-repeat,var(--trim) 0 1px/100% 2px no-repeat,linear-gradient(var(--outline),var(--outline)) 0 3px/100% 1px no-repeat;
+}
+#hud::after{bottom:-4px}
+#hud::before,#dock::before{
+  content:'';position:absolute;left:50%;width:9px;height:9px;z-index:3;pointer-events:none;
+  transform:translateX(-50%) rotate(45deg);
+  background:linear-gradient(135deg,#fff3c8 0%,#d9b05a 55%,#8a6526 100%);
+  border:1px solid var(--outline);box-shadow:0 0 6px rgba(255,214,120,.55);
+}
+#hud::before{bottom:-7px}
 .row1{display:flex;align-items:center;gap:10px}
 .logo{font-size:19px;white-space:nowrap;letter-spacing:.5px}
 .logo b{
@@ -48,18 +64,18 @@ button{font:inherit;color:inherit;cursor:pointer}
 }
 .hp{flex:1;display:flex;align-items:center;gap:6px;min-width:0;max-width:340px;margin-left:auto}
 .hpl{font-size:16px;font-family:var(--emoji)}
-.bar{flex:1;height:16px;border:2px solid var(--gold);border-radius:99px;background:var(--navy-d);overflow:hidden;box-shadow:inset 0 2px 4px rgba(0,0,0,.6),0 0 0 1px var(--navy-d)}
+.bar{flex:1;height:14px;border:1px solid var(--rim);border-radius:99px;background:var(--navy-d);overflow:hidden;box-shadow:0 0 0 1px var(--outline),inset 0 0 0 1px var(--outline),inset 0 2px 4px rgba(0,0,0,.6)}
 .bar i{display:block;height:100%;width:50%;border-radius:99px;transition:width .8s,background .8s;background:#aaa;box-shadow:inset 0 2px 0 rgba(255,255,255,.35)}
 .hpt{font-size:13px;font-weight:700;min-width:52px;text-align:right;color:var(--gold-l)}
 .icon{flex:none;width:38px;height:38px;border-radius:50%;font-size:17px;line-height:1;padding:0;font-family:var(--emoji)}
 
 #chips{display:flex;gap:6px;overflow-x:auto;padding:8px 2px 6px;scrollbar-width:none}
 #chips::-webkit-scrollbar{display:none}
-.chip{flex:none;border-radius:10px;padding:4px 12px;font-weight:700;font-size:14px}
+.chip{flex:none;border-radius:7px;padding:4px 12px;font-weight:700;font-size:14px}
 .chip.on{
   background:linear-gradient(180deg,#fff0bf 0%,#f0c75e 50%,#c89533 100%);
   border-color:var(--gold-l);color:var(--ink);text-shadow:0 1px 0 rgba(255,255,255,.5);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 0 0 1px var(--navy-d),0 0 10px rgba(255,210,100,.55);
+  box-shadow:0 0 0 1px var(--outline),inset 0 0 0 1px rgba(255,250,225,.55),inset 0 -2px 3px rgba(120,80,20,.35),0 0 10px rgba(255,210,100,.5);
 }
 .sub{font-size:12px;opacity:.8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
@@ -72,8 +88,10 @@ button{font:inherit;color:inherit;cursor:pointer}
 /* 一般國界：白色半透明細線 */
 #map .land path{stroke:rgba(255,255,255,.32);stroke-width:.8;stroke-linejoin:round;vector-effect:non-scaling-stroke;transition:fill .8s,stroke .8s}
 /* 有股市的國家：彩色粗邊（漲跌色），上面再疊一條白色細線 */
-#map .land path.hot{stroke-width:4.5;stroke-opacity:.9}
-#map .edge path{fill:none;stroke:#fff;stroke-width:1.3;stroke-linejoin:round;vector-effect:non-scaling-stroke;pointer-events:none}
+/* 有股市的國家：寬而淡的光暈 + 清楚的彩色主線 + 中央白色細線（文明帝國的國界感） */
+#map .land path.hot{stroke-width:9;stroke-opacity:.22}
+#map .line path{fill:none;stroke-width:2.6;stroke-opacity:.95;stroke-linejoin:round;vector-effect:non-scaling-stroke;pointer-events:none;transition:stroke .8s}
+#map .edge path{fill:none;stroke:#fff;stroke-width:.9;stroke-opacity:.85;stroke-linejoin:round;vector-effect:non-scaling-stroke;pointer-events:none}
 #map .dc{font-family:var(--emoji);text-anchor:middle;dominant-baseline:central;opacity:.9}
 #attrib{position:absolute;right:4px;bottom:3px;z-index:2;font-size:10px;color:#fff;opacity:.75;text-shadow:0 1px 2px #000;pointer-events:none;font-family:system-ui,sans-serif}
 
@@ -90,11 +108,23 @@ button{font:inherit;color:inherit;cursor:pointer}
 .an .mood{opacity:.9}
 
 /* 城市旗幟（股價框） */
-.mk .bubble{filter:drop-shadow(0 3px 3px rgba(0,0,0,.5))}
-.bubble .bg{stroke:var(--gold);stroke-width:2}
-.bubble .inner{fill:none;stroke:rgba(255,231,163,.28);stroke-width:1}
-.bubble .band{stroke:rgba(0,0,0,.25);stroke-width:1}
-.bubble .tail{stroke:var(--gold);stroke-width:2;fill:#14223a;stroke-linejoin:round}
+.mk .bubble{filter:drop-shadow(0 2px 2px rgba(0,0,0,.55))}
+.bubble .bg{stroke:var(--outline);stroke-width:3}
+.bubble .rim{fill:none;stroke:var(--rim);stroke-width:1.1}
+.bubble .inner{fill:none;stroke:rgba(255,231,163,.16);stroke-width:1}
+.bubble .band{stroke:none}
+.bubble .sep{stroke:rgba(255,226,150,.45);stroke-width:1}
+.bubble .tail-o{fill:none;stroke:var(--outline);stroke-width:3.2;stroke-linejoin:round}
+.bubble .tail{fill:#15243e;stroke:var(--rim);stroke-width:1.1;stroke-linejoin:round}
+/* 多指數旗幟：每列一個指數 */
+.bubble .rbg{fill:transparent}
+.bubble .rbg.odd{fill:rgba(255,255,255,.05)}
+.bubble .rn{text-anchor:start;font-size:11px;fill:var(--gold-l)}
+.bubble .rv{text-anchor:end;font-size:11.5px;fill:#fff}
+.bubble .rp{text-anchor:end;font-size:11px}
+.bubble .lb{fill:var(--gold-l);font-size:10.5px}
+.bubble .dots circle{fill:rgba(255,255,255,.35);stroke:var(--outline);stroke-width:.6}
+.bubble .dots circle.on{fill:var(--gold-l)}
 .bubble text{font-family:var(--font);font-weight:700;fill:var(--cream);text-anchor:middle;dominant-baseline:central;pointer-events:none;paint-order:stroke;stroke:rgba(0,0,0,.45);stroke-width:2px}
 .bubble .t1{font-size:12px}
 .bubble .t2{font-size:12px;fill:#fff}
@@ -117,14 +147,15 @@ button{font:inherit;color:inherit;cursor:pointer}
 /* ---------- 底部道具欄 ---------- */
 #dock{
   flex:none;z-index:5;background:var(--panel);
-  border-top:3px solid var(--gold);
-  box-shadow:inset 0 5px 0 -3px var(--gold-d),0 -4px 12px rgba(0,0,0,.45);
-  padding:6px 10px calc(10px + env(safe-area-inset-bottom));position:relative;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 -6px 14px rgba(0,0,0,.45);
+  padding:8px 10px calc(10px + env(safe-area-inset-bottom));position:relative;
 }
+#dock::after{top:-4px}
+#dock::before{top:-7px}
 .dock-title{font-size:12px;font-weight:700;color:var(--gold-l);margin:0 2px 5px;text-shadow:0 1px 1px rgba(0,0,0,.6)}
 #items{display:flex;gap:8px;overflow-x:auto;padding:3px 2px 6px;scrollbar-width:none}
 #items::-webkit-scrollbar{display:none}
-.item{flex:none;min-width:94px;border-radius:12px;padding:4px 8px 5px;text-align:center}
+.item{flex:none;min-width:94px;border-radius:8px;padding:4px 8px 5px;text-align:center}
 .item.sep{margin-left:10px;position:relative}
 .item.sep::before{content:'';position:absolute;left:-10px;top:8px;bottom:8px;width:2px;background:linear-gradient(transparent,var(--gold-d),transparent)}
 .ie{font-size:20px;line-height:1.1;font-family:var(--emoji)}
@@ -139,10 +170,11 @@ button{font:inherit;color:inherit;cursor:pointer}
 #sheet .box{
   position:relative;width:min(460px,100%);
   background:var(--panel);color:var(--cream);
-  border:3px solid var(--gold);border-bottom:0;border-radius:18px 18px 0 0;
-  box-shadow:inset 0 0 0 2px var(--navy-d),inset 0 0 0 3px var(--gold-d),0 -6px 24px rgba(0,0,0,.6);
+  border:1px solid var(--rim);border-bottom:0;border-radius:14px 14px 0 0;
+  box-shadow:0 0 0 1px var(--outline),inset 0 0 0 1px var(--outline),inset 0 0 0 3px rgba(255,230,170,.14),0 -6px 24px rgba(0,0,0,.6);
   padding:16px 16px calc(20px + env(safe-area-inset-bottom));animation:rise .25s ease-out;max-height:85dvh;overflow:auto;
 }
+#sheet .box.still{animation:none}
 @keyframes rise{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
 #sheet .x{position:absolute;top:10px;right:10px;width:34px;height:34px;border-radius:50%;font-size:14px;padding:0}
 .hd{display:flex;align-items:center;gap:12px;padding-right:40px}
@@ -151,7 +183,14 @@ button{font:inherit;color:inherit;cursor:pointer}
 .sym{font-size:12px;opacity:.65}
 .px{font-size:34px;font-weight:700;margin-top:10px;line-height:1.1;color:#fff}
 .chg{font-size:16px;font-weight:700;margin-bottom:6px}
-.spark{width:100%;height:64px;display:block;margin:6px 0 8px;background:var(--navy-d);border:2px solid var(--gold-d);border-radius:10px}
+.spark{width:100%;height:64px;display:block;margin:6px 0 8px;background:var(--navy-d);border:1px solid var(--rim);border-radius:8px;box-shadow:0 0 0 1px var(--outline),inset 0 0 0 1px var(--outline)}
+/* 多指數國家的分頁 */
+.gtabs{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:6px;margin:12px 0 4px}
+.gtab{border-radius:7px;padding:5px 2px;display:flex;flex-direction:column;align-items:center;gap:1px;line-height:1.25;min-width:0}
+.gtab b{font-size:12.5px;white-space:nowrap}
+.gtab span{font-size:11px;font-weight:700}
+.gtab.on{border-color:var(--gold-l);background:linear-gradient(180deg,#43669b 0%,#27436f 100%);box-shadow:0 0 0 1px var(--outline),inset 0 0 0 1px rgba(255,240,190,.35),0 0 9px rgba(255,210,100,.45)}
+.gtab.on b{color:var(--gold-l)}
 .meta{font-size:13px;line-height:1.7}
 .meta b{font-weight:700;color:var(--gold-l)}
 .big-btn{display:block;width:100%;margin-top:10px;border-radius:12px;padding:9px;font-weight:700}
@@ -165,7 +204,7 @@ button{font:inherit;color:inherit;cursor:pointer}
   #chips{padding:6px 0}
   .sub{width:100%;order:3;margin-top:-2px}
   #sheet{align-items:center}
-  #sheet .box{border-bottom:3px solid var(--gold);border-radius:18px}
+  #sheet .box{border-bottom:1px solid var(--rim);border-radius:14px}
   .iv{font-size:15px}
 }
 

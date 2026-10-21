@@ -30,7 +30,7 @@ scripts/fetch_quotes.py           爬蟲（純標準庫）→ 產出 site/quotes
 
 ## 常用修改
 
-- **增刪指數**：編輯 `site/markets.json`。`type: "map"` 會出現在地圖上（要給經緯度、時區、交易時段）；`type: "bar"` 出現在底部道具欄。代碼就是 Yahoo Finance 的 symbol。
+- **增刪指數**：編輯 `site/markets.json`。`type: "map"` 會出現在地圖上（要給經緯度、時區、交易時段）；`type: "bar"` 出現在底部道具欄；`type: "sub"` 是同一國家的其他指數（`of` 填主指數代碼、`abbr` 填旗幟上的短名），例如美國的那斯達克、道瓊、費半。空間夠時旗幟會整張列出所有指數，不夠時每 4 秒輪播一個（右上角小圓點表示第幾個），點開卡片可用分頁切換。代碼就是 Yahoo Finance 的 symbol。
 - **換動物**：改 `a` 欄位的 emoji。地圖上的 3D 動物圖放在 `site/assets/animals/`，對照表在 `app.js` 的 `ANIMALS`（含面向、走路方式）；沒有對應圖檔的 emoji 會直接顯示 emoji。國旗圖在 `site/assets/flags/`，依 `flag` 欄位自動對應。
 - **紅漲綠跌 / 綠漲紅跌**：右上角 ⚙️ 切換（預設紅漲綠跌）。
 - **抓取頻率**：改 `update.yml` 裡的 `cron`。

@@ -25,7 +25,10 @@
     {"type":"map","s":"^TASI.SR","zh":"沙烏地TASI","short":"沙烏地","flag":"🇸🇦","a":"🐪","id":"682","lon":45,"lat":24,"r":"mea","tz":"Asia/Riyadh","days":[0,1,2,3,4],"ses":[["10:00","15:00"]],"w":30},
     {"type":"map","s":"^J200.JO","zh":"南非JSE Top40","short":"南非","flag":"🇿🇦","a":"🦏","id":"710","lon":24,"lat":-29,"r":"mea","tz":"Africa/Johannesburg","ses":[["09:00","17:00"]],"w":28},
 
-    {"type":"map","s":"^GSPC","zh":"標普500","short":"美國","flag":"🇺🇸","a":"🦅","id":"840","lon":-98,"lat":39,"r":"americas","tz":"America/New_York","ses":[["09:30","16:00"]],"w":100},
+    {"type":"map","s":"^GSPC","zh":"標普500","short":"美國","abbr":"標普500","flag":"🇺🇸","a":"🦅","id":"840","lon":-98,"lat":39,"r":"americas","tz":"America/New_York","ses":[["09:30","16:00"]],"w":100},
+    {"type":"sub","of":"^GSPC","s":"^IXIC","zh":"那斯達克綜合","abbr":"那斯達克","e":"💻"},
+    {"type":"sub","of":"^GSPC","s":"^DJI","zh":"道瓊工業","abbr":"道瓊","e":"🏭"},
+    {"type":"sub","of":"^GSPC","s":"^SOX","zh":"費城半導體","abbr":"費半","e":"🔌"},
     {"type":"map","s":"^GSPTSE","zh":"加拿大TSX","short":"加拿大","flag":"🇨🇦","a":"🦫","id":"124","lon":-100,"lat":57,"r":"americas","tz":"America/Toronto","ses":[["09:30","16:00"]],"w":55},
     {"type":"map","s":"^BVSP","zh":"巴西Ibovespa","short":"巴西","flag":"🇧🇷","a":"🦜","id":"076","lon":-52,"lat":-10,"r":"americas","tz":"America/Sao_Paulo","ses":[["10:00","17:00"]],"w":50},
     {"type":"map","s":"^MXX","zh":"墨西哥IPC","short":"墨西哥","flag":"🇲🇽","a":"🦎","id":"484","lon":-102,"lat":23,"r":"americas","tz":"America/Mexico_City","ses":[["08:30","15:00"]],"w":40},
@@ -49,8 +52,6 @@
     {"type":"bar","s":"^TWOII","zh":"櫃買指數","e":"🌱","r":"asia"},
     {"type":"bar","s":"^STOXX50E","zh":"歐洲斯托克50","e":"🇪🇺","r":"europe"},
     {"type":"bar","s":"^FTMC","zh":"富時250","e":"🫖","r":"europe"},
-    {"type":"bar","s":"^IXIC","zh":"納斯達克","e":"💻","r":"americas"},
-    {"type":"bar","s":"^DJI","zh":"道瓊斯","e":"🏭","r":"americas"},
     {"type":"bar","s":"^RUT","zh":"羅素2000","e":"🐎","r":"americas"}
   ]
 }
