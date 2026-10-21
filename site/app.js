@@ -35,12 +35,35 @@ const IMG_URL = (z, x, y) => `https://server.arcgisonline.com/ArcGIS/rest/servic
 const MAX_TILE_Z = 14;           // 最高圖磚層級（約 10 公尺 / 像素），再放大會直接放大這一層
 const VIEW_N = 80, VIEW_S = -58; // 可視緯度範圍（Mercator 投影兩極會無限拉長，所以裁掉）
 
-// 裝飾用的地形 / 動物 / 海洋小物件 [emoji, lon, lat]
-const DECOR = [
-  // 陸地上的山、樹、沙丘改由程序化地形繪製，這裡只留海上的小東西
-  ['🐋', -35, 36], ['🐬', 72, -14], ['⛵', -140, 25], ['⛵', 160, 15],
-  ['🐙', -20, -30], ['🦈', 60, -35], ['🦭', -30, 65]
+// 地圖上會動的小角色（海洋生物、船、各地的人物）。和市場動物分開，不能點
+// src：assets/ 底下的圖；face：圖裡面向哪邊（L / R / F 不翻轉）；s：相對市場動物的大小
+// mode：wander 散步 / swim 游泳 / whale 鯨魚噴水 / dolphin 跳出水面 / bob 原地浮沉 / boat 船 /
+//       surf 衝浪 / ski 滑雪 / chase 繞圈追逐（lag 是落後的角度）/ still 不動
+// sea：在海上（影子改成水波）
+const CRITTERS = [
+  { src: 'critters/whale-spout.png', alt: 'critters/whale.png', lon: -38, lat: 38, mode: 'whale', s: 1.15, sea: true },
+  { src: 'critters/dolphin.png', lon: 72, lat: -12, mode: 'dolphin', s: 0.85, sea: true },
+  { src: 'critters/shark.png', lon: 62, lat: -36, mode: 'swim', s: 0.9, sea: true },
+  { src: 'critters/fish.png', lon: -74, lat: 16, mode: 'swim', s: 0.6, sea: true },
+  { src: 'critters/seal.png', lon: -27, lat: 66, mode: 'bob', s: 0.75, sea: true },
+  { src: 'critters/sailboat.png', lon: -140, lat: 22, mode: 'boat', face: 'F', s: 1, sea: true },
+  { src: 'critters/sailboat.png', lon: 162, lat: 12, mode: 'boat', face: 'F', s: 1, sea: true },
+  // 北海小英雄：維京長船在北海巡航
+  { src: 'people/viking.svg', lon: 3.5, lat: 59.5, mode: 'boat', face: 'R', s: 1.35, sea: true },
+  // 非洲莽原：獵人追斑馬，旁邊有長頸鹿散步
+  { src: 'critters/zebra.png', lon: 36, lat: -3, mode: 'chase', lag: 0, s: 0.95 },
+  { src: 'critters/hunter.png', lon: 36, lat: -3, mode: 'chase', lag: 1.05, s: 0.85 },
+  { src: 'critters/giraffe.png', lon: 29, lat: -10, mode: 'wander', s: 1.2 },
+  // 北極：因紐特（愛斯基摩）人在冰屋旁走來走去
+  { src: 'people/igloo.svg', lon: -74, lat: 68.5, mode: 'still', face: 'F', s: 1 },
+  { src: 'people/eskimo.svg', lon: -69, lat: 67.6, mode: 'wander', face: 'F', gait: 'waddle', s: 0.85 },
+  // 其他特別的人
+  { src: 'critters/rower.png', lon: -62, lat: -3.3, mode: 'boat', face: 'F', s: 0.9 },       // 亞馬遜河划船
+  { src: 'critters/surfer.png', lon: 155, lat: -30, mode: 'surf', face: 'R', s: 0.9, sea: true }, // 澳洲黃金海岸衝浪
+  { src: 'critters/skier.png', lon: 14, lat: 65, mode: 'ski', face: 'R', s: 0.85 }            // 挪威山上滑雪
 ];
+// 雲：固定在地球上（經緯度），隨西風慢慢往東飄，地圖拖曳時跟著地面走
+const CLOUD_N = 13, CLOUD_WIND = 0.5; // 每秒往東飄幾度經度
 
 // 地圖上的 3D 動物（Microsoft Fluent Emoji 3D，MIT 授權，已存在 assets/animals/）
 // face：圖片裡動物面向哪邊（L 左 / R 右 / F 正面不翻轉）；gait：走路方式
@@ -320,9 +343,208 @@ function walkStep(now) {
     w.wk.setAttribute('transform', `translate(${w.x.toFixed(2)},${w.y.toFixed(2)})`);
     w.body.setAttribute('transform', `translate(0,${hop.toFixed(2)}) rotate(${rot.toFixed(1)}) scale(${w.dir},${sy.toFixed(3)})`);
   }
+  stepCritters(dt, t);
+  drawClouds(dt);
   if (!document.hidden) walkRaf = requestAnimationFrame(walkStep);
 }
 document.addEventListener('visibilitychange', () => { if (!document.hidden) startWalk(); });
+
+/* ---------- 小角色：海洋生物、船、各地人物 ---------- */
+const critters = [];
+const faceDir = (c, dx) => (c.face === 'F' ? 1 : (dx > 0) === (c.face === 'L') ? -1 : 1);
+function buildCritters() {
+  for (const d of CRITTERS) {
+    const g = gDecor.append('g').attr('class', 'cr').style('display', 'none');
+    const wk = g.append('g');
+    const shadow = wk.append('ellipse').attr('class', d.sea ? 'wake' : 'shadow').attr('filter', 'url(#soft)');
+    const body = wk.append('g');
+    const img = body.append('image').attr('href', 'assets/' + d.src).attr('preserveAspectRatio', 'xMidYMax meet').attr('filter', 'url(#cast)');
+    if (d.alt) new Image().src = 'assets/' + d.alt; // 先載入另一張（鯨魚噴水 / 不噴水）
+    critters.push({
+      d, g: g.node(), wk: wk.node(), body: body.node(), shadow: shadow.node(), img: img.node(),
+      face: d.face || 'L', gait: d.gait || 'walk', x: 0, y: 0, tx: 0, ty: 0, wait: Math.random() * 3,
+      dir: 1, ph: Math.random() * 6, size: 20, base: 20, vis: false, spout: true
+    });
+  }
+}
+// 在自己附近隨機選點走過去，到了就停一下；回傳是否正在移動
+function wander(c, dt, speed, span, sq = 0.42) {
+  const dx = c.tx - c.x, dy = c.ty - c.y, d = Math.hypot(dx, dy);
+  if (d < 0.6) {
+    c.wait -= dt;
+    if (c.wait <= 0) {
+      const a = Math.random() * Math.PI * 2, r = 0.35 + Math.sqrt(Math.random()) * 0.65;
+      c.tx = Math.cos(a) * r * c.base * span;
+      c.ty = Math.sin(a) * r * c.base * span * sq;
+      c.wait = 1 + Math.random() * 3;
+    }
+    return false;
+  }
+  const sp = Math.min(d, speed * dt);
+  c.x += (dx / d) * sp; c.y += (dy / d) * sp;
+  if (Math.abs(dx) > 0.3) c.dir = faceDir(c, dx);
+  return true;
+}
+function stepCritters(dt, t) {
+  const still = !state.anim || reduceMotion.matches;
+  for (const c of critters) {
+    if (!c.vis) continue;
+    const R = c.size, B = c.base, m = c.d.mode;
+    let hop = 0, rot = 0, sy = 1, op = 1, wake = 1;
+    if (m === 'chase') {
+      // 斑馬和獵人用同一個時鐘繞橢圓跑，獵人落後一段角度
+      const a = (still ? 0 : t * 0.75) - c.d.lag;
+      c.x = Math.cos(a) * B * 1.9; c.y = Math.sin(a) * B * 0.6;
+      c.dir = faceDir(c, -Math.sin(a));
+      if (!still) {
+        c.ph += dt * 13;
+        const s = Math.abs(Math.sin(c.ph));
+        hop = -s * R * 0.13; rot = Math.sin(c.ph) * 4;
+      }
+    } else if (still || m === 'still') {
+      c.x = c.y = 0;
+    } else if (m === 'wander') {
+      const G = GAITS[c.gait] || GAITS.walk;
+      if (wander(c, dt, R * G.speed, 1.4)) {
+        c.ph += dt * G.step;
+        const s = Math.abs(Math.sin(c.ph));
+        hop = -s * R * G.bob; rot = Math.sin(c.ph) * G.rock;
+      } else {
+        sy = 1 + Math.sin(t * 2.4 + c.ph) * 0.03;
+        if (c.face !== 'F' && Math.random() < dt * 0.3) c.dir = -c.dir;
+      }
+    } else if (m === 'swim' || m === 'whale') {
+      wander(c, dt, R * (m === 'whale' ? 0.22 : 0.38), 2.2, 0.5);
+      hop = Math.sin(t * 1.6 + c.ph) * R * 0.05; rot = Math.sin(t * 1.1 + c.ph) * 3;
+      if (m === 'whale') {
+        // 每 8 秒噴一次水
+        const sp = (t + c.ph) % 8 < 2.4;
+        if (sp !== c.spout) { c.spout = sp; c.img.setAttribute('href', 'assets/' + (sp ? c.d.src : c.d.alt)); }
+      }
+    } else if (m === 'bob') {
+      hop = Math.sin(t * 1.3 + c.ph) * R * 0.06; rot = Math.sin(t * 0.9 + c.ph) * 4;
+      if (c.face !== 'F' && Math.random() < dt * 0.08) c.dir = -c.dir;
+    } else if (m === 'boat') {
+      wander(c, dt, R * 0.2, 2.4, 0.4);
+      hop = Math.sin(t * 1.4 + c.ph) * R * 0.04; rot = Math.sin(t * 1.1 + c.ph) * 4.5;
+    } else if (m === 'dolphin') {
+      // 來回游，每 3.6 秒跳出水面畫一道弧線，其餘時間在水面下
+      const w = (t + c.ph) * 0.22, vx = Math.cos(w);
+      c.x = Math.sin(w) * B * 2; c.y = 0;
+      c.dir = faceDir(c, vx);
+      const u = ((t + c.ph) % 3.6) / 3.6;
+      if (u < 0.5) {
+        const v = u / 0.5;
+        hop = -Math.sin(Math.PI * v) * R * 0.9;
+        rot = (0.5 - v) * 70 * (vx < 0 ? 1 : -1); // 上升時抬頭、落下時低頭
+        op = Math.min(1, v * 8, (1 - v) * 8);
+        wake = 1 - Math.sin(Math.PI * v);
+      } else { op = 0; wake = 0.5; }
+    } else if (m === 'surf') {
+      const w = (t + c.ph) * 0.5;
+      c.x = Math.sin(w) * B * 1.6; c.y = 0;
+      c.dir = faceDir(c, Math.cos(w));
+      hop = -Math.abs(Math.sin((t + c.ph) * 2.2)) * R * 0.12; rot = Math.sin((t + c.ph) * 1.5) * 8;
+    } else if (m === 'ski') {
+      // 之字形滑下山坡，滑到底淡出再從上面出現
+      const u = ((t + c.ph) % 7) / 7, z = Math.PI * 6;
+      c.x = (u - 0.5) * B * 2.4 + Math.sin(u * z) * B * 0.35;
+      c.y = (u - 0.5) * B * 1.1;
+      c.dir = faceDir(c, 2.4 + Math.cos(u * z) * 0.35 * z);
+      rot = Math.cos(u * z) * 10;
+      op = Math.min(1, u / 0.08, (1 - u) / 0.1);
+    }
+    const lift = Math.max(0, Math.min(1, -hop / (R * 0.35)));
+    c.shadow.setAttribute('transform', `scale(${(1 - lift * 0.4).toFixed(3)})`);
+    c.shadow.style.opacity = (c.d.sea ? 0.42 * wake : 0.45 * (1 - lift * 0.5) * op).toFixed(2);
+    c.body.style.opacity = op.toFixed(2);
+    c.wk.setAttribute('transform', `translate(${c.x.toFixed(2)},${c.y.toFixed(2)})`);
+    c.body.setAttribute('transform', `translate(0,${hop.toFixed(2)}) rotate(${rot.toFixed(1)}) scale(${c.dir},${sy.toFixed(3)})`);
+  }
+}
+
+/* ---------- 雲：固定在地球上的卡通雲 + 地面上的雲影 ---------- */
+let cctx = null, cloudT = 0;
+const clouds = [];
+const rng = (seed) => { let s = seed >>> 0; return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296); };
+// 用幾顆圓疊出蓬鬆的雲：底色偏藍灰，每顆圓往上偏一點蓋白色漸層，底部切平，最後輕微模糊讓邊緣柔和
+function makeCloudSprite(seed) {
+  const r = rng(seed), w = 320, h = 200, base = h * 0.74;
+  const puffs = [];
+  const nb = 4 + Math.floor(r() * 2);
+  for (let i = 0; i < nb; i++) puffs.push([w * (0.2 + (0.6 * i) / (nb - 1)) + (r() - 0.5) * 14, h * 0.62, w * (0.11 + r() * 0.05)]);
+  const nt = 2 + Math.floor(r() * 2);
+  for (let i = 0; i < nt; i++) puffs.push([w * (0.36 + (0.28 * i) / Math.max(1, nt - 1)) + (r() - 0.5) * 20, h * (0.42 + r() * 0.06), w * (0.14 + r() * 0.06)]);
+  const canvas = () => { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; };
+  const blob = (g, fill) => {
+    g.fillStyle = fill; g.beginPath();
+    for (const [x, y, rr] of puffs) { g.moveTo(x + rr, y); g.arc(x, y, rr, 0, Math.PI * 2); }
+    g.fill();
+  };
+  const raw = canvas(), g = raw.getContext('2d');
+  blob(g, '#a7b9d2');
+  for (const [x, y, rr] of puffs) {
+    const gr = g.createRadialGradient(x - rr * 0.35, y - rr * 0.5, rr * 0.1, x, y - rr * 0.12, rr);
+    gr.addColorStop(0, '#ffffff'); gr.addColorStop(0.65, '#f4f8fd'); gr.addColorStop(1, '#d3dfee');
+    g.fillStyle = gr; g.beginPath(); g.arc(x, y - rr * 0.13, rr * 0.93, 0, Math.PI * 2); g.fill();
+  }
+  // 底部漸漸變透明（不要一刀切平，否則像貼紙）
+  g.globalCompositeOperation = 'destination-out';
+  const cut = g.createLinearGradient(0, base - 18, 0, base + 14);
+  cut.addColorStop(0, 'rgba(0,0,0,0)'); cut.addColorStop(1, 'rgba(0,0,0,1)');
+  g.fillStyle = cut; g.fillRect(0, base - 18, w, h - base + 18);
+  g.globalCompositeOperation = 'source-atop';
+  const band = g.createLinearGradient(0, base - 34, 0, base);
+  band.addColorStop(0, 'rgba(150,172,204,0)'); band.addColorStop(1, 'rgba(150,172,204,.75)');
+  g.fillStyle = band; g.fillRect(0, base - 34, w, 34);
+  const body = canvas(), b = body.getContext('2d');
+  b.filter = 'blur(1.2px)'; b.drawImage(raw, 0, 0);
+  // 地上的雲影：同樣的外形塗深色，再大幅模糊
+  const sil = canvas(), s = sil.getContext('2d');
+  s.drawImage(raw, 0, 0); s.globalCompositeOperation = 'source-in'; s.fillStyle = '#0a1a2c'; s.fillRect(0, 0, w, h);
+  const shadow = canvas(), sh = shadow.getContext('2d');
+  sh.filter = 'blur(9px)'; sh.drawImage(sil, 0, 0);
+  return { body, shadow };
+}
+function buildClouds() {
+  cctx = $('#clouds').getContext('2d');
+  const sprites = [0, 1, 2, 3].map((i) => makeCloudSprite(1234 + i * 777));
+  const r = rng(42);
+  for (let i = 0; i < CLOUD_N; i++) {
+    clouds.push({
+      lon: -180 + 360 * ((i + r() * 0.8) / CLOUD_N), lat: -42 + r() * 104,
+      w: 48 + r() * 60, sp: sprites[i % 4], a: 0.6 + r() * 0.2, v: 0.7 + r() * 0.6
+    });
+  }
+}
+function drawClouds(dt) {
+  if (!cctx || !W || !projection) return;
+  const ctx = cctx, t = state.t, k = t.k, ww = S0 * k;
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  const fade = Math.max(0, Math.min(1, (4.5 - k) / 2.5)); // 放大到 4.5 倍以上就看不到雲
+  if (!fade) return;
+  if (state.anim && !reduceMotion.matches) cloudT += dt;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const sc = Math.pow(k, 0.6); // 位置完全跟著地圖；大小只略微放大，免得近看時整片白
+  const list = [];
+  for (const c of clouds) {
+    const lon = c.lon + cloudT * CLOUD_WIND * c.v;
+    const fx = ((((lon + 180) / 360) % 1) + 1) % 1;
+    const w = c.w * sc, h = w * 0.625;
+    const y = t.applyY(projection([0, c.lat])[1]) - h * 0.6;
+    if (y > H || y + h < 0) continue;
+    for (const x0 of [t.x + fx * ww - ww, t.x + fx * ww, t.x + fx * ww + ww]) {
+      const x = x0 - w / 2;
+      if (x < W + w * 0.3 && x + w * 1.3 > 0) list.push([c, x, y, w, h]);
+    }
+  }
+  // 先畫全部雲影（往右下偏，光從左上來），再畫雲
+  ctx.globalAlpha = 0.2 * fade;
+  for (const [c, x, y, w, h] of list) ctx.drawImage(c.sp.shadow, x + w * 0.16, y + w * 0.3, w, h);
+  for (const [c, x, y, w, h] of list) { ctx.globalAlpha = c.a * fade; ctx.drawImage(c.sp.body, x, y, w, h); }
+  ctx.globalAlpha = 1;
+}
 
 function buildSvg() {
   svg = d3.select('#map');
@@ -350,7 +572,8 @@ function buildSvg() {
   gDecor = svg.append('g').attr('class', 'decor').style('pointer-events', 'none');
   gMk = svg.append('g').attr('class', 'markers');
 
-  gDecor.selectAll('text').data(DECOR).enter().append('text').attr('class', 'dc').text((d) => d[0]);
+  buildCritters();
+  buildClouds();
 
   buildDefs();
   const g = gMk.selectAll('g.mk').data(state.maps, (d) => d.s).enter().append('g').attr('class', 'mk')
@@ -425,8 +648,7 @@ function layoutGeometry() {
 
   // 高 DPI canvas
   dpr = Math.min(window.devicePixelRatio || 1, 3);
-  const cv = tctx.canvas;
-  cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+  for (const cv of [tctx.canvas, cctx.canvas]) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
 
   // Web Mercator：世界是邊長 S0 的正方形，與圖磚座標完全對齊
   const unit = d3.geoMercator().scale(1 / (2 * Math.PI)).translate([0.5, 0.5]);
@@ -671,15 +893,24 @@ function layoutMarkers() {
     }
   });
 
-  // 裝飾：不壓住任何標記才顯示
-  const ds = Math.max(15, Math.min(24, 14 + k * 1.6));
-  gDecor.selectAll('text').each(function (d) {
-    const [x, y] = screenXY(d[1], d[2]);
-    const r = { x: x - ds / 2, y: y - ds / 2, w: ds, h: ds };
-    // 放大後真實地形已經夠豐富，裝飾小圖示就收起來
-    const hide = k > 4 || x < 0 || x > W || y < 0 || y > H || rects.some((z) => inter(r, z) > 0);
-    d3.select(this).style('display', hide ? 'none' : null).attr('x', x).attr('y', y).attr('font-size', ds);
-  });
+  // 小角色：活動範圍不壓住市場標記才顯示；放大到街道等級就收起來
+  // 小角色比市場動物大一點，世界視角也看得出在做什麼
+  const csz = Math.max(24, Math.min(44, 16 + k * 5));
+  for (const c of critters) {
+    const [x, y] = screenXY(c.d.lon, c.d.lat);
+    const size = csz, z = size * c.d.s, reach = { chase: 2.4, dolphin: 2.4, surf: 2, ski: 1.6 }[c.d.mode] || 1.1;
+    const r = { x: x - size * reach, y: y - size * 1.1, w: size * reach * 2, h: size * 1.4 };
+    const hide = k > 6 || x < -size * 3 || x > W + size * 3 || y < -size * 2 || y > H + size * 2 ||
+      rects.some((q) => inter(r, q) / (r.w * r.h) > 0.15);
+    c.vis = !hide; c.size = z; c.base = size;
+    c.g.style.display = hide ? 'none' : null;
+    if (hide) continue;
+    c.g.setAttribute('transform', `translate(${x.toFixed(1)},${y.toFixed(1)})`);
+    c.img.setAttribute('x', -z / 2); c.img.setAttribute('y', -z);
+    c.img.setAttribute('width', z); c.img.setAttribute('height', z);
+    c.shadow.setAttribute('rx', z * (c.d.sea ? 0.46 : 0.36)); c.shadow.setAttribute('ry', z * (c.d.sea ? 0.12 : 0.1));
+    c.shadow.setAttribute('cy', -z * 0.03);
+  }
 }
 
 /* ================= 圖層列 / 篩選列 / 其它指數面板 ================= */

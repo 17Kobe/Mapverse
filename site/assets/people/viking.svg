@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- 維京長船（北海小英雄）：條紋方帆、龍頭船首、一排盾牌，船上的小維京人戴角盔。船頭朝右 -->
+  <defs>
+    <linearGradient id="hull" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#b8763d"/><stop offset="1" stop-color="#5a3216"/>
+    </linearGradient>
+    <linearGradient id="sail" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#e9e1cf"/><stop offset=".55" stop-color="#ffffff"/><stop offset="1" stop-color="#d8cdb6"/>
+    </linearGradient>
+    <linearGradient id="stripe" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#b52f2a"/><stop offset=".55" stop-color="#e2463c"/><stop offset="1" stop-color="#a5281f"/>
+    </linearGradient>
+    <radialGradient id="helm" cx=".35" cy=".3" r=".8">
+      <stop offset="0" stop-color="#e6ecf2"/><stop offset="1" stop-color="#7d8a99"/>
+    </radialGradient>
+    <radialGradient id="skin" cx=".4" cy=".35" r=".7">
+      <stop offset="0" stop-color="#ffd7b5"/><stop offset="1" stop-color="#e4a57a"/>
+    </radialGradient>
+    <clipPath id="sc"><path d="M34 16 Q62 22 92 16 Q96 40 92 64 Q62 58 34 64 Q30 40 34 16 Z"/></clipPath>
+  </defs>
+  <!-- 桅杆 -->
+  <rect x="61" y="8" width="5" height="78" rx="2" fill="#6b3d1c"/>
+  <!-- 條紋方帆（微微鼓起） -->
+  <path d="M34 16 Q62 22 92 16 Q96 40 92 64 Q62 58 34 64 Q30 40 34 16 Z" fill="url(#sail)"/>
+  <g clip-path="url(#sc)">
+    <rect x="38" y="10" width="9" height="60" fill="url(#stripe)"/>
+    <rect x="58" y="10" width="11" height="60" fill="url(#stripe)"/>
+    <rect x="80" y="10" width="9" height="60" fill="url(#stripe)"/>
+  </g>
+  <path d="M34 16 Q62 22 92 16" stroke="#6b3d1c" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- 小維京人：角盔 + 橘色大鬍子 -->
+  <g transform="translate(84 66)">
+    <path d="M-12 -12 Q-22 -16 -20 -28 Q-14 -18 -8 -16 Z" fill="#fff4dc" stroke="#c9b48a" stroke-width="1"/>
+    <path d="M12 -12 Q22 -16 20 -28 Q14 -18 8 -16 Z" fill="#fff4dc" stroke="#c9b48a" stroke-width="1"/>
+    <circle cx="0" cy="-4" r="11" fill="url(#skin)"/>
+    <path d="M-12 -6 A12 12 0 0 1 12 -6 Z" fill="url(#helm)"/>
+    <rect x="-13" y="-8" width="26" height="4" rx="2" fill="#5d6b7a"/>
+    <path d="M-10 -1 Q0 18 10 -1 Q6 4 0 4 Q-6 4 -10 -1 Z" fill="#e98a2c"/>
+    <circle cx="-4" cy="-2" r="1.6" fill="#2a1d0f"/><circle cx="4" cy="-2" r="1.6" fill="#2a1d0f"/>
+  </g>
+  <!-- 船尾捲曲 -->
+  <path d="M18 80 Q6 66 12 52 Q20 42 26 52 Q28 60 20 60" stroke="#7a4520" stroke-width="7" fill="none" stroke-linecap="round"/>
+  <!-- 船身 -->
+  <path d="M14 76 Q60 84 112 74 Q110 96 88 104 Q60 110 36 102 Q18 94 14 76 Z" fill="url(#hull)"/>
+  <path d="M20 88 Q60 96 106 86 M28 97 Q60 104 96 96" stroke="#4a2810" stroke-width="1.6" fill="none" opacity=".6"/>
+  <!-- 龍頭船首 -->
+  <path d="M106 80 Q118 66 112 46 Q110 38 118 34" stroke="#7a4520" stroke-width="8" fill="none" stroke-linecap="round"/>
+  <path d="M114 30 Q126 28 126 36 Q120 38 116 40 Z" fill="#7a4520"/>
+  <circle cx="119" cy="33" r="1.6" fill="#ffd34d"/>
+  <!-- 盾牌 -->
+  <g stroke="#3b2210" stroke-width="1.4">
+    <circle cx="30" cy="80" r="7" fill="#e2463c"/><circle cx="46" cy="82" r="7" fill="#f2c14e"/>
+    <circle cx="62" cy="82" r="7" fill="#2e86de"/><circle cx="78" cy="81" r="7" fill="#e2463c"/>
+    <circle cx="94" cy="79" r="7" fill="#f2c14e"/>
+  </g>
+  <g fill="#c7cdd4"><circle cx="30" cy="80" r="2.2"/><circle cx="46" cy="82" r="2.2"/><circle cx="62" cy="82" r="2.2"/><circle cx="78" cy="81" r="2.2"/><circle cx="94" cy="79" r="2.2"/></g>
+  <!-- 水花 -->
+  <path d="M26 112 q6 -4 12 0 t12 0 t12 0 t12 0 t12 0 t12 0" stroke="#ffffff" stroke-width="3" fill="none" stroke-linecap="round" opacity=".75"/>
+</svg>

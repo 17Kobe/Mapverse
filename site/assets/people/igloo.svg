@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- 冰屋：雪磚圓頂 + 前方入口通道 -->
+  <defs>
+    <radialGradient id="dome" cx=".35" cy=".25" r=".85">
+      <stop offset="0" stop-color="#ffffff"/><stop offset=".6" stop-color="#e3f0fa"/><stop offset="1" stop-color="#a9c8e2"/>
+    </radialGradient>
+    <linearGradient id="hole" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1d3550"/><stop offset="1" stop-color="#3d6488"/>
+    </linearGradient>
+    <clipPath id="dc"><path d="M10 120 A54 62 0 0 1 118 120 Z"/></clipPath>
+  </defs>
+  <path d="M10 120 A54 62 0 0 1 118 120 Z" fill="url(#dome)"/>
+  <!-- 雪磚縫 -->
+  <g clip-path="url(#dc)" stroke="#9fbfda" stroke-width="2" fill="none" stroke-linecap="round">
+    <path d="M10 104 Q64 96 118 104 M14 88 Q64 78 114 88 M24 72 Q64 62 104 72 M38 58 Q64 50 90 58"/>
+    <path d="M40 120 L42 104 M70 120 L70 104 M98 120 L96 104 M28 104 L30 88 M56 104 L57 88 M86 104 L85 88 M108 104 L106 90 M44 88 L46 72 M74 88 L74 72 M98 86 L96 74 M58 72 L59 58 M82 72 L80 60"/>
+  </g>
+  <!-- 入口通道 -->
+  <path d="M66 122 L66 98 A20 18 0 0 1 106 98 L106 122 Z" fill="url(#dome)" stroke="#9fbfda" stroke-width="1.5"/>
+  <path d="M74 122 L74 104 A12 11 0 0 1 98 104 L98 122 Z" fill="url(#hole)"/>
+  <!-- 底部雪堆 -->
+  <ellipse cx="64" cy="122" rx="60" ry="5" fill="#f4f9ff"/>
+  <ellipse cx="38" cy="78" rx="12" ry="5" fill="#fff" opacity=".6" transform="rotate(-38 38 78)"/>
+</svg>

@@ -172,7 +172,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 #stage{position:relative;flex:1;min-height:0;min-width:0;overflow:hidden;background:#2378b8}
 /* 地圖四周的暗角，像遊戲畫面的鏡頭邊緣 */
 #stage::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:1;box-shadow:inset 0 0 60px rgba(8,16,32,.55)}
-#terrain{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
+#terrain,#clouds{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
 #map{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block;user-select:none;-webkit-user-select:none}
 /* 一般國界：白色半透明細線 */
 #map .land path{stroke:rgba(255,255,255,.32);stroke-width:.8;stroke-linejoin:round;vector-effect:non-scaling-stroke;transition:fill .8s,stroke .8s}
@@ -181,7 +181,9 @@ button{font:inherit;color:inherit;cursor:pointer}
 #map .land path.hot{stroke-width:9;stroke-opacity:.22}
 #map .line path{fill:none;stroke-width:2.6;stroke-opacity:.95;stroke-linejoin:round;vector-effect:non-scaling-stroke;pointer-events:none;transition:stroke .8s}
 #map .edge path{fill:none;stroke:#fff;stroke-width:.9;stroke-opacity:.85;stroke-linejoin:round;vector-effect:non-scaling-stroke;pointer-events:none}
-#map .dc{font-family:var(--emoji);text-anchor:middle;dominant-baseline:central;opacity:.9}
+/* 小角色（海洋生物、船、人物）：陸上用柔和影子，海上用白色水波 */
+.cr .shadow{fill:#0f1a08;opacity:.45;transform-box:fill-box;transform-origin:center}
+.cr .wake{fill:#e8f6ff;transform-box:fill-box;transform-origin:center}
 #attrib{position:absolute;right:4px;bottom:3px;z-index:2;font-size:10px;color:#fff;opacity:.75;text-shadow:0 1px 2px #000;pointer-events:none;font-family:system-ui,sans-serif}
 
 /* 動物棋子 */
@@ -225,8 +227,6 @@ button{font:inherit;color:inherit;cursor:pointer}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 @keyframes ping{0%{opacity:.95;transform:scale(.6)}100%{opacity:0;transform:scale(1.7)}}
 
-.cloud{position:absolute;left:0;z-index:1;font-size:44px;opacity:.6;pointer-events:none;filter:drop-shadow(0 6px 4px rgba(10,20,40,.25));animation:drift linear infinite;font-family:var(--emoji)}
-@keyframes drift{from{transform:translateX(-15vw)}to{transform:translateX(115vw)}}
 
 #loading{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(circle,#263d63 0%,#0c1628 80%);color:var(--gold-l);font-weight:700;z-index:8;transition:opacity .5s}
 #loading.gone{opacity:0;pointer-events:none}
@@ -313,4 +313,3 @@ button{font:inherit;color:inherit;cursor:pointer}
 @keyframes slidein{from{transform:translateX(-24px);opacity:0}to{transform:none;opacity:1}}
 
 body.noanim *,body.noanim *::before{animation:none!important;transition:none!important}
-@media (prefers-reduced-motion:reduce){.cloud{display:none}}

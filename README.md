@@ -32,6 +32,8 @@ scripts/fetch_quotes.py           爬蟲（純標準庫）→ 產出 site/quotes
 
 - **增刪指數**：編輯 `site/markets.json`。`type: "map"` 會出現在地圖上（要給經緯度、時區、交易時段）；`type: "bar"` 出現在「📊 其它指數」面板（`r` 填區域，`global` 是全球行情）；`type: "sub"` 是同一國家的其他指數（`of` 填主指數代碼、`abbr` 填旗幟上的短名），例如美國的那斯達克、道瓊、費半。空間夠時旗幟會整張列出所有指數，不夠時每 4 秒輪播一個（右上角小圓點表示第幾個），點開卡片可用分頁切換。代碼就是 Yahoo Finance 的 symbol。
 - **換動物**：改 `a` 欄位的 emoji。地圖上的 3D 動物圖放在 `site/assets/animals/`，對照表在 `app.js` 的 `ANIMALS`（含面向、走路方式）；沒有對應圖檔的 emoji 會直接顯示 emoji。國旗圖在 `site/assets/flags/`，依 `flag` 欄位自動對應。
+- **小角色（海洋生物、船、各地人物）**：在 `app.js` 的 `CRITTERS` 加一筆，填圖檔、經緯度和動作 `mode`（`wander` 走動、`swim` 游、`whale` 噴水、`dolphin` 跳出水面、`boat` 划船、`surf` 衝浪、`ski` 滑雪、`chase` 追逐、`still` 不動）。圖放在 `site/assets/critters/`（Fluent 3D）或 `site/assets/people/`（自繪 SVG：因紐特人、冰屋、維京長船）。會擋到市場旗幟時自動隱藏。
+- **雲**：用 canvas 即時畫在 `#clouds`，固定在經緯度上，跟著地圖移動與左右循環，並隨西風慢慢往東飄。數量、風速在 `app.js` 的 `CLOUD_N`、`CLOUD_WIND`。關閉動畫或系統開啟「減少動態效果」時，雲和小角色都會停住。
 - **紅漲綠跌 / 綠漲紅跌**：圖層列最下方的 ⚙️ 設定切換（預設紅漲綠跌）。
 - **新增圖層**：在 `app.js` 的 `LAYERS` 加一筆（icon、label），完成後把 `ready` 設成 `true`。
 - **區域縮放**：`app.js` 的 `REGION_MIN_K` 是區域檢視的最低放大倍率；整區放不下時，權重小的市場會留在畫面外，拖曳即可看到。
@@ -40,7 +42,7 @@ scripts/fetch_quotes.py           爬蟲（純標準庫）→ 產出 site/quotes
 ## 要知道的限制
 
 - **遊戲風地形**（`site/terrain.js`）由瀏覽器即時繪製：AWS Terrain Tiles 的高度資料負責陸海、海深與山體光影，Esri 衛星影像只用來判斷沙漠 / 草原 / 森林 / 雪地，再套上遊戲調色盤；山脈以岩石色 + 雪線 + 光影直接畫在地表，並擺放手繪的樹與沙丘。需連網；右下角的資料來源標示請保留，商業用途請先確認 Esri 授權。
-- **圖檔來源**：3D 動物來自 [Microsoft Fluent Emoji](https://github.com/microsoft/fluentui-emoji)（MIT 授權），國旗來自 [flagcdn.com](https://flagcdn.com)；都已下載到 `site/assets/`，本地執行不用再連這兩個網站。
+- **圖檔來源**：3D 動物與小角色（`assets/animals/`、`assets/critters/`）來自 [Microsoft Fluent Emoji](https://github.com/microsoft/fluentui-emoji)（MIT 授權），`assets/people/` 是本專案自繪，國旗來自 [flagcdn.com](https://flagcdn.com)；都已下載到 `site/assets/`，本地執行不用再連這兩個網站。
 
 - **不是真正的實時**：Yahoo 免費資料本來就約延遲 15 分鐘；GitHub 的定時任務也可能晚幾分鐘到更久。想要秒級跳動需要付費資料來源 + WebSocket，不在免費範圍。
 - **Yahoo 是非官方介面**，偶爾限流或改版。某個代碼抓失敗時會沿用上一版並標 ⚠️；如果有指數一直沒資料，到 Yahoo 網站搜一下正確代碼，改 `markets.json`（部分代碼如 `^J200.JO`、`^TWOII` 請部署後確認）。
