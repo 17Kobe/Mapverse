@@ -12,17 +12,20 @@ const REGIONS = {
   mea:      { label: '🐪 中東非洲', bbox: [-20, -36, 62, 40] }
 };
 const REGION_ORDER = ['asia', 'europe', 'mea', 'americas'];
-const NEUTRAL = ['#d7f0ae', '#c6e9a0', '#f4e9b8', '#e3efb4'];
+
+// 遊戲風地形的原始資料（都是 Web Mercator 圖磚，且允許跨來源讀取像素）
+// - DEM：AWS Terrain Tiles（Terrarium 編碼），提供陸地高度與海洋深度
+// - 衛星影像：只拿來「判斷地貌」（沙漠 / 草原 / 森林 / 雪地 / 湖泊），不直接顯示
+const DEM_URL = (z, x, y) => `https://s3.amazonaws.com/elevation-tiles-prod/terrarium/${z}/${x}/${y}.png`;
+const IMG_URL = (z, x, y) => `https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/${z}/${y}/${x}`;
+const MAX_TILE_Z = 14;           // 最高圖磚層級（約 10 公尺 / 像素），再放大會直接放大這一層
+const VIEW_N = 80, VIEW_S = -58; // 可視緯度範圍（Mercator 投影兩極會無限拉長，所以裁掉）
 
 // 裝飾用的地形 / 動物 / 海洋小物件 [emoji, lon, lat]
 const DECOR = [
-  ['🏔️', 86, 28], ['🏔️', 10, 46.6], ['🏔️', -110, 45], ['🏔️', -70, -18], ['🏔️', 37, -3],
-  ['🌲', 95, 61], ['🌲', -105, 62], ['🌲', 30, 62], ['🌴', -62, -4], ['🌴', 20, 2],
-  ['🏜️', 10, 24], ['🌵', -112, 32], ['🔺', 31, 27], ['🧊', -40, 73],
-  ['🐧', 10, -78], ['🐧', 110, -77], ['🐻‍❄️', -60, 84],
-  ['🏝️', -150, -15], ['🏝️', 172, -9], ['🐋', -35, 36], ['🐬', 72, -14],
-  ['⛵', -140, 25], ['⛵', 160, 15], ['🐙', -20, -30], ['🦈', 60, -35],
-  ['🪸', 147, -17], ['🌋', -155, 19.5], ['🦭', -30, 65]
+  // 陸地上的山、樹、沙丘改由程序化地形繪製，這裡只留海上的小東西
+  ['🐋', -35, 36], ['🐬', 72, -14], ['⛵', -140, 25], ['⛵', 160, 15],
+  ['🐙', -20, -30], ['🦈', 60, -35], ['🦭', -30, 65]
 ];
 
 const $ = (s) => document.querySelector(s);
@@ -105,22 +108,24 @@ function pickAutoRegion() {
 /* ================= 顏色 / 格式 ================= */
 const isRed = (pct) => (pct >= 0) === state.redUp;
 const hue = (pct) => (isRed(pct) ? 4 : 142);
-const pctColor = (pct) => `hsl(${hue(pct)},72%,38%)`;
+// 介面改成深色遊戲面板，漲跌色要用較亮的版本才看得清楚
+const pctColor = (pct) => (isRed(pct) ? 'hsl(4,88%,64%)' : 'hsl(140,70%,52%)');
+const bandColor = (pct) => (isRed(pct) ? 'hsl(4,62%,38%)' : 'hsl(146,55%,28%)');
+// 國土只上一層半透明的漲跌色，讓底下的地形透出來
 function fillFor(m) {
   const q = state.quotes[m.s];
-  if (!q) return '#e6e1d2';
+  if (!q) return 'rgba(255,255,255,.08)';
   const mag = Math.min(Math.abs(q.pct), 3) / 3;
-  const st = marketStatus(m);
-  const sat = st === 'open' ? 72 : 34;
-  const light = (st === 'open' ? 86 : 90) - mag * (st === 'open' ? 32 : 18);
-  return `hsl(${hue(q.pct)},${sat}%,${light}%)`;
+  const open = marketStatus(m) === 'open';
+  const a = open ? 0.12 + mag * 0.26 : 0.06 + mag * 0.12;
+  return `hsla(${hue(q.pct)},${open ? 85 : 45}%,50%,${a.toFixed(3)})`;
 }
-function landFill(d) {
-  const id = pad3(d.id);
-  const m = state.byId[id];
-  if (m) return fillFor(m);
-  if (id === '010') return '#f4faff';
-  return NEUTRAL[hash(id) % 4];
+// 文明帝國式國界：外圈彩色粗邊 + 內圈白色細線
+function borderFor(m) {
+  const q = state.quotes[m.s];
+  if (!q) return 'rgba(255,255,255,.7)';
+  const open = marketStatus(m) === 'open';
+  return `hsl(${hue(q.pct)},${open ? 88 : 40}%,${open ? 50 : 62}%)`;
 }
 const fmtN = (p, mode) => {
   if (p == null || isNaN(p)) return '--';
@@ -167,39 +172,132 @@ function makeDemo() {
 }
 
 /* ================= 地圖 ================= */
-let svg, gZoom, gShadow, gLand, gDecor, gMk, zoomB, projection, path, W = 0, H = 0;
+let svg, gZoom, gLand, gEdge, gDecor, gMk, zoomB, projection, path, W = 0, H = 0;
+let S0 = 1, viewBox = [[0, 0], [1, 1]];
+
+/* ---------- 遊戲風地形（實作在 terrain.js） ---------- */
+let tctx = null, dpr = 1, terrainRaf = 0;
+function scheduleTerrain() {
+  if (!terrainRaf) terrainRaf = requestAnimationFrame(drawTerrain);
+}
+function drawTerrain() {
+  terrainRaf = 0;
+  if (tctx && W) Terrain.draw(tctx, state.t, S0, W, H, dpr);
+}
+
+/* ---------- 遊戲風元件用的 SVG 定義 ---------- */
+function buildDefs() {
+  const defs = svg.insert('defs', ':first-child');
+  // 貼紙效果：白色外框 + 落地陰影，讓動物像遊戲棋子一樣從地圖上「浮」出來
+  const f = defs.append('filter').attr('id', 'sticker').attr('x', '-40%').attr('y', '-40%').attr('width', '180%').attr('height', '190%');
+  f.append('feMorphology').attr('in', 'SourceAlpha').attr('operator', 'dilate').attr('radius', 1.6).attr('result', 'd');
+  f.append('feFlood').attr('flood-color', '#fff8e6');
+  f.append('feComposite').attr('in2', 'd').attr('operator', 'in').attr('result', 'o');
+  f.append('feGaussianBlur').attr('in', 'd').attr('stdDeviation', 1.6).attr('result', 'b');
+  f.append('feOffset').attr('in', 'b').attr('dy', 2.5).attr('result', 'bo');
+  f.append('feFlood').attr('flood-color', '#0b1424').attr('flood-opacity', 0.5);
+  f.append('feComposite').attr('in2', 'bo').attr('operator', 'in').attr('result', 's');
+  const mg = f.append('feMerge');
+  ['s', 'o', 'SourceGraphic'].forEach((n) => mg.append('feMergeNode').attr('in', n));
+  // 旗幟底色（深藍漸層）
+  const grad = (id, a, b) => {
+    const lg = defs.append('linearGradient').attr('id', id).attr('x1', 0).attr('y1', 0).attr('x2', 0).attr('y2', 1);
+    lg.append('stop').attr('offset', '0%').attr('stop-color', a);
+    lg.append('stop').attr('offset', '100%').attr('stop-color', b);
+  };
+  grad('bannerBg', '#2c4570', '#14223a');
+  grad('bannerOff', '#3c4659', '#222a38');
+}
+
+/* ---------- 動物自然走動 ---------- */
+const walkers = new Map();
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)'); // 系統要求減少動態時，動物就待在原地
+let walkRaf = 0, walkLast = 0;
+function startWalk() {
+  if (!walkRaf) { walkLast = performance.now(); walkRaf = requestAnimationFrame(walkStep); }
+}
+function walkStep(now) {
+  walkRaf = 0;
+  const dt = Math.min(0.1, (now - walkLast) / 1000);
+  walkLast = now;
+  const t = now / 1000;
+  for (const m of state.maps) {
+    const w = walkers.get(m.s);
+    if (!w || !w.vis) continue;
+    const st = w.st, R = w.size;
+    let hop = 0, rot = 0, sy = 1;
+    if (st === 'closed' || !state.anim || reduceMotion.matches) {
+      // 休市：慢慢走回家，趴著睡覺（緩慢呼吸）
+      w.tx = 0; w.ty = 0;
+      const d = Math.hypot(w.x, w.y);
+      if (d > 0.5) { const sp = Math.min(d, R * 1.2 * dt); w.x -= (w.x / d) * sp; w.y -= (w.y / d) * sp; }
+      rot = state.anim ? -6 : 0;
+      sy = state.anim ? 1 + Math.sin(t * 1.6 + R) * 0.035 : 1;
+    } else {
+      const speed = R * (st === 'break' ? 0.35 : 0.8);
+      const dx = w.tx - w.x, dy = w.ty - w.y, d = Math.hypot(dx, dy);
+      if (w.wait > 0 || d < 0.6) {
+        w.wait -= dt;
+        if (w.wait <= 0 && d < 0.6) {
+          // 選下一個目的地（在自己國家附近的小範圍內），偶爾停下來東張西望
+          const a = Math.random() * Math.PI * 2, r = Math.sqrt(Math.random());
+          w.tx = Math.cos(a) * r * R * 1.0;
+          w.ty = Math.sin(a) * r * R * 0.4;
+          w.wait = 0;
+        } else if (w.wait <= 0) w.wait = 0;
+        sy = 1 + Math.sin(t * 3 + R) * 0.03; // 待著時輕輕呼吸
+      } else {
+        const sp = Math.min(d, speed * dt);
+        w.x += (dx / d) * sp; w.y += (dy / d) * sp;
+        if (Math.abs(dx) > 0.3) w.dir = dx > 0 ? -1 : 1; // emoji 動物大多面向左，往右走就翻面
+        w.ph += dt * (st === 'break' ? 7 : 12);
+        hop = -Math.abs(Math.sin(w.ph)) * R * 0.14;   // 一蹦一跳
+        rot = Math.sin(w.ph) * 7;                      // 左右搖擺
+        if (Math.hypot(w.tx - w.x, w.ty - w.y) < 0.6) w.wait = 0.8 + Math.random() * 2.8;
+      }
+    }
+    w.wk.setAttribute('transform', `translate(${w.x.toFixed(2)},${w.y.toFixed(2)})`);
+    w.body.setAttribute('transform', `translate(0,${hop.toFixed(2)}) rotate(${rot.toFixed(1)}) scale(${w.dir},${sy.toFixed(3)})`);
+  }
+  if (!document.hidden) walkRaf = requestAnimationFrame(walkStep);
+}
+document.addEventListener('visibilitychange', () => { if (!document.hidden) startWalk(); });
 
 function buildSvg() {
   svg = d3.select('#map');
-  const defs = svg.append('defs');
-  const og = defs.append('linearGradient').attr('id', 'ocean').attr('x1', 0).attr('y1', 0).attr('x2', 0).attr('y2', 1);
-  og.append('stop').attr('offset', '0%').attr('stop-color', '#3aa8e0');
-  og.append('stop').attr('offset', '100%').attr('stop-color', '#72d6ef');
-  const pat = defs.append('pattern').attr('id', 'waves').attr('width', 48).attr('height', 26).attr('patternUnits', 'userSpaceOnUse');
-  pat.append('path').attr('d', 'M0 13 q6 -6 12 0 t12 0 t12 0 t12 0').attr('fill', 'none')
-    .attr('stroke', '#fff').attr('stroke-opacity', 0.22).attr('stroke-width', 1.6).attr('stroke-linecap', 'round');
-  svg.append('rect').attr('class', 'sea').attr('fill', 'url(#ocean)');
-  svg.append('rect').attr('class', 'sea').attr('fill', 'url(#waves)');
+  const cv = $('#terrain');
+  tctx = cv.getContext('2d', { alpha: false });
+  Terrain.init({ dem: DEM_URL, img: IMG_URL, maxZ: MAX_TILE_Z, onUpdate: scheduleTerrain });
+  // 透明的觸控層，讓空白處也能拖曳 / 縮放
+  svg.append('rect').attr('class', 'hit').attr('fill', 'transparent');
 
   gZoom = svg.append('g');
-  gZoom.append('path').attr('class', 'sphere');
-  gShadow = gZoom.append('g').attr('class', 'shadow');
   gLand = gZoom.append('g').attr('class', 'land');
+  gEdge = gZoom.append('g').attr('class', 'edge');
   gDecor = svg.append('g').attr('class', 'decor').style('pointer-events', 'none');
   gMk = svg.append('g').attr('class', 'markers');
 
   gDecor.selectAll('text').data(DECOR).enter().append('text').attr('class', 'dc').text((d) => d[0]);
 
+  buildDefs();
   const g = gMk.selectAll('g.mk').data(state.maps, (d) => d.s).enter().append('g').attr('class', 'mk')
     .on('click', (e, d) => openCard(d));
   g.each(function (d) {
     const s = d3.select(this);
+    // 動物棋子：會在自己國家附近走動，所以整組放在 walker 裡
     const an = s.append('g').attr('class', 'an');
-    an.append('circle').attr('class', 'ring');
-    an.append('text').attr('class', 'emoji').text(d.a);
-    an.append('text').attr('class', 'mood');
+    const wk = an.append('g').attr('class', 'walker');
+    wk.append('ellipse').attr('class', 'base');   // 遊戲棋子的底座（漲跌色）
+    wk.append('circle').attr('class', 'ring');    // 開盤中的脈衝光圈
+    const body = wk.append('g').attr('class', 'body');
+    body.append('text').attr('class', 'emoji').attr('filter', 'url(#sticker)').text(d.a);
+    wk.append('text').attr('class', 'mood');
+    walkers.set(d.s, { wk: wk.node(), body: body.node(), x: 0, y: 0, tx: 0, ty: 0, wait: hash(d.s) % 30 / 10, dir: 1, ph: 0 });
+    // 文明帝國式城市旗幟
     const b = s.append('g').attr('class', 'bubble');
-    b.append('rect').attr('class', 'bg').attr('rx', 9);
+    b.append('rect').attr('class', 'bg').attr('rx', 8);
+    b.append('rect').attr('class', 'band').attr('rx', 5);
+    b.append('rect').attr('class', 'inner').attr('rx', 6);
     b.append('path').attr('class', 'tail');
     const t1 = b.append('text').attr('class', 't1');
     t1.append('tspan').attr('class', 'a');
@@ -218,23 +316,40 @@ function layoutGeometry() {
   W = st.clientWidth; H = st.clientHeight;
   if (!W || !H) return;
   svg.attr('viewBox', `0 0 ${W} ${H}`);
-  svg.selectAll('rect.sea').attr('width', W).attr('height', H);
-  projection = d3.geoNaturalEarth1().fitExtent([[8, 8], [W - 8, H - 8]], { type: 'Sphere' });
+  svg.select('rect.hit').attr('width', W).attr('height', H);
+
+  // 高 DPI canvas
+  dpr = Math.min(window.devicePixelRatio || 1, 3);
+  const cv = tctx.canvas;
+  cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+
+  // Web Mercator：世界是邊長 S0 的正方形，與圖磚座標完全對齊
+  const unit = d3.geoMercator().scale(1 / (2 * Math.PI)).translate([0.5, 0.5]);
+  const yN = unit([0, VIEW_N])[1], yS = unit([0, VIEW_S])[1];
+  S0 = Math.max(W, H / (yS - yN)); // 讓可視範圍在最小縮放時也能填滿畫面
+  projection = d3.geoMercator().scale(S0 / (2 * Math.PI)).translate([S0 / 2, S0 / 2]);
   path = d3.geoPath(projection);
-  gZoom.select('.sphere').attr('d', path({ type: 'Sphere' }));
-  gShadow.selectAll('path').data(state.countries).join('path').attr('d', path).attr('transform', 'translate(0,2.2)');
+  viewBox = [[0, yN * S0], [S0, yS * S0]];
+
   gLand.selectAll('path').data(state.countries).join('path').attr('d', path);
-  zoomB.extent([[0, 0], [W, H]]).translateExtent([[0, 0], [W, H]]);
+  gEdge.selectAll('path').data(state.countries.filter((d) => state.byId[pad3(d.id)])).join('path').attr('d', path);
+  const maxK = (Math.pow(2, MAX_TILE_Z + 1) * 256) / (S0 * dpr); // 最高層級再多放大 2 倍
+  zoomB.extent([[0, 0], [W, H]]).translateExtent(viewBox).scaleExtent([1, maxK]);
   paintLand();
 }
 function paintLand() {
   if (!gLand) return;
-  gLand.selectAll('path').attr('fill', landFill).classed('hot', (d) => !!state.byId[pad3(d.id)]);
+  gLand.selectAll('path').each(function (d) {
+    const m = state.byId[pad3(d.id)];
+    d3.select(this).classed('hot', !!m)
+      .attr('fill', m ? fillFor(m) : 'none')
+      .style('stroke', m ? borderFor(m) : null); // 用 style 才能蓋過 CSS 的預設白色國界
+  });
 }
 
 function regionTransform(key) {
   const R = REGIONS[key];
-  if (!R || !R.bbox) return d3.zoomIdentity;
+  if (!R || !R.bbox) return zoomB.constrain()(d3.zoomIdentity, [[0, 0], [W, H]], viewBox);
   const [lo0, la0, lo1, la1] = R.bbox;
   const mx = (lo0 + lo1) / 2, my = (la0 + la1) / 2;
   const pts = [[lo0, la0], [lo1, la0], [lo0, la1], [lo1, la1], [mx, la0], [mx, la1], [lo0, my], [lo1, my]].map((p) => projection(p));
@@ -243,7 +358,7 @@ function regionTransform(key) {
   const k = Math.max(1, Math.min(16, Math.min(W / (x1 - x0), H / (y1 - y0)) * 0.9));
   const cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
   const tr = d3.zoomIdentity.translate(W / 2 - k * cx, H / 2 - k * cy).scale(k);
-  return zoomB.constrain()(tr, [[0, 0], [W, H]], [[0, 0], [W, H]]);
+  return zoomB.constrain()(tr, [[0, 0], [W, H]], viewBox);
 }
 function applyRegion(animate) {
   if (!projection) return;
@@ -254,6 +369,10 @@ function applyRegion(animate) {
 
 function onTransform() {
   gZoom.attr('transform', state.t.toString());
+  // 放大到城市 / 街道等級時，國界（50m 精度）會和真實海岸線對不齊，逐漸淡出
+  const op = Math.max(0, Math.min(1, 1 - (Math.log2(state.t.k) - 5) / 2));
+  gZoom.style('opacity', op).style('display', op > 0 ? null : 'none');
+  scheduleTerrain();
   scheduleLayout();
 }
 
@@ -312,14 +431,17 @@ function layoutMarkers() {
   }
 
   gMk.selectAll('g.mk').each(function (m) {
-    const s = d3.select(this), o = vis.get(m.s);
-    if (!o) { s.style('display', 'none'); return; }
+    const s = d3.select(this), o = vis.get(m.s), wk = walkers.get(m.s);
+    if (!o) { s.style('display', 'none'); if (wk) wk.vis = false; return; }
     s.style('display', null).attr('transform', `translate(${o.x},${o.y})`);
     const st = marketStatus(m), q = state.quotes[m.s];
     const pct = q ? q.pct : 0;
+    if (wk) { wk.vis = true; wk.st = st; wk.size = o.size; }
     const an = s.select('.an').attr('class', 'an ' + st);
     an.select('.ring').attr('r', o.size * 0.62);
-    an.select('.emoji').attr('font-size', o.size).style('animation-delay', (hash(m.s) % 10) / 10 + 's');
+    an.select('.base').attr('cy', o.size * 0.42).attr('rx', o.size * 0.5).attr('ry', o.size * 0.17)
+      .style('stroke', q ? pctColor(pct) : '#c9b27a');
+    an.select('.emoji').attr('font-size', o.size);
     an.select('.mood').attr('x', o.size * 0.5).attr('y', -o.size * 0.5).attr('font-size', o.size * 0.5)
       .text(st === 'closed' ? '💤' : q ? mood(pct) : '');
 
@@ -327,11 +449,15 @@ function layoutMarkers() {
     if (!o.b || !q) { b.style('display', 'none'); return; }
     const { w, h } = o.b.r, full = o.b.mode === 'full', col = pctColor(pct);
     b.style('display', null).attr('transform', `translate(${o.b.r.x - o.x},${o.b.r.y - o.y})`);
-    b.select('.bg').attr('width', w).attr('height', h).attr('fill', st === 'closed' ? '#eef1f6' : '#fff');
+    b.select('.bg').attr('width', w).attr('height', h).attr('fill', st === 'closed' ? 'url(#bannerOff)' : 'url(#bannerBg)');
+    b.select('.inner').attr('x', 2.5).attr('y', 2.5).attr('width', w - 5).attr('height', h - 5);
+    // 旗幟上半部的名稱色帶（漲跌色；休市時變灰）
+    b.select('.band').style('display', full ? null : 'none').attr('x', 3).attr('y', 3).attr('width', w - 6).attr('height', 15)
+      .attr('fill', st === 'closed' ? '#4a5466' : bandColor(pct));
     b.select('.tail').style('display', o.b.pos === 'up' ? null : 'none')
       .attr('d', `M${w / 2 - 6},${h - 1} L${w / 2},${h + 6} L${w / 2 + 6},${h - 1}`);
-    const t1 = b.select('.t1').attr('x', w / 2).attr('y', full ? 11 : h / 2 + 0.5);
-    const t2 = b.select('.t2').attr('x', w / 2).attr('y', 27).style('display', full ? null : 'none');
+    const t1 = b.select('.t1').attr('x', w / 2).attr('y', full ? 10.5 : h / 2 + 0.5);
+    const t2 = b.select('.t2').attr('x', w / 2).attr('y', 28).style('display', full ? null : 'none');
     if (full) {
       t1.select('.a').text(`${m.flag} ${m.short}`);
       t1.select('.m').text('');
@@ -349,7 +475,8 @@ function layoutMarkers() {
     const p = projection([d[1], d[2]]);
     const x = t.applyX(p[0]), y = t.applyY(p[1]);
     const r = { x: x - ds / 2, y: y - ds / 2, w: ds, h: ds };
-    const hide = x < 0 || x > W || y < 0 || y > H || rects.some((z) => inter(r, z) > 0);
+    // 放大後真實地形已經夠豐富，裝飾小圖示就收起來
+    const hide = k > 4 || x < 0 || x > W || y < 0 || y > H || rects.some((z) => inter(r, z) > 0);
     d3.select(this).style('display', hide ? 'none' : null).attr('x', x).attr('y', y).attr('font-size', ds);
   });
 }
@@ -358,7 +485,7 @@ function layoutMarkers() {
 function buildChips() {
   const defs = [['auto', '🧭 自動'], ['all', '🌍 全球'], ['asia', '🌏 亞太'], ['europe', '🏰 歐洲'], ['americas', '🗽 美洲'], ['mea', '🐪 中東非洲']];
   const nav = $('#chips');
-  nav.innerHTML = defs.map((d) => `<button class="chip" data-k="${d[0]}">${d[1]}</button>`).join('');
+  nav.innerHTML = defs.map((d) => `<button class="chip gbtn" data-k="${d[0]}">${d[1]}</button>`).join('');
   nav.onclick = (e) => {
     const b = e.target.closest('.chip');
     if (!b) return;
@@ -404,7 +531,7 @@ function renderDock() {
     const q = state.quotes[i.s];
     const v = q ? fmtN(q.p) : '--';
     const p = q ? `<div class="ip" style="color:${pctColor(q.pct)}">${arrow(q.pct)}${Math.abs(q.pct).toFixed(2)}%</div>` : '<div class="ip">--</div>';
-    return `<button class="item${sep ? ' sep' : ''}" data-s="${i.s}"><div class="ie">${i.e}</div><div class="in">${i.zh}</div><div class="iv">${v}</div>${p}</button>`;
+    return `<button class="item gbtn${sep ? ' sep' : ''}" data-s="${i.s}"><div class="ie">${i.e}</div><div class="in">${i.zh}</div><div class="iv">${v}</div>${p}</button>`;
   };
   const box = $('#items');
   const sl = box.scrollLeft;
@@ -415,7 +542,7 @@ function renderDock() {
 /* ================= 彈窗 ================= */
 function showSheet(html) {
   const s = $('#sheet');
-  s.innerHTML = `<div class="back"></div><div class="box"><button class="x" aria-label="關閉">✕</button>${html}</div>`;
+  s.innerHTML = `<div class="back"></div><div class="box"><button class="x gbtn" aria-label="關閉">✕</button>${html}</div>`;
   s.hidden = false;
 }
 function spark(arr, col) {
@@ -454,9 +581,10 @@ function openCard(m) {
 function openSettings() {
   showSheet(`
     <h3>⚙️ 設定</h3>
-    <button class="big-btn" data-act="color">${state.redUp ? '🔴 紅漲綠跌（點我切換）' : '🟢 綠漲紅跌（點我切換）'}</button>
-    <button class="big-btn" data-act="anim">${state.anim ? '🎬 動畫：開（點我關閉）' : '⏸️ 動畫：關（點我開啟）'}</button>
-    <p class="small">資料來自 Yahoo Finance，由 GitHub Actions 定時抓取，通常延遲 15 分鐘以上，僅供娛樂參考，不構成投資建議。開盤狀態按各交易所常規時段推算，遇到假日會在資料停止更新後自動變為休市。</p>`);
+    <button class="big-btn gbtn" data-act="color">${state.redUp ? '🔴 紅漲綠跌（點我切換）' : '🟢 綠漲紅跌（點我切換）'}</button>
+    <button class="big-btn gbtn" data-act="anim">${state.anim ? '🎬 動畫：開（點我關閉）' : '⏸️ 動畫：關（點我開啟）'}</button>
+    <p class="small">資料來自 Yahoo Finance，由 GitHub Actions 定時抓取，通常延遲 15 分鐘以上，僅供娛樂參考，不構成投資建議。開盤狀態按各交易所常規時段推算，遇到假日會在資料停止更新後自動變為休市。</p>
+    <p class="small">遊戲風地形由程式即時繪製：高度資料來自 AWS Terrain Tiles（Mapzen / SRTM 等），地貌判斷參考 Esri World Imagery（Esri、Maxar、Earthstar Geographics）。</p>`);
 }
 function onSheetClick(e) {
   const s = $('#sheet');
@@ -504,6 +632,7 @@ async function init() {
   renderHud();
   scheduleLayout();
   $('#loading').classList.add('gone');
+  startWalk();
 
   $('#items').addEventListener('click', (e) => {
     const b = e.target.closest('.item');
