@@ -1,4 +1,4 @@
-/* 股市大冒險 · 世界指數地圖 */
+/* 地圖世界 */
 (function () {
 'use strict';
 
@@ -19,11 +19,10 @@ const REGION_MAX_K = 5;
 
 // 左側圖層列（手機版是底部導覽列）。之後要加新地圖，在這裡加一筆並把 ready 設成 true 即可
 const LAYERS = [
-  { k: 'stocks', icon: '📈', label: '股市', title: '世界股市', ready: true },
-  { k: 'food', icon: '🍜', label: '美食景點', title: '美食・景點・活動' },
-  { k: 'utility', icon: '🌦️', label: '水電天氣', title: '水電・天氣' },
-  { k: 'tide', icon: '🌊', label: '海潮', title: '海潮' },
-  { k: 'sun', icon: '🌅', label: '日出', title: '日出・日落' }
+  { k: 'stocks', icon: '📈', label: '股市', title: '股市', desc: '目前的指數地圖', ready: true },
+  { k: 'travel', icon: '✈️', label: '旅遊', title: '旅遊', desc: '美食、慶典、活動、景點、花季' },
+  { k: 'living', icon: '🏠', label: '民生', title: '民生', desc: '電力供需、水庫蓄水、油價、菜價、空氣品質' },
+  { k: 'weather', icon: '🌦️', label: '天氣災防', title: '天氣災防', desc: '颱風路徑、地震、雨量' }
 ];
 const desktopMQ = window.matchMedia('(min-width:900px)');
 
@@ -619,7 +618,7 @@ function buildSvg() {
     t2.append('tspan').attr('class', 'lb');
     t2.append('tspan').attr('class', 'va');
     t2.append('tspan').attr('class', 'pc').attr('dx', 5);
-    // 同一國家有多個指數（例如美國：標普 / 那斯達克 / 道瓊 / 費半）
+    // 同一國家有多個指數（例如美國：標普 / 那斯達克 / 道瓊 / 費城半導體）
     if (d.group.length > 1) {
       const rows = b.append('g').attr('class', 'rows');
       d.group.forEach((x) => {
@@ -718,7 +717,8 @@ function regionTransform(key) {
   if (!ms.length) return world();
   const ins = overlayInsets();
   // 預留旗幟的空間：旗幟通常在動物上方，所以上方留比較多
-  const px = desktopMQ.matches ? 70 : 46, pt = 72, pb = 34, minK = REGION_MIN_K;
+  // 上方還要放得下多指數的整張旗幟（3 個以上指數的國家會多佔一些高度）
+  const px = desktopMQ.matches ? 70 : 46, pt = ms.some((m) => m.group.length >= 3) ? 100 : 72, pb = 34, minK = REGION_MIN_K;
   const aw = Math.max(80, W - ins.l - ins.r - px * 2), ah = Math.max(80, H - ins.t - ins.b - pt - pb);
   const fitK = (b) => Math.min(aw / Math.max(1, b[2] - b[0]), ah / Math.max(1, b[3] - b[1]));
   let bb = null;
@@ -787,8 +787,17 @@ function layoutMarkers() {
     rects.push(a);
     vis.set(m.s, { m, x, y, a, size, b: null });
   }
-  // 第二輪：放氣泡，先試完整版，再試迷你版
-  for (const m of arr) {
+  // 浮動介面（篩選列、概況卡、其它指數面板）蓋住的地方，氣泡不要放進去
+  const sr = $('#stage').getBoundingClientRect();
+  for (const sel of ['#chips', '#hud', '#panel']) {
+    const el = $(sel);
+    if (!el || el.hidden || el.offsetParent === null) continue;
+    const b = el.getBoundingClientRect();
+    rects.push({ x: b.left - sr.left - 3, y: b.top - sr.top - 3, w: b.width + 6, h: b.height + 6 });
+  }
+  // 第二輪：放氣泡，先試完整版，再試迷你版（多指數的國家先放，才不會被單一指數的小旗幟擠到沒位置）
+  const order = arr.slice().sort((a, b) => (b.group.length > 1) - (a.group.length > 1));
+  for (const m of order) {
     const o = vis.get(m.s);
     if (!o || !state.quotes[m.s]) continue;
     // 多指數的國家：空間夠就整張列出（multi），不夠就輪播（full），再不夠只顯示主指數（mini）
@@ -804,6 +813,15 @@ function layoutMarkers() {
         { x: o.a.x + o.a.w + 2, y: o.y - md.h / 2, pos: 'right' },
         { x: o.a.x - md.w - 2, y: o.y - md.h / 2, pos: 'left' }
       ];
+      // 四個基本方向都被擠掉時，沿著邊緣左右 / 上下滑動再試（滑動後的旗幟不畫指向動物的小尾巴）
+      for (const f of [-0.5, 0.5, -0.95, 0.95]) {
+        cands.push({ x: o.x - md.w / 2 + f * md.w, y: o.a.y - md.h - 5, pos: 'up~' });
+        cands.push({ x: o.x - md.w / 2 + f * md.w, y: o.a.y + o.a.h + 2, pos: 'down~' });
+      }
+      for (const f of [-0.7, 0.7, -1.4, 1.4]) {
+        cands.push({ x: o.a.x + o.a.w + 2, y: o.y - md.h / 2 + f * md.h, pos: 'right~' });
+        cands.push({ x: o.a.x - md.w - 2, y: o.y - md.h / 2 + f * md.h, pos: 'left~' });
+      }
       for (const c of cands) {
         const r = { x: c.x, y: c.y, w: md.w, h: md.h };
         if (r.x < 2 || r.y < 2 || r.x + r.w > W - 2 || r.y + r.h > H - 2) continue;
@@ -916,14 +934,14 @@ function layoutMarkers() {
 /* ================= 圖層列 / 篩選列 / 其它指數面板 ================= */
 function buildRail() {
   $('#layers').innerHTML = LAYERS.map((l) =>
-    `<button class="rl${l.k === state.layer ? ' on' : ''}" data-k="${l.k}" title="${l.title}${l.ready ? '' : '（即將推出）'}"` +
+    `<button class="rl${l.k === state.layer ? ' on' : ''}" data-k="${l.k}" title="${l.title}：${l.desc}${l.ready ? '' : '（即將推出）'}"` +
     ` aria-pressed="${l.k === state.layer}"${l.ready ? '' : ' aria-disabled="true"'}>` +
     `<span class="ri">${l.icon}</span><span class="rt">${l.label}</span>${l.ready ? '' : '<i class="soon">即將</i>'}</button>`).join('');
   $('#layers').onclick = (e) => {
     const b = e.target.closest('.rl');
     if (!b) return;
     const l = LAYERS.find((x) => x.k === b.dataset.k);
-    if (!l.ready) { toast(`🚧 ${l.title}地圖即將推出`); return; }
+    if (!l.ready) { toast(`🚧 ${l.icon} ${l.title}（${l.desc}）即將推出`); return; }
     state.layer = l.k;
     document.querySelectorAll('#layers .rl').forEach((x) => {
       x.classList.toggle('on', x.dataset.k === l.k);

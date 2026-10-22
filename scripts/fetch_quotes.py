@@ -3,17 +3,21 @@
 
 - 只用 Python 標準庫，GitHub Actions 裡不需要裝任何套件
 - 資料來源：Yahoo Finance chart 介面（非官方、免費，資料通常延遲 15 分鐘左右）
+- Yahoo 沒有的指數改用其他來源（markets.json 的 "src" 欄位）：
+    tpex  櫃買指數，櫃買中心官方 OpenAPI（日資料，盤中不會跳動）
+    yjp   TOPIX，Yahoo!ファイナンス日本版網頁（沒有官方 API，網頁改版時會抓失敗而沿用舊資料）
 - 某個代碼抓失敗時，沿用上一版（PREV_FILE）的資料並標記 stale，網頁不會出現空洞
 """
 import json
 import os
+import re
 import sys
 import time
 import urllib.error
 import urllib.parse
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = os.path.join(ROOT, "site")
@@ -45,6 +49,69 @@ def fetch_one(sym):
             err = f"{type(e).__name__}: {e}"
         time.sleep(1.2 * (attempt + 1))
     return sym, None, err
+
+
+def _num(x):
+    return float(str(x).replace(",", "").replace("+", ""))
+
+
+def _get(url, timeout=20):
+    req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept-Language": "ja,en;q=0.8"})
+    with urllib.request.urlopen(req, timeout=timeout) as r:
+        return r.read().decode("utf-8", "replace")
+
+
+def _make(price, change, t, spark=None):
+    prev = price - change
+    if not prev:
+        return None
+    return {
+        "p": round(price, 4),
+        "c": round(change, 4),
+        "pct": round(change / prev * 100, 3),
+        "prev": round(prev, 4),
+        "t": int(t),
+        "spark": spark or [round(prev, 4), round(price, 4)],
+    }
+
+
+def fetch_tpex():
+    """櫃買指數：櫃買中心 OpenAPI，回傳當月每日 OHLC 與漲跌點數"""
+    rows = json.loads(_get("https://www.tpex.org.tw/openapi/v1/tpex_index"))
+    rows = [r for r in rows if r.get("Close") and r.get("Change") not in (None, "")]
+    if not rows:
+        return None
+    last = rows[-1]
+    d = datetime.strptime(last["Date"], "%Y%m%d").replace(hour=13, minute=30, tzinfo=timezone(timedelta(hours=8)))
+    spark = [round(_num(r["Close"]), 4) for r in rows][-6:]
+    return _make(_num(last["Close"]), _num(last["Change"]), d.timestamp(), spark if len(spark) > 1 else None)
+
+
+def fetch_yjp(code):
+    """TOPIX：從 Yahoo!ファイナンス日本版頁面內嵌的 JSON 取出現價與漲跌點"""
+    html = _get(f"https://finance.yahoo.co.jp/quote/{urllib.parse.quote(code)}")
+    m = re.search(r'"indexPrices":\{[^{}]*?"price":"([\d,.]+)"[^{}]*?"changePrice":"([-+\d,.]+)"', html)
+    if not m:
+        return None
+    return _make(_num(m.group(1)), _num(m.group(2)), time.time())
+
+
+def fetch_special(item):
+    src, err = item.get("src"), ""
+    for attempt in range(3):
+        try:
+            q = fetch_tpex() if src == "tpex" else fetch_yjp(item.get("code", item["s"]))
+            if q:
+                return item["s"], q, ""
+            err = "empty result"
+        except Exception as e:
+            err = f"{type(e).__name__}: {e}"
+        time.sleep(1.5 * (attempt + 1))
+    return item["s"], None, err
+
+
+def fetch_any(item):
+    return fetch_special(item) if item.get("src") else fetch_one(item["s"])
 
 
 def parse_chart(data):
@@ -95,12 +162,13 @@ def load_prev():
 def main():
     with open(os.path.join(SITE, "markets.json"), encoding="utf-8") as f:
         cfg = json.load(f)
-    symbols = sorted({i["s"] for i in cfg["items"]})
+    items = {i["s"]: i for i in cfg["items"]}
+    symbols = sorted(items)
     prev = load_prev()
 
     quotes, failed = {}, []
     with ThreadPoolExecutor(max_workers=4) as ex:
-        for sym, q, err in ex.map(fetch_one, symbols):
+        for sym, q, err in ex.map(fetch_any, [items[x] for x in symbols]):
             if q:
                 quotes[sym] = q
             else:
