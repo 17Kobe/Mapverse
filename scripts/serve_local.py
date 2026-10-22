@@ -21,6 +21,14 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = os.path.join(ROOT, "site")
 
 
+class NoCacheHandler(http.server.SimpleHTTPRequestHandler):
+    """每次都要求瀏覽器重新確認檔案，改完程式重新整理就會生效（不會一半新、一半舊）"""
+
+    def end_headers(self):
+        self.send_header("Cache-Control", "no-cache")
+        super().end_headers()
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--port", type=int, default=8000)
@@ -33,7 +41,7 @@ def main():
         if r.returncode != 0:
             print("抓取失敗，將以演示資料（或舊的 quotes.json）預覽")
 
-    handler = functools.partial(http.server.SimpleHTTPRequestHandler, directory=SITE)
+    handler = functools.partial(NoCacheHandler, directory=SITE)
     # 只綁定 127.0.0.1，避免區域網路內其他裝置連入
     with http.server.ThreadingHTTPServer(("127.0.0.1", args.port), handler) as srv:
         url = f"http://localhost:{args.port}/"

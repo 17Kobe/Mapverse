@@ -18,7 +18,7 @@ const OCEAN_BG = '#2378b8';
 
 const cache = new Map();
 const pending = [];
-let opt = null, procRaf = 0, frame = 0;
+let opt = null, procRaf = 0, frame = 0, landMask = null;
 let wctx = null, sctx64 = null, sctx128 = null;
 
 const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
@@ -210,6 +210,8 @@ function render(e) {
   const gradX = (i, c) => (c === 0 ? Hh[i + 1] - Hh[i] : c === TS - 1 ? Hh[i] - Hh[i - 1] : (Hh[i + 1] - Hh[i - 1]) / 2);
   const gradY = (i, r) => (r === 0 ? Hh[i + TS] - Hh[i] : r === TS - 1 ? Hh[i] - Hh[i - TS] : (Hh[i + TS] - Hh[i - TS]) / 2);
 
+  const M = landMask ? landMask(z, x, y) : null;
+
   // 光影誇張倍率（低縮放時誇張更多，否則看不出起伏）
   const ex = clamp(1.3 * Math.pow(2, (12 - z) * 0.38), 1.3, 18);
 
@@ -229,21 +231,25 @@ function render(e) {
         L = (ir + ig + ib) / 3;
         sat = Math.max(ir, ig, ib) - Math.min(ir, ig, ib);
       }
+      // 有陸地遮罩時（0 海 / 1 陸 / 2 不在範圍內），海岸以遮罩為準：
+      // 混濁的淺海（例如金門、廈門一帶）影像不偏藍、高度又接近 0，只靠影像會被誤判成陸地
+      const mk = M ? M[i] : 2;
       let w;
-      if (!I) w = h <= 0;
+      if (mk === 0) w = true;
+      else if (!I) w = mk === 1 ? false : h <= 0;
       else {
         const blue = ib > ir + 8 && ib + 6 >= ig;
-        if (h <= -120) w = true;
-        else if (h <= 3) w = blue || L < 26;
+        if (mk === 2 && h <= -120) w = true;
+        else if (mk === 2 && h <= 3) w = blue || L < 26;
         else {
           // 內陸湖泊：影像偏藍且地面平坦
           const sl = (Math.abs(gradX(i, c)) + Math.abs(gradY(i, r))) / m;
-          w = blue && L < 125 && sl < 0.01;
+          w = h > 3 && blue && L < 125 && sl < 0.01;
         }
       }
       if (w) {
         water[i] = 1;
-        if (h < 0) waterColor(h, col); else { col[0] = P.lake[0]; col[1] = P.lake[1]; col[2] = P.lake[2]; }
+        if (h < 0 || mk === 0) waterColor(Math.min(h, 0), col); else { col[0] = P.lake[0]; col[1] = P.lake[1]; col[2] = P.lake[2]; }
       } else {
         // t：0 = 乾燥（沙漠）→ 1 = 茂盛（綠地）
         const t = clamp((ig - ir + 38) / 70, 0, 1);
@@ -459,5 +465,19 @@ function draw(ctx, t, S0, W, H, dpr) {
   }
 }
 
-window.Terrain = { init, draw };
+// 陸地遮罩：fn(z, x, y) 回傳 256×256 的 Uint8Array（0 海 / 1 陸 / 2 不在範圍內）或 null。
+// box 是遮罩涵蓋的範圍（單位 Mercator [u0, v0, u1, v1]），已經畫好的圖磚會丟掉重畫
+function setLandMask(fn, box) {
+  landMask = fn;
+  for (const [k, v] of cache) {
+    if (v.z <= 2) continue; // 全球圖磚一像素幾十公里，看不出差別，留著當替身
+    const n = 1 << v.z;
+    if ((v.x + 1) / n < box[0] || v.x / n > box[2] || (v.y + 1) / n < box[1] || v.y / n > box[3]) continue;
+    v.dead = true; v.base = v.spr = null;
+    cache.delete(k);
+  }
+  if (opt) opt.onUpdate();
+}
+
+window.Terrain = { init, draw, setLandMask };
 })();

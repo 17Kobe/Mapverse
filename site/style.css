@@ -220,6 +220,27 @@ button{font:inherit;color:inherit;cursor:pointer}
 .bubble .t1{font-size:12px}
 .bubble .t2{font-size:12px;fill:#fff}
 .bubble .flag-b{fill:none;stroke:var(--gold-l);stroke-width:1;stroke-opacity:.85}
+/* ---------- 旅遊地圖（台灣） ---------- */
+body.travel #hud .hp{display:none}
+/* 台灣的海岸線：和股市國界同樣三層（金色光暈 → 金色主線 → 白芯），縣市界用淡色虛線 */
+#map .tw path{fill:none;stroke-linejoin:round;stroke-linecap:round;vector-effect:non-scaling-stroke;pointer-events:none}
+#map .tw .tw-glow{stroke:#ffd76a;stroke-width:9;stroke-opacity:.24}
+#map .tw .tw-line{stroke:#f2c14e;stroke-width:2.4;stroke-opacity:.95}
+#map .tw .tw-edge{stroke:#fff;stroke-width:.9;stroke-opacity:.85}
+#map .tw .tw-county{stroke:#fff;stroke-width:1;stroke-opacity:.5;stroke-dasharray:4 3}
+/* 地點：3D 圖示輕輕上下浮動，腳下有金色光圈 */
+.poi:focus{outline:none}
+.poi:focus-visible .bg{stroke:var(--gold-l)}
+.poi .shadow{fill:#0f1a08;opacity:.5;transform-box:fill-box;transform-origin:center}
+.poi .ring{fill:none;stroke:var(--gold-l);stroke-width:1.6;opacity:0;transform-box:fill-box;transform-origin:center;animation:ping 2.6s ease-out infinite}
+.poi .ico{animation:bob 2.8s ease-in-out infinite}
+.poi .cnt circle{fill:#c4402f;stroke:var(--outline);stroke-width:1.5}
+.poi .cnt text{font-family:var(--font);font-weight:700;font-size:11px;fill:#fff;text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.bubble .t2.cat{fill:var(--gold-l);font-size:11px}
+@media (prefers-reduced-motion:reduce){.poi .ico,.poi .ring{animation:none}}
+#sheet p.desc{font-size:14px;line-height:1.6;margin:12px 0 8px}
+a.big-btn{text-align:center;text-decoration:none}
+
 /* HTML 裡的國旗圖（詳情卡標題、其它指數面板） */
 .flg{display:inline-block;height:.9em;width:auto;vertical-align:-.08em;border-radius:2px;box-shadow:0 0 0 1px rgba(255,231,163,.7),0 1px 2px rgba(0,0,0,.5)}
 .beast3d{width:56px;height:56px;object-fit:contain;filter:drop-shadow(2px 3px 3px rgba(0,0,0,.45))}
