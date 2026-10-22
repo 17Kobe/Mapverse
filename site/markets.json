@@ -6,7 +6,7 @@
     {"type":"sub","of":"^N225","s":"TOPIX","src":"yjp","code":"998405.T","zh":"TOPIX","abbr":"TOPIX","e":"🗼"},
     {"type":"map","s":"^KS11","abbr":"KOSPI","zh":"韓國KOSPI","short":"韓國","flag":"🇰🇷","a":"🐅","id":"410","lon":127.8,"lat":36.5,"r":"asia","tz":"Asia/Seoul","ses":[["09:00","15:30"]],"w":60},
     {"type":"sub","of":"^KS11","s":"^KQ11","zh":"KOSDAQ","abbr":"KOSDAQ","e":"🚀"},
-    {"type":"map","s":"^HSI","abbr":"恆生","zh":"恒生指數","short":"香港","flag":"🇭🇰","a":"🐎","id":"344","lon":114.2,"lat":22.3,"r":"asia","tz":"Asia/Hong_Kong","ses":[["09:30","12:00"],["13:00","16:00"]],"w":62},
+    {"type":"map","s":"^HSI","nx":120,"abbr":"恆生","zh":"恒生指數","short":"香港","flag":"🇭🇰","a":"🐎","id":"344","lon":114.2,"lat":22.3,"r":"asia","tz":"Asia/Hong_Kong","ses":[["09:30","12:00"],["13:00","16:00"]],"w":62},
     {"type":"sub","of":"^HSI","s":"HSTECH.HK","zh":"恆生科技","abbr":"恆生科技","e":"💻"},
     {"type":"map","s":"000001.SS","abbr":"上證","zh":"上證指數","short":"上證","flag":"🇨🇳","a":"🐉","id":"156","lon":108,"lat":34,"r":"asia","tz":"Asia/Shanghai","ses":[["09:30","11:30"],["13:00","15:00"]],"w":90},
     {"type":"sub","of":"000001.SS","s":"399001.SZ","zh":"深證成指","abbr":"深證成指","e":"🧧"},
@@ -18,7 +18,7 @@
     {"type":"map","s":"^STI","zh":"新加坡STI","short":"新加坡","flag":"🇸🇬","a":"🐆","id":"702","lon":103.8,"lat":1.35,"r":"asia","tz":"Asia/Singapore","ses":[["09:00","17:00"]],"w":35},
     {"type":"map","s":"^JKSE","zh":"印尼JCI","short":"印尼","flag":"🇮🇩","a":"🦧","id":"360","lon":110,"lat":-7,"r":"asia","tz":"Asia/Jakarta","ses":[["09:00","15:50"]],"w":38},
     {"type":"map","s":"^SET.BK","zh":"泰國SET","short":"泰國","flag":"🇹🇭","a":"🐘","id":"764","lon":101,"lat":15.5,"r":"asia","tz":"Asia/Bangkok","ses":[["10:00","12:30"],["14:30","16:30"]],"w":36},
-    {"type":"map","s":"^KLSE","zh":"馬來西亞KLCI","short":"馬來","flag":"🇲🇾","a":"🐒","id":"458","lon":102,"lat":4.2,"r":"asia","tz":"Asia/Kuala_Lumpur","ses":[["09:00","12:30"],["14:30","17:00"]],"w":30},
+    {"type":"map","s":"^KLSE","swap":"^STI","zh":"馬來西亞KLCI","short":"馬來西亞","flag":"🇲🇾","a":"🐒","id":"458","lon":102,"lat":4.2,"r":"asia","tz":"Asia/Kuala_Lumpur","ses":[["09:00","12:30"],["14:30","17:00"]],"w":30},
 
     {"type":"map","s":"^FTSE","zh":"英國富時100","short":"英國","flag":"🇬🇧","a":"🦔","id":"826","lon":-2,"lat":53,"r":"europe","tz":"Europe/London","ses":[["08:00","16:30"]],"w":70},
     {"type":"map","s":"^GDAXI","zh":"德國DAX","short":"德國","flag":"🇩🇪","a":"🦡","id":"276","lon":10.3,"lat":51.2,"r":"europe","tz":"Europe/Berlin","ses":[["09:00","17:30"]],"w":70},

@@ -795,43 +795,90 @@ function layoutMarkers() {
     const b = el.getBoundingClientRect();
     rects.push({ x: b.left - sr.left - 3, y: b.top - sr.top - 3, w: b.width + 6, h: b.height + 6 });
   }
-  // 第二輪：放氣泡，先試完整版，再試迷你版（多指數的國家先放，才不會被單一指數的小旗幟擠到沒位置）
-  const order = arr.slice().sort((a, b) => (b.group.length > 1) - (a.group.length > 1));
-  for (const m of order) {
-    const o = vis.get(m.s);
-    if (!o || !state.quotes[m.s]) continue;
-    // 多指數的國家：空間夠就整張列出（multi），不夠就輪播（full），再不夠只顯示主指數（mini）
-    const n = m.group.length;
-    const modes = n > 1
-      ? [{ w: 166, h: 24 + n * 16 + 4, mode: 'multi' }, { w: 136, h: 40, mode: 'full' }, { w: 80, h: 22, mode: 'mini' }]
-      : [{ w: 118, h: 40, mode: 'full' }, { w: 80, h: 22, mode: 'mini' }];
-    outer:
-    for (const md of modes) {
-      const cands = [
-        { x: o.x - md.w / 2, y: o.a.y - md.h - 5, pos: 'up' },
-        { x: o.x - md.w / 2, y: o.a.y + o.a.h + 2, pos: 'down' },
-        { x: o.a.x + o.a.w + 2, y: o.y - md.h / 2, pos: 'right' },
-        { x: o.a.x - md.w - 2, y: o.y - md.h / 2, pos: 'left' }
-      ];
-      // 四個基本方向都被擠掉時，沿著邊緣左右 / 上下滑動再試（滑動後的旗幟不畫指向動物的小尾巴）
-      for (const f of [-0.5, 0.5, -0.95, 0.95]) {
-        cands.push({ x: o.x - md.w / 2 + f * md.w, y: o.a.y - md.h - 5, pos: 'up~' });
-        cands.push({ x: o.x - md.w / 2 + f * md.w, y: o.a.y + o.a.h + 2, pos: 'down~' });
-      }
-      for (const f of [-0.7, 0.7, -1.4, 1.4]) {
-        cands.push({ x: o.a.x + o.a.w + 2, y: o.y - md.h / 2 + f * md.h, pos: 'right~' });
-        cands.push({ x: o.a.x - md.w - 2, y: o.y - md.h / 2 + f * md.h, pos: 'left~' });
-      }
-      for (const c of cands) {
-        const r = { x: c.x, y: c.y, w: md.w, h: md.h };
-        if (r.x < 2 || r.y < 2 || r.x + r.w > W - 2 || r.y + r.h > H - 2) continue;
-        if (rects.some((z) => inter(r, z) > 0)) continue;
-        rects.push(r);
-        o.b = { r, mode: md.mode, pos: c.pos };
-        break outer;
+  // 第二輪：放氣泡，先試完整版，再試迷你版
+  const baseRects = rects.slice();
+  const place = (order) => {
+    const rs = baseRects.slice();
+    for (const o of vis.values()) o.b = null;
+    for (const m of order) {
+      const o = vis.get(m.s);
+      if (!o || !state.quotes[m.s]) continue;
+      // 多指數的國家：空間夠就整張列出（multi），不夠就輪播（full），再不夠只顯示主指數（mini）
+      const n = m.group.length;
+      const modes = n > 1
+        ? [{ w: 166, h: 24 + n * 16 + 4, mode: 'multi' }, { w: 136, h: 40, mode: 'full' }, { w: 80, h: 22, mode: 'mini' }]
+        : [{ w: 118, h: 40, mode: 'full' }, { w: 80, h: 22, mode: 'mini' }];
+      outer:
+      for (const md of modes) {
+        const cands = [
+          { x: o.x - md.w / 2, y: o.a.y - md.h - 5, pos: 'up' },
+          { x: o.x - md.w / 2, y: o.a.y + o.a.h + 2, pos: 'down' },
+          { x: o.a.x + o.a.w + 2, y: o.y - md.h / 2, pos: 'right' },
+          { x: o.a.x - md.w - 2, y: o.y - md.h / 2, pos: 'left' }
+        ];
+        // 四個基本方向被擠掉時，沿著邊緣滑動再試（滑動後的旗幟不畫指向動物的小尾巴）
+        for (const f of [-0.25, 0.25, -0.5, 0.5, -0.75, 0.75, -1, 1]) {
+          cands.push({ x: o.x - md.w / 2 + f * md.w, y: o.a.y - md.h - 5, pos: 'up~' });
+          cands.push({ x: o.x - md.w / 2 + f * md.w, y: o.a.y + o.a.h + 2, pos: 'down~' });
+          cands.push({ x: o.a.x + o.a.w + 2, y: o.y - md.h / 2 + f * md.h * 1.1, pos: 'right~' });
+          cands.push({ x: o.a.x - md.w - 2, y: o.y - md.h / 2 + f * md.h * 1.1, pos: 'left~' });
+        }
+        // 離動物越近越優先（距離相同時維持 上、下、右、左 的順序）
+        const d2 = (c) => (c.x + md.w / 2 - o.x) ** 2 + (c.y + md.h / 2 - (o.y - o.size / 2)) ** 2;
+        cands.forEach((c, i) => (c.i = i, c.d = d2(c)));
+        cands.sort((p, q) => (p.d - q.d) || (p.i - q.i));
+        for (const c of cands) {
+          const r = { x: c.x, y: c.y, w: md.w, h: md.h };
+          if (r.x < 2 || r.y < 2 || r.x + r.w > W - 2 || r.y + r.h > H - 2) continue;
+          if (rs.some((z) => inter(r, z) > 0)) continue;
+          // markets.json 的 nx：選好位置後，旗幟再往右（正）或往左（負）微調 px；擠不下就少挪一點
+          if (m.nx) {
+            for (const k of [1, 0.75, 0.5, 0.25]) {
+              const r2 = { ...r, x: r.x + m.nx * k };
+              if (r2.x < 2 || r2.x + r2.w > W - 2) continue;
+              if (inter(r2, o.a) > 0 || rs.some((z) => inter(r2, z) > 0)) continue;
+              r.x = r2.x;
+              break;
+            }
+          }
+          rs.push(r);
+          o.b = { r, mode: md.mode, pos: c.pos };
+          break outer;
+        }
       }
     }
+    // markets.json 的 swap：這個國家的旗幟和指定國家的旗幟互換位置（各自保持自己的大小，以對方的中心點為中心）
+    for (const m of order) {
+      const a = vis.get(m.s), b = m.swap && vis.get(m.swap);
+      if (!a || !b || !a.b || !b.b) continue;
+      const ca = { x: a.b.r.x + a.b.r.w / 2, y: a.b.r.y + a.b.r.h / 2 }, cb = { x: b.b.r.x + b.b.r.w / 2, y: b.b.r.y + b.b.r.h / 2 };
+      const ra = { ...a.b.r, x: cb.x - a.b.r.w / 2, y: cb.y - a.b.r.h / 2 }, rb = { ...b.b.r, x: ca.x - b.b.r.w / 2, y: ca.y - b.b.r.h / 2 };
+      const others = rs.filter((z) => z !== a.b.r && z !== b.b.r);
+      const ok = (r) => r.x >= 2 && r.y >= 2 && r.x + r.w <= W - 2 && r.y + r.h <= H - 2 && !others.some((z) => inter(r, z) > 0);
+      if (!ok(ra) || !ok(rb) || inter(ra, rb) > 0) continue;
+      const pa = a.b.pos;
+      a.b = { ...a.b, r: ra, pos: b.b.pos };
+      b.b = { ...b.b, r: rb, pos: pa };
+    }
+    // 評分：整張列出的多指數國家越多越好，其次是沒被縮成迷你版
+    let sc = 0;
+    for (const o of vis.values()) if (o.b) sc += (o.b.mode === 'multi' ? 100 : o.b.mode === 'full' ? 10 : 1) * (o.m.group.length > 1 ? 3 : 1);
+    return sc;
+  };
+  // 先依權重由大到小放；如果有多指數的國家沒能整張列出，就讓它優先再排一次（最多重排幾次，取最好的）
+  let order = arr.slice().sort((a, b) => (b.group.length > 1) - (a.group.length > 1));
+  let best = null;
+  const tried = new Set();
+  for (let it = 0; it < 6; it++) {
+    const sc = place(order);
+    if (!best || sc > best.sc) best = { sc, snap: [...vis.values()].map((o) => [o, o.b]) };
+    const miss = order.find((m) => m.group.length > 1 && !tried.has(m.s) && vis.get(m.s) && state.quotes[m.s]
+      && !(vis.get(m.s).b && vis.get(m.s).b.mode === 'multi'));
+    if (!miss) break;
+    tried.add(miss.s);
+    order = [miss, ...order.filter((m) => m !== miss)];
   }
+  for (const [o, bb] of best.snap) o.b = bb;
 
   gMk.selectAll('g.mk').each(function (m) {
     const s = d3.select(this), o = vis.get(m.s), wk = walkers.get(m.s);
