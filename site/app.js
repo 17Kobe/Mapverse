@@ -50,8 +50,8 @@ const CRITTERS = [
   // 北海小英雄：維京長船在北海巡航
   { src: 'people/viking.svg', lon: 3.5, lat: 59.5, mode: 'boat', face: 'R', s: 1.35, sea: true },
   // 非洲莽原：獵人追斑馬，旁邊有長頸鹿散步
-  { src: 'critters/zebra.png', lon: 36, lat: -3, mode: 'chase', lag: 0, s: 0.95 },
-  { src: 'critters/hunter.png', lon: 36, lat: -3, mode: 'chase', lag: 1.05, s: 0.85 },
+  { src: 'critters/zebra.png', lon: 33.5, lat: -6, mode: 'chase', lag: 0, s: 0.95 },
+  { src: 'critters/hunter.png', lon: 33.5, lat: -6, mode: 'chase', lag: 1.05, s: 0.85 },
   { src: 'critters/giraffe.png', lon: 29, lat: -10, mode: 'wander', s: 1.2 },
   // 北極：因紐特（愛斯基摩）人在冰屋旁走來走去
   { src: 'people/igloo.svg', lon: -74, lat: 68.5, mode: 'still', face: 'F', s: 1 },
@@ -393,7 +393,9 @@ function stepCritters(dt, t) {
     if (m === 'chase') {
       // 斑馬和獵人用同一個時鐘繞橢圓跑，獵人落後一段角度
       const a = (still ? 0 : t * 0.75) - c.d.lag;
-      c.x = Math.cos(a) * B * 1.9; c.y = Math.sin(a) * B * 0.6;
+      // 橢圓的大小不超過約 3° x 1.4°（中心在內陸），再小也不低於一個最小值免得兩隻重疊
+      const rx = Math.max(B * 0.7, Math.min(B * 1.9, 3 * (c.ppd || 99))), ry = Math.max(B * 0.25, Math.min(B * 0.6, 1.4 * (c.ppd || 99)));
+      c.x = Math.cos(a) * rx; c.y = Math.sin(a) * ry;
       c.dir = faceDir(c, -Math.sin(a));
       if (!still) {
         c.ph += dt * 13;
@@ -968,6 +970,8 @@ function layoutMarkers() {
     const hide = k > 6 || x < -size * 3 || x > W + size * 3 || y < -size * 2 || y > H + size * 2 ||
       rects.some((q) => inter(r, q) / (r.w * r.h) > 0.15);
     c.vis = !hide; c.size = z; c.base = size;
+    // 每度經度在螢幕上有幾 px：追逐的繞圈範圍要用「地理距離」限制，才不會縮小地圖時跑出海岸線
+    if (c.d.mode === 'chase') c.ppd = Math.max(0.5, screenXY(c.d.lon + 1, c.d.lat)[0] - x);
     c.g.style.display = hide ? 'none' : null;
     if (hide) continue;
     c.g.setAttribute('transform', `translate(${x.toFixed(1)},${y.toFixed(1)})`);
