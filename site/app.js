@@ -945,7 +945,7 @@ function regionTransform(key) {
   const bs = desktopMQ.matches ? 1 : BUBBLE_SCALE_MOBILE; // 手機版旗幟放大了，預留的空間也要跟著放大
   const px = desktopMQ.matches ? 70 : 46, pb = 34, minK = REGION_MIN_K;
   // 手機版：有 pin 的國家（上證、韓國）要整張旗幟列在動物上方，上方多留一些空間
-  const pt = (ms.some((m) => m.group.length >= 3) ? 100 : 72) * bs + (!desktopMQ.matches && ms.some((m) => m.pin) ? PIN_EXTRA_TOP : 0);
+  const pt = (ms.some((m) => m.group.length >= 3) ? 100 : 72) * bs + (!desktopMQ.matches && ms.some((m) => m.pin || m.col) ? PIN_EXTRA_TOP : 0);
   const aw = Math.max(80, W - ins.l - ins.r - px * 2), ah = Math.max(80, H - ins.t - ins.b - pt - pb);
   const fitK = (b) => Math.min(aw / Math.max(1, b[2] - b[0]), ah / Math.max(1, b[3] - b[1]));
   let bb = null;
@@ -1085,7 +1085,8 @@ function layoutMarkers() {
     // 原點是腳下的地面，身體往上長；佔位框也包含牠走動的範圍
     const a = { x: x - size * 0.75, y: y - size * 1.05, w: size * 1.5, h: size * 1.35, an: true };
     const area = a.w * a.h;
-    if (rects.some((r) => inter(a, r) / area > (m.pin ? 0.8 : 0.3))) continue;
+    // 手機版要排進左右兩欄的國家（pin，或 markets.json 指定了 col）動物不能被擠掉，否則旗幟也跟著不見
+    if (rects.some((r) => inter(a, r) / area > (m.pin || (m.col && !desktopMQ.matches) ? 0.8 : 0.3))) continue;
     rects.push(a);
     vis.set(m.s, { m, x, y, a, size, b: null });
   }
@@ -1099,7 +1100,9 @@ function layoutMarkers() {
   // 每張旗幟盡量放在自己動物的正上方，同一欄依動物由北到南往下疊，擠不下再整欄往上收，
   // 這樣每張都能完整列出，也不會被擠到離自己國家很遠的地方。排不下時回傳 null，改用一般的避讓排法。
   const layoutPinColumns = () => {
-    const ps = [...vis.values()].filter((o) => o.m.pin && state.quotes[o.m.s]);
+    // 只排目前區域的 pin 國家（全球檢視沿用亞太），不同區域的旗幟不會被塞進同一欄
+    const pinR = state.activeRegion === 'all' ? 'asia' : state.activeRegion;
+    const ps = [...vis.values()].filter((o) => (o.m.pin || o.m.col) && o.m.r === pinR && state.quotes[o.m.s]);
     if (ps.length < 2) return null;
     const GAP = 4;
     const colW = Math.floor((W - 8 - GAP) / 2); // 每一欄的寬度（左右各留 4px 邊）
@@ -1145,8 +1148,8 @@ function layoutMarkers() {
         it.tail = bh === it.h; // 下面沒有接別張，才畫指向動物的小尾巴
         y = it.y + it.h + GAP;
       }
-      // 超出畫面下緣：由下往上收（under 的國家會連同依附的國家一起往上推，維持緊貼）
-      let lim = bot0;
+      // 超出畫面下緣（或碰到右下角的災難按鈕之類的介面）：由下往上收（under 的國家會連同依附的國家一起往上推，維持緊貼）
+      let lim = Math.min(bot0, ...ui.concat(uiRects(['#dzBtn'])).filter((z) => z.y > H / 2 && z.x < x1 && z.x + z.w > x0).map((z) => z.y - GAP));
       for (let i = seq.length - 1; i >= 0; i--) {
         if (seq[i].y + seq[i].h > lim) seq[i].y = lim - seq[i].h;
         lim = seq[i].y - GAP;
