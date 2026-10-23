@@ -2007,9 +2007,9 @@
       "desc": "銅鑼的米食小吃，逛杭菊和客家小鎮時可以順路吃。"
     },
     {
-      "id": "tongluo-chrysanthemum",
+      "id": "event-tongluo-chrysanthemum",
       "tier": 2,
-      "cat": "sight",
+      "cat": "event",
       "name": "銅鑼杭菊花季",
       "full": "苗栗銅鑼 杭菊花季會場",
       "icon": "sunflower",
@@ -2018,7 +2018,9 @@
       "addr": "苗栗縣銅鑼鄉九湖村（杭菊花季會場）",
       "lon": 120.77651,
       "lat": 24.47172,
-      "desc": "每年秋冬銅鑼的杭菊花田盛開，漫山遍野的白菊很壯觀。"
+      "months": "11月",
+      "note": "花期約 11 月到 12 月初",
+      "desc": "每年秋冬銅鑼的杭菊花田盛開，漫山遍野的白菊很壯觀，期間有採菊、菊花餐與市集。"
     },
     {
       "id": "flying-cow-ranch",
