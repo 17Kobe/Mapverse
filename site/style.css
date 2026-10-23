@@ -127,6 +127,18 @@ button{font:inherit;color:inherit;cursor:pointer}
 @media (max-width:899px){
   .chip[data-k="more"]{order:-2}
   .csep{order:-1}
+  /* 手機版由上到下：概況卡（開盤中…）→ 篩選列；概況卡高度約 45px */
+  #hud{top:calc(env(safe-area-inset-top) + 6px)}
+  #chips{
+    top:calc(env(safe-area-inset-top) + 56px);
+    /* 整列都能左右滑動（不會被底下的地圖搶走手勢），滑動結束停在按鈕邊緣 */
+    pointer-events:auto;touch-action:pan-x;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;
+    scroll-snap-type:x proximity;scroll-padding:0 10px;
+  }
+  body.travel #chips{top:calc(env(safe-area-inset-top) + 40px)}
+  .chip{scroll-snap-align:start}
+  /* 有些瀏覽器會吃掉捲動容器右側的 padding，補一個空元素讓最右邊的按鈕能完整滑出來 */
+  #chips::after{content:'';flex:none;width:2px}
 }
 
 /* ---------- 其它指數面板：手機版是底部抽屜，桌面版在左側概況卡下方 ---------- */
