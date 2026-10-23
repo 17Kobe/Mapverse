@@ -1,5 +1,5 @@
 {
-  "_說明": "旅遊地圖的設定。areas 是上方的篩選膠囊（box = [西經度, 南緯度, 東經度, 北緯度]）；spots 是地圖上的地點，cat 是分類（sight 景點 / food 餐廳，旗幟用顏色區分）；tier 是顯示等級（1 必去，縮小時也顯示；2、3 要放大才出現，同級越前面越優先），icon 是 assets/travel/ 底下的 3D 圖。",
+  "_說明": "旅遊地圖的設定。areas 是上方的篩選膠囊（box = [西經度, 南緯度, 東經度, 北緯度]）；spots 是地圖上的地點，cat 是分類（sight 景點 / food 餐廳 / hotel 飯店，旗幟用顏色區分）；tier 是顯示等級（1 必去，縮小時也顯示；2、3 要放大才出現，同級越前面越優先），icon 是 assets/travel/ 底下的 3D 圖。",
   "areas": [
     { "k": "all", "icon": "🗺️", "label": "全部", "box": [118.13, 21.88, 122.02, 26.39] },
     { "k": "main", "icon": "⛰️", "label": "台灣本島", "box": [120.03, 21.88, 122.02, 25.31] },
@@ -113,6 +113,54 @@
       "icon": "bread", "county": "宜蘭縣", "town": "宜蘭市",
       "addr": "宜蘭縣宜蘭市神農路二段", "lon": 121.7508, "lat": 24.7509,
       "desc": "宜蘭在地糕餅麵包老店，牛舌餅、ㄚQ餅是人氣伴手禮。"
+    },
+    {
+      "id": "dongyue-spring", "tier": 2, "cat": "sight", "name": "東岳湧泉", "full": "東岳湧泉（東澳冷泉公園）",
+      "icon": "fountain", "county": "宜蘭縣", "town": "南澳鄉",
+      "addr": "宜蘭縣南澳鄉東岳村", "lon": 121.8302, "lat": 24.5247,
+      "desc": "蘇花公路旁的天然湧泉，泉水冰涼清澈，夏天可以泡腳、戲水消暑。"
+    },
+    {
+      "id": "nanao-elementary", "tier": 3, "cat": "sight", "name": "南澳國小", "full": "宜蘭縣南澳鄉南澳國民小學",
+      "icon": "school", "county": "宜蘭縣", "town": "南澳鄉",
+      "addr": "宜蘭縣南澳鄉中正路 15 號", "lon": 121.8005, "lat": 24.4669,
+      "desc": "南澳鄉的百年老校，前身是日治時期的番童教育所，就在南澳市區中心。"
+    },
+    {
+      "id": "jianhua-ice", "tier": 2, "cat": "food", "name": "建華冰店", "full": "南澳建華冰店",
+      "icon": "shaved-ice", "county": "宜蘭縣", "town": "南澳鄉",
+      "addr": "宜蘭縣南澳鄉蘇花路二段 419 號", "lon": 121.8044, "lat": 24.4664,
+      "desc": "南澳老冰店，招牌「傳道冰」據說源自當年來部落傳教的神父，料多豆香。"
+    },
+    {
+      "id": "fangetian-chicken", "tier": 3, "cat": "food", "name": "番割田甕缸雞", "full": "番割田甕缸雞",
+      "icon": "chicken", "county": "宜蘭縣", "town": "蘇澳鎮",
+      "addr": "宜蘭縣蘇澳鎮海山西路 309 號", "lon": 121.8300, "lat": 24.6141,
+      "desc": "蘇澳的甕缸烤雞，皮脆肉嫩，就在宜蘭餅發明館附近。"
+    },
+    {
+      "id": "hotel-royal-jiaoxi", "tier": 2, "cat": "hotel", "name": "礁溪老爺酒店", "full": "礁溪老爺酒店",
+      "icon": "hotel", "county": "宜蘭縣", "town": "礁溪鄉",
+      "addr": "宜蘭縣礁溪鄉五峰路 69 號", "lon": 121.7557, "lat": 24.8277,
+      "desc": "五峰旗山腳下的溫泉酒店，有露天風呂和在地食材料理。"
+    },
+    {
+      "id": "silks-place-yilan", "tier": 2, "cat": "hotel", "name": "蘭城晶英酒店", "full": "蘭城晶英酒店",
+      "icon": "bellhop-bell", "county": "宜蘭縣", "town": "宜蘭市",
+      "addr": "宜蘭縣宜蘭市民權新路 36 號", "lon": 121.7513, "lat": 24.7506,
+      "desc": "宜蘭市區的城市度假飯店，親子設施豐富，樓上餐廳的櫻桃鴨很有名。"
+    },
+    {
+      "id": "the-archipelago", "tier": 3, "cat": "hotel", "name": "凱渡廣場酒店", "full": "凱渡廣場酒店 THE ARCHIPELAGO",
+      "icon": "bed", "county": "宜蘭縣", "town": "頭城鎮",
+      "addr": "宜蘭縣頭城鎮烏石港路 300 號", "lon": 121.8402, "lat": 24.8711,
+      "desc": "烏石港旁的海景度假酒店，有海水泳池和漂漂河。"
+    },
+    {
+      "id": "moment-yilan", "tier": 3, "cat": "hotel", "name": "煙波花時間", "full": "煙波花時間 宜蘭傳藝",
+      "icon": "hotel", "county": "宜蘭縣", "town": "五結鄉",
+      "addr": "宜蘭縣五結鄉五濱路二段 201 號", "lon": 121.8256, "lat": 24.6874,
+      "desc": "國立傳統藝術中心園區旁的飯店，住宿可以免費進傳藝中心。"
     }
   ]
 }

@@ -250,7 +250,7 @@ body.travel #hud .hp{display:none}
 .rtag-fwy .sh{fill:url(#rtWhite);stroke:#16301f}
 .rtag-fwy .in{stroke:#00894a;stroke-width:1.7}
 .rtag-fwy .gl{display:none}
-.rtag-exp .sh{fill:url(#rtRed);stroke:#3a0508}
+.rtag-exp .sh{fill:url(#rtRed);stroke:#5e0a0f}
 .rtag-prov .sh{fill:url(#rtBlue);stroke:#071a3d}
 .rtag text{font-family:var(--font);font-weight:800;text-anchor:middle;dominant-baseline:central;fill:#fff}
 .rtag .n{font-size:12.5px}

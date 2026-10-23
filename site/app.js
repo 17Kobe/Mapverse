@@ -299,7 +299,7 @@ function buildDefs() {
   grad('bannerOff', '#3c4659', '#222a38');
   // 公路編號牌：省道藍、快速公路紅（上亮下暗的立體感），國道梅花白
   grad('rtBlue', '#2a64c4', '#0a3479');
-  grad('rtRed', '#d3343c', '#8a0f18');
+  grad('rtRed', '#ff3d43', '#e0141d'); // 快速公路：亮紅（真的標誌是很正的紅）
   grad('rtWhite', '#ffffff', '#e4ebe6');
   const gl = defs.append('linearGradient').attr('id', 'rtGloss').attr('x1', 0).attr('y1', 0).attr('x2', 0).attr('y2', 1);
   gl.append('stop').attr('offset', '0%').attr('stop-color', '#fff').attr('stop-opacity', 0.42);
@@ -1367,8 +1367,10 @@ function layoutMarkers() {
 /* ================= 旅遊地圖（台灣、澎湖、金門、馬祖與各離島） ================= */
 // 地點分類：旗幟色帶的顏色與狀態列的圖示
 const TRAVEL_CATS = {
-  sight: { label: '景點', emoji: '📸', band: 'hsl(176,55%,29%)' },
-  food: { label: '餐廳', emoji: '🍽️', band: 'hsl(20,68%,37%)' }
+  // 色帶要亮：地圖上是深綠山林，太暗的底色會和地形混在一起
+  sight: { label: '景點', emoji: '📸', band: 'hsl(172,78%,37%)' },
+  food: { label: '餐廳', emoji: '🍽️', band: 'hsl(24,92%,49%)' },
+  hotel: { label: '飯店', emoji: '🏨', band: 'hsl(268,62%,56%)' }
 };
 // 地點的顯示等級（travel.json 的 tier）：第 1 級一直顯示，第 2、3 級要放大到這個圖磚層級才出現
 const TIER_Z = [0, 9.3, 10.5];
@@ -1690,20 +1692,19 @@ function layoutTravel() {
     list.push({ s, t, x, y });
   }
   list.sort((a, b) => a.t - b.t);
-  // 一級一級放：同一級先放完所有圖示（和已放的圖示、上一級的旗幟重疊就先不畫），再替這一級找旗幟位置。
-  // 這樣等級高的地點一定先出現、先拿到旗幟，等級低的只補在空位上。介面（rs 一開始那幾個）只擋旗幟、不擋圖示。
-  const ui = rs.length, placed = [], shown = [];
-  for (let t = 1; t <= 3; t++) {
-    const lv = [];
-    for (const d of list) {
-      if (d.t !== t) continue;
-      const ri = { x: d.x - z * 0.48, y: d.y - z * 0.95, w: z * 0.96, h: z * 1.05 };
-      if (placed.some((q) => inter(ri, q) > 0)) continue;
-      placed.push(ri); lv.push(d);
-    }
-    for (const d of lv) placeTag(d);
+  // 1) 照優先順序放圖示：和已放的圖示疊在一起就先不畫（放大後自然會分開）。
+  const cand = [];
+  for (const d of list) {
+    d.ri = { x: d.x - z * 0.48, y: d.y - z * 0.95, w: z * 0.96, h: z * 1.05 };
+    if (cand.some((q) => inter(d.ri, q.ri) > 0)) continue;
+    cand.push(d);
   }
-  function placeTag(d) {
+  // 2) 照優先順序找旗幟位置：不能壓到介面、別的旗幟、比自己優先的圖示；
+  //    優先挑不會蓋到低等級圖示的那一邊，真的沒有才蓋上去（被蓋到的低等級地點這次就不畫）。
+  //    所以等級高的旗幟一定先拿到位置，等級低的地點只要旁邊有空位就會留著。
+  const tags = [], drop = new Set();
+  cand.forEach((d, i) => {
+    if (drop.has(d)) return;
     d.w = Math.ceil(Math.max(56, textWidthOf(d.s.name) + 22)); d.h = 26;
     const cands = [
       { x: d.x - d.w / 2, y: d.y - z * 1.05 - d.h - 6, pos: 'up' },
@@ -1711,15 +1712,23 @@ function layoutTravel() {
       { x: d.x - z * 0.6 - 4 - d.w, y: d.y - z * 0.5 - d.h / 2, pos: 'left' },
       { x: d.x - d.w / 2, y: d.y + z * 0.25 + 4, pos: 'down' }
     ];
-    d.c = cands.find((c) => {
+    let best = null, bestHit = null;
+    for (const c of cands) {
       const r = { x: c.x, y: c.y, w: d.w, h: d.h };
-      return r.x >= 2 && r.y >= 2 && r.x + d.w <= W - 2 && r.y + d.h <= H - 2 &&
-        !rs.slice(0, ui).some((q) => inter(r, q) > 0) && !placed.some((q) => inter(r, q) > 0);
-    }) || null;
-    if (d.c) placed.push({ x: d.c.x, y: d.c.y, w: d.w, h: d.h });
-    shown.push(d);
-  }
-  rs.push(...placed);
+      if (r.x < 2 || r.y < 2 || r.x + d.w > W - 2 || r.y + d.h > H - 2) continue;
+      if (rs.some((q) => inter(r, q) > 0) || tags.some((q) => inter(r, q) > 0)) continue;
+      if (cand.some((q, j) => j <= i && !drop.has(q) && inter(r, q.ri) > 0)) continue;
+      const hit = cand.filter((q, j) => j > i && !drop.has(q) && inter(r, q.ri) > 0);
+      if (!hit.length) { best = c; bestHit = []; break; }
+      if (!best) { best = c; bestHit = hit; }
+    }
+    d.c = best;
+    if (!best) return;
+    tags.push({ x: best.x, y: best.y, w: d.w, h: d.h });
+    for (const q of bestHit) drop.add(q);
+  });
+  const shown = cand.filter((d) => !drop.has(d));
+  rs.push(...shown.map((d) => d.ri), ...tags);
 
   const sel = gPoi.selectAll('g.poi').data(shown, (d) => d.s.id);
   sel.exit().remove();
@@ -1732,7 +1741,7 @@ function layoutTravel() {
   en.merge(sel).each(function (d) { node.set(d.s.id, this); });
   for (const d of shown) {
     const s = d3.select(node.get(d.s.id)), sp = d.s, cat = TRAVEL_CATS[sp.cat] || TRAVEL_CATS.sight;
-    // 旗幟只寫名稱，分類用色帶顏色分（景點青綠、餐廳橘棕）
+    // 旗幟只寫名稱，分類用色帶顏色分（景點青綠、餐廳橘、飯店紫）
     s.attrQ('transform', `translate(${d.x.toFixed(1)},${d.y.toFixed(1)})`).attrQ('aria-label', `${sp.name}（${cat.label}）`);
     sizeFigure(s, s.select('.ico image').attrQ('href', `assets/travel/${sp.icon}.png`), z);
 
