@@ -106,7 +106,7 @@ const store = {
 const state = {
   cfg: null, maps: [], bars: [], bySym: {}, byId: {}, countries: [],
   quotes: {}, generated: null, demo: false,
-  auto: false, activeRegion: 'all', layer: 'stocks', panel: false,
+  activeRegion: 'all', layer: 'stocks', panel: false,
   travel: null, tArea: 'all', // 旅遊地圖的資料（第一次切過去才載入）與目前選的區域
   redUp: store.get('redUp', true),
   anim: store.get('anim', true),
@@ -155,7 +155,7 @@ function nextOpen(m) {
   nextCache[m.s] = { at: now, v };
   return v;
 }
-// 自動模式只在這三個主要區域之間切換（中東非洲市場少，需要時手動點）
+// 開啟網頁時只在這三個主要區域之間挑（中東非洲市場少，需要時手動點）
 const AUTO_REGIONS = ['asia', 'europe', 'americas'];
 function pickAutoRegion() {
   const count = {};
@@ -859,6 +859,13 @@ const worldLod = makeLod({
   }
 });
 // 旅遊：台灣海岸線與縣市界（內政部資料很細，可以一路放大到街道等級）
+// 線寬自己除以縮放倍率：放大到街道等級時 iOS Safari 的 non-scaling-stroke 會失效，
+// 小島周圍就變成一大圈黃色（金色光暈被放大了上百倍）
+const TW_STROKE = { 'tw-glow': 9, 'tw-line': 2.4, 'tw-edge': 0.9, 'tw-county': 1 };
+function sizeTwStroke(k) {
+  for (const [c, w] of Object.entries(TW_STROKE)) gTw.select('.' + c).style('stroke-width', `${w / k}px`);
+  gTw.select('.tw-county').style('stroke-dasharray', `${4 / k}px ${3 / k}px`);
+}
 const twLod = makeLod({
   items: () => (gTw && state.travel ? [state.travel.coast, state.travel.county] : null),
   maxLv: () => Math.max(0, Math.ceil(Math.log2(maxK))),
@@ -974,6 +981,7 @@ function onTransform() {
     // 旅遊地圖不畫世界國界，改畫台灣自己的海岸線與縣市界（內政部資料，放大到街道也對得齊）
     gZoom.style('display', 'none');
     gTw.attr('transform', state.t.toString());
+    sizeTwStroke(state.t.k);
     twLod.update(state.t.k);
   } else {
     // 放大到城市 / 街道等級時，國界（50m 精度）會和真實海岸線對不齊，逐漸淡出
@@ -1603,6 +1611,7 @@ function layoutRoadTags(rs) {
 function drawTw() {
   // 和股市的國界共用分級簡化：依縮放倍率挑一級，螢幕上看不出差別的折點不畫
   twLod.reset();
+  sizeTwStroke(state.t.k);
   twLod.update(state.t.k);
 }
 
@@ -1891,7 +1900,7 @@ function toast(msg) {
 }
 
 function buildChips() {
-  const defs = [['auto', '🧭', '自動'], ['all', '🌍', '全球'], ['asia', '🌏', '亞太'], ['europe', '🏰', '歐洲'], ['americas', '🗽', '美洲'], ['mea', '🐪', '中東非洲']];
+  const defs = [['all', '🌍', '全球'], ['asia', '🌏', '亞太'], ['europe', '🏰', '歐洲'], ['americas', '🗽', '美洲'], ['mea', '🐪', '中東非洲']];
   const chip = (k, i, t) => `<button class="chip gbtn" data-k="${k}" aria-pressed="false"><span class="ci">${i}</span>${t}</button>`;
   const nav = $('#chips');
   // 旅遊地圖：本島與各離島（設定在 travel.json 的 areas）
@@ -1912,8 +1921,7 @@ function buildChips() {
     if (!b) return;
     const k = b.dataset.k;
     if (k === 'more') { setPanel(!state.panel); return; }
-    if (k === 'auto') { state.auto = true; state.activeRegion = pickAutoRegion(); }
-    else { state.auto = false; state.activeRegion = k; }
+    state.activeRegion = k;
     updateChips(); applyRegion(true); renderPanel();
   };
 }
@@ -1921,7 +1929,7 @@ function updateChips() {
   document.querySelectorAll('.chip').forEach((b) => {
     const k = b.dataset.k;
     const on = state.layer === 'travel' ? k === state.tArea
-      : k === 'more' ? state.panel : k === 'auto' ? state.auto : !state.auto && k === state.activeRegion;
+      : k === 'more' ? state.panel : k === state.activeRegion;
     b.classList.toggle('on', on);
     b.setAttribute('aria-pressed', on);
   });
@@ -2069,10 +2077,6 @@ function refreshView() {
   paintLand(); scheduleLayout(); renderPanel(); renderHud();
 }
 function tick() {
-  if (state.auto && state.layer === 'stocks') {
-    const r = pickAutoRegion();
-    if (r !== state.activeRegion) { state.activeRegion = r; updateChips(); applyRegion(true); }
-  }
   refreshView();
 }
 
@@ -2089,8 +2093,8 @@ async function init() {
   state.countries = topojson.feature(topo, topo.objects.countries).features;
   await loadQuotes();
 
-  state.auto = !desktopMQ.matches;
-  state.activeRegion = state.auto ? pickAutoRegion() : 'all';
+  // 開啟網頁時選「現在正在開盤」的區域（都休市就選最快開盤的），之後由使用者自己切換
+  state.activeRegion = pickAutoRegion();
 
   buildSvg();
   buildRail();
