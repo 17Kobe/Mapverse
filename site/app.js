@@ -679,7 +679,42 @@ function buildSvg() {
 
   // d3 zoom 內部的 x 可以一直往左右累加；畫面上只用「繞回一圈內」的版本（state.t），世界就能無限循環
   zoomB = d3.zoom().scaleExtent([1, 16]).on('zoom', (e) => { state.t = wrapT(e.transform); onTransform(); });
+  // 股市地圖的雙擊不放大：左鍵是用來降下災難的，連點時地圖才不會一直縮放（旅遊地圖照舊）
+  zoomB.filter((e) => (!e.ctrlKey || e.type === 'wheel') && !e.button && !(e.type === 'dblclick' && state.layer === 'stocks'));
   svg.call(zoomB);
+
+  // 上帝視角的災難（disasters.js，目前只在股市地圖）：左鍵點空白處（不是動物 / 旗幟）降下災難，右鍵選災難。
+  // 拖曳地圖後放開不算點擊（d3-zoom 會吃掉那一下 click）。
+  svg.on('click.dz', (e) => {
+    if (state.layer !== 'stocks' || !window.Disasters || e.target.closest('.mk')) return;
+    Disasters.handleClick(e.clientX, e.clientY);
+  });
+  svg.on('contextmenu.dz', (e) => {
+    if (state.layer !== 'stocks' || !window.Disasters) return;
+    e.preventDefault();
+    Disasters.openMenu(e.clientX, e.clientY);
+  });
+}
+// 螢幕座標 → 經緯度（經度繞回 -180～180）
+function geoAt(x, y) {
+  const t = state.t, p = projection.invert([(x - t.x) / t.k, (y - t.y) / t.k]);
+  return [((p[0] % 360) + 540) % 360 - 180, p[1]];
+}
+function initDisasters() {
+  if (!window.Disasters) return;
+  Disasters.init({
+    stage: $('#stage'),
+    canvas: $('#fx'),
+    shakeEls: ['#terrain', '#clouds', '#map', '#fx'].map((s) => $(s)),
+    enabled: () => state.layer === 'stocks',
+    toScreen: screenXY,
+    toGeo: geoAt,
+    zoom: () => state.t.k,
+    worldW: () => S0 * state.t.k,
+    size: () => [W, H, dpr],
+    reduce: () => !state.anim || reduceMotion.matches, // 關閉動畫或減少動態時，地震不搖晃畫面
+    toast
+  });
 }
 
 function layoutGeometry() {
@@ -1799,6 +1834,7 @@ async function setLayer(k) {
   });
   document.body.classList.toggle('travel', travel);
   if (travel && state.panel) setPanel(false);
+  if (travel && window.Disasters) Disasters.clear(); // 災難目前只在股市地圖
   $('#sheet').hidden = true;
   gMk.style('display', travel ? 'none' : null);
   gDecor.style('display', travel ? 'none' : null);
@@ -2036,6 +2072,7 @@ async function init() {
   applyRegion(false);
   renderHud();
   scheduleLayout();
+  initDisasters();
   $('#loading').classList.add('gone');
   startWalk();
 

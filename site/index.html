@@ -23,6 +23,8 @@
   <canvas id="terrain" aria-hidden="true"></canvas>
   <canvas id="clouds" aria-hidden="true"></canvas>
   <svg id="map" role="img" aria-label="世界股市地圖"></svg>
+  <!-- 上帝視角的災難效果（disasters.js），疊在地圖上面、不擋滑鼠 -->
+  <canvas id="fx" aria-hidden="true"></canvas>
   <div id="attrib">地形資料 © Mapzen/AWS Terrain Tiles · Esri, Maxar, Earthstar Geographics</div>
 
   <!-- 浮在地圖上的介面（仿 Google 地圖的位置） -->
@@ -49,6 +51,7 @@
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
 <script src="terrain.js"></script>
+<script src="disasters.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

@@ -184,7 +184,30 @@ button{font:inherit;color:inherit;cursor:pointer}
 #stage{position:relative;flex:1;min-height:0;min-width:0;overflow:hidden;background:#2378b8}
 /* 地圖四周的暗角，像遊戲畫面的鏡頭邊緣 */
 #stage::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:1;box-shadow:inset 0 0 60px rgba(8,16,32,.55)}
-#terrain,#clouds{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
+#terrain,#clouds,#fx{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
+
+/* ---------- 上帝視角的災難（只在股市地圖；效果畫在 #fx，邏輯在 disasters.js） ---------- */
+#dzBtn{
+  position:absolute;z-index:5;right:10px;bottom:20px;display:flex;align-items:center;gap:6px;
+  padding:6px 12px 6px 9px;border-radius:999px;font-size:13.5px;font-weight:700;color:var(--cream);cursor:pointer;
+  box-shadow:0 0 0 1px var(--outline),inset 0 0 0 1px rgba(255,240,190,.2),0 4px 12px rgba(0,0,0,.45)
+}
+#dzBtn .dz-i{font-size:18px;line-height:1;font-family:var(--emoji)}
+#dzBtn .dz-c{font-size:10px;opacity:.7}
+#dzBtn[aria-expanded="true"]{border-color:var(--gold-l)}
+#dzMenu{position:absolute;z-index:7;width:168px;padding:6px;border-radius:12px;animation:rise .15s ease-out}
+#dzMenu[hidden]{display:none}
+#dzMenu .dz-h{padding:4px 8px 6px;font-size:13px;font-weight:700;color:var(--gold-l);border-bottom:1px solid rgba(227,189,92,.28);margin-bottom:4px}
+#dzMenu .dz-h small{display:block;font-size:10.5px;font-weight:500;color:var(--cream);opacity:.7;margin-top:1px}
+.dz-it{
+  display:flex;align-items:center;gap:8px;width:100%;padding:6px 8px;border:1px solid transparent;border-radius:8px;
+  background:none;color:var(--cream);font:inherit;font-size:14px;font-weight:700;text-align:left;cursor:pointer
+}
+.dz-it .dz-i{width:22px;font-size:18px;line-height:1;text-align:center;font-family:var(--emoji)}
+.dz-it:hover{background:rgba(255,231,163,.1)}
+.dz-it:focus-visible{outline:2px solid var(--gold-l);outline-offset:-2px}
+.dz-it.on{background:linear-gradient(180deg,#43669b 0%,#27436f 100%);border-color:var(--gold-l);color:var(--gold-l)}
+body.travel #dzBtn,body.travel #dzMenu{display:none}
 #map{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block;user-select:none;-webkit-user-select:none}
 /* 一般國界：白色半透明細線 */
 #map .land path{stroke:rgba(255,255,255,.32);stroke-width:.8;stroke-linejoin:round;vector-effect:non-scaling-stroke;transition:fill .8s,stroke .8s}

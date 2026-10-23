@@ -40,6 +40,7 @@ scripts/build_tw_geo.py           產生 site/assets/geo/（只需執行一次�
 - **小角色（海洋生物、船、各地人物）**：在 `app.js` 的 `CRITTERS` 加一筆，填圖檔、經緯度和動作 `mode`（`wander` 走動、`swim` 游、`whale` 噴水、`dolphin` 跳出水面、`boat` 划船、`surf` 衝浪、`ski` 滑雪、`chase` 追逐、`still` 不動）。圖放在 `site/assets/critters/`（Fluent 3D）或 `site/assets/people/`（自繪 SVG：因紐特人、冰屋、維京長船）。會擋到市場旗幟時自動隱藏。
 - **雲**：用 canvas 即時畫在 `#clouds`，固定在經緯度上，跟著地圖移動與左右循環，並隨西風慢慢往東飄。數量、風速在 `app.js` 的 `CLOUD_N`、`CLOUD_WIND`。關閉動畫或系統開啟「減少動態效果」時，雲和小角色都會停住。
 - **紅漲綠跌 / 綠漲紅跌**：圖層列最下方的 ⚙️ 設定切換（預設紅漲綠跌）。
+- **上帝視角的災難（股市地圖）**：在地圖上按右鍵（手機長按，或右下角的災難按鈕）選災難，預設「下雨」；選好後左鍵點地圖空白處就在那裡降下災難（點動物 / 旗幟仍是開詳情卡）。有下雨、冰雹、颱風、地震、海嘯、龍捲風、火山爆發、瘋狗浪、森林大火。效果畫在 `#fx` canvas、錨定經緯度跟著地圖移動，程式在 `site/disasters.js`：新增災難就在 `TYPES` 加一筆（icon、label、秒數），再到 `FX` 寫 `make`（產生粒子）與 `draw`（每幀畫）。`Disasters.active()` 可取得目前的災難，之後讓角色躲災難用。股市地圖的雙擊不再放大。
 - **旅遊地點**：在 `site/travel.json` 的 `spots` 加一筆：`cat`（`sight` 景點 / `food` 餐廳 / `hotel` 飯店，顏色與名稱在 `app.js` 的 `TRAVEL_CATS`）、`tier`（顯示等級 1～3，1 是必去、縮小也顯示；各級出現的縮放層級在 `app.js` 的 `TIER_Z`；同級越前面越優先）、`name`、`full`（全名）、`county`、`town`、`addr`、`lon`、`lat`、`desc`、`icon`（`site/assets/travel/` 底下的 3D 圖檔名，不含 `.png`）。上方膠囊在 `areas`，`box` 是 [西經度, 南緯度, 東經度, 北緯度]。
 - **新增圖層**：在 `app.js` 的 `LAYERS` 加一筆（icon、label），完成後把 `ready` 設成 `true`。
 - **區域縮放**：`app.js` 的 `REGION_MIN_K` 是區域檢視的最低放大倍率；整區放不下時，權重小的市場會留在畫面外，拖曳即可看到。
