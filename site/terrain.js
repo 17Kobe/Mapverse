@@ -7,9 +7,16 @@
  *   4. 山脈直接畫在地表上（岩石色 + 雪線 + 加強稜線光影），不另外貼山的圖示
  *   5. 程序化擺放手繪精靈：針葉林、闊葉林、雨林、沙丘
  * 精靈另外畫在一張四周留邊的透明圖層，跨圖磚邊界也不會被切掉。
+ *
+ * 效能：圖磚的像素運算和種樹很花時間，瀏覽器支援時交給背景的 Web Worker 處理（同一支檔案在
+ * Worker 裡執行時只負責繪製），主執行緒只負責把畫好的圖貼上去，拖曳 / 縮放時就不會卡住。
+ * 不支援 Worker + OffscreenCanvas 的瀏覽器照舊在主執行緒處理，畫出來的內容完全一樣。
  */
 (function () {
 'use strict';
+
+const IS_WORKER = typeof document === 'undefined';
+const SELF_URL = IS_WORKER ? null : (document.currentScript && document.currentScript.src) || null;
 
 const TS = 256;          // 圖磚邊長（像素）
 const PAD = 26;          // 精靈圖層四周留白，讓山和樹可以超出圖磚邊界
@@ -20,6 +27,16 @@ const cache = new Map();
 const pending = [];
 let opt = null, procRaf = 0, frame = 0, landMask = null;
 let wctx = null, sctx64 = null, sctx128 = null;
+let pool = null, jobId = 0;
+const jobs = new Map();
+
+// 畫布：Worker 裡用 OffscreenCanvas，主執行緒用一般的 <canvas>
+function newCanvas(w, h) {
+  if (IS_WORKER) return new OffscreenCanvas(w, h);
+  const c = document.createElement('canvas');
+  c.width = w; c.height = h;
+  return c;
+}
 
 const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
 function rnd(a, b, c) {
@@ -70,8 +87,7 @@ function mixInto(o, c, t) { o[0] += (c[0] - o[0]) * t; o[1] += (c[1] - o[1]) * t
 /* ================= 手繪精靈 ================= */
 const SPR = {};
 function mk(w, h, fn) {
-  const c = document.createElement('canvas');
-  c.width = w; c.height = h;
+  const c = newCanvas(w, h);
   const g = c.getContext('2d');
   g.lineJoin = 'round'; g.lineCap = 'round';
   fn(g, w, h);
@@ -138,29 +154,121 @@ function loadImg(url, done) {
   im.src = url;
   return im;
 }
+// Worker 模式：只下載原始檔（不解碼），解碼和繪製都在 Worker 裡做
+function loadBlob(url, done) {
+  fetch(url, { mode: 'cors' }).then((r) => (r.ok ? r.blob() : null)).catch(() => null).then(done);
+}
+function loadSources(e) {
+  const done = () => { if (--e.left === 0) { pending.push(e); kick(); } };
+  if (pool) {
+    loadBlob(opt.dem(e.z, e.x, e.y), (b) => { e.demB = b; done(); });
+    loadBlob(opt.img(e.z, e.x, e.y), (b) => { e.imgB = b; done(); });
+  } else {
+    e.dem = loadImg(opt.dem(e.z, e.x, e.y), done);
+    e.img = loadImg(opt.img(e.z, e.x, e.y), done);
+  }
+}
+// 丟掉圖磚（ImageBitmap 要手動 close 才會馬上釋放記憶體）
+function drop(v) {
+  v.dead = true;
+  for (const b of [v.base, v.spr]) if (b && b.close) b.close();
+  v.base = v.spr = null;
+}
 function get(z, x, y, request) {
   const key = z + '/' + x + '/' + y;
   let e = cache.get(key);
   if (e) { cache.delete(key); cache.set(key, e); return e; } // LRU
   if (!request) return null;
   e = { z, x, y, ready: false, seen: frame, left: 2 };
-  const done = () => { if (--e.left === 0) { pending.push(e); kick(); } };
-  e.dem = loadImg(opt.dem(z, x, y), done);
-  e.img = loadImg(opt.img(z, x, y), done);
+  loadSources(e);
   cache.set(key, e);
   if (cache.size > CACHE_MAX) {
     for (const [k, v] of cache) {
       if (cache.size <= CACHE_MAX) break;
       if (v.z <= 2) continue; // 低層級全球圖磚永遠保留，當作放大時的替身
-      v.dead = true; v.base = v.spr = null;
+      drop(v);
       cache.delete(k);
     }
   }
   return e;
 }
 function kick() { if (!procRaf) procRaf = requestAnimationFrame(pump); }
+// 背景 Worker：每個 Worker 同時最多排 2 張，其餘留在 pending 依「畫面上最近需要」的順序等
+const PER_WORKER = 2;
+function makePool() {
+  if (!SELF_URL || typeof Worker === 'undefined' || typeof OffscreenCanvas === 'undefined' || typeof createImageBitmap === 'undefined') return null;
+  try {
+    const n = clamp((navigator.hardwareConcurrency || 2) - 1, 1, 3);
+    const ws = [];
+    for (let i = 0; i < n; i++) {
+      const w = new Worker(SELF_URL);
+      w.busy = 0;
+      w.onmessage = (ev) => onJobDone(w, ev.data);
+      w.onerror = (ev) => { ev.preventDefault && ev.preventDefault(); disablePool('Worker 發生錯誤'); };
+      ws.push(w);
+    }
+    return ws;
+  } catch (err) {
+    return null;
+  }
+}
+// Worker 不能用（例如舊版 Safari 的 OffscreenCanvas 不完整）：改回主執行緒處理，還沒畫好的圖磚重新下載
+function disablePool(why) {
+  if (!pool) return;
+  console.warn('地形改在主執行緒處理：', why);
+  for (const w of pool) w.terminate();
+  pool = null;
+  jobs.clear();
+  if (!wctx) setupDrawing();
+  pending.length = 0;
+  for (const e of cache.values()) {
+    if (e.ready || e.dead) continue;
+    e.demB = e.imgB = null; e.left = 2;
+    loadSources(e);
+  }
+}
+function onJobDone(w, d) {
+  w.busy--;
+  const e = jobs.get(d.id);
+  jobs.delete(d.id);
+  if (d.unsupported) { disablePool(d.err); return; }
+  if (!e || e.dead || d.err) {
+    if (d.base) d.base.close();
+    if (d.spr) d.spr.close();
+    if (e && d.err) { console.warn('地形圖磚處理失敗', e.z, e.x, e.y, d.err); e.failed = true; }
+  } else {
+    // 先貼到主執行緒的畫布上再用（跟原本一樣是一般 canvas）：直接畫 Worker 傳來的 ImageBitmap，
+    // 有些瀏覽器每一幀都要重新上傳到 GPU，拖曳時反而比較慢
+    const toCanvas = (b) => {
+      const c = newCanvas(b.width, b.height);
+      c.getContext('2d').drawImage(b, 0, 0);
+      b.close();
+      return c;
+    };
+    e.base = toCanvas(d.base); e.spr = toCanvas(d.spr); e.ready = true;
+    opt.onUpdate();
+  }
+  if (pending.length) kick();
+}
 function pump() {
   procRaf = 0;
+  if (pool) {
+    pending.sort((a, b) => b.seen - a.seen); // 畫面上最近需要的先處理
+    for (const w of pool) {
+      while (w.busy < PER_WORKER && pending.length) {
+        const e = pending.shift();
+        if (e.dead) continue;
+        let mask = null;
+        try { mask = landMask ? landMask(e.z, e.x, e.y) : null; } catch (err) { mask = null; }
+        const id = ++jobId;
+        jobs.set(id, e);
+        w.busy++;
+        w.postMessage({ id, z: e.z, x: e.x, y: e.y, dem: e.demB, img: e.imgB, mask }, mask ? [mask.buffer] : []);
+        e.demB = e.imgB = null;
+      }
+    }
+    return;
+  }
   const t0 = performance.now();
   pending.sort((a, b) => b.seen - a.seen); // 畫面上最近需要的先處理
   let did = false;
@@ -210,7 +318,8 @@ function render(e) {
   const gradX = (i, c) => (c === 0 ? Hh[i + 1] - Hh[i] : c === TS - 1 ? Hh[i] - Hh[i - 1] : (Hh[i + 1] - Hh[i - 1]) / 2);
   const gradY = (i, r) => (r === 0 ? Hh[i + TS] - Hh[i] : r === TS - 1 ? Hh[i] - Hh[i - TS] : (Hh[i + TS] - Hh[i - TS]) / 2);
 
-  const M = landMask ? landMask(z, x, y) : null;
+  // Worker 模式的遮罩由主執行緒先算好傳進來
+  const M = e.mask !== undefined ? e.mask : landMask ? landMask(z, x, y) : null;
 
   // 光影誇張倍率（低縮放時誇張更多，否則看不出起伏）
   const ex = clamp(1.3 * Math.pow(2, (12 - z) * 0.38), 1.3, 18);
@@ -347,8 +456,7 @@ function render(e) {
       o[i * 4] = cr; o[i * 4 + 1] = cg; o[i * 4 + 2] = cb; o[i * 4 + 3] = 255;
     }
   }
-  const base = document.createElement('canvas');
-  base.width = base.height = TS;
+  const base = newCanvas(TS, TS);
   base.getContext('2d').putImageData(out, 0, 0);
   e.base = base;
 
@@ -385,8 +493,7 @@ function render(e) {
     }
   }
   list.sort((a, b) => a[1] - b[1]); // 由上往下畫，下方的精靈蓋住上方
-  const sp = document.createElement('canvas');
-  sp.width = sp.height = TS + PAD * 2;
+  const sp = newCanvas(TS + PAD * 2, TS + PAD * 2);
   const g = sp.getContext('2d');
   for (const [u, v, type, size] of list) {
     const [img, anchor] = SPR[type];
@@ -397,20 +504,21 @@ function render(e) {
 }
 
 /* ================= 對外介面 ================= */
-function init(o) {
-  opt = o;
-  const wc = document.createElement('canvas');
-  wc.width = wc.height = TS;
-  wctx = wc.getContext('2d', { willReadFrequently: true });
+// 繪製用的暫存畫布與精靈（主執行緒、Worker 各自準備一份）
+function setupDrawing() {
+  wctx = newCanvas(TS, TS).getContext('2d', { willReadFrequently: true });
   const small = (n) => {
-    const c = document.createElement('canvas');
-    c.width = c.height = n;
-    const g = c.getContext('2d');
+    const g = newCanvas(n, n).getContext('2d');
     g.imageSmoothingQuality = 'high';
     return g;
   };
   sctx64 = small(64); sctx128 = small(128);
   buildSprites();
+}
+function init(o) {
+  opt = o;
+  pool = makePool();
+  if (!pool) setupDrawing();
   for (let y = 0; y < 4; y++) for (let x = 0; x < 4; x++) get(2, x, y, true);
 }
 
@@ -473,10 +581,38 @@ function setLandMask(fn, box) {
     if (v.z <= 2) continue; // 全球圖磚一像素幾十公里，看不出差別，留著當替身
     const n = 1 << v.z;
     if ((v.x + 1) / n < box[0] || v.x / n > box[2] || (v.y + 1) / n < box[1] || v.y / n > box[3]) continue;
-    v.dead = true; v.base = v.spr = null;
+    drop(v);
     cache.delete(k);
   }
   if (opt) opt.onUpdate();
+}
+
+/* ================= Worker 端 ================= */
+if (IS_WORKER) {
+  let ok = true;
+  try { setupDrawing(); } catch (err) { ok = String(err); }
+  const decode = async (b) => {
+    if (!b) return { bad: true };
+    try { return await createImageBitmap(b); } catch (err) { return { bad: true }; }
+  };
+  self.onmessage = async (ev) => {
+    const d = ev.data;
+    // 這個瀏覽器的 OffscreenCanvas 不能用：請主執行緒改回自己畫
+    if (ok !== true) { self.postMessage({ id: d.id, unsupported: true, err: ok }); return; }
+    const e = { z: d.z, x: d.x, y: d.y, mask: d.mask || null };
+    e.dem = await decode(d.dem);
+    e.img = await decode(d.img);
+    try {
+      render(e);
+      const base = e.base.transferToImageBitmap(), spr = e.spr.transferToImageBitmap();
+      self.postMessage({ id: d.id, base, spr }, [base, spr]);
+    } catch (err) {
+      self.postMessage({ id: d.id, err: String(err) });
+    } finally {
+      for (const b of [e.dem, e.img]) if (b.close) b.close();
+    }
+  };
+  return;
 }
 
 window.Terrain = { init, draw, setLandMask };

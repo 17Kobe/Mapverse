@@ -194,11 +194,37 @@ function borderFor(m) {
   const open = marketStatus(m) === 'open';
   return `hsl(${hue(q.pct)},${open ? 88 : 40}%,${open ? 50 : 62}%)`;
 }
+// 數字格式器先建好重複使用（toLocaleString 每次呼叫都會重建一個，拖曳時每幀都要格式化好幾十個數字）
+const NUM_FMT = [0, 2].map((d) => new Intl.NumberFormat('en-US', { minimumFractionDigits: d, maximumFractionDigits: d }));
 const fmtN = (p, mode) => {
   if (p == null || isNaN(p)) return '--';
   const a = Math.abs(p);
   const d = mode === 'short' ? (a >= 1000 ? 0 : 2) : (a >= 10000 ? 0 : 2);
-  return p.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
+  return NUM_FMT[d ? 1 : 0].format(p);
+};
+// 只在值真的改變時才寫進 DOM。d3 的 attr / style / text 每次都會寫入，值一樣也會讓瀏覽器
+// 重新計算樣式、重新排版 SVG 文字；旗幟在拖曳時每一幀都會重排，內容卻幾乎沒變
+function setQ(el, name, x) {
+  if (x == null) { if (el.hasAttribute(name)) el.removeAttribute(name); return; }
+  const s = String(x);
+  if (el.getAttribute(name) !== s) el.setAttribute(name, s);
+}
+d3.selection.prototype.attrQ = function (name, v) {
+  return this.each(function (d, i, g) { setQ(this, name, typeof v === 'function' ? v.call(this, d, i, g) : v); });
+};
+d3.selection.prototype.styleQ = function (name, v) {
+  return this.each(function (d, i, g) {
+    const x = typeof v === 'function' ? v.call(this, d, i, g) : v, cur = this.style.getPropertyValue(name);
+    if (x == null) { if (cur) this.style.removeProperty(name); return; }
+    const s = String(x);
+    if (cur !== s) this.style.setProperty(name, s);
+  });
+};
+d3.selection.prototype.textQ = function (v) {
+  return this.each(function (d, i, g) {
+    const x = typeof v === 'function' ? v.call(this, d, i, g) : v, s = x == null ? '' : String(x);
+    if (this.textContent !== s) this.textContent = s;
+  });
 };
 const fmtPct = (p, d = 2) => (p >= 0 ? '+' : '') + p.toFixed(d) + '%';
 const arrow = (p) => (p > 0 ? '▲' : p < 0 ? '▼' : '–');
@@ -238,7 +264,7 @@ function makeDemo() {
 }
 
 /* ================= 地圖 ================= */
-let svg, gZoom, gWorlds, gLand, gLine, gEdge, gDecor, gMk, gTw, gPoi, zoomB, projection, path, W = 0, H = 0;
+let svg, gZoom, gWorlds, gLand, gLine, gEdge, gDecor, gMk, gTw, gPoi, zoomB, projection, W = 0, H = 0;
 let S0 = 1, viewBox = [[0, 0], [1, 1]], maxK = 16;
 
 /* ---------- 遊戲風地形（實作在 terrain.js） ---------- */
@@ -611,14 +637,7 @@ function buildSvg() {
       x: 0, y: 0, tx: 0, ty: 0, wait: hash(d.s) % 30 / 10, dir: 1, ph: 0
     });
     // 文明帝國式城市旗幟：深色外框 + 金色細邊 + 內側淡金線，左上角放國旗
-    const b = s.append('g').attr('class', 'bubble');
-    b.append('path').attr('class', 'tail-o');   // 尖角的深色外框（畫在底板下面）
-    b.append('rect').attr('class', 'bg').attr('rx', 7);
-    b.append('rect').attr('class', 'band').attr('rx', 4.5);
-    b.append('line').attr('class', 'sep');
-    b.append('rect').attr('class', 'inner').attr('rx', 5);
-    b.append('rect').attr('class', 'rim').attr('rx', 7);
-    b.append('path').attr('class', 'tail');
+    const b = buildBanner(s);
     const fs = flagSrc(d.flag);
     if (fs) {
       b.append('image').attr('class', 'flag').attr('href', fs).attr('preserveAspectRatio', 'none');
@@ -667,13 +686,15 @@ function layoutGeometry() {
   const yN = unit([0, VIEW_N])[1], yS = unit([0, VIEW_S])[1];
   S0 = Math.max(W, H / (yS - yN)); // 讓可視範圍在最小縮放時也能填滿畫面
   projection = d3.geoMercator().scale(S0 / (2 * Math.PI)).translate([S0 / 2, S0 / 2]);
-  path = d3.geoPath(projection);
   viewBox = [[0, yN * S0], [S0, yS * S0]];
 
-  gLand.selectAll('path').data(state.countries).join('path').attr('d', path);
+  gLand.selectAll('path').data(state.countries).join('path');
   const hot = state.countries.filter((d) => state.byId[pad3(d.id)]);
-  gLine.selectAll('path').data(hot).join('path').attr('d', path);
-  gEdge.selectAll('path').data(hot).join('path').attr('d', path);
+  gLine.selectAll('path').data(hot).join('path');
+  gEdge.selectAll('path').data(hot).join('path');
+  worldLod.reset();
+  worldLod.update(state.t.k);
+  textWCache.clear(); // 換尺寸可能跨過手機 / 桌機的字級設定
   gWorlds.attr('transform', (_, i) => (i ? `translate(${S0},0)` : null)); // 第二份接在世界右邊
   maxK = (Math.pow(2, MAX_TILE_Z + 1) * 256) / (S0 * dpr); // 最高層級再多放大 2 倍
   zoomB.extent([[0, 0], [W, H]]);
@@ -681,6 +702,126 @@ function layoutGeometry() {
   drawTw();
   paintLand();
 }
+/* ---------- 邊界線的細緻度分級（LOD，股市的國界、旅遊的海岸線與縣市界共用） ----------
+ * 邊界線有大量折點，拖曳 / 縮放時瀏覽器每一幀都要重畫全部，是最主要的卡頓來源。
+ * 依縮放倍率（每 2 倍一級）用 Douglas–Peucker 拿掉「螢幕上偏差小於 LOD_TOL 像素」的折點：
+ * 畫出來的形狀肉眼看不出差別，但每幀要畫的頂點少很多。各級的路徑字串算一次就快取起來。 */
+const LOD_TOL = 0.5; // 允許的最大偏差（CSS 像素）
+// Douglas–Peucker：p 是 [x0, y0, x1, y1, ...]，標記 a..b 之間要保留的點
+function dpKeep(p, a, b, e2, keep) {
+  const st = [a, b];
+  while (st.length) {
+    const j = st.pop(), i = st.pop();
+    const ax = p[2 * i], ay = p[2 * i + 1], dx = p[2 * j] - ax, dy = p[2 * j + 1] - ay, L = dx * dx + dy * dy;
+    let md = e2, mi = -1;
+    for (let k = i + 1; k < j; k++) {
+      let px = p[2 * k] - ax, py = p[2 * k + 1] - ay;
+      if (L > 0) {
+        const t = Math.max(0, Math.min(1, (px * dx + py * dy) / L));
+        px -= t * dx; py -= t * dy;
+      }
+      const d = px * px + py * py;
+      if (d > md) { md = d; mi = k; }
+    }
+    if (mi >= 0) { keep[mi] = 1; st.push(i, mi, mi, j); }
+  }
+}
+// 接在投影後面的串流：每條線 / 每個環先收集投影後的點，簡化完再送出
+function simplifier(eps) {
+  const e2 = eps * eps;
+  return (out) => {
+    let pts = null, poly = false;
+    return {
+      point(x, y) { if (pts) pts.push(x, y); else out.point(x, y); },
+      lineStart() { pts = []; out.lineStart(); },
+      lineEnd() {
+        const p = pts, n = p.length / 2;
+        pts = null;
+        if (n <= 3) { for (let i = 0; i < n; i++) out.point(p[2 * i], p[2 * i + 1]); out.lineEnd(); return; }
+        const keep = new Uint8Array(n + 1);
+        keep[0] = 1;
+        if (poly) {
+          // 環：先找離起點最遠的點當第二個錨點，小島縮到一個像素以下也還留得住
+          let f = 1, fd = -1;
+          for (let i = 1; i < n; i++) { const dx = p[2 * i] - p[0], dy = p[2 * i + 1] - p[1], d = dx * dx + dy * dy; if (d > fd) { fd = d; f = i; } }
+          keep[f] = 1;
+          p.push(p[0], p[1]); // 補上閉合點，讓最後一段也一起簡化
+          dpKeep(p, 0, f, e2, keep);
+          dpKeep(p, f, n, e2, keep);
+        } else {
+          keep[n - 1] = 1;
+          dpKeep(p, 0, n - 1, e2, keep);
+        }
+        for (let i = 0; i < n; i++) if (keep[i]) out.point(p[2 * i], p[2 * i + 1]);
+        out.lineEnd();
+      },
+      polygonStart() { poly = true; out.polygonStart(); },
+      polygonEnd() { poly = false; out.polygonEnd(); },
+      sphere() { out.sphere(); }
+    };
+  };
+}
+/* 分級路徑（各地圖共用）：
+ *   items()  目前要畫的 GeoJSON 陣列（資料還沒好就回傳 null）
+ *   maxLv()  最細的一級（再放大就沿用這一級）
+ *   digits   路徑座標的小數位數（放大到街道等級要多留幾位，否則看得出鋸齒）
+ *   apply(a) 把這一級的路徑字串（和 items() 同順序）寫進 SVG
+ * 地圖換尺寸、投影改變時呼叫 reset()；每次縮放呼叫 update(k)，跨級時才會重寫路徑。 */
+const idleCb = window.requestIdleCallback || ((f) => setTimeout(f, 200));
+const idleCancel = window.cancelIdleCallback || clearTimeout;
+function makeLod({ items, maxLv, digits, apply }) {
+  const cache = new Map();
+  let cur = null, idle = 0;
+  const paths = (lv, list) => {
+    let a = cache.get(lv);
+    if (a) return a;
+    // 這一級涵蓋倍率 2^lv ~ 2^(lv+1)，最大倍率時偏差也要小於 LOD_TOL
+    const simp = simplifier(LOD_TOL / Math.pow(2, lv + 1));
+    const p = d3.geoPath({ stream: (s) => projection.stream(simp(s)) });
+    if (digits && p.digits) p.digits(digits);
+    a = list.map((d) => p(d) || '');
+    cache.set(lv, a);
+    return a;
+  };
+  return {
+    reset() { cache.clear(); cur = null; if (idle) { idleCancel(idle); idle = 0; } },
+    update(k) {
+      const list = projection && items();
+      if (!list || !list.length) return;
+      const top = maxLv();
+      const lv = Math.max(0, Math.min(top, Math.floor(Math.log2(k))));
+      if (lv === cur) return;
+      cur = lv;
+      apply(paths(lv, list));
+      // 閒置時先把相鄰兩級算好，縮放跨級時就不用當場計算
+      if (idle) idleCancel(idle);
+      idle = idleCb(() => { idle = 0; for (const l of [lv - 1, lv + 1]) if (l >= 0 && l <= top) paths(l, list); });
+    }
+  };
+}
+// 股市：世界國界（放大到 2^7 倍以上國界已經淡出不畫，不用再分更細）
+const worldLod = makeLod({
+  items: () => (gLand && state.countries.length ? state.countries : null),
+  maxLv: () => 7,
+  apply(a) {
+    const idx = new Map(state.countries.map((d, i) => [d, i]));
+    const set = function (d) { this.setAttribute('d', a[idx.get(d)]); };
+    gLand.selectAll('path').each(set);
+    gLine.selectAll('path').each(set);
+    gEdge.selectAll('path').each(set);
+  }
+});
+// 旅遊：台灣海岸線與縣市界（內政部資料很細，可以一路放大到街道等級）
+const twLod = makeLod({
+  items: () => (gTw && state.travel ? [state.travel.coast, state.travel.county] : null),
+  maxLv: () => Math.max(0, Math.ceil(Math.log2(maxK))),
+  digits: 6,
+  apply([coast, county]) {
+    gTw.selectAll('.tw-glow,.tw-line,.tw-edge').attr('d', coast);
+    gTw.select('.tw-county').attr('d', county);
+  }
+});
+
 // 縮放 / 拖曳範圍：股市是整個世界（東西向無限循環）；旅遊只在台灣附近
 function setZoomLimits() {
   if (state.layer === 'travel' && state.travel) {
@@ -786,10 +927,12 @@ function onTransform() {
     // 旅遊地圖不畫世界國界，改畫台灣自己的海岸線與縣市界（內政部資料，放大到街道也對得齊）
     gZoom.style('display', 'none');
     gTw.attr('transform', state.t.toString());
+    twLod.update(state.t.k);
   } else {
     // 放大到城市 / 街道等級時，國界（50m 精度）會和真實海岸線對不齊，逐漸淡出
     const op = Math.max(0, Math.min(1, 1 - (Math.log2(state.t.k) - 5) / 2));
     gZoom.style('opacity', op).style('display', op > 0 ? null : 'none');
+    if (op > 0) worldLod.update(state.t.k);
   }
   scheduleTerrain();
   scheduleLayout();
@@ -806,6 +949,63 @@ const inter = (a, b) => {
   const h = Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y);
   return w > 0 && h > 0 ? w * h : 0;
 };
+
+/* ---------- 地圖標記的共用元件（股市的城市旗幟、旅遊的地點旗幟都用這一套） ----------
+ * 畫的時候一律用 attrQ / styleQ / textQ：拖曳時每幀都會重排，只有真的改變的值才寫進 DOM。 */
+// 文明帝國式旗幟的外框：深色底板 + 名稱色帶 + 淡金分隔線 + 金色細邊，下方可加指向圖示的尖角
+function buildBanner(parent) {
+  const b = parent.append('g').attr('class', 'bubble');
+  b.append('path').attr('class', 'tail-o');   // 尖角的深色外框（畫在底板下面）
+  b.append('rect').attr('class', 'bg').attr('rx', 7);
+  b.append('rect').attr('class', 'band').attr('rx', 4.5);
+  b.append('line').attr('class', 'sep');
+  b.append('rect').attr('class', 'inner').attr('rx', 5);
+  b.append('rect').attr('class', 'rim').attr('rx', 7);
+  b.append('path').attr('class', 'tail');
+  return b;
+}
+// bg：底板填色；band：色帶顏色（null = 不畫色帶，例如迷你旗幟）；tail：是否畫尖角
+function drawBanner(b, w, h, { bg, band, tail }) {
+  const BAND_H = 18;
+  b.select('.bg').attrQ('x', 0.5).attrQ('y', 0.5).attrQ('width', w - 1).attrQ('height', h - 1).attrQ('fill', bg);
+  b.select('.rim').attrQ('x', 0.5).attrQ('y', 0.5).attrQ('width', w - 1).attrQ('height', h - 1);
+  b.select('.inner').attrQ('x', 3).attrQ('y', 3).attrQ('width', w - 6).attrQ('height', h - 6);
+  b.select('.band').styleQ('display', band ? null : 'none')
+    .attrQ('x', 3).attrQ('y', 3).attrQ('width', w - 6).attrQ('height', BAND_H).attrQ('fill', band || null);
+  b.select('.sep').styleQ('display', band ? null : 'none')
+    .attrQ('x1', 4).attrQ('x2', w - 4).attrQ('y1', 3 + BAND_H + 0.5).attrQ('y2', 3 + BAND_H + 0.5);
+  b.selectAll('.tail,.tail-o').styleQ('display', tail ? null : 'none')
+    .attrQ('d', `M${w / 2 - 6},${h - 1} L${w / 2},${h + 6} L${w / 2 + 6},${h - 1}`);
+}
+// 站在地圖上的圖示（動物 / 地點圖示）：原點是腳下的地面，z 是身高；地上有光圈和柔和的影子
+function sizeFigure(g, img, z) {
+  g.select('.ring').attrQ('rx', z * 0.62).attrQ('ry', z * 0.22);
+  g.select('.shadow').attrQ('rx', z * 0.36).attrQ('ry', z * 0.1).attrQ('cy', -z * 0.02);
+  img.attrQ('x', -z / 2).attrQ('y', -z).attrQ('width', z).attrQ('height', z);
+}
+// 浮動介面在地圖上佔的範圍（四周多留 3px），旗幟不要放進去
+function uiRects(sels) {
+  const sr = $('#stage').getBoundingClientRect(), out = [];
+  for (const sel of sels) {
+    const el = $(sel);
+    if (!el || el.hidden || el.offsetParent === null) continue;
+    const b = el.getBoundingClientRect();
+    out.push({ x: b.left - sr.left - 3, y: b.top - sr.top - 3, w: b.width + 6, h: b.height + 6 });
+  }
+  return out;
+}
+// SVG 文字寬度：同樣的字只量一次（拖曳時每幀量會強迫瀏覽器重新排版）；網頁字型載入後重新量
+const textWCache = new Map();
+if (document.fonts) document.fonts.addEventListener('loadingdone', () => { textWCache.clear(); scheduleLayout(); });
+function textWidth(node) {
+  const key = node.getAttribute('class') + '\n' + node.textContent;
+  let w = textWCache.get(key);
+  if (w === undefined) {
+    w = node.getComputedTextLength();
+    if (w > 0) textWCache.set(key, w); // 隱藏中量到的是 0，不要記下來
+  }
+  return w;
+}
 
 function layoutMarkers() {
   if (!projection || !state.maps.length) return;
@@ -828,13 +1028,7 @@ function layoutMarkers() {
     vis.set(m.s, { m, x, y, a, size, b: null });
   }
   // 浮動介面（篩選列、概況卡、其它指數面板）蓋住的地方，氣泡不要放進去
-  const sr = $('#stage').getBoundingClientRect();
-  for (const sel of ['#chips', '#hud', '#panel']) {
-    const el = $(sel);
-    if (!el || el.hidden || el.offsetParent === null) continue;
-    const b = el.getBoundingClientRect();
-    rects.push({ x: b.left - sr.left - 3, y: b.top - sr.top - 3, w: b.width + 6, h: b.height + 6 });
-  }
+  rects.push(...uiRects(['#chips', '#hud', '#panel']));
   // 第二輪：放氣泡，先試完整版，再試迷你版
   const baseRects = rects.slice();
   // 旗幟整體放大倍率：手機螢幕小，指數數字要放大才看得清楚（旗幟內部仍用原本的座標畫，最後再整個 scale）
@@ -1043,22 +1237,20 @@ function layoutMarkers() {
 
   gMk.selectAll('g.mk').each(function (m) {
     const s = d3.select(this), o = vis.get(m.s), wk = walkers.get(m.s);
-    if (!o) { s.style('display', 'none'); if (wk) wk.vis = false; return; }
-    s.style('display', null).attr('transform', `translate(${o.x},${o.y})`);
+    if (!o) { s.styleQ('display', 'none'); if (wk) wk.vis = false; return; }
+    s.styleQ('display', null).attrQ('transform', `translate(${o.x},${o.y})`);
     const st = marketStatus(m), q = state.quotes[m.s];
     const pct = q ? q.pct : 0;
     if (wk) { wk.vis = true; wk.st = st; wk.size = o.size; }
-    const an = s.select('.an').attr('class', 'an ' + st);
+    const an = s.select('.an').attrQ('class', 'an ' + st);
     const z = o.size;
-    an.select('.ring').attr('rx', z * 0.62).attr('ry', z * 0.22);
-    an.select('.shadow').attr('rx', z * 0.36).attr('ry', z * 0.1).attr('cy', -z * 0.02);
-    an.select('.beast').attr('x', -z / 2).attr('y', -z).attr('width', z).attr('height', z);
-    an.select('.emoji').attr('y', -z * 0.45).attr('font-size', z * 0.9);
-    an.select('.mood').attr('x', z * 0.42).attr('y', -z * 0.95).attr('font-size', Math.max(10, z * 0.42))
-      .text(st === 'closed' ? '💤' : '');
+    sizeFigure(an, an.select('.beast'), z);
+    an.select('.emoji').attrQ('y', -z * 0.45).attrQ('font-size', z * 0.9);
+    an.select('.mood').attrQ('x', z * 0.42).attrQ('y', -z * 0.95).attrQ('font-size', Math.max(10, z * 0.42))
+      .textQ(st === 'closed' ? '💤' : '');
 
     const b = s.select('.bubble');
-    if (!o.b || !q) { b.style('display', 'none'); return; }
+    if (!o.b || !q) { b.styleQ('display', 'none'); return; }
     // 旗幟內部用「未放大」的座標畫，所以寬高要除回倍率，最後在 transform 再 scale(U)
     const w = o.b.r.w / U, h = o.b.r.h / U, mode = o.b.mode, mini = mode === 'mini', multi = mode === 'multi';
     const n = m.group.length;
@@ -1068,55 +1260,49 @@ function layoutMarkers() {
     const col = pctColor(pct);
     // 對齊整數像素，細線才會銳利
     const bx = Math.round(o.b.r.x), by = Math.round(o.b.r.y);
-    b.style('display', null).attr('transform', `translate(${bx - o.x},${by - o.y}) scale(${U})`);
-    b.select('.bg').attr('x', 0.5).attr('y', 0.5).attr('width', w - 1).attr('height', h - 1)
-      .attr('fill', st === 'closed' ? 'url(#bannerOff)' : 'url(#bannerBg)');
-    b.select('.rim').attr('x', 0.5).attr('y', 0.5).attr('width', w - 1).attr('height', h - 1);
-    b.select('.inner').attr('x', 3).attr('y', 3).attr('width', w - 6).attr('height', h - 6);
-    // 旗幟上半部的名稱色帶（漲跌色；休市時變灰），底下一條淡金分隔線
-    const bandH = 18;
-    b.select('.band').style('display', mini ? 'none' : null).attr('x', 3).attr('y', 3).attr('width', w - 6).attr('height', bandH)
-      .attr('fill', st === 'closed' ? '#4a5466' : bandColor(pct));
-    b.select('.sep').style('display', mini ? 'none' : null)
-      .attr('x1', 4).attr('x2', w - 4).attr('y1', 3 + bandH + 0.5).attr('y2', 3 + bandH + 0.5);
-    const tail = `M${w / 2 - 6},${h - 1} L${w / 2},${h + 6} L${w / 2 + 6},${h - 1}`;
-    b.selectAll('.tail,.tail-o').style('display', o.b.pos === 'up' ? null : 'none').attr('d', tail);
+    b.styleQ('display', null).attrQ('transform', `translate(${bx - o.x},${by - o.y}) scale(${U})`);
+    // 旗幟上半部的名稱色帶（漲跌色；休市時變灰），迷你版不畫色帶
+    drawBanner(b, w, h, {
+      bg: st === 'closed' ? 'url(#bannerOff)' : 'url(#bannerBg)',
+      band: mini ? null : st === 'closed' ? '#4a5466' : bandColor(pct),
+      tail: o.b.pos === 'up'
+    });
     // 國旗：完整版放在名稱色帶左側，迷你版放在漲跌幅左邊
     const hasFlag = !b.select('.flag').empty();
     const fw = mini ? 18 : 24, fh = mini ? 12 : 16, fx = mini ? 5 : 6, fy = mini ? 5 : 4;
-    b.select('.flag').attr('x', fx).attr('y', fy).attr('width', fw).attr('height', fh)
-      .style('opacity', st === 'closed' ? 0.75 : 1);
-    b.select('.flag-b').attr('x', fx - 0.5).attr('y', fy - 0.5).attr('width', fw + 1).attr('height', fh + 1);
+    b.select('.flag').attrQ('x', fx).attrQ('y', fy).attrQ('width', fw).attrQ('height', fh)
+      .styleQ('opacity', st === 'closed' ? 0.75 : 1);
+    b.select('.flag-b').attrQ('x', fx - 0.5).attrQ('y', fy - 0.5).attrQ('width', fw + 1).attrQ('height', fh + 1);
     // 輪播頁碼小圓點（色帶右側）
     const dotW = mode === 'full' && n > 1 ? n * 6 + 4 : 0;
-    b.select('.dots').style('display', dotW ? null : 'none').selectAll('circle')
-      .attr('cx', (_, i) => w - 9 - (n - 1 - i) * 6).attr('cy', 12)
-      .attr('class', (_, i) => (i === state.rot % n ? 'on' : null));
+    b.select('.dots').styleQ('display', dotW ? null : 'none').selectAll('circle')
+      .attrQ('cx', (_, i) => w - 9 - (n - 1 - i) * 6).attrQ('cy', 12)
+      .attrQ('class', (_, i) => (i === state.rot % n ? 'on' : null));
     const tx0 = hasFlag ? fx + fw + 2 : 0, tx1 = w - dotW; // 文字置中在國旗和圓點之間
-    const t1 = b.select('.t1').attr('x', (tx0 + tx1) / 2).attr('y', mini ? h / 2 + 0.5 : 12.5);
-    const t2 = b.select('.t2').attr('x', w / 2).attr('y', 30).style('display', mode === 'full' ? null : 'none');
-    b.select('.rows').style('display', multi ? null : 'none');
+    const t1 = b.select('.t1').attrQ('x', (tx0 + tx1) / 2).attrQ('y', mini ? h / 2 + 0.5 : 12.5);
+    const t2 = b.select('.t2').attrQ('x', w / 2).attrQ('y', 30).styleQ('display', mode === 'full' ? null : 'none');
+    b.select('.rows').styleQ('display', multi ? null : 'none');
     if (!mini) {
-      t1.select('.a').text(hasFlag ? m.short : `${m.flag} ${m.short}`);
-      t1.select('.m').text('');
+      t1.select('.a').textQ(hasFlag ? m.short : `${m.flag} ${m.short}`);
+      t1.select('.m').textQ('');
     }
     if (mode === 'full') {
-      t2.select('.lb').text(n > 1 ? (cur.abbr || cur.zh) + ' ' : '');
-      t2.select('.va').text(cq ? fmtN(cq.p, 'short') : '--');
-      t2.select('.pc').attr('fill', pctColor(cp)).text(cq ? `${arrow(cp)}${Math.abs(cp).toFixed(2)}%` : '');
+      t2.select('.lb').textQ(n > 1 ? (cur.abbr || cur.zh) + ' ' : '');
+      t2.select('.va').textQ(cq ? fmtN(cq.p, 'short') : '--');
+      t2.select('.pc').attrQ('fill', pctColor(cp)).textQ(cq ? `${arrow(cp)}${Math.abs(cp).toFixed(2)}%` : '');
     } else if (multi) {
       b.selectAll('.row').each(function (_, i) {
         // 注意：d3 append 的子元素會繼承父層資料，所以要用序號去 group 裡拿對應的指數
         const x = m.group[i], r = d3.select(this), rq = state.quotes[x.s], y = 24 + i * 16;
-        r.select('.rbg').attr('x', 4).attr('y', y).attr('width', w - 8).attr('height', 16).classed('odd', i % 2 === 1);
-        r.select('.rn').attr('x', 9).attr('y', y + 8.5);
-        r.select('.rv').attr('x', w - (w >= 155 ? 56 : 50)).attr('y', y + 8.5).text(rq ? fmtN(rq.p, 'short') : '--');
-        r.select('.rp').attr('x', w - 8).attr('y', y + 8.5)
-          .attr('fill', rq ? pctColor(rq.pct) : null).text(rq ? `${arrow(rq.pct)}${Math.abs(rq.pct).toFixed(2)}%` : '');
+        r.select('.rbg').attrQ('x', 4).attrQ('y', y).attrQ('width', w - 8).attrQ('height', 16).classed('odd', i % 2 === 1);
+        r.select('.rn').attrQ('x', 9).attrQ('y', y + 8.5);
+        r.select('.rv').attrQ('x', w - (w >= 155 ? 56 : 50)).attrQ('y', y + 8.5).textQ(rq ? fmtN(rq.p, 'short') : '--');
+        r.select('.rp').attrQ('x', w - 8).attrQ('y', y + 8.5)
+          .attrQ('fill', rq ? pctColor(rq.pct) : null).textQ(rq ? `${arrow(rq.pct)}${Math.abs(rq.pct).toFixed(2)}%` : '');
       });
     } else {
-      t1.select('.a').text(hasFlag ? '' : m.flag);
-      t1.select('.m').attr('fill', col).attr('dx', hasFlag ? 0 : 3).text(fmtPct(pct, 1));
+      t1.select('.a').textQ(hasFlag ? '' : m.flag);
+      t1.select('.m').attrQ('fill', col).attrQ('dx', hasFlag ? 0 : 3).textQ(fmtPct(pct, 1));
     }
   });
   // 疊放順序：旗幟要蓋在別人的動物上面（SVG 後畫的在上層）。
@@ -1148,13 +1334,14 @@ function layoutMarkers() {
     c.vis = !hide; c.size = z; c.base = size;
     // 每度經度在螢幕上有幾 px：追逐的繞圈範圍要用「地理距離」限制，才不會縮小地圖時跑出海岸線
     if (c.d.mode === 'chase') c.ppd = Math.max(0.5, screenXY(c.d.lon + 1, c.d.lat)[0] - x);
-    c.g.style.display = hide ? 'none' : null;
+    const disp = hide ? 'none' : '';
+    if (c.g.style.display !== disp) c.g.style.display = disp;
     if (hide) continue;
-    c.g.setAttribute('transform', `translate(${x.toFixed(1)},${y.toFixed(1)})`);
-    c.img.setAttribute('x', -z / 2); c.img.setAttribute('y', -z);
-    c.img.setAttribute('width', z); c.img.setAttribute('height', z);
-    c.shadow.setAttribute('rx', z * (c.d.sea ? 0.46 : 0.36)); c.shadow.setAttribute('ry', z * (c.d.sea ? 0.12 : 0.1));
-    c.shadow.setAttribute('cy', -z * 0.03);
+    setQ(c.g, 'transform', `translate(${x.toFixed(1)},${y.toFixed(1)})`);
+    setQ(c.img, 'x', -z / 2); setQ(c.img, 'y', -z);
+    setQ(c.img, 'width', z); setQ(c.img, 'height', z);
+    setQ(c.shadow, 'rx', z * (c.d.sea ? 0.46 : 0.36)); setQ(c.shadow, 'ry', z * (c.d.sea ? 0.12 : 0.1));
+    setQ(c.shadow, 'cy', -z * 0.03);
   }
 }
 
@@ -1228,15 +1415,9 @@ function landMaskFor(z, x, y) {
 }
 // 台灣海岸線與縣市界（投影座標，跟著 gTw 的 transform 縮放）
 function drawTw() {
-  const tv = state.travel;
-  if (!tv || !projection || !gTw) return;
-  const p = d3.geoPath(projection);
-  if (p.digits) p.digits(6); // d3 預設只留 3 位小數，放大到街道等級會看得出鋸齒
-  const coast = p(tv.coast), county = p(tv.county);
-  gTw.select('.tw-glow').attr('d', coast);
-  gTw.select('.tw-line').attr('d', coast);
-  gTw.select('.tw-edge').attr('d', coast);
-  gTw.select('.tw-county').attr('d', county);
+  // 和股市的國界共用分級簡化：依縮放倍率挑一級，螢幕上看不出差別的折點不畫
+  twLod.reset();
+  twLod.update(state.t.k);
 }
 
 // 戰爭迷霧：台灣以外的陸地（大陸沿海、琉球、菲律賓）褪色並蓋上一層霧，地圖只突顯台灣
@@ -1346,14 +1527,7 @@ function buildPoi(g) {
   pin.append('g').attr('class', 'ico').append('image').attr('filter', 'url(#cast)').attr('preserveAspectRatio', 'xMidYMax meet');
   const cnt = pin.append('g').attr('class', 'cnt');
   cnt.append('circle'); cnt.append('text');
-  const b = g.append('g').attr('class', 'bubble');
-  b.append('path').attr('class', 'tail-o');
-  b.append('rect').attr('class', 'bg').attr('rx', 7);
-  b.append('rect').attr('class', 'band').attr('rx', 4.5);
-  b.append('line').attr('class', 'sep');
-  b.append('rect').attr('class', 'inner').attr('rx', 5);
-  b.append('rect').attr('class', 'rim').attr('rx', 7);
-  b.append('path').attr('class', 'tail');
+  const b = buildBanner(g);
   b.append('text').attr('class', 't1');
   b.append('text').attr('class', 't2 cat');
 }
@@ -1362,13 +1536,7 @@ function layoutTravel() {
   if (!tv) return;
   const z = Math.max(28, Math.min(42, 14 + Math.log2(state.t.k) * 2.4)); // 圖示大小，放大時略大
   // 介面蓋住的地方不放旗幟
-  const sr = $('#stage').getBoundingClientRect(), rs = [];
-  for (const sel of ['#chips', '#hud']) {
-    const el = $(sel);
-    if (!el || el.hidden || el.offsetParent === null) continue;
-    const b = el.getBoundingClientRect();
-    rs.push({ x: b.left - sr.left - 3, y: b.top - sr.top - 3, w: b.width + 6, h: b.height + 6 });
-  }
+  const rs = uiRects(['#chips', '#hud']);
   // 太近的地點合成一個群組（顯示數量，點一下放大），像 Google 地圖縮小時那樣
   const groups = [];
   for (const s of tv.spots) {
@@ -1390,18 +1558,16 @@ function layoutTravel() {
     const s = d3.select(this), n = d.m.length, sp = d.m[0], cat = TRAVEL_CATS[sp.cat] || TRAVEL_CATS.sight;
     const name = n > 1 ? `${sp.county} ${n} 個地點` : sp.name;
     const sub = n > 1 ? '點一下放大' : `${cat.label} · ${sp.county.replace(/[縣市]$/, '')}${sp.town || ''}`;
-    s.attr('transform', `translate(${d.x.toFixed(1)},${d.y.toFixed(1)})`).attr('aria-label', `${name}（${sub}）`);
-    s.select('.ring').attr('rx', z * 0.62).attr('ry', z * 0.22);
-    s.select('.shadow').attr('rx', z * 0.36).attr('ry', z * 0.1).attr('cy', -z * 0.02);
-    s.select('.ico image').attr('href', `assets/travel/${sp.icon}.png`).attr('x', -z / 2).attr('y', -z).attr('width', z).attr('height', z);
-    s.select('.cnt').style('display', n > 1 ? null : 'none');
-    s.select('.cnt circle').attr('cx', z * 0.4).attr('cy', -z * 0.9).attr('r', 8.5);
-    s.select('.cnt text').attr('x', z * 0.4).attr('y', -z * 0.9).text(n);
+    s.attrQ('transform', `translate(${d.x.toFixed(1)},${d.y.toFixed(1)})`).attrQ('aria-label', `${name}（${sub}）`);
+    sizeFigure(s, s.select('.ico image').attrQ('href', `assets/travel/${sp.icon}.png`), z);
+    s.select('.cnt').styleQ('display', n > 1 ? null : 'none');
+    s.select('.cnt circle').attrQ('cx', z * 0.4).attrQ('cy', -z * 0.9).attrQ('r', 8.5);
+    s.select('.cnt text').attrQ('x', z * 0.4).attrQ('y', -z * 0.9).textQ(n);
 
     // 旗幟大小依文字長度
     const b = s.select('.bubble');
-    const t1 = b.select('.t1').text(name), t2 = b.select('.t2').text(sub);
-    const w = Math.ceil(Math.max(84, t1.node().getComputedTextLength() + 24, t2.node().getComputedTextLength() + 18)), h = 40;
+    const t1 = b.select('.t1').textQ(name), t2 = b.select('.t2').textQ(sub);
+    const w = Math.ceil(Math.max(84, textWidth(t1.node()) + 24, textWidth(t2.node()) + 18)), h = 40;
     const cands = [
       { x: d.x - w / 2, y: d.y - z * 1.05 - h - 6, pos: 'up' },
       { x: d.x + z * 0.6 + 4, y: d.y - z * 0.5 - h / 2, pos: 'right' },
@@ -1412,19 +1578,13 @@ function layoutTravel() {
       const r = { x: c.x, y: c.y, w, h };
       return r.x >= 2 && r.y >= 2 && r.x + w <= W - 2 && r.y + h <= H - 2 && !rs.some((q) => inter(r, q) > 0);
     });
-    if (!c) { b.style('display', 'none'); return; }
+    if (!c) { b.styleQ('display', 'none'); return; }
     rs.push({ x: c.x, y: c.y, w, h });
     const bx = Math.round(c.x), by = Math.round(c.y);
-    b.style('display', null).attr('transform', `translate(${bx - d.x},${by - d.y})`);
-    b.select('.bg').attr('x', 0.5).attr('y', 0.5).attr('width', w - 1).attr('height', h - 1).attr('fill', 'url(#bannerBg)');
-    b.select('.rim').attr('x', 0.5).attr('y', 0.5).attr('width', w - 1).attr('height', h - 1);
-    b.select('.inner').attr('x', 3).attr('y', 3).attr('width', w - 6).attr('height', h - 6);
-    b.select('.band').attr('x', 3).attr('y', 3).attr('width', w - 6).attr('height', 18).attr('fill', n > 1 ? 'hsl(40,55%,30%)' : cat.band);
-    b.select('.sep').attr('x1', 4).attr('x2', w - 4).attr('y1', 21.5).attr('y2', 21.5);
-    b.selectAll('.tail,.tail-o').style('display', c.pos === 'up' ? null : 'none')
-      .attr('d', `M${w / 2 - 6},${h - 1} L${w / 2},${h + 6} L${w / 2 + 6},${h - 1}`);
-    t1.attr('x', w / 2).attr('y', 12.5);
-    t2.attr('x', w / 2).attr('y', 30);
+    b.styleQ('display', null).attrQ('transform', `translate(${bx - d.x},${by - d.y})`);
+    drawBanner(b, w, h, { bg: 'url(#bannerBg)', band: n > 1 ? 'hsl(40,55%,30%)' : cat.band, tail: c.pos === 'up' });
+    t1.attrQ('x', w / 2).attrQ('y', 12.5);
+    t2.attrQ('x', w / 2).attrQ('y', 30);
   });
 }
 
