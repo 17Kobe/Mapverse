@@ -647,6 +647,804 @@
       "icon": "fish", "county": "桃園市", "town": "楊梅區",
       "addr": "桃園市楊梅區中山南路 302 號", "lon": 121.1345, "lat": 24.9069,
       "desc": "楊梅的創意料理餐廳，以魚料理和合菜為主。"
+    },
+    {
+      "id": "qingtiangang", "tier": 1, "cat": "sight", "name": "擎天崗", "full": "擎天崗",
+      "icon": "national-park", "county": "台北市", "town": "士林區",
+      "addr": "台北市士林區擎天崗", "lon": 121.57154, "lat": 25.16783,
+      "desc": "陽明山上的大草原，牛群在草坡上悠閒吃草，視野開闊、霧來時像仙境。"
+    },
+    {
+      "id": "linshanbi", "tier": 3, "cat": "sight", "name": "麟山鼻木棧道", "full": "麟山鼻木棧道",
+      "icon": "water-wave", "county": "新北市", "town": "石門區",
+      "addr": "新北市石門區", "lon": 121.51088, "lat": 25.28997,
+      "desc": "北海岸最北端的海岬，木棧道沿著礁岩延伸，走到盡頭能看遼闊的海景。"
+    },
+    {
+      "id": "shimen-cave", "tier": 2, "cat": "sight", "name": "石門洞", "full": "石門洞",
+      "icon": "window", "county": "新北市", "town": "石門區",
+      "addr": "新北市石門區中央路37-5號", "lon": 121.5684, "lat": 25.29581,
+      "desc": "海蝕形成的天然拱門，海浪穿過洞口，日落時特別好拍。"
+    },
+    {
+      "id": "liujia-zongzi", "tier": 3, "cat": "food", "name": "劉家肉粽富基店", "full": "劉家肉粽富基店",
+      "icon": "rice-cracker", "county": "新北市", "town": "石門區",
+      "addr": "新北市石門區中央路30號", "lon": 121.56519, "lat": 25.29109,
+      "desc": "石門富基漁港旁的老字號肉粽，北海岸出名的點心。"
+    },
+    {
+      "id": "jinshan-sweet-potato", "tier": 3, "cat": "food", "name": "金山番薯囝仔", "full": "金山番薯囝仔(炭烤地瓜)",
+      "icon": "roasted-sweet-potato", "county": "新北市", "town": "金山區",
+      "addr": "新北市金山區（位置待確認）", "lon": 121.6395, "lat": 25.2225,
+      "desc": "金山老街一帶的炭烤地瓜，金山盛產的栗子地瓜香甜綿密。"
+    },
+    {
+      "id": "jinshan-crab", "tier": 3, "cat": "food", "name": "金山大碗螃蟹", "full": "金山大碗螃蟹",
+      "icon": "crab", "county": "新北市", "town": "金山區",
+      "addr": "新北市金山區金山老街18巷5弄", "lon": 121.6396, "lat": 25.2211,
+      "desc": "金山老街上的螃蟹小吃，一大碗螃蟹湯底鮮甜。"
+    },
+    {
+      "id": "white-palace-hotel", "tier": 3, "cat": "hotel", "name": "白宮行館", "full": "白宮行館沙灘溫泉度假村",
+      "icon": "hotel", "county": "新北市", "town": "萬里區",
+      "addr": "新北市萬里區（位置待確認）", "lon": 121.685, "lat": 25.195,
+      "desc": "北海岸的沙灘溫泉度假村，可以邊泡海底溫泉邊看海。"
+    },
+    {
+      "id": "chaojing-ocean", "tier": 2, "cat": "sight", "name": "潮境智能海洋館", "full": "潮境智能海洋館",
+      "icon": "spouting-whale", "county": "基隆市", "town": "中正區",
+      "addr": "基隆市中正區北寧路 369 巷", "lon": 121.80385, "lat": 25.14488,
+      "desc": "八斗子潮境公園的海洋館，用互動裝置認識基隆的海洋生態。"
+    },
+    {
+      "id": "eco-restoration-park", "tier": 3, "cat": "sight", "name": "環保復育公園", "full": "環保復育公園",
+      "icon": "deciduous-tree", "county": "基隆市", "town": "中正區",
+      "addr": "基隆市中正區（八斗子）", "lon": 121.80533, "lat": 25.14655,
+      "desc": "八斗子由舊垃圾場復育而成的公園，海岸步道和草坡風景很好。"
+    },
+    {
+      "id": "zhujian-hotpot-chaojing", "tier": 3, "cat": "food", "name": "築間幸福鍋物", "full": "築間幸福鍋物 基隆潮境公園店",
+      "icon": "pot-of-food", "county": "基隆市", "town": "中正區",
+      "addr": "基隆市中正區北寧路 369 巷 369 號", "lon": 121.80389, "lat": 25.14486,
+      "desc": "潮境公園旁的火鍋店，吃完可以順便逛海洋館。"
+    },
+    {
+      "id": "wangyou-valley", "tier": 3, "cat": "sight", "name": "望幽谷", "full": "望幽谷",
+      "icon": "water-wave", "county": "基隆市", "town": "中正區",
+      "addr": "基隆市中正區望海巷", "lon": 121.79832, "lat": 25.14568,
+      "desc": "八斗子的海蝕地形步道，依著海崖走到谷底，能看見浪花拍岸。"
+    },
+    {
+      "id": "badouzi-secret-coast", "tier": 3, "cat": "sight", "name": "八斗子海岸", "full": "八斗子海岸祕境",
+      "icon": "water-wave", "county": "基隆市", "town": "中正區",
+      "addr": "基隆市中正區漁港二街（大坪海岸）", "lon": 121.79497, "lat": 25.14728,
+      "desc": "八斗子漁港旁的礁岩海岸，退潮時大坪海岸可以走到潮間帶。"
+    },
+    {
+      "id": "heping-island-pool", "tier": 2, "cat": "sight", "name": "和平島公園", "full": "和平島公園海水泳池",
+      "icon": "beach-with-umbrella", "county": "基隆市", "town": "中正區",
+      "addr": "基隆市中正區平一路460號", "lon": 121.76403, "lat": 25.16053,
+      "desc": "奇特的海蝕地形和海水游泳池，夏天可以在岩岸邊戲水。"
+    },
+    {
+      "id": "waimushan-pool", "tier": 3, "cat": "sight", "name": "外木山海水游泳池", "full": "外木山海水游泳池",
+      "icon": "beach-with-umbrella", "county": "基隆市", "town": "安樂區",
+      "addr": "基隆市安樂區湖海路（位置待確認）", "lon": 121.7271, "lat": 25.1633,
+      "desc": "外木山海岸的天然海水泳池，夏天很多人來泡海水消暑。"
+    },
+    {
+      "id": "jinshawan-park", "tier": 3, "cat": "sight", "name": "金沙灣海濱公園", "full": "金沙灣海濱公園",
+      "icon": "beach-with-umbrella", "county": "新北市", "town": "貢寮區",
+      "addr": "新北市貢寮區和美街 72 號", "lon": 121.91512, "lat": 25.07386,
+      "desc": "東北角的海濱公園，金黃色的沙灘適合戲水和玩沙。"
+    },
+    {
+      "id": "longdong-bay", "tier": 2, "cat": "sight", "name": "龍洞灣海洋公園", "full": "龍洞灣海洋公園",
+      "icon": "water-wave", "county": "新北市", "town": "貢寮區",
+      "addr": "新北市貢寮區和美街48號", "lon": 121.91649, "lat": 25.09736,
+      "desc": "東北角的海灣，可以浮潛、攀岩和看海岸風景。"
+    },
+    {
+      "id": "fulong-beach", "tier": 2, "cat": "sight", "name": "福隆海水浴場", "full": "福隆海水浴場",
+      "icon": "beach-with-umbrella", "county": "新北市", "town": "貢寮區",
+      "addr": "新北市貢寮區福隆街40號", "lon": 121.94338, "lat": 25.02193,
+      "desc": "東北角最有名的沙灘，每年夏天有國際沙雕季和音樂活動。"
+    },
+    {
+      "id": "taoyuan-valley", "tier": 2, "cat": "sight", "name": "桃源谷", "full": "桃源谷",
+      "icon": "mountain", "county": "新北市", "town": "貢寮區",
+      "addr": "新北市貢寮區吉林里（桃源谷步道）", "lon": 121.89348, "lat": 24.9703,
+      "desc": "東北角的草嶺古道岔路步道，登上稜線能俯瞰龜山島和太平洋。"
+    },
+    {
+      "id": "childrens-amusement-park", "tier": 2, "cat": "sight", "name": "兒童新樂園", "full": "兒童新樂園",
+      "icon": "ferris-wheel", "county": "台北市", "town": "士林區",
+      "addr": "台北市士林區承德路五段 55 號", "lon": 121.51469, "lat": 25.09634,
+      "desc": "台北的兒童樂園，有摩天輪和遊樂設施，適合帶小孩玩。"
+    },
+    {
+      "id": "lengqing-trail", "tier": 3, "cat": "sight", "name": "冷擎步道", "full": "冷擎步道",
+      "icon": "evergreen-tree", "county": "台北市", "town": "士林區",
+      "addr": "台北市士林區", "lon": 121.5668, "lat": 25.1659,
+      "desc": "陽明山上連接冷水坑和擎天崗的步道，沿途是芒草與草原。"
+    },
+    {
+      "id": "guanyin-beach", "tier": 3, "cat": "sight", "name": "觀音海水浴場", "full": "觀音海水浴場",
+      "icon": "beach-with-umbrella", "county": "桃園市", "town": "觀音區",
+      "addr": "桃園市觀音區", "lon": 121.07486, "lat": 25.04703,
+      "desc": "桃園觀音的海岸，風大浪也大，近年也有風箏和夕陽景色。"
+    },
+    {
+      "id": "xiangtian-lake-tunnel", "tier": 3, "cat": "sight", "name": "向天湖綠色隧道", "full": "向天湖綠色隧道",
+      "icon": "deciduous-tree", "county": "苗栗縣", "town": "南庄鄉",
+      "addr": "苗栗縣南庄鄉向天湖", "lon": 121.03097, "lat": 24.58349,
+      "desc": "南庄向天湖旁的樹林小路，賽夏族祭典「矮靈祭」的舉辦地。"
+    },
+    {
+      "id": "jiang-osmanthus-tangyuan", "tier": 3, "cat": "food", "name": "江記桂花巷湯圓", "full": "江記花蜜桂花巷花茶湯圓",
+      "icon": "bowl-with-spoon", "county": "苗栗縣", "town": "南庄鄉",
+      "addr": "苗栗縣南庄鄉文化路 15 號（桂花巷）", "lon": 120.999, "lat": 24.5975,
+      "desc": "南庄老街桂花巷的花茶湯圓，桂花香氣濃，涼涼甜甜。"
+    },
+    {
+      "id": "pork-blood-soup-nanzhuang", "tier": 3, "cat": "food", "name": "珈味鮮豬血湯", "full": "珈味鮮中藥提煉豬血湯專賣店（南庄店）",
+      "icon": "bowl-with-spoon", "county": "苗栗縣", "town": "南庄鄉",
+      "addr": "苗栗縣南庄鄉中山路 57 號", "lon": 120.99834, "lat": 24.59796,
+      "desc": "南庄老街的豬血湯專賣店，加了中藥燉煮，湯頭暖胃。"
+    },
+    {
+      "id": "atsai-rice", "tier": 3, "cat": "food", "name": "阿財米食", "full": "阿財米食",
+      "icon": "bowl-with-spoon", "county": "苗栗縣", "town": "銅鑼鄉",
+      "addr": "苗栗縣銅鑼鄉銅鑼外環道4-37號", "lon": 120.7812, "lat": 24.4735,
+      "desc": "銅鑼的米食小吃，逛杭菊和客家小鎮時可以順路吃。"
+    },
+    {
+      "id": "tongluo-chrysanthemum", "tier": 2, "cat": "sight", "name": "銅鑼杭菊花季", "full": "苗栗銅鑼 杭菊花季會場",
+      "icon": "sunflower", "county": "苗栗縣", "town": "銅鑼鄉",
+      "addr": "苗栗縣銅鑼鄉九湖村（杭菊花季會場）", "lon": 120.77651, "lat": 24.47172,
+      "desc": "每年秋冬銅鑼的杭菊花田盛開，漫山遍野的白菊很壯觀。"
+    },
+    {
+      "id": "flying-cow-ranch", "tier": 1, "cat": "sight", "name": "飛牛牧場", "full": "飛牛牧場",
+      "icon": "cow-face", "county": "苗栗縣", "town": "通霄鎮",
+      "addr": "苗栗縣通霄鎮", "lon": 120.74129, "lat": 24.44312,
+      "desc": "通霄山丘上的牧場，有草原、乳牛和乳製品，可以餵牛、騎馬。"
+    },
+    {
+      "id": "houli-mengfang", "tier": 3, "cat": "sight", "name": "萌芳花卉農場", "full": "后里萌芳花卉農場",
+      "icon": "bouquet", "county": "台中市", "town": "后里區",
+      "addr": "台中市后里區三豐路五段 562 號", "lon": 120.73146, "lat": 24.338,
+      "desc": "后里的花卉農場，四季都有不同的花海，春天最漂亮。"
+    },
+    {
+      "id": "zhongshe-flower-market", "tier": 2, "cat": "sight", "name": "中社觀光花市", "full": "中社觀光花市",
+      "icon": "bouquet", "county": "台中市", "town": "后里區",
+      "addr": "台中市后里區三豐路五段469號", "lon": 120.72864, "lat": 24.33508,
+      "desc": "后里中社的花市，園藝店和盆栽很多，假日人潮不少。"
+    },
+    {
+      "id": "qingshui-service-area", "tier": 3, "cat": "sight", "name": "清水服務區", "full": "清水服務區",
+      "icon": "bread", "county": "台中市", "town": "清水區",
+      "addr": "台中市清水區吳厝二街81號", "lon": 120.60145, "lat": 24.2818,
+      "desc": "國道 3 號的服務區，有各式小吃和伴手禮，是出名的景觀休息站。"
+    },
+    {
+      "id": "dongshan-service-area", "tier": 3, "cat": "sight", "name": "東山服務區", "full": "東山服務區",
+      "icon": "bread", "county": "台南市", "town": "東山區",
+      "addr": "台南市東山區東山服務區道路 74-6 號（國道 3 號）", "lon": 120.39812, "lat": 23.28635,
+      "desc": "國道 3 號台南東山的服務區，賣在地咖啡和農產。"
+    },
+    {
+      "id": "tunghai-univ", "tier": 2, "cat": "sight", "name": "東海大學", "full": "東海大學",
+      "icon": "school", "county": "台中市", "town": "西屯區",
+      "addr": "台中市西屯區台灣大道四段 1727 號", "lon": 120.601, "lat": 24.1796,
+      "desc": "台中的名校，路思義教堂和校園綠地是熱門景點。"
+    },
+    {
+      "id": "qixing-bonito-museum", "tier": 2, "cat": "sight", "name": "七星柴魚博物館", "full": "七星柴魚博物館",
+      "icon": "fish", "county": "花蓮縣", "town": "新城鄉",
+      "addr": "花蓮縣新城鄉七星街148號", "lon": 121.62923, "lat": 24.02695,
+      "desc": "七星潭旁的柴魚工廠，可以參觀製作過程、試吃柴魚片和體驗 DIY。"
+    },
+    {
+      "id": "steel-pipe-black-tea", "tier": 3, "cat": "food", "name": "鋼管紅茶", "full": "鋼管紅茶",
+      "icon": "bubble-tea", "county": "花蓮縣", "town": "花蓮市",
+      "addr": "花蓮縣花蓮市中山路 201 號", "lon": 121.60902, "lat": 23.97721,
+      "desc": "花蓮的老店，招牌是一杯杯的古早味紅茶，用鋼管狀容器裝的特色飲料。"
+    },
+    {
+      "id": "mataian-wetland", "tier": 2, "cat": "sight", "name": "馬太鞍溼地", "full": "馬太鞍溼地休閒農業區",
+      "icon": "water-wave", "county": "花蓮縣", "town": "光復鄉",
+      "addr": "花蓮縣光復鄉大全村", "lon": 121.40928, "lat": 23.65836,
+      "desc": "阿美族的傳統捕魚「巴拉告」所在地，濕地生態豐富。"
+    },
+    {
+      "id": "dadanong-forest", "tier": 2, "cat": "sight", "name": "大農大富平地森林", "full": "大農大富平地森林園區",
+      "icon": "evergreen-tree", "county": "花蓮縣", "town": "光復鄉",
+      "addr": "花蓮縣光復鄉大農路", "lon": 121.41446, "lat": 23.61529,
+      "desc": "花東縱谷的平地森林，大片樹林和湖泊，可以騎單車散步。"
+    },
+    {
+      "id": "qixingtan", "tier": 1, "cat": "sight", "name": "七星潭", "full": "七星潭",
+      "icon": "water-wave", "county": "花蓮縣", "town": "新城鄉",
+      "addr": "花蓮縣新城鄉七星街", "lon": 121.6272, "lat": 24.0296,
+      "desc": "花蓮的弧形礫石海灘，海水湛藍、海浪聲很大，適合騎單車和看日出。"
+    },
+    {
+      "id": "jingang-avenue", "tier": 2, "cat": "sight", "name": "金剛大道", "full": "金剛大道",
+      "icon": "sheaf-of-rice", "county": "台東縣", "town": "鹿野鄉",
+      "addr": "台東縣鹿野鄉瑞景路一段201號", "lon": 121.15788, "lat": 22.95368,
+      "desc": "花東縱谷的稻田大道，一望無際的稻田，像在日本電影裡。"
+    },
+    {
+      "id": "liushishi-mountain", "tier": 1, "cat": "sight", "name": "六十石山", "full": "六十石山",
+      "icon": "sunflower", "county": "花蓮縣", "town": "富里鄉",
+      "addr": "花蓮縣富里鄉", "lon": 121.3122, "lat": 23.2235,
+      "desc": "花東縱谷的金針花山，夏天整座山都是橘黃色的花海。"
+    },
+    {
+      "id": "sanxiantai", "tier": 1, "cat": "sight", "name": "三仙台", "full": "三仙台",
+      "icon": "water-wave", "county": "台東縣", "town": "成功鎮",
+      "addr": "台東縣成功鎮基翬路79號", "lon": 121.40811, "lat": 23.12294,
+      "desc": "台東海岸的小島，以八拱跨海步橋連接，傳說八仙中的三位曾在此停留。"
+    },
+    {
+      "id": "wang-mahi-mahi", "tier": 3, "cat": "food", "name": "王記鬼頭刀專賣", "full": "王記 鬼頭刀專賣店",
+      "icon": "fish", "county": "台東縣", "town": "成功鎮",
+      "addr": "台東縣成功鎮新生路53號", "lon": 121.37772, "lat": 23.10284,
+      "desc": "成功漁港的鬼頭刀專賣店，台東盛產鬼頭刀，現炸魚排很受歡迎。"
+    },
+    {
+      "id": "duli-visitor-center", "tier": 3, "cat": "sight", "name": "都歷遊客中心", "full": "都歷遊客中心",
+      "icon": "house", "county": "台東縣", "town": "成功鎮",
+      "addr": "台東縣成功鎮新村路", "lon": 121.32461, "lat": 23.01953,
+      "desc": "台東海岸的遊客中心，建築像是從地面長出來的，可以俯瞰海景。"
+    },
+    {
+      "id": "donghe-baozi", "tier": 2, "cat": "food", "name": "東河包子", "full": "東河包子",
+      "icon": "dumpling", "county": "台東縣", "town": "東河鄉",
+      "addr": "台東縣東河鄉花東海岸公路418號", "lon": 121.30437, "lat": 22.96994,
+      "desc": "台東東河的老字號包子，沿著花東海岸公路必停的名店。"
+    },
+    {
+      "id": "dapo-pond", "tier": 2, "cat": "sight", "name": "池上大坡池", "full": "池上大坡池",
+      "icon": "water-wave", "county": "台東縣", "town": "池上鄉",
+      "addr": "台東縣池上鄉", "lon": 121.225, "lat": 23.11861,
+      "desc": "池上的天然湖泊，有環湖步道，早晚有薄霧像仙境。"
+    },
+    {
+      "id": "ruchu-don", "tier": 3, "cat": "food", "name": "如初丼", "full": "如初丼",
+      "icon": "bowl-with-spoon", "county": "台東縣", "town": "池上鄉",
+      "addr": "台東縣池上鄉中華路", "lon": 121.21659, "lat": 23.12561,
+      "desc": "池上米飯做的丼飯，用池上米煮出來的白飯特別香。"
+    },
+    {
+      "id": "taisugar-chishang-resort", "tier": 3, "cat": "hotel", "name": "池上牧野渡假村", "full": "台糖池上牧野渡假村",
+      "icon": "hotel", "county": "台東縣", "town": "池上鄉",
+      "addr": "台東縣池上鄉新興村", "lon": 121.19456, "lat": 23.1126,
+      "desc": "台糖經營的池上渡假村，旁邊有農場和田園風光。"
+    },
+    {
+      "id": "daguan-pavilion", "tier": 3, "cat": "sight", "name": "大觀亭", "full": "大觀亭",
+      "icon": "house", "county": "台東縣", "town": "池上鄉",
+      "addr": "台東縣池上鄉錦園村（浮圳大觀亭）", "lon": 121.21298, "lat": 23.10307,
+      "desc": "池上稻田間的小亭，是拍照和看稻浪的好地方。"
+    },
+    {
+      "id": "brown-boulevard", "tier": 1, "cat": "sight", "name": "伯朗大道", "full": "伯朗大道",
+      "icon": "sheaf-of-rice", "county": "台東縣", "town": "池上鄉",
+      "addr": "台東縣池上鄉新興村", "lon": 121.20596, "lat": 23.09768,
+      "desc": "池上稻田中一條筆直的道路，因為金城武在這裡拍廣告而走紅。"
+    },
+    {
+      "id": "paradise-road", "tier": 2, "cat": "sight", "name": "天堂路", "full": "天堂路",
+      "icon": "sheaf-of-rice", "county": "台東縣", "town": "池上鄉",
+      "addr": "台東縣池上鄉", "lon": 121.21566, "lat": 23.09496,
+      "desc": "池上的田間小路，稻浪搖曳，是騎單車的熱門路線。"
+    },
+    {
+      "id": "chulu-ranch", "tier": 2, "cat": "sight", "name": "初鹿牧場", "full": "初鹿牧場",
+      "icon": "cow-face", "county": "台東縣", "town": "卑南鄉",
+      "addr": "台東縣卑南鄉嘉豐產業道路3號", "lon": 121.10829, "lat": 22.86613,
+      "desc": "台東知名牧場，可以看乳牛、餵小動物，也有鮮奶和乳製品。"
+    },
+    {
+      "id": "biwa-lake-taitung", "tier": 3, "cat": "sight", "name": "琵琶湖", "full": "琵琶湖",
+      "icon": "water-wave", "county": "台東縣", "town": "台東市",
+      "addr": "台東縣台東市新站路 14 巷 7 號", "lon": 121.12468, "lat": 22.79827,
+      "desc": "台東的小湖泊，環湖步道安靜適合散步。"
+    },
+    {
+      "id": "yang-sweet-potato-crisp", "tier": 3, "cat": "food", "name": "楊記地瓜酥", "full": "楊記家傳地瓜酥(振發老店 大同店）",
+      "icon": "cookie", "county": "台東縣", "town": "台東市",
+      "addr": "台東縣台東市大同路 149 號", "lon": 121.15351, "lat": 22.75275,
+      "desc": "台東伴手禮，振發老店的地瓜酥，剛出爐的最好吃。"
+    },
+    {
+      "id": "laodongtai-mitaimu", "tier": 3, "cat": "food", "name": "老東台米台目", "full": "老東台米台目屋/70年老店",
+      "icon": "bowl-with-spoon", "county": "台東縣", "town": "台東市",
+      "addr": "台東縣台東市大同路 151 號", "lon": 121.15346, "lat": 22.7529,
+      "desc": "台東 70 年老店，米台目是用米做的粿條，湯頭清爽。"
+    },
+    {
+      "id": "alangyi-trail", "tier": 2, "cat": "sight", "name": "阿塱壹古道", "full": "阿塱壹古道",
+      "icon": "mountain", "county": "屏東縣", "town": "牡丹鄉",
+      "addr": "屏東縣牡丹鄉旭海村", "lon": 120.89363, "lat": 22.2006,
+      "desc": "台灣最後一段原始海岸線，沿著礁岩和海岸徒步，需要事先申請。"
+    },
+    {
+      "id": "xuhai-beach", "tier": 3, "cat": "sight", "name": "旭海沙灘", "full": "旭海沙灘",
+      "icon": "beach-with-umbrella", "county": "屏東縣", "town": "牡丹鄉",
+      "addr": "屏東縣牡丹鄉旭海", "lon": 120.87954, "lat": 22.19328,
+      "desc": "屏東東海岸的漂亮黑沙灘，人少又安靜。"
+    },
+    {
+      "id": "longkeng-reserve", "tier": 3, "cat": "sight", "name": "龍坑生態保護區", "full": "龍坑生態保護區",
+      "icon": "palm-tree", "county": "屏東縣", "town": "恆春鎮",
+      "addr": "屏東縣恆春鎮燈塔路51巷25號", "lon": 120.8558, "lat": 21.9028,
+      "desc": "墾丁最南端的海岸保護區，有珊瑚礁岩和特殊的地形景觀，需預約。"
+    },
+    {
+      "id": "kenting-forest", "tier": 1, "cat": "sight", "name": "墾丁森林遊樂區", "full": "墾丁國家森林遊樂區",
+      "icon": "palm-tree", "county": "屏東縣", "town": "恆春鎮",
+      "addr": "屏東縣恆春鎮公園路 201 號", "lon": 120.79576, "lat": 21.94666,
+      "desc": "墾丁的熱帶森林，有高位珊瑚礁和各式熱帶植物，步道清涼。"
+    },
+    {
+      "id": "baisha-bay-kenting", "tier": 2, "cat": "sight", "name": "墾丁白沙灣", "full": "墾丁白沙灣",
+      "icon": "beach-with-umbrella", "county": "屏東縣", "town": "恆春鎮",
+      "addr": "屏東縣恆春鎮白沙路 30-3 號", "lon": 120.7178, "lat": 21.9344,
+      "desc": "墾丁西岸的白色沙灘，沙子細白、水清，適合戲水。"
+    },
+    {
+      "id": "nmmba", "tier": 1, "cat": "sight", "name": "海洋生物博物館", "full": "國立海洋生物博物館",
+      "icon": "spouting-whale", "county": "屏東縣", "town": "車城鄉",
+      "addr": "屏東縣車城鄉後灣路", "lon": 120.69904, "lat": 22.04588,
+      "desc": "台灣最大的水族館之一，有海底隧道和白鯨等展示。"
+    },
+    {
+      "id": "huang-mung-bean-garlic", "tier": 3, "cat": "food", "name": "黃家綠豆蒜", "full": "正記 黃家綠豆蒜",
+      "icon": "bowl-with-spoon", "county": "屏東縣", "town": "車城鄉",
+      "addr": "屏東縣車城鄉福安路3號", "lon": 120.71291, "lat": 22.07017,
+      "desc": "車城的特產綠豆蒜，吃起來又香又脆，是墾丁伴手禮。"
+    },
+    {
+      "id": "haikou-desert", "tier": 3, "cat": "sight", "name": "海口沙漠", "full": "海口沙漠",
+      "icon": "cactus", "county": "屏東縣", "town": "車城鄉",
+      "addr": "屏東縣車城鄉", "lon": 120.7071, "lat": 22.0868,
+      "desc": "車城海邊的沙丘，被風吹出像沙漠的景觀，可以玩滑沙。"
+    },
+    {
+      "id": "vase-rock", "tier": 2, "cat": "sight", "name": "花瓶岩", "full": "花瓶石",
+      "icon": "water-wave", "county": "屏東縣", "town": "琉球鄉",
+      "addr": "屏東縣琉球鄉美人路（小琉球）", "lon": 120.3807, "lat": 22.3556,
+      "desc": "小琉球最有名的地標，形狀像花瓶的珊瑚礁岩。"
+    },
+    {
+      "id": "beauty-beach", "tier": 3, "cat": "sight", "name": "美人沙灘", "full": "美人沙灘",
+      "icon": "beach-with-umbrella", "county": "屏東縣", "town": "琉球鄉",
+      "addr": "屏東縣琉球鄉美人路（小琉球）", "lon": 120.37122, "lat": 22.35265,
+      "desc": "小琉球的小海灣，可以浮潛看到海龜。"
+    },
+    {
+      "id": "gebanwan", "tier": 3, "cat": "sight", "name": "蛤板灣", "full": "蛤板灣",
+      "icon": "beach-with-umbrella", "county": "屏東縣", "town": "琉球鄉",
+      "addr": "屏東縣琉球鄉天福村（小琉球）", "lon": 120.36006, "lat": 22.33449,
+      "desc": "小琉球的海灣，礁岩包圍著細沙，有威尼斯沙灘之稱。"
+    },
+    {
+      "id": "linhou-silin-forest", "tier": 2, "cat": "sight", "name": "林後四林平地森林", "full": "林後四林平地森林園區",
+      "icon": "evergreen-tree", "county": "屏東縣", "town": "潮州鎮",
+      "addr": "屏東縣潮州鎮泗林里", "lon": 120.58696, "lat": 22.53944,
+      "desc": "屏東平原上的大片森林，樹蔭下可以騎單車和野餐。"
+    },
+    {
+      "id": "liudui-hakka-park", "tier": 2, "cat": "sight", "name": "六堆客家文化園區", "full": "六堆客家文化園區",
+      "icon": "house-with-garden", "county": "屏東縣", "town": "內埔鄉",
+      "addr": "屏東縣內埔鄉榮華巷", "lon": 120.55966, "lat": 22.65829,
+      "desc": "屏東客家文化的主題園區，有客家建築和展覽。"
+    },
+    {
+      "id": "haihong-hotel", "tier": 3, "cat": "hotel", "name": "海鴻飯店", "full": "海鴻飯店",
+      "icon": "hotel", "county": "屏東縣", "town": "枋山鄉",
+      "addr": "屏東縣枋山鄉舊庄路155號", "lon": 120.70155, "lat": 22.20425,
+      "desc": "屏東枋山的海景飯店，靠近南迴公路。"
+    },
+    {
+      "id": "tianwei-phoenix-garden", "tier": 3, "cat": "sight", "name": "田尾鳳凰花園", "full": "田尾鳳凰花園",
+      "icon": "bouquet", "county": "彰化縣", "town": "田尾鄉",
+      "addr": "彰化縣田尾鄉（公路花園一帶）（位置待確認）", "lon": 120.53119, "lat": 23.89664,
+      "desc": "田尾公路花園一帶的花園，花卉、盆栽和園藝店很多。"
+    },
+    {
+      "id": "target-touched-cake", "tier": 3, "cat": "sight", "name": "塔吉特千層蛋糕", "full": "塔吉特Touched 千層蛋糕大使館 - 觀光工廠",
+      "icon": "shortcake", "county": "雲林縣", "town": "斗六市",
+      "addr": "雲林縣斗六市民富街", "lon": 120.5975, "lat": 23.7226,
+      "desc": "斗六的千層蛋糕觀光工廠，可以看製作、買蛋糕和 DIY。"
+    },
+    {
+      "id": "laoshou-duck-rice", "tier": 3, "cat": "food", "name": "老受鴨肉飯", "full": "老受鴨肉飯",
+      "icon": "bowl-with-spoon", "county": "雲林縣", "town": "北港鎮",
+      "addr": "雲林縣北港鎮北港商圈中山路", "lon": 120.30453, "lat": 23.56649,
+      "desc": "北港的鴨肉飯老店，鴨肉嫩、滷汁香。"
+    },
+    {
+      "id": "guo-chicken-rice", "tier": 3, "cat": "food", "name": "郭家雞肉飯", "full": "郭家雞肉飯",
+      "icon": "bowl-with-spoon", "county": "嘉義市", "town": "西區",
+      "addr": "嘉義市文化路商圈文化路150號", "lon": 120.44986, "lat": 23.47851,
+      "desc": "嘉義文化路夜市一帶的雞肉飯，火雞肉絲鋪在飯上、淋上滷汁。"
+    },
+    {
+      "id": "tainan-nat-univ-arts", "tier": 3, "cat": "sight", "name": "台南藝術大學", "full": "國立臺南藝術大學",
+      "icon": "school", "county": "台南市", "town": "官田區",
+      "addr": "台南市官田區", "lon": 120.37286, "lat": 23.18529,
+      "desc": "台南官田的大學，校園裡有許多雕塑和藝術建築。"
+    },
+    {
+      "id": "shuishan-sugar-park", "tier": 3, "cat": "sight", "name": "水善糖文化園區", "full": "深緣及水善糖文化園區",
+      "icon": "candy", "county": "台南市", "town": "善化區",
+      "addr": "台南市善化區", "lon": 120.25953, "lat": 23.13327,
+      "desc": "善化的糖業文化園區，有老糖廠建築和糖果 DIY。"
+    },
+    {
+      "id": "qianlaiye-grocery", "tier": 3, "cat": "food", "name": "錢來也雜貨店", "full": "錢來也雜貨店",
+      "icon": "candy", "county": "台南市", "town": "北門區",
+      "addr": "台南市北門區舊埕 187 號", "lon": 120.11977, "lat": 23.26743,
+      "desc": "北門的老雜貨店，以前是鹽工福利社，因為偶像劇走紅。"
+    },
+    {
+      "id": "beimen-visitor-center", "tier": 3, "cat": "sight", "name": "北門遊客中心", "full": "北門遊客中心",
+      "icon": "house", "county": "台南市", "town": "北門區",
+      "addr": "台南市北門區", "lon": 120.12379, "lat": 23.26722,
+      "desc": "北門的遊客中心，旁邊有水晶教堂、井仔腳鹽田等景點。"
+    },
+    {
+      "id": "jingzijiao-salt-field", "tier": 2, "cat": "sight", "name": "井仔腳瓦盤鹽田", "full": "井仔腳瓦盤鹽田",
+      "icon": "water-wave", "county": "台南市", "town": "北門區",
+      "addr": "台南市北門區", "lon": 120.10808, "lat": 23.25927,
+      "desc": "用瓦片鋪成的鹽田，是台灣最古老的鹽田之一，夕陽時特別美。"
+    },
+    {
+      "id": "tsai-milkfish", "tier": 3, "cat": "food", "name": "蔡虱目魚專賣", "full": "台南蔡虱目魚專賣-小北總店",
+      "icon": "fish", "county": "台南市", "town": "北區",
+      "addr": "台南市北區（小北）", "lon": 120.20879, "lat": 23.01127,
+      "desc": "台南小北的虱目魚專賣店，魚肚粥和魚丸湯是招牌。"
+    },
+    {
+      "id": "songcun-smoked", "tier": 3, "cat": "food", "name": "松村煙燻滷味", "full": "松村煙燻滷味 赤崁店",
+      "icon": "oden", "county": "台南市", "town": "中西區",
+      "addr": "台南市中西區（赤崁樓一帶）（位置待確認）", "lon": 120.203, "lat": 22.9985,
+      "desc": "赤崁樓附近的煙燻滷味店，滷蛋、豆干都帶著燻香。"
+    },
+    {
+      "id": "hayashi-department-store", "tier": 1, "cat": "sight", "name": "台南林百貨", "full": "台南林百貨",
+      "icon": "bellhop-bell", "county": "台南市", "town": "中西區",
+      "addr": "台南市孔廟商圈忠義路二段63號", "lon": 120.2026, "lat": 22.9917,
+      "desc": "日治時期的百貨公司，現在是文創商場，頂樓有神社遺跡。"
+    },
+    {
+      "id": "jiu-lihesing-preserves", "tier": 3, "cat": "food", "name": "李合興蜜餞", "full": "舊李合興蜜餞",
+      "icon": "candy", "county": "台南市", "town": "安平區",
+      "addr": "台南市安平區中興街 18 巷", "lon": 120.16327, "lat": 23.00049,
+      "desc": "安平老街上的蜜餞老店，種類很多，可以試吃再買。"
+    },
+    {
+      "id": "acai-beef-soup", "tier": 3, "cat": "food", "name": "阿財牛肉湯", "full": "阿財牛肉湯",
+      "icon": "bowl-with-spoon", "county": "台南市", "town": "安平區",
+      "addr": "台南市安平區古堡街 5 號（位置待確認）", "lon": 120.16153, "lat": 22.99938,
+      "desc": "台南早餐文化的代表，用新鮮牛肉沖入熱湯，鮮甜滑嫩。"
+    },
+    {
+      "id": "fanglanchuan-pudding", "tier": 3, "cat": "food", "name": "方蘭川布丁", "full": "方蘭川布丁 - 台南伴手禮",
+      "icon": "custard", "county": "台南市", "town": "安平區",
+      "addr": "台南市安平區安北路458號", "lon": 120.15197, "lat": 22.99959,
+      "desc": "台南的伴手禮，布丁口感濃郁，常常被當成禮盒。"
+    },
+    {
+      "id": "barclay-park", "tier": 3, "cat": "sight", "name": "巴克禮紀念公園", "full": "巴克禮紀念公園",
+      "icon": "deciduous-tree", "county": "台南市", "town": "東區",
+      "addr": "台南市東區357巷", "lon": 120.22225, "lat": 22.97314,
+      "desc": "台南東區的大公園，有大片草地和湖泊，適合散步放風箏。"
+    },
+    {
+      "id": "chimei-museum", "tier": 1, "cat": "sight", "name": "奇美博物館", "full": "奇美博物館",
+      "icon": "performing-arts", "county": "台南市", "town": "仁德區",
+      "addr": "台南市仁德區文華路二段 66 號", "lon": 120.2255, "lat": 22.9335,
+      "desc": "白色的歐洲古典建築，收藏西洋藝術、樂器、武器和自然史。"
+    },
+    {
+      "id": "tainan-metropolitan-park", "tier": 3, "cat": "sight", "name": "台南都會公園", "full": "都會公園 親子大草原",
+      "icon": "deciduous-tree", "county": "台南市", "town": "仁德區",
+      "addr": "台南市仁德區文華路二段", "lon": 120.2245, "lat": 22.9368,
+      "desc": "台南都會公園的親子大草原，有大片草地和遊戲區。"
+    },
+    {
+      "id": "known-you-seed", "tier": 3, "cat": "sight", "name": "農友種苗", "full": "農友種苗企業總部",
+      "icon": "bouquet", "county": "高雄市", "town": "大樹區",
+      "addr": "高雄市大樹區竹寮路", "lon": 120.4259, "lat": 22.66056,
+      "desc": "知名的種苗企業，園區裡種了各式蔬果和花卉。"
+    },
+    {
+      "id": "kaohsiung-greenery-park", "tier": 3, "cat": "sight", "name": "高雄果嶺自然公園", "full": "高雄果嶺自然公園",
+      "icon": "deciduous-tree", "county": "高雄市", "town": "鳥松區",
+      "addr": "高雄市鳥松區", "lon": 120.33785, "lat": 22.66611,
+      "desc": "高爾夫球場舊址改建的公園，有草地、湖泊與步道。"
+    },
+    {
+      "id": "zhang-sesame-biscuit", "tier": 3, "cat": "food", "name": "張家古早味燒餅", "full": "張家古早味燒餅店",
+      "icon": "bread", "county": "高雄市", "town": "鳥松區",
+      "addr": "高雄市鳥松區（位置待確認）", "lon": 120.33759, "lat": 22.65396,
+      "desc": "鳥松一帶的古早味燒餅店，熱騰騰的燒餅酥脆。"
+    },
+    {
+      "id": "you-chishan-gui", "tier": 3, "cat": "food", "name": "尤家赤山粿", "full": "尤家赤山粿",
+      "icon": "rice-cracker", "county": "高雄市", "town": "鳳山區",
+      "addr": "高雄市鳳山區文雅東街", "lon": 120.3615, "lat": 22.6341,
+      "desc": "鳳山赤山的傳統粿點，用在來米做的甜粿，是在地古早味。"
+    },
+    {
+      "id": "ruizhu-meatball", "tier": 3, "cat": "food", "name": "瑞竹老店肉圓", "full": "瑞竹老店肉圓",
+      "icon": "oden", "county": "高雄市", "town": "鳳山區",
+      "addr": "高雄市鳳山區140巷", "lon": 120.36827, "lat": 22.62686,
+      "desc": "鳳山的老字號肉圓，皮Q餡多，淋上特製醬汁。"
+    },
+    {
+      "id": "liang-duck", "tier": 3, "cat": "food", "name": "梁家鴨肉店", "full": "梁家鴨肉店",
+      "icon": "duck", "county": "高雄市", "town": "鳳山區",
+      "addr": "高雄市鳳山區349巷", "lon": 120.3769, "lat": 22.623,
+      "desc": "鳳山的鴨肉店，鴨肉飯和鴨湯都有人氣。"
+    },
+    {
+      "id": "dandan-burger-fengshan", "tier": 3, "cat": "food", "name": "丹丹漢堡鳳山店", "full": "丹丹漢堡 鳳山店",
+      "icon": "hamburger", "county": "高雄市", "town": "鳳山區",
+      "addr": "高雄市鳳山區鳳林路 252 號", "lon": 120.37667, "lat": 22.62218,
+      "desc": "南台灣的在地漢堡連鎖，招牌是脆皮炸雞漢堡和冬瓜茶。"
+    },
+    {
+      "id": "laozhang-aiyu", "tier": 3, "cat": "food", "name": "老張愛玉冰", "full": "老張愛玉冰",
+      "icon": "shaved-ice", "county": "高雄市", "town": "鳳山區",
+      "addr": "高雄市鳳山區信義街13號", "lon": 120.35597, "lat": 22.62728,
+      "desc": "鳳山的愛玉冰老店，手搓愛玉加檸檬，清涼消暑。"
+    },
+    {
+      "id": "fengshan-30yr-noodle", "tier": 3, "cat": "food", "name": "鳳山三十年麵店", "full": "鳳山三十年麵店",
+      "icon": "bowl-with-spoon", "county": "高雄市", "town": "鳳山區",
+      "addr": "高雄市鳳山區民生路 203 號（位置待確認）", "lon": 120.3605, "lat": 22.6254,
+      "desc": "鳳山商圈的麵店，三十年老店的家常麵食。"
+    },
+    {
+      "id": "su-old-noodle", "tier": 3, "cat": "food", "name": "蘇家古早麵", "full": "蘇家古早麵",
+      "icon": "bowl-with-spoon", "county": "高雄市", "town": "鳳山區",
+      "addr": "高雄市鳳山區成功路 10 巷（鳳山第一公有零售市場內）", "lon": 120.35836, "lat": 22.623,
+      "desc": "鳳山第一公有市場內的古早麵，簡單的陽春麵與小菜。"
+    },
+    {
+      "id": "weiwuying-park", "tier": 1, "cat": "sight", "name": "衛武營都會公園", "full": "衛武營都會公園",
+      "icon": "performing-arts", "county": "高雄市", "town": "鳳山區",
+      "addr": "高雄市鳳山區三多一路", "lon": 120.34014, "lat": 22.62047,
+      "desc": "高雄的大型都會公園，有大草坪和百年榕樹，旁邊是衛武營國家藝術文化中心。"
+    },
+    {
+      "id": "labor-park-flower-market", "tier": 3, "cat": "sight", "name": "勞工公園花市", "full": "勞工公園假日花市",
+      "icon": "bouquet", "county": "高雄市", "town": "前鎮區",
+      "addr": "高雄市前鎮區一德路", "lon": 120.30926, "lat": 22.60877,
+      "desc": "高雄假日花市，各種花卉和盆栽，花店很多。"
+    },
+    {
+      "id": "cijin-grilled-squid", "tier": 3, "cat": "food", "name": "旗津烤小卷", "full": "旗津老字號烤小卷",
+      "icon": "squid", "county": "高雄市", "town": "旗津區",
+      "addr": "高雄市旗津區廟前路 9 號", "lon": 120.26755, "lat": 22.61165,
+      "desc": "旗津廟前路上的烤小卷，現烤出爐，淋上特調醬汁。"
+    },
+    {
+      "id": "cijin-oyster-bun", "tier": 3, "cat": "food", "name": "旗津蚵仔包白糖粿", "full": "旗津蚵仔包白糖粿",
+      "icon": "dumpling", "county": "高雄市", "town": "旗津區",
+      "addr": "高雄市旗津區廟前路 2 巷 2 號", "lon": 120.26835, "lat": 22.61114,
+      "desc": "旗津廟前路的小吃，蚵仔包和白糖粿一起買。"
+    },
+    {
+      "id": "coral-reef-wall", "tier": 3, "cat": "sight", "name": "旗津珊瑚礁岩壁", "full": "珊瑚礁岩壁",
+      "icon": "water-wave", "county": "高雄市", "town": "旗津區",
+      "addr": "高雄市旗津區（位置待確認）", "lon": 120.263, "lat": 22.607,
+      "desc": "旗津海岸的珊瑚礁岩壁，高低起伏的岩石景觀，夕陽很美。"
+    },
+    {
+      "id": "gaogang-water-garden", "tier": 3, "cat": "sight", "name": "高港水花園", "full": "高港水花園",
+      "icon": "fountain", "county": "高雄市", "town": "鼓山區",
+      "addr": "高雄市鼓山區蓬萊路4-3號", "lon": 120.27952, "lat": 22.61805,
+      "desc": "高雄港旁的水景公園，有大片水池和草地，可以野餐。"
+    },
+    {
+      "id": "hamasing-railway", "tier": 2, "cat": "sight", "name": "哈瑪星鐵道園區", "full": "哈瑪星鐵道園區",
+      "icon": "performing-arts", "county": "高雄市", "town": "鼓山區",
+      "addr": "高雄市鼓山區鼓山一路 32 號", "lon": 120.27762, "lat": 22.62517,
+      "desc": "高雄舊港站改造的鐵道園區，展示了許多老火車。"
+    },
+    {
+      "id": "pier2-art-center", "tier": 1, "cat": "sight", "name": "駁二藝術特區", "full": "駁二藝術特區",
+      "icon": "art-palette", "county": "高雄市", "town": "鹽埕區",
+      "addr": "高雄市鹽埕區大勇路1號", "lon": 120.28135, "lat": 22.62013,
+      "desc": "舊碼頭倉庫改成的藝術區，有裝置藝術和文創小店。"
+    },
+    {
+      "id": "gaoji-breakfast", "tier": 3, "cat": "food", "name": "高記早點", "full": "高記早點",
+      "icon": "bread", "county": "高雄市", "town": "鳳山區",
+      "addr": "高雄市鳳山區336巷", "lon": 120.347, "lat": 22.6253,
+      "desc": "鳳山在地的早餐店，蛋餅與豆漿是招牌。"
+    },
+    {
+      "id": "gongxie-stinky-tofu", "tier": 3, "cat": "food", "name": "工協臭豆腐", "full": "工協臭豆腐",
+      "icon": "oden", "county": "高雄市", "town": "鳳山區",
+      "addr": "高雄市鳳山區勝利路", "lon": 120.37246, "lat": 22.63093,
+      "desc": "鳳山的臭豆腐攤，炸得外酥內軟，配上泡菜。"
+    },
+    {
+      "id": "yideng-winter-melon", "tier": 3, "cat": "food", "name": "一等涼冬瓜原汁", "full": "一等涼冬瓜原汁",
+      "icon": "shaved-ice", "county": "台南市", "town": "善化區",
+      "addr": "台南市善化區（位置待確認）", "lon": 120.29003, "lat": 23.13257,
+      "desc": "善化商圈的冬瓜茶，原汁熬煮，喝起來清爽。"
+    },
+    {
+      "id": "tenren-tea-zhunan", "tier": 3, "cat": "food", "name": "天仁茗茶竹南店", "full": "天仁茗茶 竹南店",
+      "icon": "teacup-without-handle", "county": "苗栗縣", "town": "竹南鎮",
+      "addr": "苗栗縣竹南鎮中華路", "lon": 120.91994, "lat": 24.71624,
+      "desc": "台灣知名的茶葉連鎖品牌，竹南店有茶葉與茶點。"
+    },
+    {
+      "id": "hsiangjicheng-yilan", "tier": 3, "cat": "food", "name": "香雞城宜蘭店", "full": "香雞城宜蘭店",
+      "icon": "chicken", "county": "宜蘭縣", "town": "宜蘭市",
+      "addr": "宜蘭縣宜蘭市東港路二段 567 號", "lon": 121.759, "lat": 24.75787,
+      "desc": "宜蘭的炸雞店，鹹酥雞和雞排是招牌。"
+    },
+    {
+      "id": "xianming-elementary", "tier": 3, "cat": "sight", "name": "憲明國小", "full": "宜蘭縣三星鄉憲明國民小學",
+      "icon": "school", "county": "宜蘭縣", "town": "三星鄉",
+      "addr": "宜蘭縣三星鄉福山街 134-1 號", "lon": 121.61855, "lat": 24.66076,
+      "desc": "三星鄉的小學，校園被農田環繞。"
+    },
+    {
+      "id": "westin-tashee", "tier": 2, "cat": "hotel", "name": "大溪笠復威斯汀", "full": "桃園大溪笠復威斯汀度假酒店",
+      "icon": "hotel", "county": "桃園市", "town": "大溪區",
+      "addr": "桃園市大溪區日新路 166 號", "lon": 121.32659, "lat": 24.88212,
+      "desc": "大溪的度假酒店，由隈研吾設計，融合了山林與日式風格。"
+    },
+    {
+      "id": "wuling-fuye-resort", "tier": 3, "cat": "hotel", "name": "武陵富野渡假村", "full": "武陵富野渡假村",
+      "icon": "hotel", "county": "台中市", "town": "和平區",
+      "addr": "台中市和平區武陵路", "lon": 121.30879, "lat": 24.35261,
+      "desc": "武陵農場旁的度假村，在高山上賞櫻、看雲海。"
+    },
+    {
+      "id": "cingjing-guest-house", "tier": 3, "cat": "hotel", "name": "清境國民賓館", "full": "清境國民賓館",
+      "icon": "hotel", "county": "南投縣", "town": "仁愛鄉",
+      "addr": "南投縣仁愛鄉", "lon": 121.15639, "lat": 24.04306,
+      "desc": "清境農場裡的老牌賓館，位置就在青青草原旁。"
+    },
+    {
+      "id": "kenting-howard-beach", "tier": 2, "cat": "hotel", "name": "墾丁夏都沙灘酒店", "full": "墾丁夏都沙灘酒店",
+      "icon": "hotel", "county": "屏東縣", "town": "恆春鎮",
+      "addr": "屏東縣恆春鎮墾丁路451號", "lon": 120.78994, "lat": 21.94586,
+      "desc": "墾丁的海灘度假酒店，直接走到沙灘玩水。"
+    },
+    {
+      "id": "alishan-house-hotel", "tier": 3, "cat": "hotel", "name": "阿里山閣飯店", "full": "阿里山閣飯店",
+      "icon": "hotel", "county": "嘉義縣", "town": "阿里山鄉",
+      "addr": "嘉義縣阿里山鄉（位置待確認）", "lon": 120.73272, "lat": 23.46659,
+      "desc": "阿里山區的飯店，推開窗就能看雲海。"
+    },
+    {
+      "id": "fullon-fulong", "tier": 3, "cat": "hotel", "name": "福隆福容大飯店", "full": "福隆福容大飯店",
+      "icon": "hotel", "county": "新北市", "town": "貢寮區",
+      "addr": "新北市貢寮區福隆街 41 號", "lon": 121.94382, "lat": 25.01858,
+      "desc": "福隆海水浴場旁的大飯店，有海景房。"
+    },
+    {
+      "id": "tainan-taotao", "tier": 3, "cat": "hotel", "name": "趣淘漫旅台南", "full": "台南趣淘漫旅",
+      "icon": "hotel", "county": "台南市", "town": "楠西區",
+      "addr": "台南市楠西區密枝里密枝 102-5 號", "lon": 120.50106, "lat": 23.22467,
+      "desc": "曾文水庫旁的冒險主題飯店，適合親子玩樂。"
+    },
+    {
+      "id": "luye-lily-resort", "tier": 3, "cat": "hotel", "name": "鹿野綺麗渡假村", "full": "鹿野綺麗渡假村",
+      "icon": "hotel", "county": "台東縣", "town": "鹿野鄉",
+      "addr": "台東縣鹿野鄉中華路一段 260 號", "lon": 121.11748, "lat": 22.89445,
+      "desc": "鹿野高台附近的度假村，可以看熱氣球與花東縱谷。"
+    },
+    {
+      "id": "songxue-lodge", "tier": 3, "cat": "hotel", "name": "松雪樓", "full": "松雪樓",
+      "icon": "hotel", "county": "南投縣", "town": "仁愛鄉",
+      "addr": "南投縣仁愛鄉台 14 甲線（合歡山）", "lon": 121.28333, "lat": 24.14222,
+      "desc": "合歡山上的住宿，冬天可以賞雪，夜晚看星空。"
+    },
+    {
+      "id": "kenmeng-manor", "tier": 3, "cat": "hotel", "name": "墾夢莊園", "full": "墾夢莊園（新光兆豐農場）",
+      "icon": "hotel", "county": "花蓮縣", "town": "鳳林鎮",
+      "addr": "花蓮縣鳳林鎮永福街 20 號", "lon": 121.458, "lat": 23.80458,
+      "desc": "新光兆豐農場裡的莊園住宿，周圍是大片牧草地。"
+    },
+    {
+      "id": "xiao-kenting-resort", "tier": 3, "cat": "hotel", "name": "小墾丁渡假村", "full": "小墾丁渡假村",
+      "icon": "hotel", "county": "屏東縣", "town": "滿州鄉",
+      "addr": "屏東縣滿州鄉中山路205-16號", "lon": 120.83227, "lat": 22.02646,
+      "desc": "滿州的海景度假村，靠近港口溪出海口。"
+    },
+    {
+      "id": "kenting-caesar", "tier": 2, "cat": "hotel", "name": "墾丁凱撒大飯店", "full": "墾丁凱撒大飯店",
+      "icon": "hotel", "county": "屏東縣", "town": "恆春鎮",
+      "addr": "屏東縣恆春鎮墾丁路", "lon": 120.80601, "lat": 21.94298,
+      "desc": "墾丁大街旁的度假飯店，有泳池與餐廳。"
+    },
+    {
+      "id": "riwei-resort", "tier": 3, "cat": "hotel", "name": "日暉國際渡假村", "full": "日暉國際渡假村",
+      "icon": "hotel", "county": "台東縣", "town": "池上鄉",
+      "addr": "台東縣池上鄉", "lon": 121.19873, "lat": 23.10551,
+      "desc": "池上的度假村，有溫泉與大片稻田風光。"
+    },
+    {
+      "id": "chihpen-royal", "tier": 2, "cat": "hotel", "name": "知本老爺酒店", "full": "知本老爺酒店",
+      "icon": "hotel", "county": "台東縣", "town": "台東市",
+      "addr": "台東縣太麻里鄉", "lon": 121.00468, "lat": 22.69296,
+      "desc": "知本溫泉區的老爺酒店，大浴場與森林景觀都是賣點。"
+    },
+    {
+      "id": "youhuo-resort", "tier": 3, "cat": "hotel", "name": "悠活渡假村", "full": "悠活渡假村",
+      "icon": "hotel", "county": "屏東縣", "town": "恆春鎮",
+      "addr": "屏東縣恆春鎮萬里路 27-8 號（位置待確認）", "lon": 120.70584, "lat": 21.99752,
+      "desc": "墾丁的大型渡假村，有水上樂園和親子設施。"
+    },
+    {
+      "id": "forest-of-bears", "tier": 3, "cat": "hotel", "name": "有熊的森林", "full": "有熊的森林",
+      "icon": "hotel", "county": "花蓮縣", "town": "壽豐鄉",
+      "addr": "花蓮縣壽豐鄉豐坪村東富街", "lon": 121.51448, "lat": 23.8283,
+      "desc": "壽豐的森林住宿，周邊有熊的主題裝置，適合親子。"
+    },
+    {
+      "id": "kagaya-beitou", "tier": 2, "cat": "hotel", "name": "日勝生加賀屋", "full": "日勝生加賀屋國際溫泉飯店",
+      "icon": "hot-springs", "county": "台北市", "town": "北投區",
+      "addr": "台北市北投區光明路", "lon": 121.50712, "lat": 25.13606,
+      "desc": "日本百年旅館在台灣的分店，北投溫泉與日式料理。"
+    },
+    {
+      "id": "grand-hotel-taipei", "tier": 2, "cat": "hotel", "name": "圓山大飯店", "full": "圓山大飯店（台北士林）",
+      "icon": "hotel", "county": "台北市", "town": "中山區",
+      "addr": "台北市中山區", "lon": 121.52643, "lat": 25.0787,
+      "desc": "台北的紅色宮殿式飯店，是許多重要貴賓住過的地方。"
+    },
+    {
+      "id": "grand-hotel-niaosong", "tier": 3, "cat": "hotel", "name": "高雄圓山大飯店", "full": "圓山大飯店（高雄鳥松）",
+      "icon": "hotel", "county": "高雄市", "town": "鳥松區",
+      "addr": "高雄市鳥松區圓山路", "lon": 120.34576, "lat": 22.65458,
+      "desc": "高雄鳥松的圓山大飯店，宮殿式建築，位於澄清湖旁。"
+    },
+    {
+      "id": "jiuzu-youshenjing", "tier": 3, "cat": "hotel", "name": "悠森境渡假村", "full": "九族文化村－悠森境渡假村",
+      "icon": "hotel", "county": "南投縣", "town": "魚池鄉",
+      "addr": "南投縣魚池鄉", "lon": 120.9441, "lat": 23.8722,
+      "desc": "九族文化村旁的度假村，有森林、湖景與遊樂設施。"
+    },
+    {
+      "id": "zhuolan-scenic-bnb", "tier": 3, "cat": "hotel", "name": "自然風情民宿", "full": "自然風情景觀渡假民宿",
+      "icon": "bed", "county": "苗栗縣", "town": "卓蘭鎮",
+      "addr": "苗栗縣卓蘭鎮西坪里西坪 134 之 7 號（位置待確認）", "lon": 120.82666, "lat": 24.33284,
+      "desc": "卓蘭山上的景觀民宿，有青青草原與風箏餐廳。"
+    },
+    {
+      "id": "bangbang-block-hotel", "tier": 3, "cat": "hotel", "name": "棒棒積木飯店", "full": "棒棒積木飯店",
+      "icon": "hotel", "county": "嘉義縣", "town": "太保市",
+      "addr": "嘉義縣太保市太子大道223號", "lon": 120.29373, "lat": 23.46845,
+      "desc": "以積木為主題的親子飯店，房間與大廳都有積木裝飾。"
+    },
+    {
+      "id": "asan-meatball", "tier": 3, "cat": "food", "name": "阿三肉圓", "full": "阿三肉圓",
+      "icon": "oden", "county": "彰化縣", "town": "彰化市",
+      "addr": "彰化縣彰化市（位置待確認）", "lon": 120.54321, "lat": 24.08545,
+      "desc": "彰化的肉圓小吃，外皮Q彈、內餡紮實，彰化是肉圓的發源地之一。"
+    },
+    {
+      "id": "xinyue-garden-hotel", "tier": 3, "cat": "hotel", "name": "新悅花園酒店", "full": "新悅花園酒店",
+      "icon": "hotel", "county": "嘉義市", "town": "東區",
+      "addr": "嘉義市東區保順路 69 號", "lon": 120.4496, "lat": 23.50486,
+      "desc": "嘉義市區的花園酒店，離嘉義火車站和文化路夜市都不遠。"
     }
   ]
 }
