@@ -264,9 +264,8 @@ body.travel #hud .hp{display:none}
 .poi .shadow{fill:#0f1a08;opacity:.5;transform-box:fill-box;transform-origin:center}
 .poi .ring{fill:none;stroke:var(--gold-l);stroke-width:1.6;opacity:0;transform-box:fill-box;transform-origin:center;animation:ping 2.6s ease-out infinite}
 .poi .ico{animation:bob 2.8s ease-in-out infinite}
-.poi .cnt circle{fill:#c4402f;stroke:var(--outline);stroke-width:1.5}
-.poi .cnt text{font-family:var(--font);font-weight:700;font-size:11px;fill:#fff;text-anchor:middle;dominant-baseline:central;pointer-events:none}
-.bubble .t2.cat{fill:var(--gold-l);font-size:11px}
+/* 狀態列的分類圖例：和地點旗幟同色的小色塊 */
+.cat-sw{display:inline-block;width:.8em;height:.8em;border-radius:3px;margin:0 .3em 0 .1em;vertical-align:-.05em;box-shadow:0 0 0 1px rgba(255,231,163,.75)}
 @media (prefers-reduced-motion:reduce){.poi .ico,.poi .ring{animation:none}}
 #sheet p.desc{font-size:14px;line-height:1.6;margin:12px 0 8px}
 a.big-btn{text-align:center;text-decoration:none}

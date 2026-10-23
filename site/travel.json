@@ -1,5 +1,5 @@
 {
-  "_說明": "旅遊地圖的設定。areas 是上方的篩選膠囊（box = [西經度, 南緯度, 東經度, 北緯度]）；spots 是地圖上的地點，cat 是分類（sight 景點 / food 餐廳），icon 是 assets/travel/ 底下的 3D 圖。",
+  "_說明": "旅遊地圖的設定。areas 是上方的篩選膠囊（box = [西經度, 南緯度, 東經度, 北緯度]）；spots 是地圖上的地點，cat 是分類（sight 景點 / food 餐廳，旗幟用顏色區分）；tier 是顯示等級（1 必去，縮小時也顯示；2、3 要放大才出現，同級越前面越優先），icon 是 assets/travel/ 底下的 3D 圖。",
   "areas": [
     { "k": "all", "icon": "🗺️", "label": "全部", "box": [118.13, 21.88, 122.02, 26.39] },
     { "k": "main", "icon": "⛰️", "label": "台灣本島", "box": [120.03, 21.88, 122.02, 25.31] },
@@ -13,16 +13,106 @@
   ],
   "spots": [
     {
-      "id": "ncfta-yilan", "cat": "sight", "name": "宜蘭傳藝中心", "full": "國立傳統藝術中心 宜蘭傳藝園區",
+      "id": "ncfta-yilan", "tier": 1, "cat": "sight", "name": "宜蘭傳藝中心", "full": "國立傳統藝術中心 宜蘭傳藝園區",
       "icon": "performing-arts", "county": "宜蘭縣", "town": "五結鄉",
       "addr": "宜蘭縣五結鄉五濱路二段 201 號", "lon": 121.8237, "lat": 24.6855,
       "desc": "冬山河畔的傳統藝術園區：仿古老街、傳統工藝坊、戲曲表演與 DIY 體驗。"
     },
     {
-      "id": "lailai-steak-yilan", "cat": "food", "name": "來來牛排館", "full": "來來牛排 宜蘭店",
+      "id": "lailai-steak-yilan", "tier": 3, "cat": "food", "name": "來來牛排館", "full": "來來牛排 宜蘭店",
       "icon": "cut-of-meat", "county": "宜蘭縣", "town": "五結鄉",
       "addr": "宜蘭縣五結鄉親河路二段 157 號", "lon": 121.8078, "lat": 24.6731,
       "desc": "冬山河親水公園附近的平價牛排館。"
+    },
+    {
+      "id": "luodong-sports-park", "tier": 1, "cat": "sight", "name": "羅東運動公園", "full": "羅東運動公園",
+      "icon": "national-park", "county": "宜蘭縣", "town": "羅東鎮",
+      "addr": "宜蘭縣羅東鎮公正路 666 號", "lon": 121.7518, "lat": 24.6852,
+      "desc": "結合湖泊、步道與運動場的大型綠地公園，適合散步、騎車與野餐。"
+    },
+    {
+      "id": "doufu-cape", "tier": 1, "cat": "sight", "name": "豆腐岬", "full": "豆腐岬風景區",
+      "icon": "water-wave", "county": "宜蘭縣", "town": "蘇澳鎮",
+      "addr": "宜蘭縣蘇澳鎮跨港路", "lon": 121.8714, "lat": 24.5838,
+      "desc": "南方澳旁的海灣，岩塊像一塊塊豆腐，可以看海、戲水、看漁船進出。"
+    },
+    {
+      "id": "qingshui-geothermal", "tier": 1, "cat": "sight", "name": "清水地熱", "full": "清水地熱公園",
+      "icon": "hot-springs", "county": "宜蘭縣", "town": "大同鄉",
+      "addr": "宜蘭縣大同鄉三星路八段 501 巷", "lon": 121.6364, "lat": 24.6118,
+      "desc": "清水溪畔冒著白煙的地熱區，可以泡腳、用溫泉煮蛋和玉米。"
+    },
+    {
+      "id": "dongshan-qingshui-park", "tier": 2, "cat": "sight", "name": "冬山清水公園", "full": "冬山河清水公園",
+      "icon": "canoe", "county": "宜蘭縣", "town": "五結鄉",
+      "addr": "宜蘭縣五結鄉親河路二段 2 號", "lon": 121.8122, "lat": 24.6720,
+      "desc": "冬山河畔的親水公園一帶，童玩節與龍舟賽的場地，河岸可散步騎車。"
+    },
+    {
+      "id": "dongshan-forest-park", "tier": 2, "cat": "sight", "name": "冬山河森林公園", "full": "冬山河森林公園（生態綠舟）",
+      "icon": "deciduous-tree", "county": "宜蘭縣", "town": "冬山鄉",
+      "addr": "宜蘭縣冬山鄉冬山路二段 172 號", "lon": 121.7885, "lat": 24.6382,
+      "desc": "冬山河上游的生態園區，有森林步道、水岸濕地與親子遊戲場。"
+    },
+    {
+      "id": "tanjiao-factory", "tier": 2, "cat": "sight", "name": "潭酵天地觀光工廠", "full": "潭酵天地觀光工廠",
+      "icon": "factory", "county": "宜蘭縣", "town": "礁溪鄉",
+      "addr": "宜蘭縣礁溪鄉漳福路 25 號", "lon": 121.7395, "lat": 24.7889,
+      "desc": "免門票的酵素觀光工廠，有大型溜滑梯和親子遊戲區，雨天也能玩。"
+    },
+    {
+      "id": "yilan-cake-museum", "tier": 2, "cat": "sight", "name": "宜蘭餅發明館", "full": "劉鐙徽宜蘭餅發明館",
+      "icon": "cookie", "county": "宜蘭縣", "town": "蘇澳鎮",
+      "addr": "宜蘭縣蘇澳鎮海山西路 369 號", "lon": 121.8290, "lat": 24.6145,
+      "desc": "超薄牛舌餅「宜蘭餅」的觀光工廠，可以參觀製程、試吃和 DIY。"
+    },
+    {
+      "id": "yaxiangbao", "tier": 2, "cat": "food", "name": "鴨鄉寶食坊", "full": "鴨鄉寶食坊",
+      "icon": "duck", "county": "宜蘭縣", "town": "蘇澳鎮",
+      "addr": "宜蘭縣蘇澳鎮忠孝路 170 號", "lon": 121.8362, "lat": 24.6148,
+      "desc": "蘇澳的煙燻、冰糖滷味老店，鴨肉製品是招牌。"
+    },
+    {
+      "id": "fengsheng-aiyu", "tier": 3, "cat": "food", "name": "豐盛愛玉", "full": "豐盛愛玉",
+      "icon": "shaved-ice", "county": "宜蘭縣", "town": "員山鄉",
+      "addr": "宜蘭縣員山鄉員山路三段", "lon": 121.6340, "lat": 24.6940,
+      "desc": "員山往山區路上的手洗愛玉，清涼消暑。"
+    },
+    {
+      "id": "songsanji", "tier": 2, "cat": "food", "name": "松叁雞", "full": "松叁雞",
+      "icon": "poultry-leg", "county": "宜蘭縣", "town": "員山鄉",
+      "addr": "宜蘭縣員山鄉湖西村隘界一路 111 號", "lon": 121.6836, "lat": 24.7469,
+      "desc": "隱身山林間的甕仔雞，招牌是「一雞四吃」，台菜合菜也很齊全。"
+    },
+    {
+      "id": "xianghefa-luwei", "tier": 3, "cat": "food", "name": "祥合發煙燻滷味", "full": "祥發茶香煙燻滷味",
+      "icon": "oden", "county": "宜蘭縣", "town": "大同鄉",
+      "addr": "宜蘭縣大同鄉鹿場路 1-6 號", "lon": 121.5925, "lat": 24.6655,
+      "desc": "茶農轉型的煙燻滷味，茶香微辣，經過大同鄉常有人特地繞進去買。"
+    },
+    {
+      "id": "nobel-jiaoxi", "tier": 1, "cat": "food", "name": "諾貝爾奶凍 礁溪店", "full": "諾貝爾奶凍 礁溪店",
+      "icon": "custard", "county": "宜蘭縣", "town": "礁溪鄉",
+      "addr": "宜蘭縣礁溪鄉礁溪路四段 68 號", "lon": 121.7691, "lat": 24.8195,
+      "desc": "宜蘭必買伴手禮奶凍捲，礁溪溫泉街上的門市。"
+    },
+    {
+      "id": "azong-taro-ice", "tier": 1, "cat": "food", "name": "阿宗芋冰城", "full": "頭城阿宗芋冰城",
+      "icon": "ice-cream", "county": "宜蘭縣", "town": "頭城鎮",
+      "addr": "宜蘭縣頭城鎮青雲路三段 267 號", "lon": 121.8259, "lat": 24.8588,
+      "desc": "頭城的老牌芋冰，濱海公路旁的休息站，也賣各種古早味冰品。"
+    },
+    {
+      "id": "yiwang-shrimp-cracker", "tier": 2, "cat": "food", "name": "益旺蝦餅", "full": "大溪漁港 益旺地瓜蝦餅",
+      "icon": "fried-shrimp", "county": "宜蘭縣", "town": "頭城鎮",
+      "addr": "宜蘭縣頭城鎮濱海路五段（大溪漁港入口）", "lon": 121.9021, "lat": 24.9415,
+      "desc": "大溪漁港入口的現炸蝦餅、地瓜餅，配海景吃剛好。"
+    },
+    {
+      "id": "yishunxuan-yilan", "tier": 3, "cat": "food", "name": "奕順軒 宜蘭店", "full": "奕順軒 宜蘭店",
+      "icon": "bread", "county": "宜蘭縣", "town": "宜蘭市",
+      "addr": "宜蘭縣宜蘭市神農路二段", "lon": 121.7508, "lat": 24.7509,
+      "desc": "宜蘭在地糕餅麵包老店，牛舌餅、ㄚQ餅是人氣伴手禮。"
     }
   ]
 }

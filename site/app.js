@@ -976,15 +976,16 @@ function buildBanner(parent) {
   b.append('path').attr('class', 'tail');
   return b;
 }
-// bg：底板填色；band：色帶顏色（null = 不畫色帶，例如迷你旗幟）；tail：是否畫尖角
-function drawBanner(b, w, h, { bg, band, tail }) {
-  const BAND_H = 18;
+// bg：底板填色；band：色帶顏色（null = 不畫色帶，例如迷你旗幟）；tail：是否畫尖角；
+// bandH：色帶高度（預設 18；等於 h - 6 時色帶填滿整面旗幟，就不畫分隔線）
+function drawBanner(b, w, h, { bg, band, tail, bandH = 18 }) {
+  const BAND_H = bandH, sep = band && BAND_H < h - 6;
   b.select('.bg').attrQ('x', 0.5).attrQ('y', 0.5).attrQ('width', w - 1).attrQ('height', h - 1).attrQ('fill', bg);
   b.select('.rim').attrQ('x', 0.5).attrQ('y', 0.5).attrQ('width', w - 1).attrQ('height', h - 1);
   b.select('.inner').attrQ('x', 3).attrQ('y', 3).attrQ('width', w - 6).attrQ('height', h - 6);
   b.select('.band').styleQ('display', band ? null : 'none')
     .attrQ('x', 3).attrQ('y', 3).attrQ('width', w - 6).attrQ('height', BAND_H).attrQ('fill', band || null);
-  b.select('.sep').styleQ('display', band ? null : 'none')
+  b.select('.sep').styleQ('display', sep ? null : 'none')
     .attrQ('x1', 4).attrQ('x2', w - 4).attrQ('y1', 3 + BAND_H + 0.5).attrQ('y2', 3 + BAND_H + 0.5);
   b.selectAll('.tail,.tail-o').styleQ('display', tail ? null : 'none')
     .attrQ('d', `M${w / 2 - 6},${h - 1} L${w / 2},${h + 6} L${w / 2 + 6},${h - 1}`);
@@ -1017,6 +1018,12 @@ function textWidth(node) {
     if (w > 0) textWCache.set(key, w); // 隱藏中量到的是 0，不要記下來
   }
   return w;
+}
+// 還沒建出旗幟就要知道寬度時用：拿一個看不見的 .bubble .t1 量（同一套快取）
+let measT1 = null;
+function textWidthOf(str) {
+  if (!measT1) measT1 = svg.append('g').attr('class', 'bubble').style('visibility', 'hidden').attr('aria-hidden', 'true').append('text').attr('class', 't1');
+  return textWidth(measT1.text(str).node());
 }
 
 function layoutMarkers() {
@@ -1360,9 +1367,11 @@ function layoutMarkers() {
 /* ================= 旅遊地圖（台灣、澎湖、金門、馬祖與各離島） ================= */
 // 地點分類：旗幟色帶的顏色與狀態列的圖示
 const TRAVEL_CATS = {
-  sight: { label: '景點', emoji: '📸', band: 'hsl(176,52%,27%)' },
-  food: { label: '餐廳', emoji: '🍽️', band: 'hsl(22,64%,34%)' }
+  sight: { label: '景點', emoji: '📸', band: 'hsl(176,55%,29%)' },
+  food: { label: '餐廳', emoji: '🍽️', band: 'hsl(20,68%,37%)' }
 };
+// 地點的顯示等級（travel.json 的 tier）：第 1 級一直顯示，第 2、3 級要放大到這個圖磚層級才出現
+const TIER_Z = [0, 9.3, 10.5];
 const TW_PAN = [116.8, 20.9, 123.6, 27.3]; // 可拖曳的基本範圍（西、南、東、北），寬螢幕會再往外擴
 
 async function loadTravel() {
@@ -1630,7 +1639,7 @@ function areaTransform(key) {
 function flyTo(tr) {
   (state.anim ? svg.transition().duration(900).ease(d3.easeCubicInOut) : svg).call(zoomB.transform, constrainT(tr));
 }
-// 放大到這幾個地點（群組點一下、詳情卡的「放大到這裡」）
+// 放大到這幾個地點（詳情卡的「放大到這裡」）
 function zoomToSpots(list) {
   const lons = list.map((s) => s.lon), lats = list.map((s) => s.lat);
   const cx = (Math.min(...lons) + Math.max(...lons)) / 2, cy = (Math.min(...lats) + Math.max(...lats)) / 2;
@@ -1661,11 +1670,8 @@ function buildPoi(g) {
   pin.append('ellipse').attr('class', 'ring');
   pin.append('ellipse').attr('class', 'shadow').attr('filter', 'url(#soft)');
   pin.append('g').attr('class', 'ico').append('image').attr('filter', 'url(#cast)').attr('preserveAspectRatio', 'xMidYMax meet');
-  const cnt = pin.append('g').attr('class', 'cnt');
-  cnt.append('circle'); cnt.append('text');
   const b = buildBanner(g);
   b.append('text').attr('class', 't1');
-  b.append('text').attr('class', 't2 cat');
 }
 function layoutTravel() {
   const tv = state.travel;
@@ -1673,55 +1679,74 @@ function layoutTravel() {
   const z = Math.max(28, Math.min(42, 14 + Math.log2(state.t.k) * 2.4)); // 圖示大小，放大時略大
   // 介面蓋住的地方不放旗幟
   const rs = uiRects(['#chips', '#hud']);
-  // 太近的地點合成一個群組（顯示數量，點一下放大），像 Google 地圖縮小時那樣
-  const groups = [];
+  // 顯示等級：縮小時只出現第 1 級（必去），放大到 TIER_Z 才陸續出現第 2、3 級（像遊戲地圖的地標分級）。
+  // 先放等級高的（同級照 travel.json 的順序），圖示和已放的地點疊在一起就先不畫，放大後自然會分開。
+  const tz = tileZoom(), list = [];
   for (const s of tv.spots) {
+    const t = s.tier || 3;
+    if (tz < TIER_Z[t - 1]) continue;
     const [x, y] = screenXY(s.lon, s.lat);
     if (x < -60 || x > W + 60 || y < -60 || y > H + 60) continue;
-    const g = groups.find((q) => Math.hypot(q.x - x, q.y - y) < z * 1.6);
-    if (g) { g.m.push(s); g.x = (g.x * (g.m.length - 1) + x) / g.m.length; g.y = (g.y * (g.m.length - 1) + y) / g.m.length; }
-    else groups.push({ x, y, m: [s] });
+    list.push({ s, t, x, y });
   }
-  for (const g of groups) { g.key = g.m.map((s) => s.id).join('+'); rs.push({ x: g.x - z * 0.6, y: g.y - z * 1.05, w: z * 1.2, h: z * 1.25 }); }
+  list.sort((a, b) => a.t - b.t);
+  // 一級一級放：同一級先放完所有圖示（和已放的圖示、上一級的旗幟重疊就先不畫），再替這一級找旗幟位置。
+  // 這樣等級高的地點一定先出現、先拿到旗幟，等級低的只補在空位上。介面（rs 一開始那幾個）只擋旗幟、不擋圖示。
+  const ui = rs.length, placed = [], shown = [];
+  for (let t = 1; t <= 3; t++) {
+    const lv = [];
+    for (const d of list) {
+      if (d.t !== t) continue;
+      const ri = { x: d.x - z * 0.48, y: d.y - z * 0.95, w: z * 0.96, h: z * 1.05 };
+      if (placed.some((q) => inter(ri, q) > 0)) continue;
+      placed.push(ri); lv.push(d);
+    }
+    for (const d of lv) placeTag(d);
+  }
+  function placeTag(d) {
+    d.w = Math.ceil(Math.max(56, textWidthOf(d.s.name) + 22)); d.h = 26;
+    const cands = [
+      { x: d.x - d.w / 2, y: d.y - z * 1.05 - d.h - 6, pos: 'up' },
+      { x: d.x + z * 0.6 + 4, y: d.y - z * 0.5 - d.h / 2, pos: 'right' },
+      { x: d.x - z * 0.6 - 4 - d.w, y: d.y - z * 0.5 - d.h / 2, pos: 'left' },
+      { x: d.x - d.w / 2, y: d.y + z * 0.25 + 4, pos: 'down' }
+    ];
+    d.c = cands.find((c) => {
+      const r = { x: c.x, y: c.y, w: d.w, h: d.h };
+      return r.x >= 2 && r.y >= 2 && r.x + d.w <= W - 2 && r.y + d.h <= H - 2 &&
+        !rs.slice(0, ui).some((q) => inter(r, q) > 0) && !placed.some((q) => inter(r, q) > 0);
+    }) || null;
+    if (d.c) placed.push({ x: d.c.x, y: d.c.y, w: d.w, h: d.h });
+    shown.push(d);
+  }
+  rs.push(...placed);
 
-  const sel = gPoi.selectAll('g.poi').data(groups, (d) => d.key);
+  const sel = gPoi.selectAll('g.poi').data(shown, (d) => d.s.id);
   sel.exit().remove();
   const en = sel.enter().append('g').attr('class', 'poi mk').attr('role', 'button').attr('tabindex', 0)
-    .on('click', (e, d) => (d.m.length > 1 ? zoomToSpots(d.m) : openSpot(d.m[0])))
-    .on('keydown', (e, d) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); d.m.length > 1 ? zoomToSpots(d.m) : openSpot(d.m[0]); } });
+    .on('click', (e, d) => openSpot(d.s))
+    .on('keydown', (e, d) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openSpot(d.s); } });
   en.each(function () { buildPoi(d3.select(this)); });
-  en.merge(sel).each(function (d) {
-    const s = d3.select(this), n = d.m.length, sp = d.m[0], cat = TRAVEL_CATS[sp.cat] || TRAVEL_CATS.sight;
-    const name = n > 1 ? `${sp.county} ${n} 個地點` : sp.name;
-    const sub = n > 1 ? '點一下放大' : `${cat.label} · ${sp.county.replace(/[縣市]$/, '')}${sp.town || ''}`;
-    s.attrQ('transform', `translate(${d.x.toFixed(1)},${d.y.toFixed(1)})`).attrQ('aria-label', `${name}（${sub}）`);
+  // 旗幟照優先順序（shown 的順序）搶位置，不照 DOM 順序（DOM 為了疊放順序是反過來排的）
+  const node = new Map();
+  en.merge(sel).each(function (d) { node.set(d.s.id, this); });
+  for (const d of shown) {
+    const s = d3.select(node.get(d.s.id)), sp = d.s, cat = TRAVEL_CATS[sp.cat] || TRAVEL_CATS.sight;
+    // 旗幟只寫名稱，分類用色帶顏色分（景點青綠、餐廳橘棕）
+    s.attrQ('transform', `translate(${d.x.toFixed(1)},${d.y.toFixed(1)})`).attrQ('aria-label', `${sp.name}（${cat.label}）`);
     sizeFigure(s, s.select('.ico image').attrQ('href', `assets/travel/${sp.icon}.png`), z);
-    s.select('.cnt').styleQ('display', n > 1 ? null : 'none');
-    s.select('.cnt circle').attrQ('cx', z * 0.4).attrQ('cy', -z * 0.9).attrQ('r', 8.5);
-    s.select('.cnt text').attrQ('x', z * 0.4).attrQ('y', -z * 0.9).textQ(n);
 
-    // 旗幟大小依文字長度
-    const b = s.select('.bubble');
-    const t1 = b.select('.t1').textQ(name), t2 = b.select('.t2').textQ(sub);
-    const w = Math.ceil(Math.max(84, textWidth(t1.node()) + 24, textWidth(t2.node()) + 18)), h = 40;
-    const cands = [
-      { x: d.x - w / 2, y: d.y - z * 1.05 - h - 6, pos: 'up' },
-      { x: d.x + z * 0.6 + 4, y: d.y - z * 0.5 - h / 2, pos: 'right' },
-      { x: d.x - z * 0.6 - 4 - w, y: d.y - z * 0.5 - h / 2, pos: 'left' },
-      { x: d.x - w / 2, y: d.y + z * 0.25 + 4, pos: 'down' }
-    ];
-    const c = cands.find((c) => {
-      const r = { x: c.x, y: c.y, w, h };
-      return r.x >= 2 && r.y >= 2 && r.x + w <= W - 2 && r.y + h <= H - 2 && !rs.some((q) => inter(r, q) > 0);
-    });
-    if (!c) { b.styleQ('display', 'none'); return; }
-    rs.push({ x: c.x, y: c.y, w, h });
+    // 旗幟（位置上面已經算好；找不到空位就只畫圖示）
+    const b = s.select('.bubble'), t1 = b.select('.t1').textQ(sp.name), c = d.c, w = d.w, h = d.h;
+    if (!c) { b.styleQ('display', 'none'); continue; }
     const bx = Math.round(c.x), by = Math.round(c.y);
     b.styleQ('display', null).attrQ('transform', `translate(${bx - d.x},${by - d.y})`);
-    drawBanner(b, w, h, { bg: 'url(#bannerBg)', band: n > 1 ? 'hsl(40,55%,30%)' : cat.band, tail: c.pos === 'up' });
-    t1.attrQ('x', w / 2).attrQ('y', 12.5);
-    t2.attrQ('x', w / 2).attrQ('y', 30);
-  });
+    drawBanner(b, w, h, { bg: 'url(#bannerBg)', band: cat.band, tail: c.pos === 'up', bandH: h - 6 });
+    t1.attrQ('x', w / 2).attrQ('y', h / 2);
+  }
+  // 等級高的畫在最上面（後畫的蓋前面）；順序沒變就不動 DOM（拖曳時每幀都會跑到這裡）
+  const want = shown.map((d) => node.get(d.s.id)).reverse(), cur = gPoi.node().children;
+  if (want.some((n, i) => cur[i] !== n)) for (const n of want) gPoi.node().appendChild(n);
   layoutRoadTags(rs); // 道路編號牌最後放，讓位給地點旗幟
 }
 
@@ -1829,7 +1854,9 @@ function renderHud() {
   if (state.layer === 'travel' && state.travel) {
     // 旅遊地圖沒有情緒條（CSS 隱藏），狀態列改成各分類的地點數
     const n = (c) => state.travel.spots.filter((s) => s.cat === c).length;
-    $('#statusLine').textContent = '✈️ 台灣旅遊 · ' + Object.entries(TRAVEL_CATS).map(([c, v]) => `${v.emoji} ${v.label} ${n(c)}`).join(' · ');
+    // 旗幟不寫分類了，狀態列附上色塊當圖例
+    $('#statusLine').innerHTML = '✈️ 台灣旅遊 · ' + Object.entries(TRAVEL_CATS).map(([c, v]) =>
+      `<i class="cat-sw" style="background:${v.band}" aria-hidden="true"></i>${v.label} ${n(c)}`).join(' · ');
     return;
   }
   const open = state.maps.filter((m) => marketStatus(m) === 'open');
