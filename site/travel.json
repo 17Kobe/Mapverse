@@ -151,16 +151,76 @@
       "desc": "宜蘭市區的城市度假飯店，親子設施豐富，樓上餐廳的櫻桃鴨很有名。"
     },
     {
-      "id": "the-archipelago", "tier": 3, "cat": "hotel", "name": "凱渡廣場酒店", "full": "凱渡廣場酒店 THE ARCHIPELAGO",
+      "id": "the-archipelago", "tier": 2, "cat": "hotel", "name": "凱渡廣場酒店", "full": "凱渡廣場酒店 THE ARCHIPELAGO",
       "icon": "bed", "county": "宜蘭縣", "town": "頭城鎮",
       "addr": "宜蘭縣頭城鎮烏石港路 300 號", "lon": 121.8402, "lat": 24.8711,
       "desc": "烏石港旁的海景度假酒店，有海水泳池和漂漂河。"
     },
     {
-      "id": "moment-yilan", "tier": 3, "cat": "hotel", "name": "煙波花時間", "full": "煙波花時間 宜蘭傳藝",
+      "id": "moment-yilan", "tier": 2, "cat": "hotel", "name": "煙波花時間", "full": "煙波花時間 宜蘭傳藝",
       "icon": "hotel", "county": "宜蘭縣", "town": "五結鄉",
       "addr": "宜蘭縣五結鄉五濱路二段 201 號", "lon": 121.8256, "lat": 24.6874,
       "desc": "國立傳統藝術中心園區旁的飯店，住宿可以免費進傳藝中心。"
+    },
+    {
+      "id": "annong-bald-cypress", "tier": 2, "cat": "sight", "name": "安農溪落羽松", "full": "安農溪落羽松秘境",
+      "icon": "fallen-leaf", "county": "宜蘭縣", "town": "三星鄉",
+      "addr": "宜蘭縣三星鄉照林路二段 103 號附近", "lon": 121.6774, "lat": 24.6704,
+      "desc": "安農溪畔的兩排落羽松，秋冬轉成橘紅色，倒映在水圳裡很好拍。"
+    },
+    {
+      "id": "bnb-8688", "tier": 3, "cat": "hotel", "name": "86.88 B&B", "full": "86.88 B&B 民宿",
+      "icon": "house-with-garden", "county": "宜蘭縣", "town": "三星鄉",
+      "addr": "宜蘭縣三星鄉（安農溪畔）", "lon": 121.6725, "lat": 24.6692,
+      "desc": "三星安農溪畔的民宿，散步就能到分洪堰和落羽松秘境。"
+    },
+    {
+      "id": "luodong-red-bean-tangyuan", "tier": 3, "cat": "food", "name": "羅東紅豆湯圓", "full": "羅東紅豆湯圓",
+      "icon": "bowl-with-spoon", "county": "宜蘭縣", "town": "羅東鎮",
+      "addr": "宜蘭縣羅東鎮中山路三段 180 號", "lon": 121.7704, "lat": 24.6749,
+      "desc": "羅東夜市旁的老字號甜湯，紅豆湯、湯圓簡單幾樣，銅板價。"
+    },
+    {
+      "id": "bingxue-luodong", "tier": 2, "cat": "food", "name": "冰雪雪花冰", "full": "冰雪冷飲部 雪花冰（羅東）",
+      "icon": "snowflake", "county": "宜蘭縣", "town": "羅東鎮",
+      "addr": "宜蘭縣羅東鎮振泰街 41 號", "lon": 121.7698, "lat": 24.6761,
+      "desc": "羅東夜市一帶的雪花冰店，口味多、冰體綿密，逛夜市順路吃。"
+    },
+    {
+      "id": "manzhuan-lou", "tier": 3, "cat": "food", "name": "滿饌樓", "full": "滿饌樓",
+      "icon": "pot-of-food", "county": "宜蘭縣", "town": "五結鄉",
+      "addr": "宜蘭縣五結鄉五濱路二段 201 號（傳藝園區內）", "lon": 121.8243, "lat": 24.6845,
+      "desc": "宜蘭傳藝園區裡的中式餐廳，逛園區可以順便用餐。"
+    },
+    {
+      "id": "yimite-factory", "tier": 2, "cat": "food", "name": "一米特觀光工廠", "full": "一米特米食點心觀光工廠",
+      "icon": "rice-cracker", "county": "宜蘭縣", "town": "蘇澳鎮",
+      "addr": "宜蘭縣蘇澳鎮祥和路 199 號", "lon": 121.8305, "lat": 24.6168,
+      "desc": "以米食點心為主題的觀光工廠，可以參觀、試吃和買伴手禮。"
+    },
+    {
+      "id": "guichang-squid", "tier": 3, "cat": "food", "name": "豪記魷魚絲", "full": "桂昌商行 豪記魷魚絲",
+      "icon": "squid", "county": "宜蘭縣", "town": "蘇澳鎮",
+      "addr": "宜蘭縣蘇澳鎮南安路 86 號", "lon": 121.8672, "lat": 24.5829,
+      "desc": "南方澳的海產乾貨老店，招牌魷魚絲，是逛漁港的伴手禮。"
+    },
+    {
+      "id": "doufu-bunker", "tier": 3, "cat": "sight", "name": "一坪海岸窗口碉堡", "full": "豆腐岬 一坪海岸窗口碉堡",
+      "icon": "window", "county": "宜蘭縣", "town": "蘇澳鎮",
+      "addr": "宜蘭縣蘇澳鎮南方澳（豆腐岬旁海岸）", "lon": 121.8717, "lat": 24.5788,
+      "desc": "豆腐岬旁海岸的舊碉堡，從射口窗望出去像一幅框起來的海景。"
+    },
+    {
+      "id": "shunjin-preserves", "tier": 3, "cat": "food", "name": "順進蜜餞行", "full": "順進蜜餞行",
+      "icon": "candy", "county": "宜蘭縣", "town": "冬山鄉",
+      "addr": "宜蘭縣冬山鄉大進路 438 號", "lon": 121.7132, "lat": 24.6334,
+      "desc": "冬山大進的蜜餞工廠門市，金棗、烏梅、芭樂乾等古早味蜜餞。"
+    },
+    {
+      "id": "bitou-bridge-truck", "tier": 3, "cat": "food", "name": "鼻頭橋貨車小吃攤", "full": "鼻頭橋貨車小吃攤",
+      "icon": "delivery-truck", "county": "宜蘭縣", "town": "冬山鄉",
+      "addr": "宜蘭縣冬山鄉大進村 鼻頭橋旁", "lon": 121.7239, "lat": 24.6507,
+      "desc": "安農溪鼻頭橋邊停著的貨車小吃攤，在地人路過常停下來買。"
     }
   ]
 }

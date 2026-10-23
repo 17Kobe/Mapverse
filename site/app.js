@@ -1374,6 +1374,9 @@ const TRAVEL_CATS = {
 };
 // 地點的顯示等級（travel.json 的 tier）：第 1 級一直顯示，第 2、3 級要放大到這個圖磚層級才出現
 const TIER_Z = [0, 9.3, 10.5];
+// 放大到這個層級（街道等級）還疊在一起的地點，往旁邊挪開一個圖示寬；依序試右、左、右下、左下、右上、左上、下、上
+const SPREAD_Z = 13;
+const SPREAD_DIRS = [[1, 0], [-1, 0], [0.75, 0.75], [-0.75, 0.75], [0.75, -0.75], [-0.75, -0.75], [0, 1], [0, -1]];
 const TW_PAN = [116.8, 20.9, 123.6, 27.3]; // 可拖曳的基本範圍（西、南、東、北），寬螢幕會再往外擴
 
 async function loadTravel() {
@@ -1693,10 +1696,18 @@ function layoutTravel() {
   }
   list.sort((a, b) => a.t - b.t);
   // 1) 照優先順序放圖示：和已放的圖示疊在一起就先不畫（放大後自然會分開）。
-  const cand = [];
+  //    但放大到街道等級（SPREAD_Z）還疊在一起，代表兩個地點本來就在同一處（例如傳藝中心和園區裡的飯店），
+  //    再放大也分不開，這時把後面那個往旁邊挪一個圖示寬（約百公尺），兩個都顯示。
+  const cand = [], icoR = (x, y) => ({ x: x - z * 0.48, y: y - z * 0.95, w: z * 0.96, h: z * 1.05 });
+  const hitIco = (r) => cand.some((q) => inter(r, q.ri) > 0);
   for (const d of list) {
-    d.ri = { x: d.x - z * 0.48, y: d.y - z * 0.95, w: z * 0.96, h: z * 1.05 };
-    if (cand.some((q) => inter(d.ri, q.ri) > 0)) continue;
+    d.ri = icoR(d.x, d.y);
+    if (hitIco(d.ri)) {
+      if (tz < SPREAD_Z) continue;
+      const spot = SPREAD_DIRS.map(([dx, dy]) => [d.x + dx * z * 1.05, d.y + dy * z * 1.05]).find(([x, y]) => !hitIco(icoR(x, y)));
+      if (!spot) continue;
+      [d.x, d.y] = spot; d.ri = icoR(d.x, d.y);
+    }
     cand.push(d);
   }
   // 2) 照優先順序找旗幟位置：不能壓到介面、別的旗幟、比自己優先的圖示；
