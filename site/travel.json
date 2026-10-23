@@ -475,7 +475,7 @@
       "desc": "大溪老街上的糯米腸專賣店，邊逛老街邊吃。"
     },
     {
-      "id": "daxi-lai-douhua", "tier": 3, "cat": "food", "name": "大溪賴祖傳豆花", "full": "大溪賴祖傳豆花",
+      "id": "daxi-lai-douhua", "tier": 1, "cat": "food", "name": "大溪賴祖傳豆花", "full": "大溪賴祖傳豆花",
       "icon": "custard", "county": "桃園市", "town": "大溪區",
       "addr": "桃園市大溪區仁和路一段 59 號", "lon": 121.2778, "lat": 24.8983,
       "desc": "大溪在地的傳統豆花，豆香濃、配料簡單。"
@@ -581,6 +581,72 @@
       "icon": "bowl-with-spoon", "county": "桃園市", "town": "龜山區",
       "addr": "桃園市龜山區文化二路 5 號（分店待確認）", "lon": 121.3646, "lat": 25.0614,
       "desc": "福州乾拌麵，香蔥豬油拌細麵，配一碗餛飩湯。"
+    },
+    {
+      "id": "puxin-ranch", "tier": 2, "cat": "sight", "name": "埔心牧場", "full": "埔心牧場",
+      "icon": "cow-face", "county": "桃園市", "town": "楊梅區",
+      "addr": "桃園市楊梅區幼獅路一段", "lon": 121.1784, "lat": 24.9263,
+      "desc": "楊梅的親子牧場，可以餵乳牛、羊駝和小動物，也有乳製品和草地野餐區。"
+    },
+    {
+      "id": "baohaojia-scallion-bun", "tier": 3, "cat": "food", "name": "包好甲蔥燒包", "full": "包好甲蔥燒包",
+      "icon": "dumpling", "county": "桃園市", "town": "中壢區",
+      "addr": "桃園市中壢區實踐路 80 巷", "lon": 121.2410, "lat": 24.9554,
+      "desc": "中壢的蔥燒包，外皮煎得酥脆、蔥香濃，內餡多汁。"
+    },
+    {
+      "id": "jiale-cake-zhongli", "tier": 3, "cat": "food", "name": "佳樂精緻蛋糕專賣店", "full": "佳樂精緻蛋糕專賣店（中壢店）",
+      "icon": "shortcake", "county": "桃園市", "town": "中壢區",
+      "addr": "桃園市中壢區中北路二段 418 號", "lon": 121.2328, "lat": 24.9544,
+      "desc": "中壢的人氣蛋糕店，波士頓派、乳酪蛋糕是招牌，常被當成桃園伴手禮。"
+    },
+    {
+      "id": "ahan-thai", "tier": 3, "cat": "food", "name": "阿含 Thai", "full": "阿含 thai",
+      "icon": "curry-rice", "county": "桃園市", "town": "中壢區",
+      "addr": "桃園市中壢區龍平路（忠貞商圈）", "lon": 121.2545, "lat": 24.9293,
+      "desc": "忠貞新村一帶的泰式料理，滇緬與泰式風味的小吃。"
+    },
+    {
+      "id": "danan-forest-park", "tier": 3, "cat": "sight", "name": "大湳森林公園", "full": "大湳森林公園",
+      "icon": "evergreen-tree", "county": "桃園市", "town": "八德區",
+      "addr": "桃園市八德區中興街 25 號", "lon": 121.2835, "lat": 24.9266,
+      "desc": "八德的森林公園，林蔭步道和草地很適合散步、騎車。"
+    },
+    {
+      "id": "zhongxing-flower-farm", "tier": 3, "cat": "sight", "name": "中興花卉農場", "full": "中興花卉農場",
+      "icon": "bouquet", "county": "桃園市", "town": "復興區",
+      "addr": "桃園市復興區三民里大窩 4-1 號", "lon": 121.3517, "lat": 24.8441,
+      "desc": "北橫三民一帶的花卉農場，種植各種花卉與園藝植物。"
+    },
+    {
+      "id": "lunping-cultural-landscape", "tier": 2, "cat": "sight", "name": "崙坪文化地景園區", "full": "崙坪文化地景園區",
+      "icon": "house-with-garden", "county": "桃園市", "town": "觀音區",
+      "addr": "桃園市觀音區福山路一段 318 巷 26 號", "lon": 121.1659, "lat": 24.9993,
+      "desc": "觀音崙坪的客家聚落地景園區，有向日葵、波斯菊花海、稻田和三合院。"
+    },
+    {
+      "id": "taoyuan-agri-expo", "tier": 2, "cat": "sight", "name": "桃園農業博覽會", "full": "桃園農業博覽會",
+      "icon": "sheaf-of-rice", "county": "桃園市", "town": "新屋區",
+      "addr": "桃園市新屋區（農博園區，位置待確認）", "lon": 121.0477, "lat": 25.0057,
+      "desc": "桃園的年度農業博覽會，以農特產展售、體驗活動和花海為主。"
+    },
+    {
+      "id": "beigang-fried-chicken-hukou", "tier": 3, "cat": "food", "name": "北港鹽酥雞", "full": "北港鹽酥雞（湖口）",
+      "icon": "poultry-leg", "county": "新竹縣", "town": "湖口鄉",
+      "addr": "新竹縣湖口鄉中山路二段 143 號", "lon": 121.0449, "lat": 24.9040,
+      "desc": "湖口人從小吃到大的鹽酥雞，大塊碳烤雞排和炸物、烤串都有。"
+    },
+    {
+      "id": "bafangyuan-hakka", "tier": 2, "cat": "food", "name": "八方園百年三合院", "full": "八方園百年三合院景觀客家餐廳",
+      "icon": "house", "county": "桃園市", "town": "楊梅區",
+      "addr": "桃園市楊梅區校前路 580 號", "lon": 121.1463, "lat": 24.8946,
+      "desc": "百年三合院改成的客家餐廳，有地瓜飯吃到飽和客家手路菜。"
+    },
+    {
+      "id": "yuchuanyan-fusion", "tier": 3, "cat": "food", "name": "漁川宴創意料理", "full": "漁川宴創意料理",
+      "icon": "fish", "county": "桃園市", "town": "楊梅區",
+      "addr": "桃園市楊梅區中山南路 302 號", "lon": 121.1345, "lat": 24.9069,
+      "desc": "楊梅的創意料理餐廳，以魚料理和合菜為主。"
     }
   ]
 }
