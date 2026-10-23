@@ -1405,7 +1405,8 @@ const TRAVEL_CATS = {
   // 色帶要亮：地圖上是深綠山林，太暗的底色會和地形混在一起
   sight: { label: '景點', emoji: '📸', band: 'hsl(172,78%,37%)' },
   food: { label: '餐廳', emoji: '🍽️', band: 'hsl(24,92%,49%)' },
-  hotel: { label: '飯店', emoji: '🏨', band: 'hsl(268,62%,56%)' }
+  hotel: { label: '飯店', emoji: '🏨', band: 'hsl(268,62%,56%)' },
+  event: { label: '活動', emoji: '🎉', band: 'hsl(338,80%,55%)' }
 };
 // 地點的顯示等級（travel.json 的 tier）：第 1 級一直顯示，第 2、3 級要放大到這個圖磚層級才出現
 const TIER_Z = [0, 9.3, 10.5];
@@ -1699,7 +1700,7 @@ function openSpot(s) {
     <div class="hd"><span class="big"><img class="beast3d" src="assets/travel/${esc(s.icon)}.png" alt=""></span>
       <div><div class="nm">${esc(s.name)}</div><div class="sym">${cat.emoji} ${cat.label} · ${esc(s.county)}${esc(s.town)}</div></div></div>
     <p class="desc">${esc(s.desc)}</p>
-    <div class="meta">${s.full ? `<div><b>名稱</b>　${esc(s.full)}</div>` : ''}${s.addr ? `<div><b>地址</b>　${esc(s.addr)}</div>` : ''}</div>
+    <div class="meta">${s.full ? `<div><b>名稱</b>　${esc(s.full)}</div>` : ''}${s.months ? `<div><b>通常月份</b>　${esc(s.months)}</div>` : ''}${s.note ? `<div><b>備註</b>　${esc(s.note)}</div>` : ''}${s.addr ? `<div><b>地址</b>　${esc(s.addr)}</div>` : ''}</div>
     <a class="big-btn gbtn" href="https://www.google.com/maps/search/?api=1&amp;query=${q}" target="_blank" rel="noopener noreferrer">🗺️ 在 Google 地圖開啟</a>
     <button class="big-btn gbtn" data-act="zoom-spot" data-id="${esc(s.id)}">🔍 放大到這裡</button>`);
 }
@@ -1912,7 +1913,7 @@ function renderHud() {
     // 旅遊地圖沒有情緒條（CSS 隱藏），狀態列改成各分類的地點數
     const n = (c) => state.travel.spots.filter((s) => s.cat === c).length;
     // 旗幟不寫分類了，狀態列附上色塊當圖例
-    $('#statusLine').innerHTML = '✈️ 台灣旅遊 · ' + Object.entries(TRAVEL_CATS).map(([c, v]) =>
+    $('#statusLine').innerHTML = '✈️ ' + Object.entries(TRAVEL_CATS).map(([c, v]) =>
       `<i class="cat-sw" style="background:${v.band}" aria-hidden="true"></i>${v.label} ${n(c)}`).join(' · ');
     return;
   }
