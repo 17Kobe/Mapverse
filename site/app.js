@@ -1693,12 +1693,17 @@ function zoomToSpots(list) {
   } else flyTo(tr);
 }
 
+// 活動的名稱前面加上通常月份（例如「7–8月 宜蘭童玩節」），其它分類只顯示名稱
+function spotLabel(s) {
+  return s.cat === 'event' && s.months ? `${s.months} ${s.name}` : s.name;
+}
+
 function openSpot(s) {
   const cat = TRAVEL_CATS[s.cat] || TRAVEL_CATS.sight;
   const q = encodeURIComponent(`${s.full || s.name} ${s.addr || ''}`.trim());
   showSheet(`
     <div class="hd"><span class="big"><img class="beast3d" src="assets/travel/${esc(s.icon)}.png" alt=""></span>
-      <div><div class="nm">${esc(s.name)}</div><div class="sym">${cat.emoji} ${cat.label} · ${esc(s.county)}${esc(s.town)}</div></div></div>
+      <div><div class="nm">${esc(spotLabel(s))}</div><div class="sym">${cat.emoji} ${cat.label} · ${esc(s.county)}${esc(s.town)}</div></div></div>
     <p class="desc">${esc(s.desc)}</p>
     <div class="meta">${s.full ? `<div><b>名稱</b>　${esc(s.full)}</div>` : ''}${s.months ? `<div><b>通常月份</b>　${esc(s.months)}</div>` : ''}${s.note ? `<div><b>備註</b>　${esc(s.note)}</div>` : ''}${s.addr ? `<div><b>地址</b>　${esc(s.addr)}</div>` : ''}</div>
     <a class="big-btn gbtn" href="https://www.google.com/maps/search/?api=1&amp;query=${q}" target="_blank" rel="noopener noreferrer">🗺️ 在 Google 地圖開啟</a>
@@ -1741,7 +1746,11 @@ function layoutTravel() {
     d.ri = icoR(d.x, d.y);
     if (hitIco(d.ri)) {
       if (tz < SPREAD_Z && d.t > 1) continue;
-      const spot = SPREAD_DIRS.map(([dx, dy]) => [d.x + dx * z * 1.05, d.y + dy * z * 1.05]).find(([x, y]) => !hitIco(icoR(x, y)));
+      // 第 1 級一定要出現：一圈挪不開就繼續往外找（最多 3 圈）
+      let spot = null;
+      for (let ring = 1; ring <= (d.t === 1 ? 3 : 1) && !spot; ring++) {
+        spot = SPREAD_DIRS.map(([dx, dy]) => [d.x + dx * z * 1.05 * ring, d.y + dy * z * 1.05 * ring]).find(([x, y]) => !hitIco(icoR(x, y)));
+      }
       if (!spot) continue;
       [d.x, d.y] = spot; d.ri = icoR(d.x, d.y);
     }
@@ -1753,7 +1762,7 @@ function layoutTravel() {
   const tags = [], drop = new Set();
   cand.forEach((d, i) => {
     if (drop.has(d)) return;
-    d.w = Math.ceil(Math.max(56, textWidthOf(d.s.name) + 22)); d.h = 26;
+    d.w = Math.ceil(Math.max(56, textWidthOf(spotLabel(d.s)) + 22)); d.h = 26;
     const cands = [
       { x: d.x - d.w / 2, y: d.y - z * 1.05 - d.h - 6, pos: 'up' },
       { x: d.x + z * 0.6 + 4, y: d.y - z * 0.5 - d.h / 2, pos: 'right' },
@@ -1768,7 +1777,8 @@ function layoutTravel() {
       if (cand.some((q, j) => j <= i && !drop.has(q) && inter(r, q.ri) > 0)) continue;
       const hit = cand.filter((q, j) => j > i && !drop.has(q) && inter(r, q.ri) > 0);
       if (!hit.length) { best = c; bestHit = []; break; }
-      if (!best) { best = c; bestHit = hit; }
+      // 第 1 級的圖示不能被別人的旗幟蓋掉
+      if (!best && !hit.some((q) => q.t === 1)) { best = c; bestHit = hit; }
     }
     d.c = best;
     if (!best) return;
@@ -1790,11 +1800,11 @@ function layoutTravel() {
   for (const d of shown) {
     const s = d3.select(node.get(d.s.id)), sp = d.s, cat = TRAVEL_CATS[sp.cat] || TRAVEL_CATS.sight;
     // 旗幟只寫名稱，分類用色帶顏色分（景點青綠、餐廳橘、飯店紫）
-    s.attrQ('transform', `translate(${d.x.toFixed(1)},${d.y.toFixed(1)})`).attrQ('aria-label', `${sp.name}（${cat.label}）`);
+    s.attrQ('transform', `translate(${d.x.toFixed(1)},${d.y.toFixed(1)})`).attrQ('aria-label', `${spotLabel(sp)}（${cat.label}）`);
     sizeFigure(s, s.select('.ico image').attrQ('href', `assets/travel/${sp.icon}.png`), z);
 
     // 旗幟（位置上面已經算好；找不到空位就只畫圖示）
-    const b = s.select('.bubble'), t1 = b.select('.t1').textQ(sp.name), c = d.c, w = d.w, h = d.h;
+    const b = s.select('.bubble'), t1 = b.select('.t1').textQ(spotLabel(sp)), c = d.c, w = d.w, h = d.h;
     if (!c) { b.styleQ('display', 'none'); continue; }
     const bx = Math.round(c.x), by = Math.round(c.y);
     b.styleQ('display', null).attrQ('transform', `translate(${bx - d.x},${by - d.y})`);

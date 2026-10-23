@@ -818,7 +818,7 @@
     },
     {
       "id": "earthquake-921-museum",
-      "tier": 1,
+      "tier": 2,
       "cat": "sight",
       "name": "921地震教育園區",
       "full": "國立自然科學博物館 921地震教育園區",
@@ -846,7 +846,7 @@
     },
     {
       "id": "jiji-green-tunnel",
-      "tier": 1,
+      "tier": 2,
       "cat": "sight",
       "name": "集集綠色隧道",
       "full": "集集綠色隧道",
@@ -2358,7 +2358,7 @@
     },
     {
       "id": "longkeng-reserve",
-      "tier": 3,
+      "tier": 1,
       "cat": "sight",
       "name": "龍坑生態保護區",
       "full": "龍坑生態保護區",
@@ -2386,7 +2386,7 @@
     },
     {
       "id": "baisha-bay-kenting",
-      "tier": 2,
+      "tier": 1,
       "cat": "sight",
       "name": "墾丁白沙灣",
       "full": "墾丁白沙灣",
@@ -2792,7 +2792,7 @@
     },
     {
       "id": "kaohsiung-greenery-park",
-      "tier": 3,
+      "tier": 1,
       "cat": "sight",
       "name": "高雄果嶺自然公園",
       "full": "高雄果嶺自然公園",
@@ -3658,7 +3658,7 @@
     },
     {
       "id": "event-sml-swim",
-      "tier": 3,
+      "tier": 1,
       "cat": "event",
       "name": "日月潭萬人泳渡",
       "full": "日月潭國際萬人泳渡",
