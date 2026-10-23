@@ -565,7 +565,7 @@ function drawClouds(dt) {
   const ctx = cctx, t = state.t, k = t.k, ww = S0 * k;
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-  const fade = Math.max(0, Math.min(1, (4.5 - k) / 2.5)); // 放大到 4.5 倍以上就看不到雲
+  const fade = state.layer === 'travel' ? 0 : Math.max(0, Math.min(1, (4.5 - k) / 2.5)); // 旅遊地圖不放雲；放大到 4.5 倍以上就看不到雲
   if (!fade) return;
   if (state.anim && !reduceMotion.matches) cloudT += dt;
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -1710,19 +1710,28 @@ function openSpot(s) {
     <button class="big-btn gbtn" data-act="zoom-spot" data-id="${esc(s.id)}">🔍 放大到這裡</button>`);
 }
 
-// 地點標記：3D 圖示站在地圖上 + 文明帝國式旗幟（和股市的城市旗幟同款）
+// 地點標記：一顆小水滴圖釘（顏色依分類，不會動）+ 文明帝國式旗幟（和股市的城市旗幟同款）
 function buildPoi(g) {
   const pin = g.append('g').attr('class', 'pin');
-  pin.append('ellipse').attr('class', 'ring');
+  pin.append('circle').attr('class', 'tap').attr('fill', 'transparent');
   pin.append('ellipse').attr('class', 'shadow').attr('filter', 'url(#soft)');
-  pin.append('g').attr('class', 'ico').append('image').attr('filter', 'url(#cast)').attr('preserveAspectRatio', 'xMidYMax meet');
+  const dot = pin.append('g').attr('class', 'dot');
+  dot.append('path').attr('class', 'drop').attr('d', 'M0,0C-0.12,-0.26 -0.4,-0.42 -0.4,-0.66A0.4,0.4 0 1 1 0.4,-0.66C0.4,-0.42 0.12,-0.26 0,0Z');
+  dot.append('circle').attr('class', 'eye').attr('cy', -0.66).attr('r', 0.15);
   const b = buildBanner(g);
   b.append('text').attr('class', 't1');
+}
+function sizePin(g, z, color) {
+  g.select('.shadow').attrQ('rx', z * 0.26).attrQ('ry', z * 0.08).attrQ('cy', -z * 0.01);
+  g.select('.tap').attrQ('r', Math.max(z * 0.6, 14)).attrQ('cy', -z * 0.5);
+  g.select('.dot').attrQ('transform', `scale(${z.toFixed(2)})`);
+  g.select('.drop').attrQ('fill', color);
 }
 function layoutTravel() {
   const tv = state.travel;
   if (!tv) return;
-  const z = Math.max(28, Math.min(42, 14 + Math.log2(state.t.k) * 2.4)); // 圖示大小，放大時略大
+  // 圖示大小，放大時略大（地點圖示是一顆小水滴，不佔空間）
+  const z = 18 + (Math.max(28, Math.min(42, 14 + Math.log2(state.t.k) * 2.4)) - 28) * 0.57;
   // 介面蓋住的地方不放旗幟
   const rs = uiRects(['#chips', '#hud']);
   // 顯示等級：縮小時只出現第 1 級（必去），放大到 TIER_Z 才陸續出現第 2、3 級（像遊戲地圖的地標分級）。
@@ -1767,7 +1776,15 @@ function layoutTravel() {
       { x: d.x - d.w / 2, y: d.y - z * 1.05 - d.h - 6, pos: 'up' },
       { x: d.x + z * 0.6 + 4, y: d.y - z * 0.5 - d.h / 2, pos: 'right' },
       { x: d.x - z * 0.6 - 4 - d.w, y: d.y - z * 0.5 - d.h / 2, pos: 'left' },
-      { x: d.x - d.w / 2, y: d.y + z * 0.25 + 4, pos: 'down' }
+      { x: d.x - d.w / 2, y: d.y + z * 0.25 + 4, pos: 'down' },
+      // 擠在一起時再往斜上、斜下、更上方找位置（沒有尾巴指向，但旗幟貼著圖示）
+      { x: d.x - d.w + z * 0.3, y: d.y - z * 1.05 - d.h - 6, pos: 'upL' },
+      { x: d.x - z * 0.3, y: d.y - z * 1.05 - d.h - 6, pos: 'upR' },
+      { x: d.x - d.w / 2, y: d.y - z * 1.05 - d.h * 2 - 10, pos: 'up2' },
+      { x: d.x + z * 0.6 + 4, y: d.y - z * 0.5 - d.h * 1.5 - 2, pos: 'right2' },
+      { x: d.x - z * 0.6 - 4 - d.w, y: d.y - z * 0.5 - d.h * 1.5 - 2, pos: 'left2' },
+      { x: d.x + z * 0.6 + 4, y: d.y - z * 0.5 + d.h * 0.5 + 2, pos: 'right3' },
+      { x: d.x - z * 0.6 - 4 - d.w, y: d.y - z * 0.5 + d.h * 0.5 + 2, pos: 'left3' }
     ];
     let best = null, bestHit = null;
     for (const c of cands) {
@@ -1801,7 +1818,7 @@ function layoutTravel() {
     const s = d3.select(node.get(d.s.id)), sp = d.s, cat = TRAVEL_CATS[sp.cat] || TRAVEL_CATS.sight;
     // 旗幟只寫名稱，分類用色帶顏色分（景點青綠、餐廳橘、飯店紫）
     s.attrQ('transform', `translate(${d.x.toFixed(1)},${d.y.toFixed(1)})`).attrQ('aria-label', `${spotLabel(sp)}（${cat.label}）`);
-    sizeFigure(s, s.select('.ico image').attrQ('href', `assets/travel/${sp.icon}.png`), z);
+    sizePin(s, z, cat.band);
 
     // 旗幟（位置上面已經算好；找不到空位就只畫圖示）
     const b = s.select('.bubble'), t1 = b.select('.t1').textQ(spotLabel(sp)), c = d.c, w = d.w, h = d.h;

@@ -281,15 +281,14 @@ body.travel #hud .hp{display:none}
 .rtag .sf{font-size:7.5px;font-weight:700}
 .rtag-fwy text{fill:#141414}
 .rtag-exp text,.rtag-prov text{paint-order:stroke;stroke:rgba(0,0,0,.25);stroke-width:1.2px}
-/* 地點：3D 圖示輕輕上下浮動，腳下有金色光圈 */
+/* 地點：小水滴圖釘，顏色依分類 */
 .poi:focus{outline:none}
 .poi:focus-visible .bg{stroke:var(--gold-l)}
-.poi .shadow{fill:#0f1a08;opacity:.5;transform-box:fill-box;transform-origin:center}
-.poi .ring{fill:none;stroke:var(--gold-l);stroke-width:1.6;opacity:0;transform-box:fill-box;transform-origin:center;animation:ping 2.6s ease-out infinite}
-.poi .ico{animation:bob 2.8s ease-in-out infinite}
+.poi .shadow{fill:#0f1a08;opacity:.5}
+.poi .drop{stroke:#fff;stroke-width:.09;stroke-linejoin:round}
+.poi .eye{fill:#fff}
 /* 狀態列的分類圖例：和地點旗幟同色的小色塊 */
 .cat-sw{display:inline-block;width:.8em;height:.8em;border-radius:3px;margin:0 .3em 0 .1em;vertical-align:-.05em;box-shadow:0 0 0 1px rgba(255,231,163,.75)}
-@media (prefers-reduced-motion:reduce){.poi .ico,.poi .ring{animation:none}}
 #sheet p.desc{font-size:14px;line-height:1.6;margin:12px 0 8px}
 a.big-btn{text-align:center;text-decoration:none}
 
