@@ -157,7 +157,7 @@
       "desc": "烏石港旁的海景度假酒店，有海水泳池和漂漂河。"
     },
     {
-      "id": "moment-yilan", "tier": 2, "cat": "hotel", "name": "煙波花時間", "full": "煙波花時間 宜蘭傳藝",
+      "id": "moment-yilan", "tier": 1, "cat": "hotel", "name": "煙波花時間", "full": "煙波花時間 宜蘭傳藝",
       "icon": "hotel", "county": "宜蘭縣", "town": "五結鄉",
       "addr": "宜蘭縣五結鄉五濱路二段 201 號", "lon": 121.8256, "lat": 24.6874,
       "desc": "國立傳統藝術中心園區旁的飯店，住宿可以免費進傳藝中心。"
@@ -221,6 +221,366 @@
       "icon": "delivery-truck", "county": "宜蘭縣", "town": "冬山鄉",
       "addr": "宜蘭縣冬山鄉大進村 鼻頭橋旁", "lon": 121.7239, "lat": 24.6507,
       "desc": "安農溪鼻頭橋邊停著的貨車小吃攤，在地人路過常停下來買。"
+    },
+    {
+      "id": "xiangshan-visitor-center", "tier": 1, "cat": "sight", "name": "向山遊客中心", "full": "日月潭向山遊客中心",
+      "icon": "water-wave", "county": "南投縣", "town": "魚池鄉",
+      "addr": "南投縣魚池鄉中山路 599 號", "lon": 120.9021, "lat": 23.8521,
+      "desc": "清水模建築的日月潭遊客中心，長長的懸臂望向湖面，旁邊就是向山自行車道。"
+    },
+    {
+      "id": "xiangshan-bald-cypress", "tier": 2, "cat": "sight", "name": "向山落羽松", "full": "向山落羽松",
+      "icon": "fallen-leaf", "county": "南投縣", "town": "魚池鄉",
+      "addr": "南投縣魚池鄉中山路 592-2 號附近", "lon": 120.9022, "lat": 23.8533,
+      "desc": "向山遊客中心旁的落羽松林，秋冬轉紅，背景就是日月潭。"
+    },
+    {
+      "id": "fanfan-wings", "tier": 2, "cat": "food", "name": "飯飯雞翅", "full": "伊達邵 飯飯雞翅",
+      "icon": "poultry-leg", "county": "南投縣", "town": "魚池鄉",
+      "addr": "南投縣魚池鄉義勇街 22 號", "lon": 120.9319, "lat": 23.8474,
+      "desc": "伊達邵老街的人氣小吃，雞翅裡塞飯一起烤，邊走邊吃。"
+    },
+    {
+      "id": "jiuwa-black-tea-ice", "tier": 3, "cat": "food", "name": "九蛙紅茶冰", "full": "九蛙紅茶冰",
+      "icon": "shaved-ice", "county": "南投縣", "town": "魚池鄉",
+      "addr": "南投縣魚池鄉 日月潭（九蛙疊像一帶，位置待確認）", "lon": 120.9350, "lat": 23.8585,
+      "desc": "日月潭邊的紅茶冰，用在地紅茶做的冰飲，逛湖畔解渴。"
+    },
+    {
+      "id": "taiwan-adventist-college", "tier": 3, "cat": "sight", "name": "三育基督學院", "full": "台灣三育基督學院",
+      "icon": "school", "county": "南投縣", "town": "魚池鄉",
+      "addr": "南投縣魚池鄉瓊文巷 39 號", "lon": 120.9323, "lat": 23.9054,
+      "desc": "日月潭北邊山上的基督教學院，校園大片草地和湖景很好拍。"
+    },
+    {
+      "id": "qilixiang-chicken", "tier": 3, "cat": "food", "name": "七里香甕仔雞", "full": "七里香甕仔雞（日月潭店）",
+      "icon": "chicken", "county": "南投縣", "town": "埔里鎮",
+      "addr": "南投縣埔里鎮 台 21 線往日月潭路上（位置待確認）", "lon": 120.9302, "lat": 23.9434,
+      "desc": "甕缸烤土雞，皮脆肉嫩，往返埔里和日月潭的路上可以停下來吃。"
+    },
+    {
+      "id": "ncnu-lawn", "tier": 2, "cat": "sight", "name": "暨大大草原", "full": "國立暨南國際大學 大草原",
+      "icon": "deciduous-tree", "county": "南投縣", "town": "埔里鎮",
+      "addr": "南投縣埔里鎮大學路 1 號", "lon": 120.9274, "lat": 23.9507,
+      "desc": "暨南大學校園裡的大片草坡，可以野餐、放風箏，春天還有櫻花。"
+    },
+    {
+      "id": "chicken-king-beer", "tier": 3, "cat": "food", "name": "雞大王活蝦啤酒城", "full": "雞大王活蝦啤酒城 旗艦店",
+      "icon": "fried-shrimp", "county": "南投縣", "town": "仁愛鄉",
+      "addr": "南投縣仁愛鄉仁和路 224 附 3 號", "lon": 121.1679, "lat": 24.0673,
+      "desc": "清境一帶的熱炒餐廳，活蝦、烤雞配啤酒，適合一群人吃。"
+    },
+    {
+      "id": "cingjing-livestock", "tier": 2, "cat": "sight", "name": "清境畜牧中心", "full": "清境農場 畜牧步道．畜牧中心",
+      "icon": "house-with-garden", "county": "南投縣", "town": "仁愛鄉",
+      "addr": "南投縣仁愛鄉仁和路（清境農場內）", "lon": 121.1625, "lat": 24.0554,
+      "desc": "清境農場的畜牧區與步道，可以近距離看牛羊，沿途是高山牧場風景。"
+    },
+    {
+      "id": "cingjing-grassland", "tier": 1, "cat": "sight", "name": "清境青青草原", "full": "清境農場 青青草原",
+      "icon": "national-park", "county": "南投縣", "town": "仁愛鄉",
+      "addr": "南投縣仁愛鄉仁和路 170 號（清境農場）", "lon": 121.1632, "lat": 24.0573,
+      "desc": "海拔約 1,750 公尺的高山草原，綿羊在草坡上吃草，有綿羊秀可以看。"
+    },
+    {
+      "id": "hehuan-main-peak", "tier": 1, "cat": "sight", "name": "合歡山主峰步道", "full": "合歡山主峰步道",
+      "icon": "national-park", "county": "南投縣", "town": "仁愛鄉",
+      "addr": "南投縣仁愛鄉 台 14 甲線（步道入口）", "lon": 121.2716, "lat": 24.1337,
+      "desc": "百岳中好走的入門路線，沿著寬闊的步道上到主峰，可以看高山雲海和星空。"
+    },
+    {
+      "id": "zinan-temple", "tier": 1, "cat": "sight", "name": "竹山紫南宮", "full": "竹山紫南宮",
+      "icon": "performing-arts", "county": "南投縣", "town": "竹山鎮",
+      "addr": "南投縣竹山鎮大公街 40 號", "lon": 120.7227, "lat": 23.8172,
+      "desc": "以「借發財金」聞名的土地公廟，香火鼎盛，週邊有很多小吃攤。"
+    },
+    {
+      "id": "zinan-honey-sweet-potato", "tier": 3, "cat": "food", "name": "轉角黃金蜜地瓜", "full": "紫南宮美食 轉角黃金蜜地瓜",
+      "icon": "bread", "county": "南投縣", "town": "竹山鎮",
+      "addr": "南投縣竹山鎮 紫南宮旁（位置待確認）", "lon": 120.7232, "lat": 23.8169,
+      "desc": "竹山名產蜜地瓜，紫南宮參拜完順路帶一盒。"
+    },
+    {
+      "id": "chicken35-zinan", "tier": 2, "cat": "food", "name": "35甕缸雞", "full": "35甕缸雞 竹山紫南宮店",
+      "icon": "chicken", "county": "南投縣", "town": "竹山鎮",
+      "addr": "南投縣竹山鎮大公街 69 號", "lon": 120.7218, "lat": 23.8174,
+      "desc": "紫南宮旁的甕缸雞，放山雞用龍眼木烤，皮酥肉嫩。"
+    },
+    {
+      "id": "xiangcun-chicken-zinan", "tier": 3, "cat": "food", "name": "鄉村甕缸雞", "full": "鄉村甕缸雞 紫南宮店",
+      "icon": "poultry-leg", "county": "南投縣", "town": "竹山鎮",
+      "addr": "南投縣竹山鎮 紫南宮附近（位置待確認）", "lon": 120.7179, "lat": 23.8073,
+      "desc": "紫南宮附近的甕缸雞，招牌脆皮烤雞配台式快炒。"
+    },
+    {
+      "id": "mingjian-eco-park", "tier": 2, "cat": "sight", "name": "名間親子生態園區", "full": "名間親子生態園區",
+      "icon": "deciduous-tree", "county": "南投縣", "town": "名間鄉",
+      "addr": "南投縣名間鄉", "lon": 120.6966, "lat": 23.8558,
+      "desc": "名間的免費親子公園，有生態池、遊戲場和步道，適合帶小孩放電。"
+    },
+    {
+      "id": "earthquake-921-museum", "tier": 1, "cat": "sight", "name": "921地震教育園區", "full": "國立自然科學博物館 921地震教育園區",
+      "icon": "window", "county": "台中市", "town": "霧峰區",
+      "addr": "台中市霧峰區中正路 46 號", "lon": 120.6982, "lat": 24.0427,
+      "desc": "保留 921 大地震震垮的光復國中校舍與車籠埔斷層，用展館說明地震。"
+    },
+    {
+      "id": "checheng-wood-museum", "tier": 2, "cat": "sight", "name": "車埕木業展示館", "full": "車埕木業展示館",
+      "icon": "factory", "county": "南投縣", "town": "水里鄉",
+      "addr": "南投縣水里鄉民權巷 110-2 號", "lon": 120.8658, "lat": 23.8334,
+      "desc": "集集線終點車埕的木業展示館，舊貯木池與檜木建築訴說林業小鎮的歷史。"
+    },
+    {
+      "id": "jiji-green-tunnel", "tier": 1, "cat": "sight", "name": "集集綠色隧道", "full": "集集綠色隧道",
+      "icon": "deciduous-tree", "county": "南投縣", "town": "集集鎮",
+      "addr": "南投縣集集鎮 152 縣道（名間往集集）", "lon": 120.7554, "lat": 23.8332,
+      "desc": "百年樟樹沿著集集線鐵道兩側排成長長的綠色隧道，騎車、散步都很舒服。"
+    },
+    {
+      "id": "aowanda-pine", "tier": 2, "cat": "sight", "name": "奧萬大松林區", "full": "奧萬大國家森林遊樂區 松林區",
+      "icon": "fallen-leaf", "county": "南投縣", "town": "仁愛鄉",
+      "addr": "南投縣仁愛鄉大安路 135 號（奧萬大森林遊樂區內）", "lon": 121.1913, "lat": 23.9445,
+      "desc": "奧萬大吊橋旁的松林步道，松針鋪地很好走；秋冬楓紅季節整區最熱鬧。"
+    },
+    {
+      "id": "xitou", "tier": 1, "cat": "sight", "name": "溪頭", "full": "溪頭自然教育園區",
+      "icon": "national-park", "county": "南投縣", "town": "鹿谷鄉",
+      "addr": "南投縣鹿谷鄉森林巷 9 號", "lon": 120.7966, "lat": 23.6725,
+      "desc": "海拔一千多公尺的森林園區，有大學池、空中走廊和柳杉林步道，夏天很涼。"
+    },
+    {
+      "id": "fengshan-viewpoint", "tier": 2, "cat": "sight", "name": "豐山觀景台", "full": "豐山觀景台",
+      "icon": "national-park", "county": "嘉義縣", "town": "阿里山鄉",
+      "addr": "嘉義縣阿里山鄉豐山村", "lon": 120.7523, "lat": 23.5753,
+      "desc": "阿里山北邊豐山村的觀景台，看群山與雲海。"
+    },
+    {
+      "id": "hanxine-forest", "tier": 3, "cat": "sight", "name": "寒溪呢森林人文叡地", "full": "寒溪呢森林人文叡地",
+      "icon": "deciduous-tree", "county": "嘉義縣", "town": "梅山鄉",
+      "addr": "嘉義縣梅山鄉（瑞峰、豐山一帶）", "lon": 120.7371, "lat": 23.5640,
+      "desc": "梅山山區的森林步道與人文景點，林間溪谷清涼安靜。"
+    },
+    {
+      "id": "longzaiwei-trail", "tier": 3, "cat": "sight", "name": "巃仔尾步道", "full": "巃仔尾步道",
+      "icon": "deciduous-tree", "county": "嘉義縣", "town": "梅山鄉",
+      "addr": "嘉義縣梅山鄉太和村", "lon": 120.7103, "lat": 23.5209,
+      "desc": "梅山太和村的山林步道，沿途竹林與茶園。"
+    },
+    {
+      "id": "viewpoint-1314", "tier": 2, "cat": "sight", "name": "1314觀景台", "full": "一三一四觀景台",
+      "icon": "window", "county": "嘉義縣", "town": "梅山鄉",
+      "addr": "嘉義縣梅山鄉瑞峰村（海鼠山山頂）", "lon": 120.6789, "lat": 23.5595,
+      "desc": "海鼠山山頂的觀景台，名稱取自海拔高度，俯瞰整片茶園，情侶必拍。"
+    },
+    {
+      "id": "dafengcheng-sunrise", "tier": 2, "cat": "sight", "name": "大風埕觀日峰", "full": "大風埕觀日峰",
+      "icon": "national-park", "county": "嘉義縣", "town": "梅山鄉",
+      "addr": "嘉義縣梅山鄉太和村", "lon": 120.7077, "lat": 23.5398,
+      "desc": "梅山太和的看日出、雲海觀景點，四周都是茶園。"
+    },
+    {
+      "id": "ruili-teapot", "tier": 3, "cat": "hotel", "name": "瑞里茶壺民宿", "full": "瑞里 茶壺民宿、餐廳",
+      "icon": "bed", "county": "嘉義縣", "town": "梅山鄉",
+      "addr": "嘉義縣梅山鄉瑞里村（位置待確認）", "lon": 120.6689, "lat": 23.5403,
+      "desc": "瑞里風景區的民宿兼餐廳，可以住宿也能吃山產料理。"
+    },
+    {
+      "id": "yuantan-eco-park", "tier": 2, "cat": "sight", "name": "圓潭自然生態園區", "full": "圓潭自然生態園區",
+      "icon": "fountain", "county": "嘉義縣", "town": "梅山鄉",
+      "addr": "嘉義縣梅山鄉瑞里村", "lon": 120.6594, "lat": 23.5290,
+      "desc": "瑞里的溪谷步道，一路有好幾層瀑布和水潭，被稱為台版九寨溝。"
+    },
+    {
+      "id": "taixingyan-trail", "tier": 2, "cat": "sight", "name": "太興岩步道", "full": "太興岩步道",
+      "icon": "water-wave", "county": "嘉義縣", "town": "梅山鄉",
+      "addr": "嘉義縣梅山鄉太興村", "lon": 120.6353, "lat": 23.5364,
+      "desc": "梅山太興村的步道，經過太興飛瀑和茶園，景色開闊。"
+    },
+    {
+      "id": "yunzhinan-trail", "tier": 2, "cat": "sight", "name": "雲之南道步道", "full": "雲之南道步道",
+      "icon": "deciduous-tree", "county": "嘉義縣", "town": "梅山鄉",
+      "addr": "嘉義縣梅山鄉太平村（太平雲梯旁）", "lon": 120.6004, "lat": 23.5581,
+      "desc": "連接太平雲梯和孝子路步道的茶園步道，沿途有涼亭可以休息看景。"
+    },
+    {
+      "id": "taiping-old-street", "tier": 2, "cat": "sight", "name": "太平老街", "full": "梅山 太平老街",
+      "icon": "house-with-garden", "county": "嘉義縣", "town": "梅山鄉",
+      "addr": "嘉義縣梅山鄉太平村", "lon": 120.6042, "lat": 23.5609,
+      "desc": "太平雲梯旁的山城老街，有老建築、在地小吃和茶葉伴手禮。"
+    },
+    {
+      "id": "chukou-nature-center", "tier": 2, "cat": "sight", "name": "觸口自然教育中心", "full": "觸口自然教育中心",
+      "icon": "school", "county": "嘉義縣", "town": "番路鄉",
+      "addr": "嘉義縣番路鄉阿里山公路 18 號", "lon": 120.5596, "lat": 23.4531,
+      "desc": "台 18 線上山前的林務局自然教育中心，有森林步道和生態展示。"
+    },
+    {
+      "id": "caidatou-chicken", "tier": 3, "cat": "food", "name": "蔡大頭甕烤雞", "full": "蔡大頭甕烤雞",
+      "icon": "chicken", "county": "嘉義縣", "town": "中埔鄉",
+      "addr": "嘉義縣中埔鄉頂中下街 77 號", "lon": 120.4864, "lat": 23.4501,
+      "desc": "往阿里山路上的甕烤雞，皮脆肉嫩，適合上山前後吃一頓。"
+    },
+    {
+      "id": "maison-de-chine-chiayi", "tier": 2, "cat": "hotel", "name": "嘉義兆品酒店", "full": "嘉義兆品酒店",
+      "icon": "hotel", "county": "嘉義市", "town": "西區",
+      "addr": "嘉義市西區文化路 257 號", "lon": 120.4487, "lat": 23.4834,
+      "desc": "嘉義市區文化路夜市旁的飯店，逛夜市、搭車上阿里山都方便。"
+    },
+    {
+      "id": "xiazhidao-north", "tier": 3, "cat": "sight", "name": "霞之道北口", "full": "霞之道 北口",
+      "icon": "fallen-leaf", "county": "嘉義縣", "town": "竹崎鄉",
+      "addr": "嘉義縣竹崎鄉中和村（隙頂一帶）", "lon": 120.7016, "lat": 23.4797,
+      "desc": "隙頂一帶的步道北口，傍晚可以看晚霞和雲海。"
+    },
+    {
+      "id": "sisters-pond", "tier": 1, "cat": "sight", "name": "姊妹潭", "full": "阿里山 姊妹潭",
+      "icon": "water-wave", "county": "嘉義縣", "town": "阿里山鄉",
+      "addr": "嘉義縣阿里山鄉（阿里山森林遊樂區內）", "lon": 120.8145, "lat": 23.5188,
+      "desc": "阿里山森林遊樂區裡的一大一小兩座水潭，有環潭棧道和姊妹傳說。"
+    },
+    {
+      "id": "linzhi-saddle", "tier": 2, "cat": "sight", "name": "麟趾山鞍部", "full": "麟趾山鞍部",
+      "icon": "national-park", "county": "南投縣", "town": "信義鄉",
+      "addr": "南投縣信義鄉（塔塔加，麟趾山與鹿林山之間）", "lon": 120.8855, "lat": 23.4752,
+      "desc": "塔塔加步道上的鞍部，往麟趾山、鹿林山的分岔點，可以遠望玉山。"
+    },
+    {
+      "id": "sankeng-eco-park", "tier": 2, "cat": "sight", "name": "三坑自然生態公園", "full": "三坑自然生態公園",
+      "icon": "deciduous-tree", "county": "桃園市", "town": "龍潭區",
+      "addr": "桃園市龍潭區三坑里（大漢溪畔）", "lon": 121.2574, "lat": 24.8389,
+      "desc": "大漢溪畔的生態公園，有水生植物池、自行車道，旁邊就是三坑老街。"
+    },
+    {
+      "id": "laochuanwei-beef-noodle", "tier": 3, "cat": "food", "name": "老川味牛肉麵", "full": "老川味牛肉麵（雙連分店）",
+      "icon": "bowl-with-spoon", "county": "桃園市", "town": "平鎮區",
+      "addr": "桃園市平鎮區民族路雙連一段 188 號", "lon": 121.1860, "lat": 24.9600,
+      "desc": "平鎮的川味牛肉麵，湯頭香辣、牛肉大塊。"
+    },
+    {
+      "id": "laoweipu-kalikali", "tier": 3, "cat": "food", "name": "老味鋪卡哩卡哩", "full": "老味鋪卡哩卡哩",
+      "icon": "rice-cracker", "county": "桃園市", "town": "平鎮區",
+      "addr": "桃園市平鎮區環南路二段 183 號", "lon": 121.2123, "lat": 24.9420,
+      "desc": "現炸的古早味餅乾零食，卡哩卡哩一包包秤重買。"
+    },
+    {
+      "id": "daxi-retro-toy-store", "tier": 3, "cat": "sight", "name": "大溪雜貨店", "full": "大溪雜貨店（古早味童玩店）",
+      "icon": "candy", "county": "桃園市", "town": "大溪區",
+      "addr": "桃園市大溪區 大溪老街一帶（位置待確認）", "lon": 121.2868, "lat": 24.8857,
+      "desc": "大溪老街上的古早味童玩雜貨店，彈珠、紙牌、懷舊零食都有。"
+    },
+    {
+      "id": "daxi-ama-rice-sausage", "tier": 3, "cat": "food", "name": "阿嬤小吃店", "full": "阿嬤小吃店 - 糯米腸專賣店",
+      "icon": "cut-of-meat", "county": "桃園市", "town": "大溪區",
+      "addr": "桃園市大溪區和平路 63 號", "lon": 121.2875, "lat": 24.8851,
+      "desc": "大溪老街上的糯米腸專賣店，邊逛老街邊吃。"
+    },
+    {
+      "id": "daxi-lai-douhua", "tier": 3, "cat": "food", "name": "大溪賴祖傳豆花", "full": "大溪賴祖傳豆花",
+      "icon": "custard", "county": "桃園市", "town": "大溪區",
+      "addr": "桃園市大溪區仁和路一段 59 號", "lon": 121.2778, "lat": 24.8983,
+      "desc": "大溪在地的傳統豆花，豆香濃、配料簡單。"
+    },
+    {
+      "id": "chun-chicken-cold-noodle", "tier": 3, "cat": "food", "name": "淳雞絲涼麵", "full": "淳雞絲涼麵（龍潭專賣店）",
+      "icon": "bowl-with-spoon", "county": "桃園市", "town": "龍潭區",
+      "addr": "桃園市龍潭區五福街 12 號", "lon": 121.2174, "lat": 24.8649,
+      "desc": "龍潭的雞絲涼麵，麻醬香濃，夏天吃很消暑。"
+    },
+    {
+      "id": "liujiazhuang-chicken", "tier": 2, "cat": "food", "name": "劉家莊燜雞", "full": "劉家莊燜雞",
+      "icon": "chicken", "county": "新竹縣", "town": "新埔鎮",
+      "addr": "新竹縣新埔鎮照門里九芎湖", "lon": 121.1056, "lat": 24.8568,
+      "desc": "新埔九芎湖的鐵箱燜雞，放山雞燜烤到皮酥肉嫩。"
+    },
+    {
+      "id": "fuxiang-cactus", "tier": 3, "cat": "sight", "name": "福祥仙人掌園藝中心", "full": "福祥仙人掌園藝中心",
+      "icon": "house-with-garden", "county": "新竹縣", "town": "新埔鎮",
+      "addr": "新竹縣新埔鎮", "lon": 121.0858, "lat": 24.8528,
+      "desc": "新埔的仙人掌與多肉植物園藝中心，溫室裡各種造型的仙人掌很好拍。"
+    },
+    {
+      "id": "mingfeng-park", "tier": 3, "cat": "sight", "name": "鳴鳳公園", "full": "鳴鳳公園",
+      "icon": "national-park", "county": "新竹縣", "town": "關西鎮",
+      "addr": "新竹縣關西鎮東安里", "lon": 121.1843, "lat": 24.7879,
+      "desc": "關西鎮上的小山丘公園，有步道可以俯瞰關西市區。"
+    },
+    {
+      "id": "guanxi-xi-ice", "tier": 3, "cat": "food", "name": "關西囍冰室", "full": "關西囍冰室",
+      "icon": "shaved-ice", "county": "新竹縣", "town": "關西鎮",
+      "addr": "新竹縣關西鎮中山路 27 號", "lon": 121.1772, "lat": 24.7913,
+      "desc": "關西老街區的懷舊冰店，仙草、客家口味的冰品。"
+    },
+    {
+      "id": "xizi-beef-noodle-zhubei", "tier": 3, "cat": "food", "name": "璽子牛肉麵", "full": "璽子牛肉麵（竹北店）",
+      "icon": "pot-of-food", "county": "新竹縣", "town": "竹北市",
+      "addr": "新竹縣竹北市勝利三街 148 號", "lon": 121.0287, "lat": 24.8226,
+      "desc": "新竹起家的牛肉麵，竹北分店，湯頭濃郁。"
+    },
+    {
+      "id": "duanchunzhen-zhubei", "tier": 3, "cat": "food", "name": "段純貞", "full": "段純貞 竹北店",
+      "icon": "bowl-with-spoon", "county": "新竹縣", "town": "竹北市",
+      "addr": "新竹縣竹北市嘉豐六路一段 95 號", "lon": 121.0307, "lat": 24.8119,
+      "desc": "新竹發跡的川味牛肉麵連鎖，竹北店。"
+    },
+    {
+      "id": "chunshang-pudding-cake", "tier": 2, "cat": "food", "name": "春上布丁蛋糕", "full": "春上布丁蛋糕 竹北文興總店",
+      "icon": "bread", "county": "新竹縣", "town": "竹北市",
+      "addr": "新竹縣竹北市文興路二段 98 號", "lon": 121.0350, "lat": 24.8074,
+      "desc": "新竹人氣伴手禮，上層布丁、下層蛋糕，一整盒很划算。"
+    },
+    {
+      "id": "qiuji-pork-rib-noodle-zhubei", "tier": 3, "cat": "food", "name": "邱記排骨酥麵", "full": "竹東邱記排骨酥麵-竹北店",
+      "icon": "bowl-with-spoon", "county": "新竹縣", "town": "竹北市",
+      "addr": "新竹縣竹北市自強南路 169 號", "lon": 121.0243, "lat": 24.8145,
+      "desc": "竹東起家的排骨酥麵，排骨酥燉到軟嫩入味。"
+    },
+    {
+      "id": "mile-popcorn", "tier": 3, "cat": "food", "name": "米樂爆米花", "full": "米樂爆米花",
+      "icon": "candy", "county": "新竹市", "town": "東區",
+      "addr": "新竹市東區金山二十二街 27 號", "lon": 121.0258, "lat": 24.7750,
+      "desc": "新竹的手工爆米花，口味多，常被當成伴手禮。"
+    },
+    {
+      "id": "hsinchu-zoo", "tier": 2, "cat": "sight", "name": "新竹市立動物園", "full": "新竹市立動物園",
+      "icon": "duck", "county": "新竹市", "town": "東區",
+      "addr": "新竹市東區食品路 66 號", "lon": 120.9795, "lat": 24.8007,
+      "desc": "台灣最老的動物園，翻新後免費、不大但很好逛，旁邊就是新竹公園。"
+    },
+    {
+      "id": "sanchang-jiang", "tier": 3, "cat": "food", "name": "三廠姜店", "full": "三廠姜店",
+      "icon": "pot-of-food", "county": "新竹市", "town": "北區",
+      "addr": "新竹市經國路二段 547 號", "lon": 120.9553, "lat": 24.8037,
+      "desc": "新竹經國路上的在地小吃店。"
+    },
+    {
+      "id": "yingwang-bawan", "tier": 3, "cat": "food", "name": "鷹王肉圓", "full": "鷹王肉圓",
+      "icon": "oden", "county": "新竹市", "town": "香山區",
+      "addr": "新竹市延平路二段 350 號（空軍基地側門）", "lon": 120.9338, "lat": 24.8085,
+      "desc": "空軍基地旁的新竹肉圓，蒸的皮 Q 餡香。"
+    },
+    {
+      "id": "green-world-farm", "tier": 2, "cat": "sight", "name": "綠世界生態農場", "full": "綠世界生態農場",
+      "icon": "deciduous-tree", "county": "新竹縣", "town": "北埔鄉",
+      "addr": "新竹縣北埔鄉大湖村（中豐公路旁）", "lon": 121.0715, "lat": 24.7080,
+      "desc": "北埔的大型生態農場，有水生植物公園、鳥園和草原動物區，適合親子半天遊。"
+    },
+    {
+      "id": "metrowalk-zhongli", "tier": 2, "cat": "sight", "name": "大江購物中心", "full": "大江國際購物中心",
+      "icon": "bellhop-bell", "county": "桃園市", "town": "中壢區",
+      "addr": "桃園市中壢區中園路二段 501 號", "lon": 121.2287, "lat": 25.0012,
+      "desc": "中壢的大型購物中心，吃喝逛街看電影一次解決，雨天備案。"
+    },
+    {
+      "id": "yingge-apo-sushi", "tier": 3, "cat": "food", "name": "鶯歌阿婆壽司", "full": "鶯歌阿婆壽司（創始店）",
+      "icon": "rice-cracker", "county": "新北市", "town": "鶯歌區",
+      "addr": "新北市鶯歌區中正一路 63 號", "lon": 121.3523, "lat": 24.9543,
+      "desc": "鶯歌老店，豆皮壽司和花壽司銅板價，常常一早就排隊。"
+    },
+    {
+      "id": "yipin-fuzhou-noodle", "tier": 3, "cat": "food", "name": "宜品福州乾拌麵", "full": "宜品福州乾拌麵（龜山文化店）",
+      "icon": "bowl-with-spoon", "county": "桃園市", "town": "龜山區",
+      "addr": "桃園市龜山區文化二路 5 號（分店待確認）", "lon": 121.3646, "lat": 25.0614,
+      "desc": "福州乾拌麵，香蔥豬油拌細麵，配一碗餛飩湯。"
     }
   ]
 }

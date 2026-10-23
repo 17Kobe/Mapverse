@@ -1698,12 +1698,13 @@ function layoutTravel() {
   // 1) 照優先順序放圖示：和已放的圖示疊在一起就先不畫（放大後自然會分開）。
   //    但放大到街道等級（SPREAD_Z）還疊在一起，代表兩個地點本來就在同一處（例如傳藝中心和園區裡的飯店），
   //    再放大也分不開，這時把後面那個往旁邊挪一個圖示寬（約百公尺），兩個都顯示。
+  //    第 1 級（必去）不管縮放多小都一定要出現，所以任何層級疊到都直接挪開。
   const cand = [], icoR = (x, y) => ({ x: x - z * 0.48, y: y - z * 0.95, w: z * 0.96, h: z * 1.05 });
   const hitIco = (r) => cand.some((q) => inter(r, q.ri) > 0);
   for (const d of list) {
     d.ri = icoR(d.x, d.y);
     if (hitIco(d.ri)) {
-      if (tz < SPREAD_Z) continue;
+      if (tz < SPREAD_Z && d.t > 1) continue;
       const spot = SPREAD_DIRS.map(([dx, dy]) => [d.x + dx * z * 1.05, d.y + dy * z * 1.05]).find(([x, y]) => !hitIco(icoR(x, y)));
       if (!spot) continue;
       [d.x, d.y] = spot; d.ri = icoR(d.x, d.y);
