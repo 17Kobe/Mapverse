@@ -25,6 +25,10 @@ const LAYERS = [
   { k: 'weather', icon: '🌦️', label: '天氣災防', title: '天氣災防', desc: '颱風路徑、地震、雨量' }
 ];
 const desktopMQ = window.matchMedia('(min-width:900px)');
+// 手機版城市旗幟的放大倍率（數字太小看不清楚）
+const BUBBLE_SCALE_MOBILE = 1.25;
+// 手機版區域檢視上方額外預留的高度（px），讓 pin 的國家旗幟放得下
+const PIN_EXTRA_TOP = 95;
 
 // 遊戲風地形的原始資料（都是 Web Mercator 圖磚，且允許跨來源讀取像素）
 // - DEM：AWS Terrain Tiles（Terrarium 編碼），提供陸地高度與海洋深度
@@ -743,7 +747,10 @@ function regionTransform(key) {
   const ins = overlayInsets();
   // 預留旗幟的空間：旗幟通常在動物上方，所以上方留比較多
   // 上方還要放得下多指數的整張旗幟（3 個以上指數的國家會多佔一些高度）
-  const px = desktopMQ.matches ? 70 : 46, pt = ms.some((m) => m.group.length >= 3) ? 100 : 72, pb = 34, minK = REGION_MIN_K;
+  const bs = desktopMQ.matches ? 1 : BUBBLE_SCALE_MOBILE; // 手機版旗幟放大了，預留的空間也要跟著放大
+  const px = desktopMQ.matches ? 70 : 46, pb = 34, minK = REGION_MIN_K;
+  // 手機版：有 pin 的國家（上證、韓國）要整張旗幟列在動物上方，上方多留一些空間
+  const pt = (ms.some((m) => m.group.length >= 3) ? 100 : 72) * bs + (!desktopMQ.matches && ms.some((m) => m.pin) ? PIN_EXTRA_TOP : 0);
   const aw = Math.max(80, W - ins.l - ins.r - px * 2), ah = Math.max(80, H - ins.t - ins.b - pt - pb);
   const fitK = (b) => Math.min(aw / Math.max(1, b[2] - b[0]), ah / Math.max(1, b[3] - b[1]));
   let bb = null;
@@ -806,16 +813,17 @@ function layoutMarkers() {
   const t = state.t, k = t.k;
   const size = Math.max(19, Math.min(30, 14 + k * 2.8)); // 動物身高（px），放大地圖時略微變大
   const rects = [], vis = new Map();
-  const arr = state.maps.slice().sort((a, b) => b.w - a.w);
+  // pin 的國家優先放動物，這樣不會因為鄰近的動物（例如新加坡和馬來西亞）重疊就被隱藏
+  const arr = state.maps.slice().sort((a, b) => (!!b.pin - !!a.pin) || (b.w - a.w));
 
   // 第一輪：放動物，太擠的先隱藏（放大後會出現）
   for (const m of arr) {
     const [x, y] = screenXY(m.lon, m.lat);
     if (x < -20 || x > W + 20 || y < -20 || y > H + 20) continue;
     // 原點是腳下的地面，身體往上長；佔位框也包含牠走動的範圍
-    const a = { x: x - size * 0.75, y: y - size * 1.05, w: size * 1.5, h: size * 1.35 };
+    const a = { x: x - size * 0.75, y: y - size * 1.05, w: size * 1.5, h: size * 1.35, an: true };
     const area = a.w * a.h;
-    if (rects.some((r) => inter(a, r) / area > 0.3)) continue;
+    if (rects.some((r) => inter(a, r) / area > (m.pin ? 0.8 : 0.3))) continue;
     rects.push(a);
     vis.set(m.s, { m, x, y, a, size, b: null });
   }
@@ -829,17 +837,105 @@ function layoutMarkers() {
   }
   // 第二輪：放氣泡，先試完整版，再試迷你版
   const baseRects = rects.slice();
-  const place = (order) => {
+  // 旗幟整體放大倍率：手機螢幕小，指數數字要放大才看得清楚（旗幟內部仍用原本的座標畫，最後再整個 scale）
+  const U = desktopMQ.matches ? 1 : BUBBLE_SCALE_MOBILE;
+  // 手機版：pin 的國家（中、港、日、韓、台、星、馬、印尼）改用左右兩欄排版。
+  // 每張旗幟盡量放在自己動物的正上方，同一欄依動物由北到南往下疊，擠不下再整欄往上收，
+  // 這樣每張都能完整列出，也不會被擠到離自己國家很遠的地方。排不下時回傳 null，改用一般的避讓排法。
+  const layoutPinColumns = () => {
+    const ps = [...vis.values()].filter((o) => o.m.pin && state.quotes[o.m.s]);
+    if (ps.length < 2) return null;
+    const GAP = 4;
+    const colW = Math.floor((W - 8 - GAP) / 2); // 每一欄的寬度（左右各留 4px 邊）
+    const multiW = Math.min(colW, Math.round(Math.min(166, Math.floor((W - 10) / 2 / U)) * U));
+    const colR = [[4, 4 + colW], [W - 4 - colW, W - 4]];
+    const ui = baseRects.filter((z) => !z.an);
+    // 上緣：概況卡、篩選列的下方
+    const top0 = Math.max(2, ...ui.filter((z) => z.y < H / 3).map((z) => z.y + z.h)) + GAP;
+    const bot0 = H - 18; // 下緣：留出地圖資料來源那一行字
+    const items = ps.map((o) => {
+      const n = o.m.group.length;
+      return {
+        o, mode: n > 1 ? 'multi' : 'full',
+        w: n > 1 ? multiW : Math.min(colW, Math.round(118 * U)),
+        h: Math.round((n > 1 ? 24 + n * 16 + 4 : 40) * U)
+      };
+    });
+    const byS = new Map(items.map((it) => [it.o.m.s, it]));
+    for (const it of items) it.parent = (it.o.m.under && byS.get(it.o.m.under)) || null;
+    // 分欄：markets.json 的 col（L / R）優先；under 的國家跟著依附的國家；其餘看動物在畫面左半或右半
+    const colOf = (it) => it.parent ? colOf(it.parent)
+      : it.o.m.col === 'L' ? 0 : it.o.m.col === 'R' ? 1 : it.o.x < W / 2 ? 0 : 1;
+    for (const it of items) it.col = colOf(it);
+    const overX = (it, a) => it.x < a.x + a.w && it.x + it.w > a.x;
+    // 一整組（自己 + 接在下面的 under 國家）的總高度
+    const blockH = (it) => it.h + items.filter((c) => c.parent === it).reduce((s, c) => s + GAP + blockH(c), 0);
+    const stack = (col, jump) => {
+      // 依動物由北到南排序；under 的國家緊接在依附的國家之後
+      const seq = [];
+      const add = (it) => { seq.push(it); items.filter((c) => c.parent === it).sort((a, b) => a.o.y - b.o.y).forEach(add); };
+      items.filter((it) => it.col === col && !it.parent).sort((a, b) => a.o.y - b.o.y).forEach(add);
+      const [x0, x1] = colR[col];
+      let y = top0;
+      for (const it of seq) {
+        // 水平：對齊自己的動物，但不超出這一欄；under 的國家和依附的國家左緣對齊
+        it.x = it.parent ? it.parent.x : Math.max(x0, Math.min(x1 - it.w, it.o.x - it.w / 2));
+        // 動物正上方；有 under 的國家（上證 + 香港）要整組一起放在動物上方，下面那張才不會蓋住上面國家的動物
+        const bh = blockH(it);
+        it.want = it.o.a.y - bh - 5;
+        it.y = it.parent ? y : Math.max(y, it.want);
+        // 被上一張擠下來而蓋到自己的動物：改放到動物下方，讓動物露出來
+        if (jump && !it.parent && it.y > it.want && it.y < it.o.a.y + it.o.a.h && overX(it, it.o.a)) it.y = it.o.a.y + it.o.a.h + 2;
+        it.tail = bh === it.h; // 下面沒有接別張，才畫指向動物的小尾巴
+        y = it.y + it.h + GAP;
+      }
+      // 超出畫面下緣：由下往上收（under 的國家會連同依附的國家一起往上推，維持緊貼）
+      let lim = bot0;
+      for (let i = seq.length - 1; i >= 0; i--) {
+        if (seq[i].y + seq[i].h > lim) seq[i].y = lim - seq[i].h;
+        lim = seq[i].y - GAP;
+      }
+      return !seq.length || seq[0].y >= top0;
+    };
+    for (const col of [0, 1]) if (!stack(col, true) && !stack(col, false)) return null;
+    const out = new Map();
+    for (const it of items) {
+      const r = { x: it.x, y: it.y, w: it.w, h: it.h };
+      // 被開著的面板之類的介面蓋到，就放棄兩欄排法
+      if (ui.some((z) => inter(r, z) > 0)) return null;
+      // 剛好在自己動物正上方才畫指向動物的小尾巴
+      const up = it.tail && !it.parent && Math.abs(it.y - it.want) < 1 && Math.abs(it.x + it.w / 2 - it.o.x) < 6;
+      out.set(it.o.m.s, { r, mode: it.mode, pos: up ? 'up' : 'col' });
+    }
+    return out;
+  };
+  const pinCols = desktopMQ.matches ? null : layoutPinColumns();
+  const place = (order0) => {
+    // under 的國家要排在它所依附的國家後面，才找得到對方的旗幟位置
+    const order = order0.slice();
+    for (const m of order0) {
+      if (!m.under) continue;
+      const pi = order.findIndex((x) => x.s === m.under), ci = order.indexOf(m);
+      // 一律緊接在依附的國家之後放，避免中間被其他旗幟先佔走正下方的位置
+      if (pi < 0) continue;
+      order.splice(ci, 1);
+      order.splice(order.findIndex((x) => x.s === m.under) + 1, 0, m);
+    }
     const rs = baseRects.slice();
     for (const o of vis.values()) o.b = null;
+    // 兩欄排好的 pin 國家先固定下來，其他國家再從剩下的空間找位置
+    if (pinCols) for (const [s, b] of pinCols) { const r = { ...b.r }; vis.get(s).b = { ...b, r }; rs.push(r); }
     for (const m of order) {
       const o = vis.get(m.s);
-      if (!o || !state.quotes[m.s]) continue;
+      if (!o || !state.quotes[m.s] || (pinCols && pinCols.has(m.s))) continue;
       // 多指數的國家：空間夠就整張列出（multi），不夠就輪播（full），再不夠只顯示主指數（mini）
       const n = m.group.length;
-      const modes = n > 1
-        ? [{ w: 166, h: 24 + n * 16 + 4, mode: 'multi' }, { w: 136, h: 40, mode: 'full' }, { w: 80, h: 22, mode: 'mini' }]
-        : [{ w: 118, h: 40, mode: 'full' }, { w: 80, h: 22, mode: 'mini' }];
+      // 窄螢幕：整張列出的旗幟最多佔半個畫面寬，這樣左右可以並排兩張
+      const multiW = Math.min(166, Math.floor((W - 10) / 2 / U));
+      const modes = (n > 1
+        ? [{ w: multiW, h: 24 + n * 16 + 4, mode: 'multi' }, { w: 136, h: 40, mode: 'full' }, { w: 80, h: 22, mode: 'mini' }]
+        : [{ w: 118, h: 40, mode: 'full' }, { w: 80, h: 22, mode: 'mini' }]
+      ).map((md) => ({ ...md, w: Math.round(md.w * U), h: Math.round(md.h * U) }));
       outer:
       for (const md of modes) {
         const cands = [
@@ -855,16 +951,24 @@ function layoutMarkers() {
           cands.push({ x: o.a.x + o.a.w + 2, y: o.y - md.h / 2 + f * md.h * 1.1, pos: 'right~' });
           cands.push({ x: o.a.x - md.w - 2, y: o.y - md.h / 2 + f * md.h * 1.1, pos: 'left~' });
         }
+        // pin 的國家（上證、韓國）寧可離動物遠一點也要整張列出：沿著整個畫面用格點再找一輪空位
+        if (m.pin && md.mode !== 'mini') {
+          for (let gy = 2; gy + md.h <= H - 2; gy += 8) for (let gx = 2; gx + md.w <= W - 2; gx += 8) cands.push({ x: gx, y: gy, pos: 'grid' });
+        }
+        // markets.json 的 under：緊接在指定國家的旗幟正下方（例如香港放在上證下面），左緣對齊
+        const po = m.under && vis.get(m.under);
+        if (po && po.b && po.b.mode !== 'mini') cands.push({ x: po.b.r.x, y: po.b.r.y + po.b.r.h + 4, pos: 'under' });
         // 離動物越近越優先（距離相同時維持 上、下、右、左 的順序）
         const d2 = (c) => (c.x + md.w / 2 - o.x) ** 2 + (c.y + md.h / 2 - (o.y - o.size / 2)) ** 2;
-        cands.forEach((c, i) => (c.i = i, c.d = d2(c)));
+        cands.forEach((c, i) => (c.i = i, c.d = c.pos === 'under' ? -1 : d2(c)));
         cands.sort((p, q) => (p.d - q.d) || (p.i - q.i));
         for (const c of cands) {
           const r = { x: c.x, y: c.y, w: md.w, h: md.h };
           if (r.x < 2 || r.y < 2 || r.x + r.w > W - 2 || r.y + r.h > H - 2) continue;
-          if (rs.some((z) => inter(r, z) > 0)) continue;
+          // under 的旗幟是刻意貼在指定國家下面，就算蓋到別人的動物佔位框也沒關係
+          if (rs.some((z) => !(c.pos === 'under' && z.an) && inter(r, z) > 0)) continue;
           // markets.json 的 nx：選好位置後，旗幟再往右（正）或往左（負）微調 px；擠不下就少挪一點
-          if (m.nx) {
+          if (m.nx && c.pos !== 'under') {
             for (const k of [1, 0.75, 0.5, 0.25]) {
               const r2 = { ...r, x: r.x + m.nx * k };
               if (r2.x < 2 || r2.x + r2.w > W - 2) continue;
@@ -882,7 +986,7 @@ function layoutMarkers() {
     // markets.json 的 swap：這個國家的旗幟和指定國家的旗幟互換位置（各自保持自己的大小，以對方的中心點為中心）
     for (const m of order) {
       const a = vis.get(m.s), b = m.swap && vis.get(m.swap);
-      if (!a || !b || !a.b || !b.b) continue;
+      if (!a || !b || !a.b || !b.b || (pinCols && (pinCols.has(m.s) || pinCols.has(m.swap)))) continue;
       const ca = { x: a.b.r.x + a.b.r.w / 2, y: a.b.r.y + a.b.r.h / 2 }, cb = { x: b.b.r.x + b.b.r.w / 2, y: b.b.r.y + b.b.r.h / 2 };
       const ra = { ...a.b.r, x: cb.x - a.b.r.w / 2, y: cb.y - a.b.r.h / 2 }, rb = { ...b.b.r, x: ca.x - b.b.r.w / 2, y: ca.y - b.b.r.h / 2 };
       const others = rs.filter((z) => z !== a.b.r && z !== b.b.r);
@@ -894,21 +998,46 @@ function layoutMarkers() {
     }
     // 評分：整張列出的多指數國家越多越好，其次是沒被縮成迷你版
     let sc = 0;
-    for (const o of vis.values()) if (o.b) sc += (o.b.mode === 'multi' ? 100 : o.b.mode === 'full' ? 10 : 1) * (o.m.group.length > 1 ? 3 : 1);
+    // markets.json 的 pin：一定要整張列出的國家（例如上證、韓國），分數特別高，其他國家只好讓位
+    for (const o of vis.values()) {
+      if (!o.b) continue;
+      sc += (o.b.mode === 'multi' ? 100 : o.b.mode === 'full' ? 10 : 1) * (o.m.group.length > 1 ? 3 : 1) * (o.m.pin ? 20 : 1);
+      // pin 的旗幟離自己的動物越遠越扣分（扣不到讓它變成非整張列出，只是讓位置盡量靠近）
+      if (o.m.pin && o.b.mode !== 'mini' && o.b.pos !== 'under') {
+        const dist = Math.hypot(o.b.r.x + o.b.r.w / 2 - o.x, o.b.r.y + o.b.r.h / 2 - o.y);
+        sc -= o.b.mode === 'multi' ? Math.min(2500, dist * 8) : Math.min(150, dist * 0.8);
+      }
+      // 有 under 的國家如果真的貼在指定國家下面，加一點分，讓排列整齊
+      if (o.b.pos === 'under') sc += 1500;
+    }
     return sc;
   };
   // 先依權重由大到小放；如果有多指數的國家沒能整張列出，就讓它優先再排一次（最多重排幾次，取最好的）
-  let order = arr.slice().sort((a, b) => (b.group.length > 1) - (a.group.length > 1));
+  let order = arr.slice().sort((a, b) => (!!b.pin - !!a.pin) || ((b.group.length > 1) - (a.group.length > 1)));
   let best = null;
-  const tried = new Set();
-  for (let it = 0; it < 6; it++) {
-    const sc = place(order);
-    if (!best || sc > best.sc) best = { sc, snap: [...vis.values()].map((o) => [o, o.b]) };
-    const miss = order.find((m) => m.group.length > 1 && !tried.has(m.s) && vis.get(m.s) && state.quotes[m.s]
-      && !(vis.get(m.s).b && vis.get(m.s).b.mode === 'multi'));
-    if (!miss) break;
-    tried.add(miss.s);
-    order = [miss, ...order.filter((m) => m !== miss)];
+  // pin 的國家誰先放會影響彼此的位置，所以正序、反序各排一輪，取分數最高的
+  const pins = order.filter((m) => m.pin);
+  const starts = [order];
+  if (pins.length > 1) {
+    const rest = order.filter((m) => !m.pin);
+    starts.push([...pins.slice().reverse(), ...rest]);
+    // 由北到南（畫面上方到下方）依序放，旗幟才會一層一層往下排整齊
+    starts.push([...pins.slice().sort((a, b) => (vis.get(a.s)?.y ?? 0) - (vis.get(b.s)?.y ?? 0)), ...rest]);
+  }
+  for (const start of starts) {
+    order = start;
+    const tried = new Set();
+    for (let it = 0; it < 6; it++) {
+      const sc = place(order);
+      if (!best || sc > best.sc) best = { sc, snap: [...vis.values()].map((o) => [o, o.b]) };
+      // 沒能整張列出的多指數國家，或沒能以完整版（非迷你）列出的 pin 國家，下一輪優先排
+      const missing = (m) => (m.group.length > 1 || m.pin) && !tried.has(m.s) && vis.get(m.s) && state.quotes[m.s]
+        && !(vis.get(m.s).b && (vis.get(m.s).b.mode === 'multi' || (m.group.length === 1 && vis.get(m.s).b.mode === 'full')));
+      const miss = order.find((m) => m.pin && missing(m)) || order.find(missing);
+      if (!miss) break;
+      tried.add(miss.s);
+      order = [miss, ...order.filter((m) => m !== miss)];
+    }
   }
   for (const [o, bb] of best.snap) o.b = bb;
 
@@ -930,7 +1059,8 @@ function layoutMarkers() {
 
     const b = s.select('.bubble');
     if (!o.b || !q) { b.style('display', 'none'); return; }
-    const { w, h } = o.b.r, mode = o.b.mode, mini = mode === 'mini', multi = mode === 'multi';
+    // 旗幟內部用「未放大」的座標畫，所以寬高要除回倍率，最後在 transform 再 scale(U)
+    const w = o.b.r.w / U, h = o.b.r.h / U, mode = o.b.mode, mini = mode === 'mini', multi = mode === 'multi';
     const n = m.group.length;
     // 輪播：多指數國家在 full 模式下，每隔幾秒換下一個指數
     const cur = mode === 'full' && n > 1 ? m.group[state.rot % n] : m;
@@ -938,7 +1068,7 @@ function layoutMarkers() {
     const col = pctColor(pct);
     // 對齊整數像素，細線才會銳利
     const bx = Math.round(o.b.r.x), by = Math.round(o.b.r.y);
-    b.style('display', null).attr('transform', `translate(${bx - o.x},${by - o.y})`);
+    b.style('display', null).attr('transform', `translate(${bx - o.x},${by - o.y}) scale(${U})`);
     b.select('.bg').attr('x', 0.5).attr('y', 0.5).attr('width', w - 1).attr('height', h - 1)
       .attr('fill', st === 'closed' ? 'url(#bannerOff)' : 'url(#bannerBg)');
     b.select('.rim').attr('x', 0.5).attr('y', 0.5).attr('width', w - 1).attr('height', h - 1);
@@ -980,7 +1110,7 @@ function layoutMarkers() {
         const x = m.group[i], r = d3.select(this), rq = state.quotes[x.s], y = 24 + i * 16;
         r.select('.rbg').attr('x', 4).attr('y', y).attr('width', w - 8).attr('height', 16).classed('odd', i % 2 === 1);
         r.select('.rn').attr('x', 9).attr('y', y + 8.5);
-        r.select('.rv').attr('x', w - 56).attr('y', y + 8.5).text(rq ? fmtN(rq.p, 'short') : '--');
+        r.select('.rv').attr('x', w - (w >= 155 ? 56 : 50)).attr('y', y + 8.5).text(rq ? fmtN(rq.p, 'short') : '--');
         r.select('.rp').attr('x', w - 8).attr('y', y + 8.5)
           .attr('fill', rq ? pctColor(rq.pct) : null).text(rq ? `${arrow(rq.pct)}${Math.abs(rq.pct).toFixed(2)}%` : '');
       });
@@ -989,6 +1119,22 @@ function layoutMarkers() {
       t1.select('.m').attr('fill', col).attr('dx', hasFlag ? 0 : 3).text(fmtPct(pct, 1));
     }
   });
+  // 疊放順序：旗幟要蓋在別人的動物上面（SVG 後畫的在上層）。
+  // 誰的旗幟蓋到別國的動物，就排到那個國家的後面；用 DFS 做拓撲排序，遇到循環就略過
+  {
+    const nodes = gMk.selectAll('g.mk').nodes();
+    const info = nodes.map((n) => ({ n, o: vis.get(d3.select(n).datum().s) }));
+    const after = new Map(info.map((p) => [p, info.filter((q) => q !== p && p.o && p.o.b && q.o && inter(p.o.b.r, q.o.a) > 0)]));
+    const done = new Set(), path = new Set(), seq = [];
+    const visit = (p) => {
+      if (done.has(p) || path.has(p)) return;
+      path.add(p);
+      for (const q of after.get(p)) visit(q);
+      path.delete(p); done.add(p); seq.push(p);
+    };
+    info.forEach(visit);
+    if (seq.some((p, i) => p.n !== nodes[i])) for (const p of seq) gMk.node().appendChild(p.n);
+  }
 
   // 小角色：活動範圍不壓住市場標記才顯示；放大到街道等級就收起來
   // 小角色比市場動物大一點，世界視角也看得出在做什麼
