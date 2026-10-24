@@ -221,6 +221,46 @@ body.travel #dzBtn,body.travel #dzMenu{display:none}
 .cr .wake{fill:#e8f6ff;transform-box:fill-box;transform-origin:center}
 #attrib{position:absolute;right:4px;bottom:3px;z-index:2;font-size:10px;color:#fff;opacity:.75;text-shadow:0 1px 2px #000;pointer-events:none;font-family:system-ui,sans-serif}
 
+/* 台股市值前十大的建築（corps.js）：漲 → 窗戶亮燈、地上一圈暖光；跌 → 褪色變暗；大漲放煙火、重挫烏雲打雷 */
+.corps .bld{cursor:pointer}
+.corps .bld:focus{outline:none}
+.corps .art{filter:drop-shadow(1.2px 1px .8px rgba(20,33,12,.55));transition:filter .8s}
+.corps .edge{fill:none;stroke:rgba(10,18,30,.55);stroke-width:.5;stroke-linejoin:round}
+.corps .gs{fill:#0f1a08;opacity:.45}
+.corps .w{fill:#bcd8f2;transition:fill .8s}
+.corps.up .w{fill:#ffe07a}
+.corps.up .art{filter:drop-shadow(0 0 2.5px rgba(255,214,90,.85)) drop-shadow(1.2px 1px .8px rgba(20,33,12,.5))}
+.corps.up .gs{fill:#ffcf55;opacity:.38}
+.corps.down .art{filter:saturate(.35) brightness(.68) drop-shadow(1.2px 1px .8px rgba(20,33,12,.55))}
+.corps.down .w{fill:#2c3748}
+.corps.down .sign{filter:saturate(.5) brightness(.8)}
+.corps .lead{fill:none;stroke:rgba(255,255,255,.75);stroke-width:1;stroke-dasharray:2 2}
+.corps .hq{stroke:#fff;stroke-width:1}
+.corps .sign{filter:drop-shadow(0 1.5px 1.5px rgba(0,0,0,.55))}
+.corps .sb{stroke:var(--outline);stroke-width:1.5}
+.corps .rkb{fill:#f2c14e;stroke:var(--outline);stroke-width:1.5}
+.corps text{font-family:var(--font);font-weight:800;text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.corps .rkt{font-size:9px;fill:#3a2604}
+.corps .snm{font-size:10.5px;fill:#fff;paint-order:stroke;stroke:rgba(0,0,0,.3);stroke-width:1.2px}
+.corps .cfx{pointer-events:none}
+.corps .fw,.corps .storm{display:none}
+.corps.boom .fw,.corps.crash .storm{display:inline}
+.corps .burst{transform-box:fill-box;transform-origin:center;opacity:0;animation:corp-burst 2.6s ease-out infinite}
+.corps .burst path{fill:none;stroke-width:1.6;stroke-linecap:round}
+.corps .rain path{stroke:#9fc3ff;stroke-width:1;stroke-linecap:round;opacity:0;animation:corp-rain .9s linear infinite}
+.corps .bolt{fill:#ffe86b;stroke:#fff6c2;stroke-width:.5;opacity:0;animation:corp-bolt 3.4s linear infinite}
+@keyframes corp-burst{0%{opacity:0;transform:scale(.15)}8%{opacity:1}45%{opacity:.9;transform:scale(1)}70%,100%{opacity:0;transform:scale(1.25)}}
+@keyframes corp-rain{0%{opacity:0;transform:translateY(-2px)}20%{opacity:.9}100%{opacity:0;transform:translateY(14px)}}
+@keyframes corp-bolt{0%,86%,90%,93%,100%{opacity:0}87%,89%,94%,96%{opacity:1}}
+body.noanim .corps .burst{animation:none;opacity:1;transform:none}
+body.noanim .corps .rain path{animation:none;opacity:.8}
+body.noanim .corps .bolt{animation:none;opacity:1}
+@media (prefers-reduced-motion:reduce){
+  .corps .burst{animation:none;opacity:1;transform:none}
+  .corps .rain path{animation:none;opacity:.8}
+  .corps .bolt{animation:none;opacity:1}
+}
+
 /* 動物棋子 */
 .mk{cursor:pointer}
 .emoji{font-family:var(--emoji);text-anchor:middle;dominant-baseline:central}

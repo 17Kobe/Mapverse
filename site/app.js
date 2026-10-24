@@ -266,7 +266,7 @@ function makeDemo() {
 }
 
 /* ================= 地圖 ================= */
-let svg, gZoom, gWorlds, gLand, gLine, gEdge, gDecor, gMk, gTw, gRoadTag, gPoi, zoomB, projection, W = 0, H = 0;
+let svg, gZoom, gWorlds, gLand, gLine, gEdge, gDecor, gCorp, gMk, gTw, gRoadTag, gPoi, zoomB, projection, W = 0, H = 0;
 let S0 = 1, viewBox = [[0, 0], [1, 1]], maxK = 16;
 
 /* ---------- 遊戲風地形（實作在 terrain.js） ---------- */
@@ -619,6 +619,9 @@ function buildSvg() {
   // 主要道路畫進地形圖磚（terrain.js，拖曳時不用每一幀重畫），SVG 這邊只放路線編號牌
   gRoadTag = svg.append('g').attr('class', 'rd-tags').style('display', 'none'); // 路線編號牌（螢幕座標，在海岸線上面）
   gDecor = svg.append('g').attr('class', 'decor').style('pointer-events', 'none');
+  // 台股市值前十大公司的建築（corps.js），在動物和旗幟下面
+  gCorp = svg.append('g');
+  if (window.Corps) Corps.build(gCorp.node(), { onPick: openCorp });
   gMk = svg.append('g').attr('class', 'markers');
   gPoi = svg.append('g').attr('class', 'pois').style('display', 'none');
 
@@ -1089,6 +1092,11 @@ function layoutMarkers() {
     if (rects.some((r) => inter(a, r) / area > (m.pin || (m.col && !desktopMQ.matches) ? 0.8 : 0.3))) continue;
     rects.push(a);
     vis.set(m.s, { m, x, y, a, size, b: null });
+  }
+  // 台股前十大的建築：放在動物之後、旗幟之前，旗幟會避開建築（動物照常可以站在建築前面）
+  if (window.Corps) {
+    const tq = state.quotes['^TWII'];
+    rects.push(...Corps.layout({ W, H, xy: screenXY, pct: tq ? tq.pct : null, visible: true, avoid: uiRects(['#chips', '#hud', '#panel']) }));
   }
   // 浮動介面（篩選列、概況卡、其它指數面板）蓋住的地方，氣泡不要放進去
   rects.push(...uiRects(['#chips', '#hud', '#panel']));
@@ -1878,6 +1886,7 @@ async function setLayer(k) {
   $('#sheet').hidden = true;
   gMk.style('display', travel ? 'none' : null);
   gDecor.style('display', travel ? 'none' : null);
+  gCorp.style('display', travel ? 'none' : null);
   gTw.style('display', travel ? null : 'none');
   gRoadTag.style('display', travel ? null : 'none');
   gPoi.style('display', travel ? null : 'none');
@@ -2011,6 +2020,27 @@ function spark(arr, col) {
   const pts = arr.map((v, i) => [p + (i * (w - 2 * p)) / (arr.length - 1), h - p - ((v - mn) / rg) * (h - 2 * p)]);
   const last = pts[pts.length - 1];
   return `<svg class="spark" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><polyline fill="none" stroke="${col}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" points="${pts.map((q) => q.join(',')).join(' ')}"/><circle cx="${last[0]}" cy="${last[1]}" r="4.5" fill="${col}"/></svg>`;
+}
+// 台股前十大公司的詳情卡；c 是 null 時（縮小時的小城市）列出全部十家
+function openCorp(c) {
+  const C = Corps.CORPS, tq = state.quotes['^TWII'];
+  const mood = !tq ? '' : tq.pct >= Corps.BOOM ? '🎆 台股大漲，整座城市放煙火！' : tq.pct > 0 ? '💡 台股上漲，建築燈火通明'
+    : tq.pct <= Corps.CRASH ? '⛈️ 台股重挫，城市籠罩在暴風雨裡' : tq.pct < 0 ? '🌫️ 台股下跌，城市一片低迷' : '';
+  const twii = tq ? `<div class="chg" style="color:${pctColor(tq.pct)}">台股加權 ${fmtN(tq.p)}　${arrow(tq.pct)} ${Math.abs(tq.pct).toFixed(2)}%</div>` : '';
+  const note = `<p class="small">市值為 ${Corps.DATA_DATE} 收盤附近的約略數字（新台幣），不同網站的統計口徑可能略有差異；總部地址取自證交所上市公司基本資料。</p>`;
+  if (!c) {
+    showSheet(`<h3>🏙️ 台股市值前十大</h3>${twii}${mood ? `<p class="desc">${mood}</p>` : ''}
+      <div class="meta">${C.map((x) => `<div><b>${x.rk}. ${x.name}</b>（${x.s}）　${x.cap.toFixed(2)} 兆　<span class="small">${x.ind}</span></div>`).join('')}</div>
+      <p class="small">放大到台灣，就能看到每家公司蓋在自己總部的建築。</p>${note}`);
+    return;
+  }
+  showSheet(`
+    <div class="hd"><span class="big" style="color:${c.col}">🏢</span>
+      <div><div class="nm">${c.name}</div><div class="sym">${c.s} · 台股市值第 ${c.rk} 名</div></div></div>
+    <div class="px">${c.cap.toFixed(2)} 兆</div>
+    ${twii}
+    <div class="meta"><div><b>主要產業</b>　${c.ind}</div><div><b>總部</b>　${c.addr}</div>${mood ? `<div>${mood}</div>` : ''}</div>
+    ${note}`);
 }
 function openCard(m) {
   const q = state.quotes[m.s];
