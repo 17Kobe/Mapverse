@@ -222,7 +222,7 @@ body.travel #dzBtn,body.travel #dzMenu{display:none}
 #attrib{position:absolute;right:4px;bottom:3px;z-index:2;font-size:10px;color:#fff;opacity:.75;text-shadow:0 1px 2px #000;pointer-events:none;font-family:system-ui,sans-serif}
 
 /* 台股市值前十大的建築（corps.js）：漲 → 窗戶亮燈、地上一圈暖光；跌 → 褪色變暗；大漲放煙火、重挫烏雲打雷 */
-.corps .bld{cursor:pointer}
+.corps .bld,.corps .lbl{cursor:pointer}
 .corps .bld:focus{outline:none}
 .corps .art{filter:drop-shadow(1.2px 1px .8px rgba(20,33,12,.55));transition:filter .8s}
 .corps .edge{fill:none;stroke:rgba(10,18,30,.55);stroke-width:.5;stroke-linejoin:round}
@@ -243,6 +243,12 @@ body.travel #dzBtn,body.travel #dzMenu{display:none}
 .corps .rkt{font-size:9px;fill:#3a2604}
 .corps .snm{font-size:10.5px;fill:#fff;paint-order:stroke;stroke:rgba(0,0,0,.3);stroke-width:1.2px}
 .corps .cfx{pointer-events:none}
+/* 商標立牌：白底、深色描邊、兩支小腳，像立在建築前的招牌 */
+.corps .plq{fill:#fbfaf6;stroke:var(--outline);stroke-width:.8}
+.corps .plq-leg{stroke:#5d6470;stroke-width:1.2}
+.corps .plqs,.corps .plq-row{filter:drop-shadow(0 1px 1px rgba(0,0,0,.45))}
+.corps .plq-t{font-family:'Arial Black','Segoe UI',system-ui,sans-serif;font-weight:900;letter-spacing:-.02em;stroke:none;paint-order:normal}
+.corps .plq-t.serif{font-family:Georgia,'Times New Roman',serif;font-weight:700;letter-spacing:-.04em}
 .corps .fw,.corps .storm{display:none}
 .corps.boom .fw,.corps.crash .storm{display:inline}
 .corps .burst{transform-box:fill-box;transform-origin:center;opacity:0;animation:corp-burst 2.6s ease-out infinite}

@@ -143,12 +143,29 @@
       svg: plaza +
         `<g transform="translate(-18,-7) scale(.82)">${m.svg}</g>` +
         `<g transform="translate(22,-8) scale(.8)">${d.svg}</g>` +
-        `<g transform="translate(3,0) scale(1.05)">${t.svg}</g>`
+        `<g transform="translate(3,0) scale(1.05)">${t.svg}</g>`,
+      // 廣場前緣立著三家的商標牌（放大到夠清楚才顯示）
+      plaques: `<g class="plq-row">${plaque(CORPS[1], -28, 5, 11)}${plaque(CORPS[2], 32, 4, 11)}${plaque(CORPS[0], 3, 8, 14)}</g>`
     };
   }
 
+  // 建築前的商標立牌：白色立牌 + 該公司的商標圖（corp-logos.js，來自 iKDx 的 StockLogo.vue）。
+  // cx 是中心、y 是立牌上緣、size 是商標邊長。沒有商標圖時退回公司名稱。
+  let logoSeq = 0;
+  function plaque(c, cx, y, size) {
+    const pad = size * 0.14, w = f1(size + pad * 2), h = w, x = f1(cx - w / 2);
+    let s = `<path class="plq-leg" d="M${f1(cx - w * 0.28)},${f1(y + h)}v${f1(size * 0.3)}M${f1(cx + w * 0.28)},${f1(y + h)}v${f1(size * 0.3)}"/>`;
+    s += `<rect class="plq" x="${x}" y="${f1(y)}" width="${w}" height="${h}" rx="${f1(size * 0.18)}"/>`;
+    const svg = window.CORP_LOGOS && window.CORP_LOGOS[c.s];
+    if (svg) {
+      // 商標裡的 id（clipPath、漸層）每次放進頁面都要換成不重複的，不然同一張商標放兩處會互相干擾
+      const n = ++logoSeq, uid = svg.replace(/id="([^"]+)"/g, (_, i) => `id="${i}-${n}"`).replace(/url\(#([^)]+)\)/g, (_, i) => `url(#${i}-${n})`);
+      return s + uid.replace('<svg ', `<svg x="${f1(x + pad)}" y="${f1(y + pad)}" width="${f1(size)}" height="${f1(size)}" `);
+    }
+    return s + `<text class="plq-t" x="${f1(cx)}" y="${f1(y + h / 2)}" fill="${c.col}" font-size="${f1(size * 0.4)}">${c.name}</text>`;
+  }
   /* ---------- 建立 SVG ---------- */
-  let root = null, items = [], cluster = null, fx = [], onPick = null, lastOrder = '';
+  let root = null, items = [], cluster = null, fx = [], onPick = null, lastOrder = '', lab = null;
   const NS = 'http://www.w3.org/2000/svg';
   const el = (tag, attrs, parent) => {
     const e = document.createElementNS(NS, tag);
@@ -178,9 +195,11 @@
     el('ellipse', { class: 'gs', filter: 'url(#soft)' }, cluster.g);
     cluster.art = el('g', { class: 'art' }, cluster.g);
     const ca = clusterArt();
-    cluster.art.innerHTML = ca.svg;
+    cluster.art.innerHTML = ca.svg + ca.plaques;
+    cluster.plq = cluster.art.querySelector('.plq-row');
     cluster.top = ca.top;
     cluster.g.addEventListener('click', () => onPick && onPick(null));
+    const labLayer = el('g', { class: 'labels' });
     for (const c of CORPS) {
       const g = el('g', { class: 'bld mk', role: 'button', tabindex: 0, 'aria-label': `${c.name}（市值第 ${c.rk} 名）` }, root);
       const lead = el('path', { class: 'lead' }, g);
@@ -190,11 +209,20 @@
       const art = el('g', { class: 'art' }, body);
       const a = ART[c.kind]();
       art.innerHTML = a.svg;
-      const sign = makeSign(body, c);
-      g.addEventListener('click', () => onPick && onPick(c));
-      g.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onPick && onPick(c); } });
-      items.push({ c, g, body, art, sign, lead, dot, top: a.top, w: 0 });
+      // 招牌和商標立牌放在最上層（不會被前面的建築擋住），位置跟著建築
+      const lg = el('g', { class: 'lbl mk' }, labLayer);
+      const sign = makeSign(lg, c);
+      // 建築正前方（畫面上就是建築底部下方）的商標立牌：字級固定，不隨建築縮放
+      const plq = el('g', { class: 'plqs' }, lg);
+      plq.innerHTML = plaque(c, 0, 0, 15);
+      for (const n of [g, lg]) {
+        n.addEventListener('click', () => onPick && onPick(c));
+        n.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onPick && onPick(c); } });
+      }
+      items.push({ c, g, body, art, lg, sign, plq, lead, dot, top: a.top, w: 0 });
     }
+    root.appendChild(labLayer);
+    lab = labLayer;
     // 特效：最多 3 組（縮小時只用 1 組，放在小城市頭上；放大時放在前 3 大頭上）
     for (let i = 0; i < 3; i++) {
       const g = el('g', { class: 'cfx' });
@@ -259,12 +287,14 @@
       if (on) {
         setA(cluster.g, 'transform', `translate(${f1(x)},${f1(y)})`);
         setA(cluster.art, 'transform', `scale(${f1(s)})`);
+        // 小城市夠大時才顯示商標牌（太小字會糊成一團）
+        show(cluster.plq, hgt >= 50);
         const gs = cluster.g.querySelector('.gs');
         setA(gs, 'rx', f1(40 * s)); setA(gs, 'ry', f1(9 * s)); setA(gs, 'cy', f1(-2 * s));
-        out.push({ x: x - 38 * s, y: y + cluster.top * s, w: 76 * s, h: (-cluster.top + 5) * s, an: true });
+        out.push({ x: x - 47 * s, y: y + cluster.top * s, w: 94 * s, h: (-cluster.top + (hgt >= 50 ? 22 : 5)) * s, an: true });
         fxAt.push([x + 3 * s, y + (cluster.top - 6) * s, s * 1.6]);
       }
-      for (const it of items) show(it.g, false);
+      for (const it of items) { show(it.g, false); show(it.lg, false); }
     } else {
       // 放大：10 棟各自蓋在總部。台北的幾家總部離得很近，建築本身可以前後交疊（像一排天際線），
       // 只有幾乎整棟被擋住時才往左右挪一點；招牌另外找不重疊的位置，真的放不下就先不掛（再放大就會出現）
@@ -287,12 +317,13 @@
         const r = box(px, py);
         const on = r.x < W + 40 && r.x + r.w > -40 && r.y < H + 40 && r.y + r.h > -40;
         show(it.g, on);
+        show(it.lg, on);
         if (on) vis.push({ it, c, hx, hy, px, py, s, bb, r });
       }
       // 畫的順序：越下面（越靠近鏡頭）的越後畫，前面的建築才會擋住後面的；順序沒變就不動 DOM
       const order = vis.slice().sort((a, b) => a.py - b.py);
       const key = order.map((v) => v.c.rk).join(',');
-      if (key !== lastOrder) { lastOrder = key; order.forEach((v) => root.appendChild(v.it.g)); }
+      if (key !== lastOrder) { lastOrder = key; order.forEach((v) => root.insertBefore(v.it.g, lab)); }
       const signs = [];
       for (const v of vis) {
         const { it, c, hx, hy, px, py, s, bb, r } = v;
@@ -300,6 +331,7 @@
         const moved = Math.hypot(px - hx, py - hy) > 1;
         setA(it.g, 'transform', `translate(${f1(hx)},${f1(hy)})`);
         setA(it.body, 'transform', `translate(${f1(px - hx)},${f1(py - hy)})`);
+        setA(it.lg, 'transform', `translate(${f1(px)},${f1(py)})`);
         setA(it.art, 'transform', `scale(${f1(s)})`);
         const gs = it.body.querySelector('.gs');
         setA(gs, 'rx', f1((bb.w / 2 + 3) * s)); setA(gs, 'ry', f1(5 * s)); setA(gs, 'cx', f1((bb.x + bb.w / 2) * s)); setA(gs, 'cy', f1(-1 * s));
@@ -327,6 +359,24 @@
           setA(it.sign.querySelector('.snm'), 'x', 6 + 10 + (sw - 16) / 2);
         }
         if (c.rk <= 3) fxAt.push([cx, top - 6, Math.max(0.8, u)]);
+        // 商標立牌：建築正前方，擠到別人就往左右或下面挪一點；都不行就先不放（放大後會分開）
+        const pk = Math.max(0.75, Math.min(1.1, u));
+        if (!it.pb) { try { const b = it.plq.getBBox(); if (b.width) it.pb = { x: b.x, y: b.y, w: b.width, h: b.height }; } catch (e) { /* 還沒顯示 */ } }
+        const pb = it.pb || { x: -20, y: 0, w: 40, h: 16 };
+        let pSpot = null;
+        for (const [fx0, fy] of [[0, 0], [-0.6, 0], [0.6, 0], [0, 1]]) {
+          const dx = fx0 * pb.w * pk, dy = 2 + fy * (pb.h * pk + 2);
+          const pr = { x: cx + dx + pb.x * pk, y: py + dy + pb.y * pk, w: pb.w * pk, h: pb.h * pk };
+          if (pr.x < 2 || pr.x + pr.w > W - 2 || pr.y + pr.h > H - 2) continue;
+          if (signs.some((q) => inter(pr, q)) || ui.some((q) => inter(pr, q))) continue;
+          pSpot = { pr, dx, dy }; break;
+        }
+        show(it.plq, !!pSpot);
+        if (pSpot) {
+          signs.push(pSpot.pr);
+          out.push({ ...pSpot.pr, an: true });
+          setA(it.plq, 'transform', `translate(${f1(cx - px + pSpot.dx)},${f1(pSpot.dy)}) scale(${f1(pk)})`);
+        }
       }
     }    fx.forEach((g, i) => {
       const p = fxAt[i];
