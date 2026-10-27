@@ -1912,7 +1912,7 @@ function toast(msg) {
 }
 
 function buildChips() {
-  const defs = [['all', '🌍', '全球'], ['asia', '🌏', '亞太'], ['europe', '🏰', '歐洲'], ['americas', '🗽', '美洲'], ['mea', '🐪', '中東非洲']];
+  const defs = [['all', '🌍', '全球'], ['asia', '🌏', '亞太'], ['americas', '🗽', '美洲'], ['europe', '🏰', '歐洲'], ['mea', '🐪', '中東非洲']];
   const chip = (k, i, t) => `<button class="chip gbtn" data-k="${k}" aria-pressed="false"><span class="ci">${i}</span>${t}</button>`;
   const nav = $('#chips');
   // 旅遊地圖：本島與各離島（設定在 travel.json 的 areas）
