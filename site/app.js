@@ -1388,9 +1388,9 @@ function layoutMarkers() {
     const pr = w - 5 - dotW, pillW = tsW + 8; // 時間膠囊的右緣與寬度
     const showTs = !!ts && textWidthOf(m.short) + pillW + 8 <= pr - tx0;
     b.select('.tsb').styleQ('display', showTs ? null : 'none').attrQ('x', pr - pillW).attrQ('y', 5.5).attrQ('width', pillW).attrQ('height', 14);
-    b.select('.ts').styleQ('display', showTs ? null : 'none').attrQ('x', pr - 4).attrQ('y', 12.7).textQ(showTs ? ts : '');
+    b.select('.ts').styleQ('display', showTs ? null : 'none').attrQ('x', pr - 4).attrQ('y', 15.7).textQ(showTs ? ts : '');
     const tx1 = showTs ? pr - pillW : w - dotW; // 文字置中在國旗和時間膠囊（圓點）之間
-    const t1 = b.select('.t1').attrQ('x', (tx0 + tx1) / 2).attrQ('y', mini ? h / 2 + 0.5 : 12.5);
+    const t1 = b.select('.t1').attrQ('x', (tx0 + tx1) / 2).attrQ('y', mini ? h / 2 + 4.5 : 17.2).styleQ('font-size', mini ? '12px' : null);
     const t2 = b.select('.t2').attrQ('x', w / 2).attrQ('y', FULL_BASE).styleQ('display', mode === 'full' ? null : 'none');
     b.select('.rows').styleQ('display', multi ? null : 'none');
     if (!mini) {
@@ -1411,9 +1411,9 @@ function layoutMarkers() {
         const rvx = w - 8 - (ps ? textWidthOf(ps, 'rp') : 0) - 5;
         // 數字維持和單一指數一樣大，名稱放不下時才縮小名稱
         const lbl = x.abbr || x.zh, lw = textWidthOf(lbl, 'rn'), room = rvx - textWidthOf(vs, 'rv') - 9 - 4;
-        r.select('.rn').attrQ('x', 9).attrQ('y', y + 8.5).styleQ('font-size', lw > room ? `${Math.max(8.5, 11 * room / lw).toFixed(1)}px` : null);
-        r.select('.rv').attrQ('x', rvx).attrQ('y', y + 8.5).textQ(vs);
-        r.select('.rp').attrQ('x', w - 8).attrQ('y', y + 8.5)
+        r.select('.rn').attrQ('x', 9).attrQ('y', y + 12.5).styleQ('font-size', lw > room ? `${Math.max(8.5, 11 * room / lw).toFixed(1)}px` : null);
+        r.select('.rv').attrQ('x', rvx).attrQ('y', y + 13.5).textQ(vs);
+        r.select('.rp').attrQ('x', w - 8).attrQ('y', y + 13.5)
           .styleQ('fill', rq ? pctColor(rq.pct) : null).textQ(ps);
       });
     } else {
@@ -1893,7 +1893,7 @@ function layoutTravel() {
     const bx = Math.round(c.x), by = Math.round(c.y);
     b.styleQ('display', null).attrQ('transform', `translate(${bx - d.x},${by - d.y})`);
     drawBanner(b, w, h, { bg: 'url(#bannerBg)', band: cat.band, tail: c.pos === 'up', bandH: h - 6 });
-    t1.attrQ('x', w / 2).attrQ('y', h / 2);
+    t1.attrQ('x', w / 2).attrQ('y', h / 2 + 4.5);
   }
   // 等級高的畫在最上面（後畫的蓋前面）；順序沒變就不動 DOM（拖曳時每幀都會跑到這裡）
   const want = shown.map((d) => node.get(d.s.id)).reverse(), cur = gPoi.node().children;

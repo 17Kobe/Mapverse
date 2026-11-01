@@ -302,17 +302,18 @@ body.noanim .corps .bk,body.noanim .corps .flame{animation:none}
 /* 多指數旗幟：每列一個指數 */
 .bubble .rbg{fill:transparent}
 .bubble .rbg.odd{fill:rgba(255,255,255,.05)}
-.bubble .rn{text-anchor:start;font-size:11px;fill:var(--gold-l)}
-.bubble .rv{text-anchor:end;font-size:15px;fill:#fff;font-family:var(--num);font-variant-numeric:tabular-nums;letter-spacing:.2px}
-.bubble .rp{text-anchor:end;font-size:13.5px;font-family:var(--num);font-variant-numeric:tabular-nums;letter-spacing:.2px}
+.bubble .rn{text-anchor:start;font-size:11px;fill:var(--gold-l);dominant-baseline:alphabetic}
+.bubble .rv{text-anchor:end;font-size:15px;fill:#fff;font-family:var(--num);font-variant-numeric:tabular-nums;letter-spacing:.2px;dominant-baseline:alphabetic}
+.bubble .rp{text-anchor:end;font-size:13.5px;font-family:var(--num);font-variant-numeric:tabular-nums;letter-spacing:.2px;dominant-baseline:alphabetic}
 .bubble .lb{fill:var(--gold-l);font-size:10.5px}
 .bubble .dots circle{fill:rgba(255,255,255,.35);stroke:var(--outline);stroke-width:.6}
 .bubble .dots circle.on{fill:var(--gold-l)}
 .bubble text{font-family:var(--font);font-weight:700;fill:var(--cream);text-anchor:middle;dominant-baseline:central;pointer-events:none;paint-order:stroke;stroke:rgba(0,0,0,.45);stroke-width:2px}
-.bubble .t1{font-size:12px}
-.bubble .t1 .a{fill:#fff}
+.bubble .t1{font-size:14px;dominant-baseline:alphabetic}
+/* 國名：比下方數字大一級，白字加較粗的深色描邊，在紅 / 綠 / 灰色帶上都跳得出來 */
+.bubble .t1 .a{fill:#fff;stroke:rgba(5,10,22,.72);stroke-width:3px;stroke-linejoin:round}
 .bubble .tsb{fill:rgba(8,14,28,.62);stroke:rgba(255,226,150,.35);stroke-width:.6}
-.bubble .ts{font-size:9.5px;font-weight:700;text-anchor:end;fill:#ffd66b;stroke:none}
+.bubble .ts{font-size:9.5px;font-weight:700;text-anchor:end;fill:#ffd66b;stroke:none;dominant-baseline:alphabetic}
 .bubble .t2{font-size:15px;fill:#fff;dominant-baseline:alphabetic;font-family:var(--num);font-variant-numeric:tabular-nums;letter-spacing:.2px}
 .bubble .t2 .lb{font-size:11.5px;letter-spacing:0}
 .bubble .t2 .pc{font-size:13.5px}
