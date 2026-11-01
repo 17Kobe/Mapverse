@@ -7,13 +7,14 @@
     // 篩選：全球 / 亞太 / 美洲 / 歐洲 / 中東非洲只顯示股票（縮放範圍由該區市場的實際位置計算，見 regionTransform）。
     // 商品 / 債券 / 利率 / 匯率 / 地緣 / 經濟數據是另一組篩選，只顯示 markets.json 的 topics（股票動物與旗幟都收起來）。
     // mlon：手機版地圖的中心經度（手機上卡片排成左右兩欄，地圖只當背景）
+    const GLOBAL_LON = 196; // 手機版全球檢視（和大部分主題篩選）的中心經度：太平洋
     const TOPICS = {
-        commodity: { icon: '🛢️', label: '商品', mlon: 20 },
-        bond: { icon: '🏦', label: '債券', mlon: 20 },
-        rate: { icon: '🏛️', label: '利率', mlon: 20 },
-        fx: { icon: '💱', label: '匯率', mlon: 20 },
+        commodity: { icon: '🛢️', label: '商品', mlon: GLOBAL_LON },
+        bond: { icon: '🏦', label: '債券', mlon: GLOBAL_LON },
+        rate: { icon: '🏛️', label: '利率', mlon: GLOBAL_LON },
+        fx: { icon: '💱', label: '匯率', mlon: GLOBAL_LON },
         geo: { icon: '⚔️', label: '地緣', mlon: 85 },
-        econ: { icon: '📊', label: '經濟數據', mlon: 20 },
+        econ: { icon: '📊', label: '經濟數據', mlon: GLOBAL_LON },
     };
     // 地緣狀態的色帶與文字顏色
     const TONES = { ok: '#79e3a0', warn: '#ffc66b', bad: '#ff8d85' };
@@ -21,7 +22,6 @@
     // 區域檢視至少放大幾倍；塞不下的小市場會留在畫面外（拖曳即可看到）
     const REGION_MIN_K = 1.5;
     const REGION_MAX_K = 5;
-    const GLOBAL_LON = 196; // 手機版全球檢視的中心經度
 
     // 左側圖層列（手機版是底部導覽列）。之後要加新地圖，在這裡加一筆並把 ready 設成 true 即可
     const LAYERS = [
@@ -1946,7 +1946,7 @@
     }
     // 主題卡片的詳情：列出所有項目的數值與說明
     function openTopic(c) {
-        const T = TOPICS[c.cat];
+        const T = TOPICS[c.cat] || { icon: '🏛️', label: '政策' }; // 白宮卡片不屬於任何篩選，只由地標開啟
         const rows = c.rows
             .map(topicRowView)
             .map((x) =>
