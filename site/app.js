@@ -9,7 +9,7 @@
     // mlon：手機版地圖的中心經度（手機上卡片排成左右兩欄，地圖只當背景）
     const GLOBAL_LON = 196; // 手機版全球檢視（和大部分主題篩選）的中心經度：太平洋
     const TOPICS = {
-        commodity: { icon: '🛢️', label: '商品', mlon: GLOBAL_LON },
+        commodity: { icon: '🛢️', label: '商品', mlon: -35 }, // 大西洋：左邊看到一點美洲、右邊看到一點歐洲
         bond: { icon: '🏦', label: '債券', mlon: GLOBAL_LON },
         rate: { icon: '🏛️', label: '利率', mlon: GLOBAL_LON },
         fx: { icon: '💱', label: '匯率', mlon: GLOBAL_LON },
@@ -1799,8 +1799,11 @@
             const w = Math.min(colW, Math.round(Math.min(TOPIC_W, Math.floor((W - 10) / 2 / U)) * U));
             const top0 = Math.max(2, ...uiRects(['#chips', '#hud']).map((z) => z.y + z.h)) + GAP;
             const ys = [top0, top0];
-            for (const c of cards) {
-                const col = ys[1] < ys[0] ? 1 : 0,
+            // markets.json 的 mc（L / R + 由上而下的序號）指定欄位與順序；沒寫的卡片放進比較短的那欄
+            const num = (c) => (c.mc ? +c.mc.slice(1) : 99);
+            const order = cards.slice().sort((a, b) => num(a) - num(b));
+            for (const c of order) {
+                const col = c.mc ? (c.mc[0] === 'R' ? 1 : 0) : ys[1] < ys[0] ? 1 : 0,
                     h = Math.round(topicH(c.rows.length) * U);
                 const r = { x: col ? W - 4 - w : 4, y: ys[col], w, h };
                 ys[col] += h + GAP;
