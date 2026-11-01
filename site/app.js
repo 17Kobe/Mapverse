@@ -376,6 +376,7 @@
         gDecor,
         gCorp,
         gMk,
+        gBub,
         gTw,
         gRoadTag,
         gPoi,
@@ -890,6 +891,8 @@
         gCorp = svg.append('g');
         if (window.Corps) Corps.build(gCorp.node(), { onPick: openCorp });
         gMk = svg.append('g').attr('class', 'markers');
+        // 旗幟獨立一層畫在所有動物上方：不用再重排 DOM 節點（重排會讓 iOS Safari 的國旗圖片閃成空白）
+        gBub = svg.append('g').attr('class', 'bubbles');
         gPoi = svg.append('g').attr('class', 'pois').style('display', 'none');
 
         buildCritters();
@@ -943,7 +946,15 @@
                 ph: 0,
             });
             // 文明帝國式城市旗幟：深色外框 + 金色細邊 + 內側淡金線，左上角放國旗
-            const b = buildBanner(s);
+            const b = buildBanner(
+                gBub
+                    .append('g')
+                    .attr('class', 'mk bk')
+                    .on('click', () => openCard(d))
+                    .each(function () {
+                        d.bk = this;
+                    }),
+            );
             const fs = flagSrc(d.flag);
             if (fs) {
                 b.append('image').attr('class', 'flag').attr('href', fs).attr('preserveAspectRatio', 'none');
@@ -1943,14 +1954,17 @@
 
         gMk.selectAll('g.mk').each(function (m) {
             const s = d3.select(this),
+                bh = d3.select(m.bk),
                 o = vis.get(m.s),
                 wk = walkers.get(m.s);
             if (!o) {
                 s.styleQ('display', 'none');
+                bh.styleQ('display', 'none');
                 if (wk) wk.vis = false;
                 return;
             }
             s.styleQ('display', null).attrQ('transform', `translate(${o.x},${o.y})`);
+            bh.styleQ('display', null).attrQ('transform', `translate(${o.x},${o.y})`);
             const st = marketStatus(m),
                 q = state.quotes[m.s];
             const pct = q ? q.pct : 0;
@@ -1971,7 +1985,7 @@
                 .attrQ('font-size', Math.max(10, z * 0.42))
                 .textQ(st === 'closed' ? '💤' : '');
 
-            const b = s.select('.bubble');
+            const b = bh.select('.bubble');
             if (!o.b || !q) {
                 b.styleQ('display', 'none');
                 return;
@@ -2109,55 +2123,6 @@
                     .textQ(fmtPct(pct, 1));
             }
         });
-        // 疊放順序：旗幟要蓋在別人的動物上面（SVG 後畫的在上層）。
-        // 誰的旗幟蓋到別國的動物，就排到那個國家的後面；用 DFS 做拓撲排序，遇到循環就略過
-        {
-            const nodes = gMk.selectAll('g.mk').nodes();
-            const info = nodes.map((n) => ({ n, o: vis.get(d3.select(n).datum().s) }));
-            const after = new Map(
-                info.map((p) => [p, info.filter((q) => q !== p && p.o && p.o.b && q.o && inter(p.o.b.r, q.o.a) > 0)]),
-            );
-            const done = new Set(),
-                path = new Set(),
-                seq = [];
-            const visit = (p) => {
-                if (done.has(p) || path.has(p)) return;
-                path.add(p);
-                for (const q of after.get(p)) visit(q);
-                path.delete(p);
-                done.add(p);
-                seq.push(p);
-            };
-            info.forEach(visit);
-            // 只搬動必要的節點（加權最長遞增子序列：有旗幟的盡量留在原位）。
-            // 整批重新插入 DOM，iOS Safari 上的國旗圖片會閃一下變成空白
-            if (seq.some((p, i) => p.n !== nodes[i])) {
-                const idx = new Map(nodes.map((n, i) => [n, i])),
-                    pos = seq.map((p) => idx.get(p.n)),
-                    best = [],
-                    from = [];
-                let top = -1;
-                for (let i = 0; i < seq.length; i++) {
-                    best[i] = seq[i].o && seq[i].o.b ? 10 : 1;
-                    from[i] = -1;
-                    for (let j = 0; j < i; j++) {
-                        const w = best[j] + (seq[i].o && seq[i].o.b ? 10 : 1);
-                        if (pos[j] < pos[i] && w > best[i]) {
-                            best[i] = w;
-                            from[i] = j;
-                        }
-                    }
-                    if (top < 0 || best[i] > best[top]) top = i;
-                }
-                const keep = new Set();
-                for (let i = top; i >= 0; i = from[i]) keep.add(i);
-                const root = gMk.node();
-                seq.forEach((p, i) => {
-                    if (!keep.has(i)) root.insertBefore(p.n, i ? seq[i - 1].n.nextSibling : root.firstChild);
-                });
-            }
-        }
-
         // 小角色：活動範圍不壓住市場標記才顯示；放大到街道等級就收起來
         // 小角色比市場動物大一點，世界視角也看得出在做什麼
         const csz = Math.max(24, Math.min(44, 16 + k * 5));
@@ -2857,6 +2822,7 @@
         if (travel && window.Disasters) Disasters.clear(); // 災難目前只在股市地圖
         $('#sheet').hidden = true;
         gMk.style('display', travel ? 'none' : null);
+        gBub.style('display', travel ? 'none' : null);
         gDecor.style('display', travel ? 'none' : null);
         gCorp.style('display', travel ? 'none' : null);
         gTw.style('display', travel ? null : 'none');
@@ -3243,7 +3209,7 @@
         setInterval(() => {
             if (document.hidden) return;
             state.rot++;
-            if (!gMk.select('.dots:not([style*="none"])').empty()) scheduleLayout();
+            if (!gBub.select('.dots:not([style*="none"])').empty()) scheduleLayout();
         }, 4000);
         document.addEventListener('visibilitychange', async () => {
             if (!document.hidden) {
