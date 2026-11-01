@@ -1574,9 +1574,9 @@
         return `${d.getMonth() + 1}/${d.getDate()}(${WEEK_ZH[d.getDay()]})`;
     }
     // 色帶要放下「國旗 + 名稱 + 時間 + 輪播圓點」需要的寬度（未放大的座標）
-    function headNeedW(m, dotW, name = m.short) {
+    function headNeedW(m, dotW) {
         const ts = quoteStamp(m);
-        return Math.ceil(32 + textWidthOf(name) + (ts ? 16 + textWidthOf(ts, 'ts') : 0) + 5 + dotW);
+        return Math.ceil(32 + textWidthOf(m.short) + (ts ? 16 + textWidthOf(ts, 'ts') : 0) + 5 + dotW);
     }
 
     function layoutMarkers() {
@@ -1628,9 +1628,8 @@
         const baseRects = rects.slice();
         // 旗幟整體放大倍率：手機螢幕小，指數數字要放大才看得清楚（旗幟內部仍用原本的座標畫，最後再整個 scale）
         const U = desktopMQ.matches ? 1 : BUBBLE_SCALE_MOBILE;
-        // 全球檢視用合併後的指數清單和國名（上證 → 中國、日經 → 日本）
+        // 全球檢視用合併後的指數清單（中國 + 香港）
         const grpOf = (m) => (top10 && m.group10) || m.group;
-        const nameOf = (m) => (top10 && m.cn) || m.short;
         // 全球檢視：十大市值國家排兩欄（g10 = L/R + 由上而下的序號），兩欄頂端對齊，地圖留在上方。
         // 多指數的國家整張列出；兩欄放不下時退回 full（多指數輪播）
         const layoutTop10 = () => {
@@ -1656,9 +1655,7 @@
                         mu,
                         col: o.m.g10[0] === 'L' ? 0 : 1,
                         no: +o.m.g10.slice(1),
-                        w: mu
-                            ? multiW
-                            : Math.round(Math.max(n > 1 ? 136 : 118, headNeedW(o.m, n > 1 ? n * 6 + 4 : 0, nameOf(o.m))) * U),
+                        w: mu ? multiW : Math.round(Math.max(n > 1 ? 136 : 118, headNeedW(o.m, n > 1 ? n * 6 + 4 : 0)) * U),
                         h: Math.round((mu ? 24 + n * 16 + 4 : FULL_H) * U),
                     };
                 });
@@ -2033,7 +2030,7 @@
                 tsW = ts ? textWidthOf(ts, 'ts') : 0;
             const pr = w - 5 - dotW,
                 pillW = tsW + 8; // 時間膠囊的右緣與寬度
-            const showTs = !!ts && textWidthOf(nameOf(m)) + pillW + 8 <= pr - tx0;
+            const showTs = !!ts && textWidthOf(m.short) + pillW + 8 <= pr - tx0;
             b.select('.tsb')
                 .styleQ('display', showTs ? null : 'none')
                 .attrQ('x', pr - pillW)
@@ -2058,7 +2055,7 @@
                 .styleQ('display', mode === 'full' ? null : 'none');
             b.select('.rows').styleQ('display', multi ? null : 'none');
             if (!mini) {
-                t1.select('.a').textQ(hasFlag ? nameOf(m) : `${m.flag} ${nameOf(m)}`);
+                t1.select('.a').textQ(hasFlag ? m.short : `${m.flag} ${m.short}`);
                 t1.select('.m').textQ('');
             }
             if (mode === 'full') {
