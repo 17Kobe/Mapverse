@@ -2129,7 +2129,33 @@
                 seq.push(p);
             };
             info.forEach(visit);
-            if (seq.some((p, i) => p.n !== nodes[i])) for (const p of seq) gMk.node().appendChild(p.n);
+            // 只搬動必要的節點（加權最長遞增子序列：有旗幟的盡量留在原位）。
+            // 整批重新插入 DOM，iOS Safari 上的國旗圖片會閃一下變成空白
+            if (seq.some((p, i) => p.n !== nodes[i])) {
+                const idx = new Map(nodes.map((n, i) => [n, i])),
+                    pos = seq.map((p) => idx.get(p.n)),
+                    best = [],
+                    from = [];
+                let top = -1;
+                for (let i = 0; i < seq.length; i++) {
+                    best[i] = seq[i].o && seq[i].o.b ? 10 : 1;
+                    from[i] = -1;
+                    for (let j = 0; j < i; j++) {
+                        const w = best[j] + (seq[i].o && seq[i].o.b ? 10 : 1);
+                        if (pos[j] < pos[i] && w > best[i]) {
+                            best[i] = w;
+                            from[i] = j;
+                        }
+                    }
+                    if (top < 0 || best[i] > best[top]) top = i;
+                }
+                const keep = new Set();
+                for (let i = top; i >= 0; i = from[i]) keep.add(i);
+                const root = gMk.node();
+                seq.forEach((p, i) => {
+                    if (!keep.has(i)) root.insertBefore(p.n, i ? seq[i - 1].n.nextSibling : root.firstChild);
+                });
+            }
         }
 
         // 小角色：活動範圍不壓住市場標記才顯示；放大到街道等級就收起來
