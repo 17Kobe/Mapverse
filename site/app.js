@@ -233,7 +233,8 @@ const arrow = (p) => (p > 0 ? '▲' : p < 0 ? '▼' : '–');
 
 /* ================= 資料 ================= */
 async function fetchJSON(url) {
-  const r = await fetch(url, { cache: 'no-store' });
+  // no-cache：每次都向伺服器確認，沒改過就回 304 直接用瀏覽器快取（手機切到旅遊地圖不用重新下載整包資料）
+  const r = await fetch(url, { cache: 'no-cache' });
   if (!r.ok) throw new Error(url + ' ' + r.status);
   return r.json();
 }
@@ -976,6 +977,15 @@ function applyRegion(animate) {
   const tr = state.layer === 'travel' ? areaTransform(state.tArea) : nearestCopy(regionTransform(state.activeRegion));
   const sel = animate && state.anim ? svg.transition().duration(900).ease(d3.easeCubicInOut) : svg;
   sel.call(zoomB.transform, tr);
+  prefetchChips();
+}
+// 背景先把其它篩選按鈕會飛到的畫面畫好存起來（terrain.js 會等目前畫面的圖磚都好了才開始），
+// 之後切換篩選就是直接讀磁碟快取，不會先出現方塊
+function prefetchChips() {
+  if (!Terrain.prefetch || !W) return;
+  const views = state.layer === 'travel' && state.travel ? state.travel.areas.map((a) => areaTransform(a.k))
+    : ['all', 'asia', 'europe', 'americas', 'mea'].map((k) => regionTransform(k));
+  Terrain.prefetch(views, S0, W, H, dpr);
 }
 
 function onTransform() {
@@ -1462,9 +1472,13 @@ async function loadTravel() {
   };
   state.travel = tv;
   drawTw();
-  // 地形的海岸改用這些多邊形判斷（原本靠衛星影像，金門、廈門一帶的混濁淺海會被畫成陸地）
-  if (tv.roads && Terrain.setRoads) Terrain.setRoads({ box: tv.roads.box, lines: tv.roads.lines, styles: ROAD_STYLE });
-  if (Terrain.setLandMask) Terrain.setLandMask(landMaskFor, fog.box);
+  // 地形的海岸改用這些多邊形判斷（原本靠衛星影像，金門、廈門一帶的混濁淺海會被畫成陸地）。
+  // 版本字串用資料 + 繪製程式的雜湊：內容不變時，畫好的地形圖磚可以直接從磁碟快取讀回來
+  if (tv.roads && Terrain.setRoads) {
+    Terrain.setRoads({ box: tv.roads.box, lines: tv.roads.lines, styles: ROAD_STYLE,
+      ver: hash(JSON.stringify([roads, ROAD_STYLE])).toString(36) });
+  }
+  if (Terrain.setLandMask) Terrain.setLandMask(landMaskFor, fog.box, hash(JSON.stringify(fog) + landMaskFor).toString(36));
   else console.warn('terrain.js 是舊版（瀏覽器快取），請按 Ctrl+F5 重新整理');
   return tv;
 }

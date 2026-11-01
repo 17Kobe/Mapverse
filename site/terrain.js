@@ -12,8 +12,13 @@
  * 效能：圖磚的像素運算和種樹很花時間，瀏覽器支援時交給背景的 Web Worker 處理（同一支檔案在
  * Worker 裡執行時只負責繪製），主執行緒只負責把畫好的圖貼上去，拖曳 / 縮放時就不會卡住。
  * 不支援 Worker + OffscreenCanvas 的瀏覽器照舊在主執行緒處理，畫出來的內容完全一樣。
+ *
+ * 磁碟快取：畫好的圖磚（地表 JPEG + 精靈 PNG）存進 IndexedDB，下次開網頁直接解碼貼上，
+ * 不用重新下載、運算、種樹。鍵值含本檔原始碼的雜湊，改了這支檔案舊圖磚就自動作廢；
+ * 陸地遮罩 / 道路有自己的版本字串（setLandMask / setRoads 傳進來）。
+ * 下載排隊：同時只下載幾張，畫面上最新需要的先下載，飛越途中已經離開畫面的直接取消。
  */
-(function () {
+(function terrainModule() {
 'use strict';
 
 const IS_WORKER = typeof document === 'undefined';
@@ -21,15 +26,93 @@ const SELF_URL = IS_WORKER ? null : (document.currentScript && document.currentS
 
 const TS = 256;          // 圖磚邊長（像素）
 const PAD = 26;          // 精靈圖層四周留白，讓山和樹可以超出圖磚邊界
-const CACHE_MAX = 220;   // 快取圖磚數（每張約 0.6 MB）
+const CACHE_MAX = 220;   // 記憶體快取圖磚數（每張約 0.6 MB）
+const DISK_MAX = 1500;   // 磁碟快取圖磚數（每張約 60~100 KB）
+const MAX_DL = 8;        // 同時下載的圖磚數（每張兩個檔案）
+const PF_MAX = 2;        // 背景預先處理同時進行的圖磚數
 const OCEAN_BG = '#2378b8';
 
 const cache = new Map();
 const pending = [];
-let opt = null, procRaf = 0, frame = 0, landMask = null, roads = null;
+const dlq = [];
+let opt = null, procRaf = 0, frame = 0, landMask = null, maskInfo = null, roads = null, roadsMinZ = 99;
 let wctx = null, sctx64 = null, sctx128 = null, rctx = null;
-let pool = null, jobId = 0;
+let pool = null, jobId = 0, dlActive = 0, pfq = [], pfBusy = 0;
 const jobs = new Map();
+
+/* ================= 磁碟快取（IndexedDB；主執行緒讀、Worker 寫） ================= */
+// 原始碼雜湊：繪製方式一改，舊的圖磚就不會再被讀到
+const SRC_VER = (() => {
+  const s = terrainModule.toString();
+  let h = 2166136261;
+  for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); }
+  return (h >>> 0).toString(36);
+})();
+const DB_STORE = 'tiles';
+let dbP = null;
+function db() {
+  if (!dbP) dbP = new Promise((res) => {
+    try {
+      if (typeof indexedDB === 'undefined') { res(null); return; }
+      const rq = indexedDB.open('mapverse-terrain', 1);
+      rq.onupgradeneeded = () => rq.result.createObjectStore(DB_STORE).createIndex('t', 't');
+      rq.onsuccess = () => res(rq.result);
+      rq.onerror = rq.onblocked = () => res(null);
+    } catch (err) { res(null); }
+  });
+  return dbP;
+}
+function diskReq(mode, fn) {
+  return db().then((d) => d && new Promise((res) => {
+    try {
+      const r = fn(d.transaction(DB_STORE, mode).objectStore(DB_STORE));
+      r.onsuccess = () => res(r.result);
+      r.onerror = () => res(null);
+    } catch (err) { res(null); }
+  }));
+}
+const diskGet = (key) => diskReq('readonly', (s) => s.get(key));
+const diskHas = (key) => diskReq('readonly', (s) => s.count(key)).then((n) => n > 0);
+const diskPut = (key, v) => diskReq('readwrite', (s) => s.put(v, key));
+// 畫布 → 壓縮檔（地表不透明用 JPEG，精靈要透明用 PNG）
+function encode(c, type, q) {
+  if (c.convertToBlob) return c.convertToBlob({ type, quality: q });
+  return new Promise((res) => c.toBlob(res, type, q));
+}
+async function diskSave(key, base, spr) {
+  try {
+    const [b, s] = await Promise.all([encode(base, 'image/jpeg', 0.92), encode(spr, 'image/png')]);
+    if (!b || !s) return;
+    const [bb, sb] = await Promise.all([b.arrayBuffer(), s.arrayBuffer()]);
+    await diskPut(key, { b: bb, bt: b.type, s: sb, st: s.type, t: Date.now() });
+  } catch (err) { /* 存不了（空間不足等）就算了，下次重畫 */ }
+}
+// 主執行緒：原始碼改版就清空；超過上限刪掉最舊的
+function diskMaintain() {
+  let old = null;
+  try { old = localStorage.getItem('mapverse.terrainVer'); localStorage.setItem('mapverse.terrainVer', SRC_VER); } catch (err) { /* 無痕模式等 */ }
+  if (old !== SRC_VER) diskReq('readwrite', (s) => s.clear());
+  setTimeout(() => {
+    db().then((d) => {
+      if (!d) return;
+      try {
+        const st = d.transaction(DB_STORE, 'readwrite').objectStore(DB_STORE), c = st.count();
+        c.onsuccess = () => {
+          let n = c.result - DISK_MAX * 0.8;
+          if (c.result <= DISK_MAX) return;
+          const cur = st.index('t').openCursor();
+          cur.onsuccess = () => {
+            const k = cur.result;
+            if (!k || n-- <= 0) return;
+            k.delete(); k.continue();
+          };
+        };
+      } catch (err) { /* 略過 */ }
+    });
+  }, 6000);
+  // 請瀏覽器不要在空間吃緊時優先清掉這個網站的資料（不支援或被拒絕都沒關係）
+  try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {}); } catch (err) { /* 略過 */ }
+}
 
 // 畫布：Worker 裡用 OffscreenCanvas，主執行緒用一般的 <canvas>
 function newCanvas(w, h) {
@@ -146,6 +229,57 @@ function buildSprites() {
 }
 
 /* ================= 圖磚載入 / 快取 ================= */
+const inBox = (z, x, y, b) => {
+  const n = 1 << z;
+  return !((x + 1) / n < b[0] || x / n > b[2] || (y + 1) / n < b[1] || y / n > b[3]);
+};
+// 這張圖磚會用到哪些額外資料（陸地遮罩 / 道路）；資料一換，標籤不同的圖磚就要重畫。
+// 沒有版本字串的資料畫出來的圖磚不存磁碟（'?'）
+function tagFor(z, x, y) {
+  let t = '';
+  if (landMask && z >= 3 && inBox(z, x, y, maskInfo.box)) t += 'm' + (maskInfo.ver == null ? '?' : maskInfo.ver);
+  if (roads && z >= roadsMinZ && inBox(z, x, y, roads.box)) t += 'r' + (roads.ver == null ? '?' : roads.ver);
+  return t;
+}
+let diskOK = false;
+function newEntry(z, x, y, extra) {
+  const tag = tagFor(z, x, y);
+  return Object.assign({
+    z, x, y, tag, ready: false, seen: frame, left: 2,
+    useMask: tag.includes('m'), useRoads: tag.includes('r'),
+    key: diskOK && !tag.includes('?') ? SRC_VER + '/' + z + '/' + x + '/' + y + '/' + tag : null
+  }, extra);
+}
+// 先查磁碟快取，沒有才排隊下載、重畫
+function startEntry(e) {
+  if (!e.key) { queueDl(e); return; }
+  diskGet(e.key).then((v) => {
+    if (e.dead) return;
+    if (!v) { queueDl(e); return; }
+    const dec = (buf, type) => createImageBitmap(new Blob([buf], { type })).catch(() => null);
+    Promise.all([dec(v.b, v.bt), dec(v.s, v.st)]).then(([b, s]) => {
+      if (e.dead || !b || !s) {
+        for (const x of [b, s]) if (x) x.close();
+        if (!e.dead) queueDl(e);
+        return;
+      }
+      e.base = toCanvas(b); e.spr = toCanvas(s);
+      finish(e);
+    });
+  });
+}
+// 貼到主執行緒的一般 canvas 上再用：直接畫 ImageBitmap 時，有些瀏覽器每一幀都要重新上傳到 GPU，拖曳時反而比較慢
+function toCanvas(b) {
+  const c = newCanvas(b.width, b.height);
+  c.getContext('2d').drawImage(b, 0, 0);
+  b.close();
+  return c;
+}
+function finish(e) {
+  e.ready = true; e.prev = null;
+  opt.onUpdate();
+  pfKick(50);
+}
 function loadImg(url, done) {
   const im = new Image();
   im.crossOrigin = 'anonymous'; // 需要讀取像素，必須走 CORS
@@ -159,9 +293,32 @@ function loadImg(url, done) {
 function loadBlob(url, done) {
   fetch(url, { mode: 'cors' }).then((r) => (r.ok ? r.blob() : null)).catch(() => null).then(done);
 }
+// 下載排隊：畫面上最新需要的先下載；同一幀裡低層級（涵蓋範圍大、當替身用）的先
+const byNeed = (a, b) => (b.seen - a.seen) || (a.z - b.z);
+function queueDl(e) { dlq.push(e); pumpDl(); }
+function pumpDl() {
+  if (dlActive >= MAX_DL || !dlq.length) return;
+  dlq.sort(byNeed);
+  while (dlActive < MAX_DL && dlq.length) {
+    const e = dlq.shift();
+    if (e.dead) continue;
+    // 飛越途中已經離開畫面：先不下載，之後又出現在畫面上時再排隊（get 會叫醒它）
+    if (!e.pf && !e.pin && e.seen < frame) { e.parked = true; continue; }
+    dlActive++;
+    loadSources(e);
+  }
+}
 function loadSources(e) {
-  const done = () => { if (--e.left === 0) { pending.push(e); kick(); } };
-  if (pool) {
+  const viaPool = !!pool;
+  e.left = 2;
+  const done = () => {
+    if (--e.left) return;
+    dlActive--;
+    if (viaPool !== !!pool) { e.demB = e.imgB = null; if (!e.dead && !e.pf) dlq.push(e); } // 處理方式中途換了：重新下載
+    else if (!e.dead) pending.push(e);
+    kick(); pumpDl();
+  };
+  if (viaPool) {
     loadBlob(opt.dem(e.z, e.x, e.y), (b) => { e.demB = b; done(); });
     loadBlob(opt.img(e.z, e.x, e.y), (b) => { e.imgB = b; done(); });
   } else {
@@ -178,11 +335,24 @@ function drop(v) {
 function get(z, x, y, request) {
   const key = z + '/' + x + '/' + y;
   let e = cache.get(key);
-  if (e) { cache.delete(key); cache.set(key, e); return e; } // LRU
+  if (e) {
+    cache.delete(key); cache.set(key, e); // LRU
+    if (!request) return e;
+    if (e.stale) {
+      // 遮罩 / 道路換了要重畫：畫好之前先顯示舊的，不會閃成方塊
+      e.dead = true;
+      const n = newEntry(z, x, y, { prev: e.ready ? { base: e.base, spr: e.spr } : e.prev, pin: e.pin });
+      cache.set(key, n);
+      startEntry(n);
+      return n;
+    }
+    if (e.parked) { e.parked = false; e.seen = frame; queueDl(e); }
+    return e;
+  }
   if (!request) return null;
-  e = { z, x, y, ready: false, seen: frame, left: 2 };
-  loadSources(e);
+  e = newEntry(z, x, y);
   cache.set(key, e);
+  startEntry(e);
   if (cache.size > CACHE_MAX) {
     for (const [k, v] of cache) {
       if (cache.size <= CACHE_MAX) break;
@@ -219,70 +389,86 @@ function disablePool(why) {
   console.warn('地形改在主執行緒處理：', why);
   for (const w of pool) w.terminate();
   pool = null;
-  jobs.clear();
   if (!wctx) setupDrawing();
-  pending.length = 0;
-  for (const e of cache.values()) {
-    if (e.ready || e.dead) continue;
-    e.demB = e.imgB = null; e.left = 2;
-    loadSources(e);
+  pfq = []; pfBusy = 0;
+  for (const e of [...pending, ...jobs.values()]) {
+    if (e.dead || e.pf) continue;
+    e.demB = e.imgB = null;
+    dlq.push(e);
   }
+  pending.length = 0;
+  jobs.clear();
+  for (let i = dlq.length - 1; i >= 0; i--) if (dlq[i].pf) dlq.splice(i, 1);
+  pumpDl();
 }
 function onJobDone(w, d) {
   w.busy--;
   const e = jobs.get(d.id);
   jobs.delete(d.id);
   if (d.unsupported) { disablePool(d.err); return; }
-  if (!e || e.dead || d.err) {
-    if (d.base) d.base.close();
-    if (d.spr) d.spr.close();
-    if (e && d.err) { console.warn('地形圖磚處理失敗', e.z, e.x, e.y, d.err); e.failed = true; }
-  } else {
-    // 先貼到主執行緒的畫布上再用（跟原本一樣是一般 canvas）：直接畫 Worker 傳來的 ImageBitmap，
-    // 有些瀏覽器每一幀都要重新上傳到 GPU，拖曳時反而比較慢
-    const toCanvas = (b) => {
-      const c = newCanvas(b.width, b.height);
-      c.getContext('2d').drawImage(b, 0, 0);
-      b.close();
-      return c;
-    };
-    e.base = toCanvas(d.base); e.spr = toCanvas(d.spr); e.ready = true;
-    opt.onUpdate();
-  }
+  if (d.base && (!e || e.dead || e.pf)) { d.base.close(); d.spr.close(); }
+  if (e && e.pf) pfDone();
+  else if (e && d.err) { console.warn('地形圖磚處理失敗', e.z, e.x, e.y, d.err); e.failed = true; }
+  else if (e && !e.dead && d.base) { e.base = toCanvas(d.base); e.spr = toCanvas(d.spr); finish(e); }
   if (pending.length) kick();
 }
 function pump() {
   procRaf = 0;
+  pending.sort(byNeed); // 畫面上最近需要的先處理
   if (pool) {
-    pending.sort((a, b) => b.seen - a.seen); // 畫面上最近需要的先處理
     for (const w of pool) {
       while (w.busy < PER_WORKER && pending.length) {
         const e = pending.shift();
         if (e.dead) continue;
         let mask = null;
-        try { mask = landMask ? landMask(e.z, e.x, e.y) : null; } catch (err) { mask = null; }
+        if (e.useMask) try { mask = landMask(e.z, e.x, e.y); } catch (err) { mask = null; }
         const id = ++jobId;
         jobs.set(id, e);
         w.busy++;
-        w.postMessage({ id, z: e.z, x: e.x, y: e.y, dem: e.demB, img: e.imgB, mask }, mask ? [mask.buffer] : []);
+        w.postMessage({ id, z: e.z, x: e.x, y: e.y, dem: e.demB, img: e.imgB, mask, useRoads: e.useRoads, key: e.key, keep: !e.pf },
+          mask ? [mask.buffer] : []);
         e.demB = e.imgB = null;
       }
     }
     return;
   }
   const t0 = performance.now();
-  pending.sort((a, b) => b.seen - a.seen); // 畫面上最近需要的先處理
   let did = false;
   while (pending.length && performance.now() - t0 < 12) {
     const e = pending.shift();
     if (e.dead) continue;
-    try { render(e); e.ready = true; } catch (err) { console.warn('地形圖磚處理失敗', e.z, e.x, e.y, err); e.failed = true; }
-    e.dem = e.img = null;
+    try {
+      e.mask = e.useMask && landMask ? landMask(e.z, e.x, e.y) : null;
+      render(e);
+      e.ready = true; e.prev = null;
+      if (e.key && !e.dem.bad && !e.img.bad) diskSave(e.key, e.base, e.spr);
+    } catch (err) { console.warn('地形圖磚處理失敗', e.z, e.x, e.y, err); e.failed = true; }
+    e.dem = e.img = e.mask = null;
     did = true;
   }
   if (pending.length) kick();
   if (did) opt.onUpdate();
 }
+
+/* ---------- 背景預先處理（例如各個篩選按鈕會飛到的畫面）：畫好只存磁碟，不佔記憶體 ---------- */
+let pfTimer = 0;
+function pfKick(ms) { if (pfq.length && !pfTimer) pfTimer = setTimeout(pfPump, ms); }
+function pfPump() {
+  pfTimer = 0;
+  if (!pool || !diskOK) return;
+  // 畫面上還有圖磚在等：先讓給它們
+  for (const e of cache.values()) if (!e.ready && !e.dead && !e.failed && !e.parked && e.seen === frame) { pfKick(400); return; }
+  while (pfBusy < PF_MAX && pfq.length) {
+    const [z, x, y] = pfq.shift();
+    const c = cache.get(z + '/' + x + '/' + y);
+    if (c && !c.stale && !c.dead) continue; // 已經在記憶體裡（或正在處理）
+    const e = newEntry(z, x, y, { pf: true, seen: -1 });
+    if (!e.key) continue;
+    pfBusy++;
+    diskHas(e.key).then((has) => { if (has) pfDone(); else queueDl(e); });
+  }
+}
+function pfDone() { pfBusy--; pfKick(50); }
 
 /* ================= 道路（畫進圖磚，拖曳時不用每一幀重畫） ================= */
 // roads（setRoads 傳進來）：
@@ -375,8 +561,8 @@ function render(e) {
   const gradX = (i, c) => (c === 0 ? Hh[i + 1] - Hh[i] : c === TS - 1 ? Hh[i] - Hh[i - 1] : (Hh[i + 1] - Hh[i - 1]) / 2);
   const gradY = (i, r) => (r === 0 ? Hh[i + TS] - Hh[i] : r === TS - 1 ? Hh[i] - Hh[i - TS] : (Hh[i + TS] - Hh[i - TS]) / 2);
 
-  // Worker 模式的遮罩由主執行緒先算好傳進來
-  const M = e.mask !== undefined ? e.mask : landMask ? landMask(z, x, y) : null;
+  // 陸地遮罩由主執行緒先算好放進來（只有標籤含遮罩的圖磚才有）
+  const M = e.mask || null;
 
   // 光影誇張倍率（低縮放時誇張更多，否則看不出起伏）
   const ex = clamp(1.3 * Math.pow(2, (12 - z) * 0.38), 1.3, 18);
@@ -517,7 +703,7 @@ function render(e) {
   base.getContext('2d').putImageData(out, 0, 0);
   e.base = base;
   // 道路畫在地表上（樹的下面），順便得到道路遮罩：路上不種樹
-  const RM = drawRoads(z, x, y);
+  const RM = e.useRoads ? drawRoads(z, x, y) : null;
   if (RM) base.getContext('2d').drawImage(rctx.canvas, 0, 0);
   // 精靈的錨點在底部，往上長約 10 像素：錨點和上方幾個像素都不能壓到路
   const onRoad = (px, py) => {
@@ -596,15 +782,30 @@ function setupDrawing() {
 }
 function init(o) {
   opt = o;
+  diskOK = typeof indexedDB !== 'undefined' && typeof createImageBitmap !== 'undefined';
+  if (diskOK) diskMaintain();
   pool = makePool();
   if (!pool) setupDrawing();
-  for (let y = 0; y < 4; y++) for (let x = 0; x < 4; x++) get(2, x, y, true);
+  for (let y = 0; y < 4; y++) for (let x = 0; x < 4; x++) get(2, x, y, true).pin = true;
 }
 
-// t：d3 zoom transform；S0：k=1 時世界正方形的邊長（CSS 像素）
+// 畫面 t 要用哪一層、哪些圖磚。t：d3 zoom transform；S0：k=1 時世界正方形的邊長（CSS 像素）
+function tileRange(t, S0, W, H, dpr) {
+  const world = S0 * t.k;
+  // 依「裝置像素」挑層級，Retina / 手機螢幕也清晰
+  const zf = Math.log2((world * dpr) / TS);
+  const z = clamp(Math.ceil(zf - 0.2), 0, opt.maxZ);
+  const n = 1 << z, ts = world / n;
+  // 東西向無限循環（像 Google 地圖）：x 不設上下限，取圖磚時再對 n 取餘數
+  return {
+    z, n, ts,
+    x0: Math.floor(-t.x / ts), x1: Math.floor((W - t.x) / ts),
+    y0: Math.max(0, Math.floor(-t.y / ts)), y1: Math.min(n - 1, Math.floor((H - t.y) / ts))
+  };
+}
+
 function draw(ctx, t, S0, W, H, dpr) {
   frame++;
-  const world = S0 * t.k;
   const cv = ctx.canvas;
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.globalAlpha = 1;
@@ -614,13 +815,7 @@ function draw(ctx, t, S0, W, H, dpr) {
   ctx.fillStyle = OCEAN_BG;
   ctx.fillRect(0, 0, cv.width, cv.height);
 
-  // 依「裝置像素」挑層級，Retina / 手機螢幕也清晰
-  const zf = Math.log2((world * dpr) / TS);
-  const z = clamp(Math.ceil(zf - 0.2), 0, opt.maxZ);
-  const n = 1 << z, ts = world / n;
-  // 東西向無限循環（像 Google 地圖）：x 不設上下限，取圖磚時再對 n 取餘數
-  const x0 = Math.floor(-t.x / ts), x1 = Math.floor((W - t.x) / ts);
-  const y0 = Math.max(0, Math.floor(-t.y / ts)), y1 = Math.min(n - 1, Math.floor((H - t.y) / ts));
+  const { z, n, ts, x0, x1, y0, y1 } = tileRange(t, S0, W, H, dpr);
   const sprites = [];
   for (let y = y0; y <= y1; y++) {
     const Y0 = Math.round((t.y + y * ts) * dpr), Y1 = Math.round((t.y + (y + 1) * ts) * dpr);
@@ -629,17 +824,22 @@ function draw(ctx, t, S0, W, H, dpr) {
       const xi = ((x % n) + n) % n; // 繞回世界範圍內的實際圖磚編號
       const e = get(z, xi, y, true);
       e.seen = frame;
-      if (e.ready) {
-        ctx.drawImage(e.base, X0, Y0, X1 - X0, Y1 - Y0);
-        sprites.push(e, X0, Y0, X1 - X0);
+      // 畫好了就用；遮罩 / 道路換了正在重畫的，先用舊的
+      const im = e.ready ? e : e.prev;
+      if (im) {
+        ctx.drawImage(im.base, X0, Y0, X1 - X0, Y1 - Y0);
+        sprites.push(im, X0, Y0, X1 - X0);
         continue;
       }
-      // 還沒處理好：先用已完成的上層圖磚放大頂替
+      // 還沒處理好：順便請上兩層的圖磚（一張頂 16 張，很快就能先蓋滿畫面），
+      // 先用已完成、最接近的上層圖磚放大頂替
+      if (z >= 5) get(z - 2, xi >> 2, y >> 2, true).seen = frame;
       for (let d = 1; d <= Math.min(z, 12); d++) {
         const p = get(z - d, xi >> d, y >> d, false);
-        if (!p || !p.ready) continue;
+        const pi = p && (p.ready ? p : p.prev);
+        if (!pi) continue;
         const s = TS / (1 << d);
-        ctx.drawImage(p.base, (xi - ((xi >> d) << d)) * s, (y - ((y >> d) << d)) * s, s, s, X0, Y0, X1 - X0, Y1 - Y0);
+        ctx.drawImage(pi.base, (xi - ((xi >> d) << d)) * s, (y - ((y >> d) << d)) * s, s, s, X0, Y0, X1 - X0, Y1 - Y0);
         break;
       }
     }
@@ -652,32 +852,46 @@ function draw(ctx, t, S0, W, H, dpr) {
   }
 }
 
+// 背景預先處理這些畫面（d3 zoom transform 陣列）會用到的圖磚：畫面上的圖磚都好了才開始，
+// 一次只做幾張，畫好存進磁碟快取。之後切過去就是直接讀檔。再呼叫一次會取代之前的清單
+function prefetch(views, S0, W, H, dpr) {
+  if (!opt) return;
+  const out = [], seen = new Set();
+  for (const t of views) {
+    const { z, n, x0, x1, y0, y1 } = tileRange(t, S0, W, H, dpr);
+    for (let y = y0; y <= y1; y++) {
+      for (let x = x0; x <= x1; x++) {
+        const xi = ((x % n) + n) % n, k = z + '/' + xi + '/' + y;
+        if (seen.has(k)) continue;
+        seen.add(k);
+        out.push([z, xi, y]);
+      }
+    }
+  }
+  pfq = out;
+  pfKick(1500);
+}
+
+// 資料換了：標籤不同的圖磚標記成過期，下次出現在畫面上時重畫（畫好之前照樣顯示舊的）
+function markStale() {
+  for (const v of cache.values()) if (!v.dead && tagFor(v.z, v.x, v.y) !== v.tag) v.stale = true;
+}
 // 陸地遮罩：fn(z, x, y) 回傳 256×256 的 Uint8Array（0 海 / 1 陸 / 2 不在範圍內 / 3 重點區域的陸地，
 // 例如台灣：山區森林也種樹、依海拔換松樹）或 null。
-// box 是遮罩涵蓋的範圍（單位 Mercator [u0, v0, u1, v1]），已經畫好的圖磚會丟掉重畫
-function setLandMask(fn, box) {
+// box 是遮罩涵蓋的範圍（單位 Mercator [u0, v0, u1, v1]），範圍內的圖磚會重畫。
+// ver 是遮罩內容的版本字串（資料或 fn 改了就要換），用來區分磁碟快取；不給就不存磁碟
+function setLandMask(fn, box, ver) {
   landMask = fn;
-  for (const [k, v] of cache) {
-    if (v.z <= 2) continue; // 全球圖磚一像素幾十公里，看不出差別，留著當替身
-    const n = 1 << v.z;
-    if ((v.x + 1) / n < box[0] || v.x / n > box[2] || (v.y + 1) / n < box[1] || v.y / n > box[3]) continue;
-    drop(v);
-    cache.delete(k);
-  }
+  maskInfo = { box, ver };
+  markStale();
   if (opt) opt.onUpdate();
 }
-// 道路（格式見 drawRoads）。範圍內已經畫好的圖磚丟掉重畫
+// 道路（格式見 drawRoads；r.ver 是版本字串，用途同 setLandMask）。範圍內的圖磚會重畫
 function setRoads(r) {
   roads = r;
-  if (pool) for (const w of pool) w.postMessage({ roads: r });
-  const minZ = Math.min(...r.styles.map((s) => s.minZ)), box = r.box;
-  for (const [k, v] of cache) {
-    if (v.z < minZ) continue;
-    const n = 1 << v.z;
-    if ((v.x + 1) / n < box[0] || v.x / n > box[2] || (v.y + 1) / n < box[1] || v.y / n > box[3]) continue;
-    drop(v);
-    cache.delete(k);
-  }
+  roadsMinZ = Math.min(...r.styles.map((s) => s.minZ));
+  if (pool) for (const w of pool) w.postMessage({ setRoads: r });
+  markStale();
   if (opt) opt.onUpdate();
 }
 
@@ -691,16 +905,20 @@ if (IS_WORKER) {
   };
   self.onmessage = async (ev) => {
     const d = ev.data;
-    if (d.roads !== undefined) { roads = d.roads; return; } // 道路資料（之後的圖磚都會畫上）
+    if (d.setRoads !== undefined) { roads = d.setRoads; return; } // 道路資料（之後標記要畫路的圖磚都會畫上）
     // 這個瀏覽器的 OffscreenCanvas 不能用：請主執行緒改回自己畫
     if (ok !== true) { self.postMessage({ id: d.id, unsupported: true, err: ok }); return; }
-    const e = { z: d.z, x: d.x, y: d.y, mask: d.mask || null };
+    const e = { z: d.z, x: d.x, y: d.y, mask: d.mask || null, useRoads: !!d.useRoads };
     e.dem = await decode(d.dem);
     e.img = await decode(d.img);
     try {
       render(e);
-      const base = e.base.transferToImageBitmap(), spr = e.spr.transferToImageBitmap();
-      self.postMessage({ id: d.id, base, spr }, [base, spr]);
+      // 兩個來源都下載成功才存磁碟（斷線時畫出來的殘缺圖磚不能留到下次）
+      if (d.key && !e.dem.bad && !e.img.bad) await diskSave(d.key, e.base, e.spr);
+      if (d.keep) {
+        const base = e.base.transferToImageBitmap(), spr = e.spr.transferToImageBitmap();
+        self.postMessage({ id: d.id, base, spr }, [base, spr]);
+      } else self.postMessage({ id: d.id });
     } catch (err) {
       self.postMessage({ id: d.id, err: String(err) });
     } finally {
@@ -710,5 +928,5 @@ if (IS_WORKER) {
   return;
 }
 
-window.Terrain = { init, draw, setLandMask, setRoads };
+window.Terrain = { init, draw, prefetch, setLandMask, setRoads };
 })();
