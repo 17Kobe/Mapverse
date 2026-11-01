@@ -1707,13 +1707,11 @@
             return out;
         };
         const pinCols = desktopMQ.matches ? null : layoutPinColumns();
-        // deskUnder 只在桌機版生效（手機版已用左右兩欄排）
-        const underOf = (m) => m.under || (desktopMQ.matches ? m.deskUnder : null);
         const place = (order0) => {
             // under 的國家要排在它所依附的國家後面，才找得到對方的旗幟位置
             const order = order0.slice();
             for (const m of order0) {
-                const un = underOf(m);
+                const un = m.under;
                 if (!un) continue;
                 const pi = order.findIndex((x) => x.s === un),
                     ci = order.indexOf(m);
@@ -1770,11 +1768,17 @@
                             for (let gx = 2; gx + md.w <= W - 2; gx += 8) cands.push({ x: gx, y: gy, pos: 'grid' });
                     }
                     // markets.json 的 under：緊接在指定國家的旗幟正下方（例如香港放在上證下面），左緣對齊
-                    const po = underOf(m) && vis.get(underOf(m));
+                    const po = m.under && vis.get(m.under);
                     if (po && po.b && po.b.mode !== 'mini') cands.push({ x: po.b.r.x, y: po.b.r.y + po.b.r.h + 4, pos: 'under' });
                     // 離動物越近越優先（距離相同時維持 上、下、右、左 的順序）
                     const d2 = (c) => (c.x + md.w / 2 - o.x) ** 2 + (c.y + md.h / 2 - (o.y - o.size / 2)) ** 2;
-                    cands.forEach((c, i) => ((c.i = i), (c.d = c.pos === 'under' ? -1 : d2(c))));
+                    // markets.json 的 deskSide：桌機版優先放在動物的指定方向（up / down / left / right）
+                    cands.forEach(
+                        (c, i) => (
+                            (c.i = i),
+                            (c.d = c.pos === 'under' || (desktopMQ.matches && c.pos === m.deskSide) ? -1 : d2(c))
+                        ),
+                    );
                     cands.sort((p, q) => p.d - q.d || p.i - q.i);
                     for (const c of cands) {
                         const r = { x: c.x, y: c.y, w: md.w, h: md.h };

@@ -248,7 +248,7 @@
       "s": "^STI",
       "pin": 1,
       "col": "R",
-      "deskUnder": "^TWII",
+      "deskSide": "right",
       "zh": "新加坡STI",
       "short": "新加坡",
       "flag": "🇸🇬",
