@@ -962,7 +962,7 @@
             // 同一國家有多個指數（例如美國：標普 / 那斯達克 / 道瓊 / 費城半導體）
             if (d.group.length > 1) {
                 const rows = b.append('g').attr('class', 'rows');
-                d.group.forEach((x) => {
+                (d.group10 || d.group).forEach((x) => {
                     const r = rows.append('g').attr('class', 'row');
                     r.append('rect').attr('class', 'rbg');
                     r.append('text')
@@ -972,7 +972,7 @@
                     r.append('text').attr('class', 'rp');
                 });
                 const dots = b.append('g').attr('class', 'dots');
-                d.group.forEach(() => dots.append('circle').attr('r', 1.9));
+                (d.group10 || d.group).forEach(() => dots.append('circle').attr('r', 1.9));
             }
         });
 
@@ -1574,9 +1574,9 @@
         return `${d.getMonth() + 1}/${d.getDate()}(${WEEK_ZH[d.getDay()]})`;
     }
     // 色帶要放下「國旗 + 名稱 + 時間 + 輪播圓點」需要的寬度（未放大的座標）
-    function headNeedW(m, dotW) {
+    function headNeedW(m, dotW, name = m.short) {
         const ts = quoteStamp(m);
-        return Math.ceil(32 + textWidthOf(m.short) + (ts ? 16 + textWidthOf(ts, 'ts') : 0) + 5 + dotW);
+        return Math.ceil(32 + textWidthOf(name) + (ts ? 16 + textWidthOf(ts, 'ts') : 0) + 5 + dotW);
     }
 
     function layoutMarkers() {
@@ -1628,7 +1628,10 @@
         const baseRects = rects.slice();
         // 旗幟整體放大倍率：手機螢幕小，指數數字要放大才看得清楚（旗幟內部仍用原本的座標畫，最後再整個 scale）
         const U = desktopMQ.matches ? 1 : BUBBLE_SCALE_MOBILE;
-        // 全球檢視：十大市值國家靠畫面下緣排兩欄（g10 = L/R + 由上而下的序號），地圖留在上方。
+        // 全球檢視用合併後的指數清單和國名（上證 → 中國、日經 → 日本）
+        const grpOf = (m) => (top10 && m.group10) || m.group;
+        const nameOf = (m) => (top10 && m.cn) || m.short;
+        // 全球檢視：十大市值國家排兩欄（g10 = L/R + 由上而下的序號），兩欄頂端對齊，地圖留在上方。
         // 多指數的國家整張列出；兩欄放不下時退回 full（多指數輪播）
         const layoutTop10 = () => {
             const ps = [...vis.values()].filter((o) => o.m.g10 && state.quotes[o.m.s]);
@@ -1637,7 +1640,7 @@
             const colW = Math.floor((W - 8 - GAP) / 2);
             const multiW = Math.min(colW, Math.round(Math.min(166, Math.floor((W - 10) / 2 / U)) * U));
             const top0 = Math.max(2, ...uiRects(['#chips', '#hud']).map((z) => z.y + z.h)) + GAP;
-            // 下緣：地圖資料來源那行字、右下角的災難按鈕、展開的面板之上；兩欄對齊同一條底線
+            // 下緣：地圖資料來源那行字、右下角的災難按鈕、展開的面板之上；較高的那欄買齊底線，另一欄跟它頂端對齊
             const lim = Math.min(
                 H - 18,
                 ...uiRects(['#panel', '#dzBtn'])
@@ -1646,23 +1649,27 @@
             );
             const build = (multi) => {
                 const items = ps.map((o) => {
-                    const n = o.m.group.length,
+                    const n = grpOf(o.m).length,
                         mu = multi && n > 1;
                     return {
                         o,
                         mu,
                         col: o.m.g10[0] === 'L' ? 0 : 1,
                         no: +o.m.g10.slice(1),
-                        w: mu ? multiW : Math.round(Math.max(n > 1 ? 136 : 118, headNeedW(o.m, n > 1 ? n * 6 + 4 : 0)) * U),
+                        w: mu
+                            ? multiW
+                            : Math.round(Math.max(n > 1 ? 136 : 118, headNeedW(o.m, n > 1 ? n * 6 + 4 : 0, nameOf(o.m))) * U),
                         h: Math.round((mu ? 24 + n * 16 + 4 : FULL_H) * U),
                     };
                 });
                 const w = Math.min(colW, Math.max(...items.map((it) => it.w)));
                 const out = new Map();
-                for (const col of [0, 1]) {
-                    const seq = items.filter((it) => it.col === col).sort((a, b) => a.no - b.no);
-                    let y = lim - seq.reduce((s, it) => s + it.h + GAP, -GAP);
-                    if (seq.length && y < top0) return null;
+                const cols = [0, 1].map((col) => items.filter((it) => it.col === col).sort((a, b) => a.no - b.no));
+                const hs = cols.map((seq) => seq.reduce((s, it) => s + it.h + GAP, -GAP));
+                const y0 = lim - Math.max(...hs);
+                if (y0 < top0) return null;
+                cols.forEach((seq, col) => {
+                    let y = y0;
                     for (const it of seq) {
                         out.set(it.o.m.s, {
                             r: { x: col ? W - 4 - w : 4, y, w, h: it.h },
@@ -1671,7 +1678,7 @@
                         });
                         y += it.h + GAP;
                     }
-                }
+                });
                 return out;
             };
             return build(true) || build(false);
@@ -1978,9 +1985,9 @@
                 mode = o.b.mode,
                 mini = mode === 'mini',
                 multi = mode === 'multi';
-            const n = m.group.length;
+            const n = grpOf(m).length;
             // 輪播：多指數國家在 full 模式下，每隔幾秒換下一個指數
-            const cur = mode === 'full' && n > 1 ? m.group[state.rot % n] : m;
+            const cur = mode === 'full' && n > 1 ? grpOf(m)[state.rot % n] : m;
             const cq = state.quotes[cur.s],
                 cp = cq ? cq.pct : 0;
             const col = pctColor(pct);
@@ -2016,6 +2023,7 @@
             b.select('.dots')
                 .styleQ('display', dotW ? null : 'none')
                 .selectAll('circle')
+                .styleQ('display', (_, i) => (i < n ? null : 'none'))
                 .attrQ('cx', (_, i) => w - 9 - (n - 1 - i) * 6)
                 .attrQ('cy', 12)
                 .attrQ('class', (_, i) => (i === state.rot % n ? 'on' : null));
@@ -2025,7 +2033,7 @@
                 tsW = ts ? textWidthOf(ts, 'ts') : 0;
             const pr = w - 5 - dotW,
                 pillW = tsW + 8; // 時間膠囊的右緣與寬度
-            const showTs = !!ts && textWidthOf(m.short) + pillW + 8 <= pr - tx0;
+            const showTs = !!ts && textWidthOf(nameOf(m)) + pillW + 8 <= pr - tx0;
             b.select('.tsb')
                 .styleQ('display', showTs ? null : 'none')
                 .attrQ('x', pr - pillW)
@@ -2050,7 +2058,7 @@
                 .styleQ('display', mode === 'full' ? null : 'none');
             b.select('.rows').styleQ('display', multi ? null : 'none');
             if (!mini) {
-                t1.select('.a').textQ(hasFlag ? m.short : `${m.flag} ${m.short}`);
+                t1.select('.a').textQ(hasFlag ? nameOf(m) : `${m.flag} ${nameOf(m)}`);
                 t1.select('.m').textQ('');
             }
             if (mode === 'full') {
@@ -2062,9 +2070,11 @@
             } else if (multi) {
                 b.selectAll('.row').each(function (_, i) {
                     // 注意：d3 append 的子元素會繼承父層資料，所以要用序號去 group 裡拿對應的指數
-                    const x = m.group[i],
-                        r = d3.select(this),
-                        rq = state.quotes[x.s],
+                    const x = grpOf(m)[i],
+                        r = d3.select(this);
+                    r.styleQ('display', x ? null : 'none');
+                    if (!x) return;
+                    const rq = state.quotes[x.s],
                         y = 24 + i * 16;
                     r.select('.rbg')
                         .attrQ('x', 4)
@@ -3147,6 +3157,10 @@
         cfg.items.forEach((i) => (state.bySym[i.s] = i));
         // 同國其他指數（type "sub"，of 指向主指數）併成一組，主指數排第一個
         state.maps.forEach((m) => (m.group = [m, ...cfg.items.filter((i) => i.type === 'sub' && i.of === m.s)]));
+        // 手機全球檢視的合併版：上證的旗幟連同恒生的指數一起列出
+        state.maps.forEach(
+            (m) => (m.group10 = m.merge10 && state.bySym[m.merge10] ? [...m.group, ...state.bySym[m.merge10].group] : null),
+        );
         state.maps.forEach((m) => (state.byId[pad3(m.id)] = m));
         state.countries = topojson.feature(topo, topo.objects.countries).features;
         await loadQuotes();
