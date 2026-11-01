@@ -27,6 +27,8 @@ const LAYERS = [
 const desktopMQ = window.matchMedia('(min-width:900px)');
 // 手機版城市旗幟的放大倍率（數字太小看不清楚）
 const BUBBLE_SCALE_MOBILE = 1.25;
+// 單一指數旗幟的高度：色帶（含邊框）下方留 22px 放指數，數字的基線固定在 FULL_BASE，各瀏覽器位置才會一致
+const FULL_H = 43, FULL_BASE = 36.7;
 // 手機版區域檢視上方額外預留的高度（px），讓 pin 的國家旗幟放得下
 const PIN_EXTRA_TOP = 95;
 // 旅遊地圖的道路級別：國道 / 快速公路 / 省道（tw-roads.json 的級別編號 0 / 1 / 2）
@@ -1154,7 +1156,7 @@ function layoutMarkers() {
       return {
         o, mode: n > 1 ? 'multi' : 'full',
         w: n > 1 ? multiW : Math.min(colW, Math.round(Math.max(118, headNeedW(o.m, 0)) * U)),
-        h: Math.round((n > 1 ? 24 + n * 16 + 4 : 40) * U)
+        h: Math.round((n > 1 ? 24 + n * 16 + 4 : FULL_H) * U)
       };
     });
     const byS = new Map(items.map((it) => [it.o.m.s, it]));
@@ -1229,8 +1231,8 @@ function layoutMarkers() {
       // 窄螢幕：整張列出的旗幟最多佔半個畫面寬，這樣左右可以並排兩張
       const multiW = Math.min(166, Math.floor((W - 10) / 2 / U));
       const modes = (n > 1
-        ? [{ w: multiW, h: 24 + n * 16 + 4, mode: 'multi' }, { w: Math.max(136, headNeedW(m, n * 6 + 4)), h: 40, mode: 'full' }, { w: 80, h: 22, mode: 'mini' }]
-        : [{ w: Math.max(118, headNeedW(m, 0)), h: 40, mode: 'full' }, { w: 80, h: 22, mode: 'mini' }]
+        ? [{ w: multiW, h: 24 + n * 16 + 4, mode: 'multi' }, { w: Math.max(136, headNeedW(m, n * 6 + 4)), h: FULL_H, mode: 'full' }, { w: 80, h: 22, mode: 'mini' }]
+        : [{ w: Math.max(118, headNeedW(m, 0)), h: FULL_H, mode: 'full' }, { w: 80, h: 22, mode: 'mini' }]
       ).map((md) => ({ ...md, w: Math.round(md.w * U), h: Math.round(md.h * U) }));
       outer:
       for (const md of modes) {
@@ -1389,7 +1391,7 @@ function layoutMarkers() {
     b.select('.ts').styleQ('display', showTs ? null : 'none').attrQ('x', pr - 4).attrQ('y', 12.7).textQ(showTs ? ts : '');
     const tx1 = showTs ? pr - pillW : w - dotW; // 文字置中在國旗和時間膠囊（圓點）之間
     const t1 = b.select('.t1').attrQ('x', (tx0 + tx1) / 2).attrQ('y', mini ? h / 2 + 0.5 : 12.5);
-    const t2 = b.select('.t2').attrQ('x', w / 2).attrQ('y', 30).styleQ('display', mode === 'full' ? null : 'none');
+    const t2 = b.select('.t2').attrQ('x', w / 2).attrQ('y', FULL_BASE).styleQ('display', mode === 'full' ? null : 'none');
     b.select('.rows').styleQ('display', multi ? null : 'none');
     if (!mini) {
       t1.select('.a').textQ(hasFlag ? m.short : `${m.flag} ${m.short}`);

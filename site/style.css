@@ -311,7 +311,7 @@ body.noanim .corps .bk,body.noanim .corps .flame{animation:none}
 .bubble .t1 .a{fill:#fff}
 .bubble .tsb{fill:rgba(8,14,28,.62);stroke:rgba(255,226,150,.35);stroke-width:.6}
 .bubble .ts{font-size:9.5px;font-weight:700;text-anchor:end;fill:#ffd66b;stroke:none}
-.bubble .t2{font-size:12px;fill:#fff}
+.bubble .t2{font-size:12px;fill:#fff;dominant-baseline:alphabetic}
 .bubble .flag-b{fill:none;stroke:var(--gold-l);stroke-width:1;stroke-opacity:.85}
 /* ---------- 旅遊地圖（台灣） ---------- */
 body.travel #hud .hp{display:none}
