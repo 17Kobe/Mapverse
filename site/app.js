@@ -300,6 +300,8 @@ function buildDefs() {
   };
   grad('bannerBg', '#2c4570', '#14223a');
   grad('bannerOff', '#3c4659', '#222a38');
+  // 國名：奶油白到琥珀金的漸層，呼應旗幟的金色邊框
+  grad('nameGold', '#fffbe8', '#ffc247');
   // 公路編號牌：省道藍、快速公路紅（上亮下暗的立體感），國道梅花白
   grad('rtBlue', '#2a64c4', '#0a3479');
   grad('rtRed', '#ff3d43', '#e0141d'); // 快速公路：亮紅（真的標誌是很正的紅）
