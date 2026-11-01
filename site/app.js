@@ -16,6 +16,7 @@
     // 區域檢視至少放大幾倍；塞不下的小市場會留在畫面外（拖曳即可看到）
     const REGION_MIN_K = 1.5;
     const REGION_MAX_K = 5;
+    const GLOBAL_LON = 196; // 手機版全球檢視的中心經度
 
     // 左側圖層列（手機版是底部導覽列）。之後要加新地圖，在這裡加一筆並把 ready 設成 true 即可
     const LAYERS = [
@@ -1343,6 +1344,16 @@
                 ],
                 panExtent(),
             );
+        // 手機版全球：縮到最小，經度置中在太平洋（日本到美國西部）；下方兩欄旗幟列十大市值
+        if (key === 'all' && !desktopMQ.matches)
+            return zoomB.constrain()(
+                d3.zoomIdentity.translate(W / 2 - projection([GLOBAL_LON, 0])[0], 0),
+                [
+                    [0, 0],
+                    [W, H],
+                ],
+                panExtent(),
+            );
         const ms = state.maps.filter((m) => m.r === key).sort((a, b) => b.w - a.w);
         if (!ms.length) return world();
         const ins = overlayInsets();
@@ -1576,6 +1587,8 @@
         }
         const t = state.t,
             k = t.k;
+        // 手機版全球檢視：只列十大市值國家（markets.json 的 g10），旗幟排成左右兩欄
+        const top10 = !desktopMQ.matches && state.activeRegion === 'all';
         const size = Math.max(19, Math.min(30, 14 + k * 2.8)); // 動物身高（px），放大地圖時略微變大
         const rects = [],
             vis = new Map();
@@ -1585,12 +1598,13 @@
         // 第一輪：放動物，太擠的先隱藏（放大後會出現）
         for (const m of arr) {
             const [x, y] = screenXY(m.lon, m.lat);
-            if (x < -20 || x > W + 20 || y < -20 || y > H + 20) continue;
+            const forced = top10 && m.g10; // 旗幟不跟著動物走，動物在畫面外也要保留
+            if (!forced && (x < -20 || x > W + 20 || y < -20 || y > H + 20)) continue;
             // 原點是腳下的地面，身體往上長；佔位框也包含牠走動的範圍
             const a = { x: x - size * 0.75, y: y - size * 1.05, w: size * 1.5, h: size * 1.35, an: true };
             const area = a.w * a.h;
             // 手機版要排進左右兩欄的國家（pin，或 markets.json 指定了 col）動物不能被擠掉，否則旗幟也跟著不見
-            if (rects.some((r) => inter(a, r) / area > (m.pin || (m.col && !desktopMQ.matches) ? 0.8 : 0.3))) continue;
+            if (!forced && rects.some((r) => inter(a, r) / area > (m.pin || (m.col && !desktopMQ.matches) ? 0.8 : 0.3))) continue;
             rects.push(a);
             vis.set(m.s, { m, x, y, a, size, b: null });
         }
@@ -1617,6 +1631,42 @@
         // 手機版：pin 的國家（中、港、日、韓、台、星、馬、印尼）改用左右兩欄排版。
         // 每張旗幟盡量放在自己動物的正上方，同一欄依動物由北到南往下疊，擠不下再整欄往上收，
         // 這樣每張都能完整列出，也不會被擠到離自己國家很遠的地方。排不下時回傳 null，改用一般的避讓排法。
+        // 全球檢視：十大市值國家靠畫面下緣排兩欄（g10 = L/R + 由上而下的序號），每張旗幟一律 full，多指數輪播，地圖留在上方
+        const layoutTop10 = () => {
+            const ps = [...vis.values()].filter((o) => o.m.g10 && state.quotes[o.m.s]);
+            if (!ps.length) return null;
+            const GAP = 4;
+            const items = ps.map((o) => {
+                const n = o.m.group.length;
+                return {
+                    o,
+                    col: o.m.g10[0] === 'L' ? 0 : 1,
+                    no: +o.m.g10.slice(1),
+                    w: Math.round((n > 1 ? Math.max(136, headNeedW(o.m, n * 6 + 4)) : Math.max(118, headNeedW(o.m, 0))) * U),
+                    h: Math.round(FULL_H * U),
+                };
+            });
+            const w = Math.min(Math.floor((W - 8 - GAP) / 2), Math.max(...items.map((it) => it.w)));
+            const top0 = Math.max(2, ...uiRects(['#chips', '#hud']).map((z) => z.y + z.h)) + GAP;
+            // 下緣：地圖資料來源那行字、右下角的災難按鈕、展開的面板之上；兩欄對齊同一條底線
+            const lim = Math.min(
+                H - 18,
+                ...uiRects(['#panel', '#dzBtn'])
+                    .filter((z) => z.y > H / 2)
+                    .map((z) => z.y - GAP),
+            );
+            const out = new Map();
+            for (const col of [0, 1]) {
+                const seq = items.filter((it) => it.col === col).sort((a, b) => a.no - b.no);
+                let y = lim - seq.reduce((s, it) => s + it.h + GAP, -GAP);
+                if (seq.length && y < top0) return null;
+                for (const it of seq) {
+                    out.set(it.o.m.s, { r: { x: col ? W - 4 - w : 4, y, w, h: it.h }, mode: 'full', pos: 'col' });
+                    y += it.h + GAP;
+                }
+            }
+            return out;
+        };
         const layoutPinColumns = () => {
             // 只排目前區域的 pin 國家（全球檢視沿用亞太），不同區域的旗幟不會被塞進同一欄
             const pinR = state.activeRegion === 'all' ? 'asia' : state.activeRegion;
@@ -1706,7 +1756,7 @@
             }
             return out;
         };
-        const pinCols = desktopMQ.matches ? null : layoutPinColumns();
+        const pinCols = desktopMQ.matches ? null : top10 ? layoutTop10() : layoutPinColumns();
         const place = (order0) => {
             // under 的國家要排在它所依附的國家後面，才找得到對方的旗幟位置
             const order = order0.slice();
@@ -1731,7 +1781,7 @@
                 }
             for (const m of order) {
                 const o = vis.get(m.s);
-                if (!o || !state.quotes[m.s] || (pinCols && pinCols.has(m.s))) continue;
+                if (!o || !state.quotes[m.s] || (pinCols && pinCols.has(m.s)) || (top10 && !m.g10)) continue;
                 // 多指數的國家：空間夠就整張列出（multi），不夠就輪播（full），再不夠只顯示主指數（mini）
                 const n = m.group.length;
                 // 窄螢幕：整張列出的旗幟最多佔半個畫面寬，這樣左右可以並排兩張
@@ -1858,6 +1908,8 @@
                 // 沒能整張列出的多指數國家，或沒能以完整版（非迷你）列出的 pin 國家，下一輪優先排
                 const missing = (m) =>
                     (m.group.length > 1 || m.pin) &&
+                    !(top10 && !m.g10) &&
+                    !(pinCols && pinCols.has(m.s)) &&
                     !tried.has(m.s) &&
                     vis.get(m.s) &&
                     state.quotes[m.s] &&
