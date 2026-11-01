@@ -15,6 +15,8 @@
   --trim:linear-gradient(90deg,rgba(0,0,0,0) 0%,#6e5120 4%,#cfa954 22%,#fff0bd 50%,#cfa954 78%,#6e5120 96%,rgba(0,0,0,0) 100%);
   --trim-v:linear-gradient(180deg,rgba(0,0,0,0) 0%,#6e5120 4%,#cfa954 22%,#fff0bd 50%,#cfa954 78%,#6e5120 96%,rgba(0,0,0,0) 100%);
   --font:'Fredoka','Nunito','PingFang TC','Microsoft JhengHei','Microsoft YaHei',system-ui,sans-serif;
+  /* 指數數字專用：Fredoka 的圓潤粗體在小字級下數字和逗號會黏在一起，改用字形清楚又偏窄的 Barlow Semi Condensed（股票報價常見的風格），沒載入時退回系統字型 */
+  --num:'Barlow Semi Condensed','Segoe UI','SF Pro Text','Helvetica Neue','Roboto',Arial,system-ui,sans-serif;
   --emoji:'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -301,8 +303,8 @@ body.noanim .corps .bk,body.noanim .corps .flame{animation:none}
 .bubble .rbg{fill:transparent}
 .bubble .rbg.odd{fill:rgba(255,255,255,.05)}
 .bubble .rn{text-anchor:start;font-size:11px;fill:var(--gold-l)}
-.bubble .rv{text-anchor:end;font-size:11.5px;fill:#fff}
-.bubble .rp{text-anchor:end;font-size:11px}
+.bubble .rv{text-anchor:end;font-size:15px;fill:#fff;font-family:var(--num);font-variant-numeric:tabular-nums;letter-spacing:.2px}
+.bubble .rp{text-anchor:end;font-size:13.5px;font-family:var(--num);font-variant-numeric:tabular-nums;letter-spacing:.2px}
 .bubble .lb{fill:var(--gold-l);font-size:10.5px}
 .bubble .dots circle{fill:rgba(255,255,255,.35);stroke:var(--outline);stroke-width:.6}
 .bubble .dots circle.on{fill:var(--gold-l)}
@@ -311,7 +313,9 @@ body.noanim .corps .bk,body.noanim .corps .flame{animation:none}
 .bubble .t1 .a{fill:#fff}
 .bubble .tsb{fill:rgba(8,14,28,.62);stroke:rgba(255,226,150,.35);stroke-width:.6}
 .bubble .ts{font-size:9.5px;font-weight:700;text-anchor:end;fill:#ffd66b;stroke:none}
-.bubble .t2{font-size:12px;fill:#fff;dominant-baseline:alphabetic}
+.bubble .t2{font-size:15px;fill:#fff;dominant-baseline:alphabetic;font-family:var(--num);font-variant-numeric:tabular-nums;letter-spacing:.2px}
+.bubble .t2 .lb{font-size:11.5px;letter-spacing:0}
+.bubble .t2 .pc{font-size:13.5px}
 .bubble .flag-b{fill:none;stroke:var(--gold-l);stroke-width:1;stroke-opacity:.85}
 /* ---------- 旅遊地圖（台灣） ---------- */
 body.travel #hud .hp{display:none}

@@ -28,7 +28,7 @@ const desktopMQ = window.matchMedia('(min-width:900px)');
 // 手機版城市旗幟的放大倍率（數字太小看不清楚）
 const BUBBLE_SCALE_MOBILE = 1.25;
 // 單一指數旗幟的高度：色帶（含邊框）下方留 22px 放指數，數字的基線固定在 FULL_BASE，各瀏覽器位置才會一致
-const FULL_H = 43, FULL_BASE = 36.7;
+const FULL_H = 44, FULL_BASE = 37.5;
 // 手機版區域檢視上方額外預留的高度（px），讓 pin 的國家旗幟放得下
 const PIN_EXTRA_TOP = 95;
 // 旅遊地圖的道路級別：國道 / 快速公路 / 省道（tw-roads.json 的級別編號 0 / 1 / 2）
@@ -1406,10 +1406,15 @@ function layoutMarkers() {
         // 注意：d3 append 的子元素會繼承父層資料，所以要用序號去 group 裡拿對應的指數
         const x = m.group[i], r = d3.select(this), rq = state.quotes[x.s], y = 24 + i * 16;
         r.select('.rbg').attrQ('x', 4).attrQ('y', y).attrQ('width', w - 8).attrQ('height', 16).classed('odd', i % 2 === 1);
-        r.select('.rn').attrQ('x', 9).attrQ('y', y + 8.5);
-        r.select('.rv').attrQ('x', w - (w >= 155 ? 56 : 50)).attrQ('y', y + 8.5).textQ(rq ? fmtN(rq.p, 'short') : '--');
+        // 數字用 .rv/.rp（<text>）：CSS 的 fill 會蓋過屬性，漲跌色要用行內樣式；兩欄靠右對齊，依漲跌幅實際寬度排
+        const vs = rq ? fmtN(rq.p, 'short') : '--', ps = rq ? `${arrow(rq.pct)}${Math.abs(rq.pct).toFixed(2)}%` : '';
+        const rvx = w - 8 - (ps ? textWidthOf(ps, 'rp') : 0) - 5;
+        // 數字維持和單一指數一樣大，名稱放不下時才縮小名稱
+        const lbl = x.abbr || x.zh, lw = textWidthOf(lbl, 'rn'), room = rvx - textWidthOf(vs, 'rv') - 9 - 4;
+        r.select('.rn').attrQ('x', 9).attrQ('y', y + 8.5).styleQ('font-size', lw > room ? `${Math.max(8.5, 11 * room / lw).toFixed(1)}px` : null);
+        r.select('.rv').attrQ('x', rvx).attrQ('y', y + 8.5).textQ(vs);
         r.select('.rp').attrQ('x', w - 8).attrQ('y', y + 8.5)
-          .attrQ('fill', rq ? pctColor(rq.pct) : null).textQ(rq ? `${arrow(rq.pct)}${Math.abs(rq.pct).toFixed(2)}%` : '');
+          .styleQ('fill', rq ? pctColor(rq.pct) : null).textQ(ps);
       });
     } else {
       t1.select('.a').textQ(hasFlag ? '' : m.flag);
