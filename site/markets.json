@@ -780,13 +780,6 @@
     },
     {
       "type": "bar",
-      "s": "^VIX",
-      "zh": "恐慌指數",
-      "e": "😱",
-      "r": "global"
-    },
-    {
-      "type": "bar",
       "s": "TWD=X",
       "zh": "美元/台幣",
       "e": "💱",
@@ -801,31 +794,853 @@
     },
     {
       "type": "bar",
-      "s": "^TNX",
-      "zh": "美債10年",
-      "e": "🏦",
+      "s": "NG=F",
+      "zh": "天然氣",
+      "e": "🔥",
       "r": "global"
     },
     {
       "type": "bar",
-      "s": "^STOXX50E",
-      "zh": "歐洲斯托克50",
-      "e": "🇪🇺",
-      "r": "europe"
+      "s": "EURUSD=X",
+      "zh": "歐元/美元",
+      "e": "💶",
+      "r": "global"
     },
     {
       "type": "bar",
-      "s": "^FTMC",
-      "zh": "富時250",
-      "e": "🫖",
-      "r": "europe"
+      "s": "CNY=X",
+      "zh": "美元/人民幣",
+      "e": "💴",
+      "r": "global"
     },
     {
       "type": "bar",
-      "s": "^RUT",
-      "zh": "羅素2000",
-      "e": "🐎",
-      "r": "americas"
+      "s": "GBPUSD=X",
+      "zh": "英鎊/美元",
+      "e": "💷",
+      "r": "global"
+    },
+    {
+      "type": "bar",
+      "s": "KRW=X",
+      "zh": "美元/韓元",
+      "e": "💴",
+      "r": "global"
+    },
+    {
+      "type": "bar",
+      "s": "US2Y",
+      "zh": "美國2年期公債殖利率",
+      "e": "🏦",
+      "r": "global",
+      "src": "cnbc",
+      "code": "US2Y"
+    },
+    {
+      "type": "bar",
+      "s": "US10Y",
+      "zh": "美國10年期公債殖利率",
+      "e": "🏦",
+      "r": "global",
+      "src": "cnbc",
+      "code": "US10Y"
+    },
+    {
+      "type": "bar",
+      "s": "US30Y",
+      "zh": "美國30年期公債殖利率",
+      "e": "🏦",
+      "r": "global",
+      "src": "cnbc",
+      "code": "US30Y"
+    },
+    {
+      "type": "bar",
+      "s": "DE10Y",
+      "zh": "德國10年期公債殖利率",
+      "e": "🏦",
+      "r": "global",
+      "src": "cnbc",
+      "code": "DE10Y-DE"
+    },
+    {
+      "type": "bar",
+      "s": "JP10Y",
+      "zh": "日本10年期公債殖利率",
+      "e": "🏦",
+      "r": "global",
+      "src": "cnbc",
+      "code": "JP10Y-JP"
+    },
+    {
+      "type": "bar",
+      "s": "GB10Y",
+      "zh": "英國10年期公債殖利率",
+      "e": "🏦",
+      "r": "global",
+      "src": "cnbc",
+      "code": "GB10Y-GB"
+    },
+    {
+      "type": "bar",
+      "s": "CN10Y",
+      "zh": "中國10年期公債殖利率",
+      "e": "🏦",
+      "r": "global",
+      "src": "cnbc",
+      "code": "CN10Y-CN"
+    },
+    {
+      "type": "bar",
+      "s": "TW10Y",
+      "zh": "台灣10年期公債殖利率",
+      "e": "🏦",
+      "r": "global",
+      "src": "te",
+      "code": "taiwan/government-bond-yield"
+    }
+  ],
+  "topics": [
+    {
+      "id": "cm-us",
+      "cat": "commodity",
+      "short": "美國",
+      "flag": "🇺🇸",
+      "lon": -98,
+      "lat": 39,
+      "rows": [
+        {
+          "s": "CL=F",
+          "l": "WTI原油",
+          "u": "$"
+        },
+        {
+          "s": "NG=F",
+          "l": "天然氣",
+          "u": "$"
+        }
+      ],
+      "note": "WTI 原油與天然氣為紐約商品交易所（NYMEX）期貨，美元計價。"
+    },
+    {
+      "id": "cm-uk",
+      "cat": "commodity",
+      "short": "英國",
+      "flag": "🇬🇧",
+      "lon": 1.5,
+      "lat": 57.5,
+      "rows": [
+        {
+          "s": "BZ=F",
+          "l": "布蘭特原油",
+          "u": "$"
+        }
+      ],
+      "note": "布蘭特原油以北海油田為基準，美元/桶。"
+    },
+    {
+      "id": "cm-za",
+      "cat": "commodity",
+      "short": "南非",
+      "flag": "🇿🇦",
+      "lon": 24,
+      "lat": -29,
+      "rows": [
+        {
+          "s": "GC=F",
+          "l": "黃金",
+          "u": "$"
+        }
+      ],
+      "note": "位置放在傳統產金大國；金價為 COMEX 期貨，美元/盎司。"
+    },
+    {
+      "id": "cm-mx",
+      "cat": "commodity",
+      "short": "墨西哥",
+      "flag": "🇲🇽",
+      "lon": -102,
+      "lat": 23,
+      "rows": [
+        {
+          "s": "SI=F",
+          "l": "白銀",
+          "u": "$"
+        }
+      ],
+      "note": "位置放在全球最大產銀國；銀價為 COMEX 期貨，美元/盎司。"
+    },
+    {
+      "id": "cm-cl",
+      "cat": "commodity",
+      "short": "智利",
+      "flag": "🇨🇱",
+      "lon": -70.8,
+      "lat": -30,
+      "rows": [
+        {
+          "s": "HG=F",
+          "l": "銅",
+          "u": "$",
+          "dp": 3
+        }
+      ],
+      "note": "位置放在全球最大產銅國；銅價為 COMEX 期貨，美元/磅。"
+    },
+    {
+      "id": "cm-sv",
+      "cat": "commodity",
+      "short": "薩爾瓦多",
+      "flag": "🇸🇻",
+      "lon": -88.9,
+      "lat": 13.7,
+      "rows": [
+        {
+          "s": "BTC-USD",
+          "l": "比特幣",
+          "u": "$"
+        }
+      ],
+      "note": "位置放在首個把比特幣列為法定貨幣的國家，美元計價。"
+    },
+    {
+      "id": "bd-us",
+      "cat": "bond",
+      "short": "美國",
+      "flag": "🇺🇸",
+      "lon": -98,
+      "lat": 39,
+      "rows": [
+        {
+          "s": "US2Y",
+          "l": "2年期",
+          "k": "y"
+        },
+        {
+          "s": "US10Y",
+          "l": "10年期",
+          "k": "y"
+        },
+        {
+          "s": "US30Y",
+          "l": "30年期",
+          "k": "y"
+        },
+        {
+          "calc": [
+            "US10Y",
+            "US2Y"
+          ],
+          "l": "10Y-2Y利差",
+          "k": "y"
+        }
+      ],
+      "note": "美國公債殖利率。10年減2年利差為正代表殖利率曲線正常，轉負常被視為衰退警訊。"
+    },
+    {
+      "id": "bd-de",
+      "cat": "bond",
+      "short": "德國",
+      "flag": "🇩🇪",
+      "lon": 10.3,
+      "lat": 51.2,
+      "rows": [
+        {
+          "s": "DE10Y",
+          "l": "10年期",
+          "k": "y"
+        }
+      ],
+      "note": "德國10年期公債是歐元區的無風險利率基準。"
+    },
+    {
+      "id": "bd-jp",
+      "cat": "bond",
+      "short": "日本",
+      "flag": "🇯🇵",
+      "lon": 138,
+      "lat": 36.5,
+      "rows": [
+        {
+          "s": "JP10Y",
+          "l": "10年期",
+          "k": "y"
+        }
+      ],
+      "note": "日本10年期公債殖利率。"
+    },
+    {
+      "id": "bd-cn",
+      "cat": "bond",
+      "short": "中國",
+      "flag": "🇨🇳",
+      "lon": 108,
+      "lat": 34,
+      "rows": [
+        {
+          "s": "CN10Y",
+          "l": "10年期",
+          "k": "y"
+        }
+      ],
+      "note": "中國10年期公債殖利率。"
+    },
+    {
+      "id": "bd-uk",
+      "cat": "bond",
+      "short": "英國",
+      "flag": "🇬🇧",
+      "lon": -2,
+      "lat": 53,
+      "rows": [
+        {
+          "s": "GB10Y",
+          "l": "10年期",
+          "k": "y"
+        }
+      ],
+      "note": "英國10年期公債（Gilt）殖利率。"
+    },
+    {
+      "id": "bd-tw",
+      "cat": "bond",
+      "short": "台灣",
+      "flag": "🇹🇼",
+      "lon": 120.9,
+      "lat": 23.7,
+      "rows": [
+        {
+          "s": "TW10Y",
+          "l": "10年期",
+          "k": "y"
+        }
+      ],
+      "note": "台灣10年期公債殖利率，資料來自 Trading Economics（銀行間店頭報價）。"
+    },
+    {
+      "id": "rt-us",
+      "cat": "rate",
+      "short": "聯準會",
+      "flag": "🇺🇸",
+      "lon": -98,
+      "lat": 39,
+      "rows": [
+        {
+          "l": "聯邦基金利率",
+          "v": "4.00%"
+        },
+        {
+          "l": "12月升息機率",
+          "v": "約72%",
+          "tone": "warn"
+        }
+      ],
+      "stamp": "10/28",
+      "src": "Trading Economics",
+      "note": "美國聯準會（Fed）10 月維持利率不變；升息機率來自 CME FedWatch（經 Trading Economics 轉述）。"
+    },
+    {
+      "id": "rt-wh",
+      "cat": "rate",
+      "short": "白宮",
+      "flag": "🇺🇸",
+      "lon": -77,
+      "lat": 38.9,
+      "rows": [
+        {
+          "note": "11/3 美國期中選舉"
+        },
+        {
+          "note": "美中貿易休戰延長中"
+        },
+        {
+          "note": "美伊談判進行中"
+        }
+      ],
+      "stamp": "11/1",
+      "src": "新聞彙整",
+      "note": "白宮近期的政策焦點。"
+    },
+    {
+      "id": "rt-eu",
+      "cat": "rate",
+      "short": "歐洲央行",
+      "flag": "🇪🇺",
+      "lon": 9,
+      "lat": 50,
+      "rows": [
+        {
+          "l": "主要再融資利率",
+          "v": "2.65%"
+        }
+      ],
+      "stamp": "10月",
+      "src": "Trading Economics",
+      "note": "歐洲央行（ECB）主要再融資利率。"
+    },
+    {
+      "id": "rt-jp",
+      "cat": "rate",
+      "short": "日本央行",
+      "flag": "🇯🇵",
+      "lon": 138,
+      "lat": 36.5,
+      "rows": [
+        {
+          "l": "政策利率",
+          "v": "1.25%"
+        }
+      ],
+      "stamp": "10月",
+      "src": "Trading Economics",
+      "note": "日本央行（BOJ）政策利率。"
+    },
+    {
+      "id": "rt-cn",
+      "cat": "rate",
+      "short": "中國人行",
+      "flag": "🇨🇳",
+      "lon": 108,
+      "lat": 34,
+      "rows": [
+        {
+          "l": "1年期LPR",
+          "v": "3.00%"
+        }
+      ],
+      "stamp": "10月",
+      "src": "Trading Economics",
+      "note": "中國人民銀行 1 年期貸款市場報價利率（LPR）。"
+    },
+    {
+      "id": "rt-tw",
+      "cat": "rate",
+      "short": "台灣央行",
+      "flag": "🇹🇼",
+      "lon": 120.9,
+      "lat": 23.7,
+      "rows": [
+        {
+          "l": "重貼現率",
+          "v": "2.00%"
+        }
+      ],
+      "stamp": "9月",
+      "src": "Trading Economics",
+      "note": "中央銀行重貼現率。"
+    },
+    {
+      "id": "rt-uk",
+      "cat": "rate",
+      "short": "英國央行",
+      "flag": "🇬🇧",
+      "lon": -2,
+      "lat": 53,
+      "rows": [
+        {
+          "l": "基準利率",
+          "v": "3.75%"
+        }
+      ],
+      "stamp": "9月",
+      "src": "Trading Economics",
+      "note": "英格蘭銀行（BoE）基準利率。"
+    },
+    {
+      "id": "fx-us",
+      "cat": "fx",
+      "short": "美國",
+      "flag": "🇺🇸",
+      "lon": -98,
+      "lat": 39,
+      "rows": [
+        {
+          "s": "DX-Y.NYB",
+          "l": "美元指數"
+        }
+      ],
+      "note": "美元對一籃子主要貨幣的強弱指標。"
+    },
+    {
+      "id": "fx-eu",
+      "cat": "fx",
+      "short": "歐元區",
+      "flag": "🇪🇺",
+      "lon": 9,
+      "lat": 49.5,
+      "rows": [
+        {
+          "s": "EURUSD=X",
+          "l": "歐元/美元",
+          "dp": 4
+        }
+      ],
+      "note": "1 歐元可兌換多少美元。"
+    },
+    {
+      "id": "fx-uk",
+      "cat": "fx",
+      "short": "英國",
+      "flag": "🇬🇧",
+      "lon": -2,
+      "lat": 53,
+      "rows": [
+        {
+          "s": "GBPUSD=X",
+          "l": "英鎊/美元",
+          "dp": 4
+        }
+      ],
+      "note": "1 英鎊可兌換多少美元。"
+    },
+    {
+      "id": "fx-jp",
+      "cat": "fx",
+      "short": "日本",
+      "flag": "🇯🇵",
+      "lon": 138,
+      "lat": 36.5,
+      "rows": [
+        {
+          "s": "JPY=X",
+          "l": "美元/日圓"
+        }
+      ],
+      "note": "1 美元可兌換多少日圓。"
+    },
+    {
+      "id": "fx-cn",
+      "cat": "fx",
+      "short": "中國",
+      "flag": "🇨🇳",
+      "lon": 108,
+      "lat": 34,
+      "rows": [
+        {
+          "s": "CNY=X",
+          "l": "美元/人民幣",
+          "dp": 3
+        }
+      ],
+      "note": "1 美元可兌換多少人民幣（在岸）。"
+    },
+    {
+      "id": "fx-kr",
+      "cat": "fx",
+      "short": "韓國",
+      "flag": "🇰🇷",
+      "lon": 127.8,
+      "lat": 36.5,
+      "rows": [
+        {
+          "s": "KRW=X",
+          "l": "美元/韓元"
+        }
+      ],
+      "note": "1 美元可兌換多少韓元。"
+    },
+    {
+      "id": "fx-tw",
+      "cat": "fx",
+      "short": "台灣",
+      "flag": "🇹🇼",
+      "lon": 120.9,
+      "lat": 23.7,
+      "rows": [
+        {
+          "s": "TWD=X",
+          "l": "美元/台幣"
+        }
+      ],
+      "note": "1 美元可兌換多少新台幣。"
+    },
+    {
+      "id": "geo-trade",
+      "cat": "geo",
+      "short": "美中貿易",
+      "flag": "🇨🇳",
+      "lon": 122,
+      "lat": 34,
+      "rows": [
+        {
+          "l": "狀態",
+          "v": "休戰中",
+          "tone": "ok"
+        },
+        {
+          "note": "港口航運費休戰擬再延長兩個月"
+        },
+        {
+          "note": "產能過剩關稅暫緩（期中選舉前）"
+        }
+      ],
+      "stamp": "11/1",
+      "src": "Bloomberg、日經、共同社（2026/10/27-30）",
+      "note": "美中貿易休戰：雙方維持關稅與航運費的暫停措施，仍屬「緩和而非和解」。"
+    },
+    {
+      "id": "geo-iran",
+      "cat": "geo",
+      "short": "美伊衝突",
+      "flag": "🇮🇷",
+      "lon": 53,
+      "lat": 33,
+      "rows": [
+        {
+          "l": "狀態",
+          "v": "衝突中",
+          "tone": "bad"
+        },
+        {
+          "note": "戰事約 8 個月，荷莫茲海峽受阻"
+        },
+        {
+          "note": "海灣國家斡旋多階段和平協議"
+        }
+      ],
+      "stamp": "11/1",
+      "src": "半島電視台、CBS、衛報（2026/10/26-11/1）",
+      "note": "美國與伊朗的戰爭已持續約 8 個月，油輪在荷莫茲海峽遇襲，雙方仍在談判重開海峽。"
+    },
+    {
+      "id": "geo-ukraine",
+      "cat": "geo",
+      "short": "俄烏戰爭",
+      "flag": "🇺🇦",
+      "lon": 31.5,
+      "lat": 49,
+      "rows": [
+        {
+          "l": "狀態",
+          "v": "戰爭中",
+          "tone": "bad"
+        },
+        {
+          "note": "奧列什基局部停火維持中"
+        },
+        {
+          "note": "美俄烏和談擬 11/4 阿布達比"
+        }
+      ],
+      "stamp": "11/1",
+      "src": "NPR、衛報、UNITED24（2026/10/27-30）",
+      "note": "俄烏戰爭持續；南部奧列什基有局部停火，三方和談傳出將於 11/4 在阿布達比展開（尚未確定）。"
+    },
+    {
+      "id": "ec-us-p",
+      "cat": "econ",
+      "short": "美國 物價",
+      "flag": "🇺🇸",
+      "lon": -98,
+      "lat": 39,
+      "rows": [
+        {
+          "l": "CPI 年增",
+          "v": "3.7%",
+          "d": 0.3
+        },
+        {
+          "l": "核心CPI 年增",
+          "v": "2.6%"
+        },
+        {
+          "l": "PCE 年增",
+          "v": "3.6%",
+          "d": 0.2
+        },
+        {
+          "l": "核心PCE 年增",
+          "v": "3.1%",
+          "d": 0.1
+        }
+      ],
+      "stamp": "9月",
+      "src": "Trading Economics",
+      "note": "美國 9 月通膨：CPI、PCE 皆較 8 月上升。"
+    },
+    {
+      "id": "ec-us-g",
+      "cat": "econ",
+      "short": "美國 就業景氣",
+      "flag": "🇺🇸",
+      "lon": -98,
+      "lat": 39,
+      "rows": [
+        {
+          "l": "非農新增就業",
+          "v": "+29K"
+        },
+        {
+          "l": "失業率",
+          "v": "4.2%",
+          "d": 0.1
+        },
+        {
+          "l": "GDP Q3 年化季增",
+          "v": "3.4%"
+        },
+        {
+          "l": "ISM製造業",
+          "v": "54.5",
+          "d": -0.1
+        },
+        {
+          "l": "ISM服務業",
+          "v": "54.9",
+          "d": -0.5
+        }
+      ],
+      "stamp": "9月",
+      "src": "Trading Economics",
+      "note": "非農與失業率為 9 月；GDP 為第三季年化季增率初值；ISM 為 9 月。"
+    },
+    {
+      "id": "ec-cn",
+      "cat": "econ",
+      "short": "中國",
+      "flag": "🇨🇳",
+      "lon": 108,
+      "lat": 34,
+      "rows": [
+        {
+          "l": "製造業PMI",
+          "v": "52.1",
+          "d": 0.6
+        }
+      ],
+      "stamp": "9月",
+      "src": "Trading Economics",
+      "note": "中國製造業 PMI，9 月。"
+    },
+    {
+      "id": "ec-eu",
+      "cat": "econ",
+      "short": "歐元區",
+      "flag": "🇪🇺",
+      "lon": 9,
+      "lat": 49.5,
+      "rows": [
+        {
+          "l": "CPI 年增",
+          "v": "3.8%",
+          "d": 0.6
+        }
+      ],
+      "stamp": "9月",
+      "src": "Trading Economics",
+      "note": "歐元區 9 月通膨。"
+    },
+    {
+      "id": "ec-jp",
+      "cat": "econ",
+      "short": "日本",
+      "flag": "🇯🇵",
+      "lon": 138,
+      "lat": 36.5,
+      "rows": [
+        {
+          "l": "CPI 年增",
+          "v": "2.1%",
+          "d": 0.2
+        },
+        {
+          "l": "核心CPI 年增",
+          "v": "2.1%"
+        }
+      ],
+      "stamp": "9月",
+      "src": "Trading Economics",
+      "note": "日本 9 月通膨。"
+    }
+  ],
+  "landmarks": [
+    {
+      "id": "lm-wh",
+      "icon": "whitehouse",
+      "label": "白宮",
+      "lon": -77.04,
+      "lat": 38.9,
+      "dx": -18,
+      "card": "rt-wh"
+    },
+    {
+      "id": "lm-fed",
+      "icon": "classical_building",
+      "label": "聯準會",
+      "lon": -77.04,
+      "lat": 38.9,
+      "dx": 18,
+      "card": "rt-us"
+    },
+    {
+      "id": "lm-ecb",
+      "icon": "classical_building",
+      "label": "歐洲央行",
+      "lon": 8.68,
+      "lat": 50.11,
+      "card": "rt-eu"
+    },
+    {
+      "id": "lm-boe",
+      "icon": "classical_building",
+      "label": "英國央行",
+      "lon": -0.09,
+      "lat": 51.51,
+      "dx": -14,
+      "card": "rt-uk"
+    },
+    {
+      "id": "lm-boj",
+      "icon": "classical_building",
+      "label": "日本央行",
+      "lon": 139.77,
+      "lat": 35.68,
+      "dx": 16,
+      "card": "rt-jp"
+    },
+    {
+      "id": "lm-pboc",
+      "icon": "classical_building",
+      "label": "中國人行",
+      "lon": 116.4,
+      "lat": 39.9,
+      "card": "rt-cn"
+    },
+    {
+      "id": "lm-cbc",
+      "icon": "classical_building",
+      "label": "台灣央行",
+      "lon": 121.5,
+      "lat": 25.05,
+      "dx": 16,
+      "card": "rt-tw"
+    },
+    {
+      "id": "lm-trade",
+      "icon": "dove",
+      "label": "美中休戰",
+      "lon": 128,
+      "lat": 31,
+      "anim": "float",
+      "card": "geo-trade"
+    },
+    {
+      "id": "lm-iran",
+      "icon": "crossed_swords",
+      "label": "美伊衝突",
+      "lon": 56.3,
+      "lat": 26.6,
+      "anim": "clash",
+      "card": "geo-iran"
+    },
+    {
+      "id": "lm-ukr",
+      "icon": "crossed_swords",
+      "label": "俄烏戰爭",
+      "lon": 36,
+      "lat": 48,
+      "anim": "clash",
+      "card": "geo-ukraine"
     }
   ]
 }

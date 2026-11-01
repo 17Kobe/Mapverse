@@ -4,15 +4,20 @@
 
     const TOPO_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json';
 
-    // 區域篩選：縮放範圍改由該區市場的實際位置計算（見 regionTransform），不再用一大塊經緯度框
-    const REGIONS = {
-        all: { label: '🌍 全球' },
-        asia: { label: '⛩️ 亞太' },
-        europe: { label: '🏰 歐洲' },
-        americas: { label: '🗽 美洲' },
-        mea: { label: '🐪 中東非洲' },
+    // 篩選：全球 / 亞太 / 美洲 / 歐洲 / 中東非洲只顯示股票（縮放範圍由該區市場的實際位置計算，見 regionTransform）。
+    // 商品 / 債券 / 利率 / 匯率 / 地緣 / 經濟數據是另一組篩選，只顯示 markets.json 的 topics（股票動物與旗幟都收起來）。
+    // mlon：手機版地圖的中心經度（手機上卡片排成左右兩欄，地圖只當背景）
+    const TOPICS = {
+        commodity: { icon: '🛢️', label: '商品', mlon: 20 },
+        bond: { icon: '🏦', label: '債券', mlon: 20 },
+        rate: { icon: '🏛️', label: '利率', mlon: 20 },
+        fx: { icon: '💱', label: '匯率', mlon: 20 },
+        geo: { icon: '⚔️', label: '地緣', mlon: 85 },
+        econ: { icon: '📊', label: '經濟數據', mlon: 20 },
     };
-    const REGION_ORDER = ['asia', 'europe', 'americas', 'mea'];
+    // 地緣狀態的色帶與文字顏色
+    const TONES = { ok: '#79e3a0', warn: '#ffc66b', bad: '#ff8d85' };
+    const TONE_BAND = { ok: '#2b7a4d', warn: '#9a6a17', bad: '#8d2c2c' };
     // 區域檢視至少放大幾倍；塞不下的小市場會留在畫面外（拖曳即可看到）
     const REGION_MIN_K = 1.5;
     const REGION_MAX_K = 5;
@@ -169,7 +174,8 @@
         demo: false,
         activeRegion: 'all',
         layer: 'stocks',
-        panel: false,
+        topics: [], // markets.json 的 topics（商品 / 債券 / 利率 / 匯率 / 地緣 / 經濟數據卡片）
+        landmarks: [], // 永遠留在地圖上的圖示（央行、白宮、地緣動畫）
         travel: null,
         tArea: 'all', // 旅遊地圖的資料（第一次切過去才載入）與目前選的區域
         redUp: store.get('redUp', true),
@@ -377,6 +383,8 @@
         gCorp,
         gMk,
         gBub,
+        gLm,
+        gTopic,
         gTw,
         gRoadTag,
         gPoi,
@@ -890,9 +898,13 @@
         // 台股市值前十大公司的建築（corps.js），在動物和旗幟下面
         gCorp = svg.append('g');
         if (window.Corps) Corps.build(gCorp.node(), { onPick: openCorp });
+        // 央行、白宮、地緣動畫圖示：不論篩選都留在地圖上，畫在動物下面
+        gLm = svg.append('g').attr('class', 'landmarks');
         gMk = svg.append('g').attr('class', 'markers');
         // 旗幟獨立一層畫在所有動物上方：不用再重排 DOM 節點（重排會讓 iOS Safari 的國旗圖片閃成空白）
         gBub = svg.append('g').attr('class', 'bubbles');
+        // 商品 / 債券 / 利率 / 匯率 / 地緣 / 經濟數據的卡片
+        gTopic = svg.append('g').attr('class', 'topics').style('display', 'none');
         gPoi = svg.append('g').attr('class', 'pois').style('display', 'none');
 
         buildCritters();
@@ -986,6 +998,8 @@
                 (d.group10 || d.group).forEach(() => dots.append('circle').attr('r', 1.9));
             }
         });
+        buildTopics();
+        buildLandmarks();
 
         // d3 zoom 內部的 x 可以一直往左右累加；畫面上只用「繞回一圈內」的版本（state.t），世界就能無限循環
         zoomB = d3
@@ -1322,7 +1336,7 @@
         gLine.selectAll('path').style('stroke', (d) => borderFor(state.byId[pad3(d.id)]));
     }
 
-    // 地圖上被浮動介面蓋住的邊距（篩選列、手機版概況卡、展開的其它指數面板）
+    // 地圖上被浮動介面蓋住的邊距（篩選列、手機版概況卡）
     function overlayInsets() {
         const sr = $('#stage').getBoundingClientRect();
         const box = (sel) => {
@@ -1331,15 +1345,9 @@
         };
         const ins = { t: 0, r: 0, b: 0, l: 0 };
         const chips = box('#chips'),
-            hud = box('#hud'),
-            panel = box('#panel');
+            hud = box('#hud');
         if (chips) ins.t = chips.bottom - sr.top;
-        if (desktopMQ.matches) {
-            if (panel) ins.l = panel.right - sr.left;
-        } else {
-            if (hud) ins.t = Math.max(ins.t, hud.bottom - sr.top);
-            if (panel) ins.b = sr.bottom - panel.top;
-        }
+        if (!desktopMQ.matches && hud) ins.t = Math.max(ins.t, hud.bottom - sr.top);
         return ins;
     }
     // 區域縮放：用該區市場的位置算出範圍，按權重由大到小加入；
@@ -1365,7 +1373,22 @@
                 ],
                 panExtent(),
             );
-        const ms = state.maps.filter((m) => m.r === key).sort((a, b) => b.w - a.w);
+        const topic = TOPICS[key];
+        // 手機版主題篩選：縮到最小，經度置中；卡片排成左右兩欄，地圖只當背景和地標底圖
+        if (topic && !desktopMQ.matches)
+            return zoomB.constrain()(
+                d3.zoomIdentity.translate(W / 2 - projection([topic.mlon, 0])[0], 0),
+                [
+                    [0, 0],
+                    [W, H],
+                ],
+                panExtent(),
+            );
+        // 主題篩選：範圍涵蓋卡片所在的國家，以及和這些卡片相連的地標（例如地緣的衝突圖示）
+        const topicCards = topic ? state.topics.filter((c) => c.cat === key) : [];
+        const ms = topic
+            ? [...topicCards, ...state.landmarks.filter((l) => topicCards.some((c) => c.id === l.card))]
+            : state.maps.filter((m) => m.r === key).sort((a, b) => b.w - a.w);
         if (!ms.length) return world();
         const ins = overlayInsets();
         // 預留旗幟的空間：旗幟通常在動物上方，所以上方留比較多
@@ -1373,11 +1396,12 @@
         const bs = desktopMQ.matches ? 1 : BUBBLE_SCALE_MOBILE; // 手機版旗幟放大了，預留的空間也要跟著放大
         const px = desktopMQ.matches ? 70 : 46,
             pb = 34,
-            minK = REGION_MIN_K;
+            minK = topic ? 1 : REGION_MIN_K; // 主題卡片的位置一律納入，不跳過遠的
         // 手機版：有 pin 的國家（上證、韓國）要整張旗幟列在動物上方，上方多留一些空間
-        const pt =
-            (ms.some((m) => m.group.length >= 3) ? 100 : 72) * bs +
-            (!desktopMQ.matches && ms.some((m) => m.pin || m.col) ? PIN_EXTRA_TOP : 0);
+        const pt = topic
+            ? 130
+            : (ms.some((m) => m.group.length >= 3) ? 100 : 72) * bs +
+              (!desktopMQ.matches && ms.some((m) => m.pin || m.col) ? PIN_EXTRA_TOP : 0);
         const aw = Math.max(80, W - ins.l - ins.r - px * 2),
             ah = Math.max(80, H - ins.t - ins.b - pt - pb);
         const fitK = (b) => Math.min(aw / Math.max(1, b[2] - b[0]), ah / Math.max(1, b[3] - b[1]));
@@ -1427,7 +1451,7 @@
         const views =
             state.layer === 'travel' && state.travel
                 ? state.travel.areas.map((a) => areaTransform(a.k))
-                : ['all', 'asia', 'europe', 'americas', 'mea'].map((k) => regionTransform(k));
+                : ['all', 'asia', 'europe', 'americas', 'mea', ...Object.keys(TOPICS)].map((k) => regionTransform(k));
         Terrain.prefetch(views, S0, W, H, dpr);
     }
 
@@ -1590,6 +1614,359 @@
         return Math.ceil(32 + textWidthOf(m.short) + (ts ? 16 + textWidthOf(ts, 'ts') : 0) + 5 + dotW);
     }
 
+    /* ================= 商品 / 債券 / 利率 / 匯率 / 地緣 / 經濟數據 ================= */
+    // 卡片的座標一律用「未放大」的尺寸畫（寬 TOPIC_W、色帶 24 + 每列 16 + 底部 4），最後再整個 scale(U)
+    const TOPIC_W = 176;
+    const topicH = (n) => 24 + n * 16 + 4;
+    const dateStamp = (t) => {
+        const d = new Date(t * 1000);
+        return `${d.getMonth() + 1}/${d.getDate()}(${WEEK_ZH[d.getDay()]})`;
+    };
+    // 一列資料要顯示的文字：名稱、數值、變動（含顏色）。行情從 state.quotes 取，沒有行情的用 markets.json 寫的 v / d
+    function topicRowView(r) {
+        if (r.note) return { note: r.note };
+        const bp = (d) => `${arrow(d)}${Math.abs(d).toFixed(1)}bp`;
+        const v = { lab: r.l, val: '--', chg: '', col: null, vcol: null };
+        if (r.calc) {
+            const a = state.quotes[r.calc[0]],
+                b = state.quotes[r.calc[1]];
+            if (a && b) {
+                const d = (a.c - b.c) * 100;
+                Object.assign(v, { val: `${Math.round((a.p - b.p) * 100)}bp`, chg: bp(d), col: pctColor(d) });
+            }
+        } else if (r.s) {
+            const q = state.quotes[r.s];
+            if (q && r.k === 'y') {
+                const d = q.c * 100;
+                Object.assign(v, { val: `${q.p.toFixed(2)}%`, chg: bp(d), col: pctColor(d) });
+            } else if (q) {
+                const p = r.dp != null ? q.p.toFixed(r.dp) : fmtN(q.p, 'short');
+                Object.assign(v, {
+                    val: (r.u || '') + p,
+                    chg: `${arrow(q.pct)}${Math.abs(q.pct).toFixed(2)}%`,
+                    col: pctColor(q.pct),
+                });
+            }
+        } else {
+            v.val = r.v;
+            v.vcol = TONES[r.tone] || null;
+            if (r.d) Object.assign(v, { chg: `${arrow(r.d)}${Math.abs(r.d)}`, col: pctColor(r.d) });
+        }
+        return v;
+    }
+    // 卡片標題右側的時間：手動維護的寫在 stamp，有行情的用第一個行情的成交日
+    function topicStamp(c) {
+        if (c.stamp) return c.stamp;
+        for (const r of c.rows) {
+            const q = state.quotes[r.s || (r.calc && r.calc[0])];
+            if (q && q.t) return dateStamp(q.t);
+        }
+        return '';
+    }
+    // 地緣卡片的色帶看狀態：緩和綠、緊張橘、衝突紅；其他一律藍色
+    const topicBand = (c) => {
+        const r = c.rows.find((x) => x.tone);
+        return r ? TONE_BAND[r.tone] : '#34568a';
+    };
+    function buildTopics() {
+        gTopic.selectAll('*').remove();
+        for (const c of state.topics) {
+            const hold = gTopic
+                .append('g')
+                .attr('class', 'mk tk')
+                .style('display', 'none')
+                .on('click', () => openTopic(c));
+            c.el = hold.node();
+            // 國家位置的小圖釘與連到卡片的虛線（電腦版卡片不一定貼著國家）
+            const lead = hold.append('g').attr('class', 'lead');
+            lead.append('line');
+            lead.append('circle').attr('r', 3.5);
+            const b = buildBanner(hold);
+            const fs = flagSrc(c.flag);
+            if (fs) {
+                b.append('image').attr('class', 'flag').attr('href', fs).attr('preserveAspectRatio', 'none');
+                b.append('rect').attr('class', 'flag-b').attr('rx', 1.5);
+            }
+            const t1 = b.append('text').attr('class', 't1');
+            t1.append('tspan').attr('class', 'a');
+            b.append('rect').attr('class', 'tsb').attr('rx', 5);
+            b.append('text').attr('class', 'ts');
+            const rows = b.append('g').attr('class', 'rows');
+            c.rows.forEach(() => {
+                const r = rows.append('g').attr('class', 'row');
+                r.append('rect').attr('class', 'rbg');
+                r.append('text').attr('class', 'rn');
+                r.append('text').attr('class', 'rv');
+                r.append('text').attr('class', 'rp');
+            });
+        }
+    }
+    // r：卡片在畫面上的位置與大小（已含放大倍率 U）；pin：國家位置（電腦版才有）
+    function drawTopic(c, r, U, pin) {
+        const hold = d3.select(c.el),
+            b = hold.select('.bubble'),
+            w = r.w / U,
+            h = r.h / U;
+        hold.styleQ('display', null);
+        b.attrQ('transform', `translate(${Math.round(r.x)},${Math.round(r.y)}) scale(${U})`);
+        drawBanner(b, w, h, { bg: 'url(#bannerBg)', band: topicBand(c), tail: false });
+        const ld = hold.select('.lead').styleQ('display', pin ? null : 'none');
+        if (pin) {
+            const ex = Math.max(r.x, Math.min(r.x + r.w, pin.x)),
+                ey = Math.max(r.y, Math.min(r.y + r.h, pin.y));
+            ld.select('line').attrQ('x1', pin.x).attrQ('y1', pin.y).attrQ('x2', ex).attrQ('y2', ey);
+            ld.select('circle').attrQ('cx', pin.x).attrQ('cy', pin.y);
+        }
+        // 標題：國旗 + 國名 + 右側時間膠囊（放不下就不顯示時間）
+        const hasFlag = !b.select('.flag').empty();
+        b.select('.flag').attrQ('x', 6).attrQ('y', 4).attrQ('width', 24).attrQ('height', 16);
+        b.select('.flag-b').attrQ('x', 5.5).attrQ('y', 3.5).attrQ('width', 25).attrQ('height', 17);
+        const tx0 = hasFlag ? 32 : 0,
+            ts = topicStamp(c),
+            pillW = ts ? textWidthOf(ts, 'ts') + 8 : 0,
+            pr = w - 5;
+        const showTs = !!ts && textWidthOf(c.short) + pillW + 8 <= pr - tx0;
+        b.select('.tsb')
+            .styleQ('display', showTs ? null : 'none')
+            .attrQ('x', pr - pillW)
+            .attrQ('y', 5.5)
+            .attrQ('width', pillW)
+            .attrQ('height', 14);
+        b.select('.ts')
+            .styleQ('display', showTs ? null : 'none')
+            .attrQ('x', pr - 4)
+            .attrQ('y', 15.7)
+            .textQ(showTs ? ts : '');
+        const tx1 = showTs ? pr - pillW : w;
+        b.select('.t1')
+            .attrQ('x', (tx0 + tx1) / 2)
+            .attrQ('y', 17.2);
+        b.select('.t1 .a').textQ(hasFlag ? c.short : `${c.flag} ${c.short}`);
+        const rows = c.rows.map(topicRowView);
+        b.selectAll('.row').each(function (_, i) {
+            const x = rows[i],
+                g = d3.select(this),
+                y = 24 + i * 16,
+                rn = g.select('.rn'),
+                rv = g.select('.rv'),
+                rp = g.select('.rp');
+            g.select('.rbg')
+                .attrQ('x', 4)
+                .attrQ('y', y)
+                .attrQ('width', w - 8)
+                .attrQ('height', 16)
+                .classed('odd', i % 2 === 1);
+            // 名稱放不下時才縮小字級，數字維持原本大小
+            const fit = (txt, room) => {
+                const lw = textWidthOf(txt, 'rn');
+                return lw > room ? `${Math.max(8, (11 * room) / lw).toFixed(1)}px` : null;
+            };
+            if (x.note) {
+                rn.attrQ('x', 9)
+                    .attrQ('y', y + 12.5)
+                    .styleQ('font-size', fit(x.note, w - 18))
+                    .textQ(x.note);
+                rv.textQ('');
+                rp.textQ('');
+                return;
+            }
+            const rvx = w - 8 - (x.chg ? textWidthOf(x.chg, 'rp') + 5 : 0);
+            rn.attrQ('x', 9)
+                .attrQ('y', y + 12.5)
+                .styleQ('font-size', fit(x.lab, rvx - textWidthOf(x.val, 'rv') - 13))
+                .textQ(x.lab);
+            rv.attrQ('x', rvx)
+                .attrQ('y', y + 13.5)
+                .styleQ('fill', x.vcol)
+                .textQ(x.val);
+            rp.attrQ('x', w - 8)
+                .attrQ('y', y + 13.5)
+                .styleQ('fill', x.col)
+                .textQ(x.chg);
+        });
+    }
+    // 目前篩選的卡片位置：手機版排成左右兩欄；電腦版放在各自國家附近，彼此與地標、介面都不重疊
+    function layoutTopics(rects) {
+        const on = !!TOPICS[state.activeRegion];
+        gTopic.styleQ('display', on ? null : 'none');
+        if (!on) return;
+        const cards = state.topics.filter((c) => c.cat === state.activeRegion);
+        for (const c of state.topics) if (c.cat !== state.activeRegion) d3.select(c.el).styleQ('display', 'none');
+        if (!desktopMQ.matches) {
+            const U = BUBBLE_SCALE_MOBILE,
+                GAP = 4,
+                colW = Math.floor((W - 8 - GAP) / 2);
+            const w = Math.min(colW, Math.round(Math.min(TOPIC_W, Math.floor((W - 10) / 2 / U)) * U));
+            const top0 = Math.max(2, ...uiRects(['#chips', '#hud']).map((z) => z.y + z.h)) + GAP;
+            const ys = [top0, top0];
+            for (const c of cards) {
+                const col = ys[1] < ys[0] ? 1 : 0,
+                    h = Math.round(topicH(c.rows.length) * U);
+                const r = { x: col ? W - 4 - w : 4, y: ys[col], w, h };
+                ys[col] += h + GAP;
+                drawTopic(c, r, U, null);
+                rects.push(r);
+            }
+            return;
+        }
+        const gap = 14,
+            w = TOPIC_W;
+        for (const c of cards) {
+            const [ax, ay] = screenXY(c.lon, c.lat),
+                h = topicH(c.rows.length),
+                el = d3.select(c.el);
+            if (ax < -10 || ax > W + 10 || ay < -10 || ay > H + 10) {
+                el.styleQ('display', 'none');
+                continue;
+            }
+            const cands = [];
+            // 先試正上、正下、右、左，再沿著邊滑動、再往外一圈
+            for (const m of [0, 1, 2]) {
+                const up = ay - h - gap - m * (h + 6),
+                    dn = ay + gap + m * (h + 6);
+                for (const f of [0, -0.4, 0.4, -0.8, 0.8, -1.2, 1.2]) {
+                    cands.push({ x: ax - w / 2 + f * w, y: up }, { x: ax - w / 2 + f * w, y: dn });
+                }
+                for (const f of [0, -0.6, 0.6, -1.2, 1.2]) {
+                    cands.push(
+                        { x: ax + gap + m * (w + 6), y: ay - h / 2 + f * h },
+                        { x: ax - w - gap - m * (w + 6), y: ay - h / 2 + f * h },
+                    );
+                }
+            }
+            cands.forEach((q, i) => ((q.i = i), (q.d = (q.x + w / 2 - ax) ** 2 + (q.y + h / 2 - ay) ** 2)));
+            cands.sort((p, q) => p.d - q.d || p.i - q.i);
+            let hit = null;
+            for (const q of cands) {
+                const r = { x: q.x, y: q.y, w, h };
+                if (r.x < 2 || r.y < 2 || r.x + w > W - 2 || r.y + h > H - 2) continue;
+                if (rects.some((z) => inter(r, z) > 0)) continue;
+                hit = r;
+                break;
+            }
+            if (!hit) {
+                el.styleQ('display', 'none');
+                continue;
+            }
+            rects.push(hit);
+            drawTopic(c, hit, 1, { x: ax, y: ay });
+        }
+    }
+    // 白宮：用幾個簡單的形狀畫（原點在地面正中央，高約 34）
+    function drawWhiteHouse(g) {
+        const body = '#f6f2e6',
+            line = '#8b8168';
+        const box = (x, y, w, h, fill) =>
+            g
+                .append('rect')
+                .attr('x', x)
+                .attr('y', y)
+                .attr('width', w)
+                .attr('height', h)
+                .attr('fill', fill)
+                .attr('stroke', line)
+                .attr('stroke-width', 0.6);
+        g.append('ellipse').attr('cy', -1).attr('rx', 21).attr('ry', 3.4).attr('fill', '#5da24a');
+        box(-20, -11, 9, 10, body);
+        box(11, -11, 9, 10, body);
+        box(-12, -15, 24, 14, body);
+        for (let i = 0; i < 6; i++) box(-9.4 + i * 3.8, -14, 1.7, 12, '#d9d2bd');
+        g.append('polygon')
+            .attr('points', '-13.5,-15 0,-22.5 13.5,-15')
+            .attr('fill', body)
+            .attr('stroke', line)
+            .attr('stroke-width', 0.6);
+        g.append('path')
+            .attr('d', 'M-4.5,-22 A4.5,4.5 0 0 1 4.5,-22 Z')
+            .attr('fill', body)
+            .attr('stroke', line)
+            .attr('stroke-width', 0.6);
+        g.append('line').attr('y1', -26.5).attr('y2', -33).attr('stroke', line).attr('stroke-width', 0.8);
+        g.append('rect').attr('y', -33).attr('width', 6).attr('height', 3.4).attr('fill', '#d1383a');
+        box(-1.6, -8, 3.2, 7, '#6b5d45');
+        for (const x of [-17, -14, 13.5, 16.5]) box(x, -8, 2, 3.4, '#7f93b5');
+    }
+    function buildLandmarks() {
+        gLm.selectAll('*').remove();
+        for (const lm of state.landmarks) {
+            const g = gLm
+                .append('g')
+                .attr('class', `mk lm${lm.anim ? ' lm-' + lm.anim : ''}`)
+                .style('display', 'none')
+                .on('click', () => {
+                    const c = state.topics.find((t) => t.id === lm.card);
+                    if (c) openTopic(c);
+                });
+            lm.el = g.node();
+            g.append('ellipse').attr('class', 'lm-sh');
+            const i = g.append('g').attr('class', 'lm-i');
+            if (lm.icon === 'whitehouse') drawWhiteHouse(i.append('g').attr('class', 'wh'));
+            else
+                i.append('image')
+                    .attr('class', 'lm-img')
+                    .attr('href', `assets/icons/${lm.icon}.png`)
+                    .attr('preserveAspectRatio', 'xMidYMax meet');
+            // 衝突時迸出的火花
+            if (lm.anim === 'clash') g.append('image').attr('class', 'lm-spark').attr('href', 'assets/icons/collision.png');
+            g.append('text').attr('class', 'lm-t').text(lm.label);
+        }
+    }
+    // 地標不論哪個篩選都在地圖上（被概況卡、篩選列蓋住或在畫面外就先收起來）
+    function layoutLandmarks(rects, ui) {
+        const k = state.t.k,
+            z = Math.max(22, Math.min(36, 16 + k * 3.2));
+        for (const lm of state.landmarks) {
+            const [sx, sy] = screenXY(lm.lon, lm.lat),
+                x = sx + (lm.dx || 0),
+                y = sy,
+                r = { x: x - z * 0.6, y: y - z * 1.05, w: z * 1.2, h: z * 1.5 };
+            const hide = k > 8 || x < -z || x > W + z || y < -z || y > H + z || ui.some((q) => inter(r, q) > 0);
+            const g = d3.select(lm.el).styleQ('display', hide ? 'none' : null);
+            if (hide) continue;
+            g.attrQ('transform', `translate(${x},${y})`);
+            g.select('.lm-sh')
+                .attrQ('rx', z * 0.5)
+                .attrQ('ry', z * 0.16);
+            g.select('.lm-img')
+                .attrQ('x', -z / 2)
+                .attrQ('y', -z)
+                .attrQ('width', z)
+                .attrQ('height', z);
+            g.select('.wh').attrQ('transform', `scale(${z / 34})`);
+            g.select('.lm-spark')
+                .attrQ('x', z * 0.02)
+                .attrQ('y', -z * 1.15)
+                .attrQ('width', z * 0.6)
+                .attrQ('height', z * 0.6);
+            g.select('.lm-t')
+                .attrQ('y', z * 0.5)
+                .styleQ('font-size', `${Math.max(9, Math.min(11.5, z * 0.38)).toFixed(1)}px`);
+            rects.push(r);
+        }
+    }
+    // 主題卡片的詳情：列出所有項目的數值與說明
+    function openTopic(c) {
+        const T = TOPICS[c.cat];
+        const rows = c.rows
+            .map(topicRowView)
+            .map((x) =>
+                x.note
+                    ? `<div>${esc(x.note)}</div>`
+                    : `<div><b>${esc(x.lab)}</b>　<span style="color:${x.vcol || '#fff'}">${esc(x.val)}</span>${x.chg ? `　<span style="color:${x.col}">${esc(x.chg)}</span>` : ''}</div>`,
+            )
+            .join('');
+        const quoted = c.rows.some((r) => r.s || r.calc);
+        const src = quoted
+            ? '行情來自 Yahoo Finance、CNBC、Trading Economics，通常延遲 15 分鐘以上。'
+            : `資料來源：${c.src || '手動整理'}。這是手動維護的資料，可能不是最新。`;
+        showSheet(`
+    <div class="hd"><span class="big">${flagHtml(c.flag, 'flg big-flg')}</span>
+      <div><div class="nm">${esc(c.short)}</div><div class="sym">${T.icon} ${T.label}</div></div></div>
+    <div class="meta" style="margin-top:12px">${rows}</div>
+    ${c.note ? `<p class="small">${esc(c.note)}</p>` : ''}
+    <p class="small">${esc(src)}</p>`);
+    }
+
     function layoutMarkers() {
         if (!projection || !state.maps.length) return;
         if (state.layer === 'travel') {
@@ -1600,11 +1977,13 @@
             k = t.k;
         // 手機版全球檢視：只列十大市值國家（markets.json 的 g10），旗幟排成左右兩欄
         const top10 = !desktopMQ.matches && state.activeRegion === 'all';
+        // 商品 / 債券 / 利率 / 匯率 / 地緣 / 經濟數據篩選：股票動物與旗幟都收起來，只顯示主題卡片
+        const topicMode = !!TOPICS[state.activeRegion];
         const size = Math.max(19, Math.min(30, 14 + k * 2.8)); // 動物身高（px），放大地圖時略微變大
         const rects = [],
             vis = new Map();
         // pin 的國家優先放動物，這樣不會因為鄰近的動物（例如新加坡和馬來西亞）重疊就被隱藏
-        const arr = state.maps.slice().sort((a, b) => !!b.pin - !!a.pin || b.w - a.w);
+        const arr = topicMode ? [] : state.maps.slice().sort((a, b) => !!b.pin - !!a.pin || b.w - a.w);
 
         // 第一輪：放動物，太擠的先隱藏（放大後會出現）
         for (const m of arr) {
@@ -1628,13 +2007,14 @@
                     H,
                     xy: screenXY,
                     pct: tq ? tq.pct : null,
-                    visible: true,
-                    avoid: uiRects(['#chips', '#hud', '#panel']),
+                    visible: !topicMode,
+                    avoid: uiRects(['#chips', '#hud']),
                 }),
             );
         }
-        // 浮動介面（篩選列、概況卡、其它指數面板）蓋住的地方，氣泡不要放進去
-        rects.push(...uiRects(['#chips', '#hud', '#panel']));
+        // 浮動介面（篩選列、概況卡）蓋住的地方，氣泡不要放進去
+        const ui = uiRects(['#chips', '#hud']);
+        rects.push(...ui);
         // 第二輪：放氣泡，先試完整版，再試迷你版
         const baseRects = rects.slice();
         // 旗幟整體放大倍率：手機螢幕小，指數數字要放大才看得清楚（旗幟內部仍用原本的座標畫，最後再整個 scale）
@@ -1650,10 +2030,10 @@
             const colW = Math.floor((W - 8 - GAP) / 2);
             const multiW = Math.min(colW, Math.round(Math.min(166, Math.floor((W - 10) / 2 / U)) * U));
             const top0 = Math.max(2, ...uiRects(['#chips', '#hud']).map((z) => z.y + z.h)) + GAP;
-            // 下緣：地圖資料來源那行字、右下角的災難按鈕、展開的面板之上；較高的那欄買齊底線，另一欄跟它頂端對齊
+            // 下緣：地圖資料來源那行字、右下角的災難按鈕之上；較高的那欄買齊底線，另一欄跟它頂端對齊
             const lim = Math.min(
                 H - 18,
-                ...uiRects(['#panel', '#dzBtn'])
+                ...uiRects(['#dzBtn'])
                     .filter((z) => z.y > H / 2)
                     .map((z) => z.y - GAP),
             );
@@ -2123,6 +2503,10 @@
                     .textQ(fmtPct(pct, 1));
             }
         });
+        // 地標（央行、白宮、地緣動畫）和主題卡片：卡片要避開地標
+        layoutLandmarks(rects, ui);
+        layoutTopics(rects);
+
         // 小角色：活動範圍不壓住市場標記才顯示；放大到街道等級就收起來
         // 小角色比市場動物大一點，世界視角也看得出在做什麼
         const csz = Math.max(24, Math.min(44, 16 + k * 5));
@@ -2818,11 +3202,12 @@
             x.setAttribute('aria-pressed', x.dataset.k === k);
         });
         document.body.classList.toggle('travel', travel);
-        if (travel && state.panel) setPanel(false);
         if (travel && window.Disasters) Disasters.clear(); // 災難目前只在股市地圖
         $('#sheet').hidden = true;
         gMk.style('display', travel ? 'none' : null);
         gBub.style('display', travel ? 'none' : null);
+        gLm.style('display', travel ? 'none' : null);
+        if (travel) gTopic.style('display', 'none');
         gDecor.style('display', travel ? 'none' : null);
         gCorp.style('display', travel ? 'none' : null);
         gTw.style('display', travel ? null : 'none');
@@ -2879,43 +3264,30 @@
             };
             return;
         }
-        // 區域是單選；「其它指數」是獨立的開關，用分隔線隔開
+        // 左邊是股票的區域，右邊（分隔線之後）是商品 / 債券 / 利率 / 匯率 / 地緣 / 經濟數據；都是單選
         nav.innerHTML =
             defs.map((d) => chip(...d)).join('') +
             '<span class="csep" aria-hidden="true"></span>' +
-            chip('more', '📊', '其它指數');
+            Object.entries(TOPICS)
+                .map(([k, t]) => chip(k, t.icon, t.label))
+                .join('');
         nav.onclick = (e) => {
             const b = e.target.closest('.chip');
             if (!b) return;
-            const k = b.dataset.k;
-            if (k === 'more') {
-                setPanel(!state.panel);
-                return;
-            }
-            state.activeRegion = k;
+            state.activeRegion = b.dataset.k;
             updateChips();
             applyRegion(true);
-            renderPanel();
+            renderHud();
+            scheduleLayout();
         };
     }
     function updateChips() {
         document.querySelectorAll('.chip').forEach((b) => {
             const k = b.dataset.k;
-            const on = state.layer === 'travel' ? k === state.tArea : k === 'more' ? state.panel : k === state.activeRegion;
+            const on = state.layer === 'travel' ? k === state.tArea : k === state.activeRegion;
             b.classList.toggle('on', on);
             b.setAttribute('aria-pressed', on);
         });
-    }
-    function setPanel(open) {
-        state.panel = open;
-        const p = $('#panel');
-        p.hidden = !open;
-        document.body.classList.toggle('panel-open', open);
-        updateChips();
-        if (open) {
-            renderPanel();
-            p.scrollTop = 0;
-        }
     }
 
     function renderHud() {
@@ -2938,47 +3310,14 @@
         fill.style.background = `hsl(${hue(avg)},72%,55%)`;
         $('#hpText').textContent = fmtPct(avg);
         let line;
+        const when = state.generated
+            ? new Date(state.generated).toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' })
+            : '--';
+        const topic = TOPICS[state.activeRegion];
         if (state.demo) line = '🎮 演示資料（還沒部署爬蟲，數字是隨機的）';
-        else {
-            const when = state.generated
-                ? new Date(state.generated).toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' })
-                : '--';
-            line = `🟢 ${open.length} 個市場開盤中 · 更新於 ${when} · 資料約延遲 15 分鐘`;
-        }
+        else if (topic) line = `${topic.icon} ${topic.label} · 更新於 ${when} · 行情約延遲 15 分鐘，其餘為手動維護`;
+        else line = `🟢 ${open.length} 個市場開盤中 · 更新於 ${when} · 資料約延遲 15 分鐘`;
         $('#statusLine').textContent = line;
-    }
-
-    // 面板以目前區域為主（全球檢視時用自動判斷的區域）
-    function panelRegion() {
-        return state.activeRegion === 'all' ? pickAutoRegion() : state.activeRegion;
-    }
-    // 其它指數面板：目前區域 → 全球行情 → 其他區域，每列點一下開詳情卡
-    function renderPanel() {
-        const p = $('#panel');
-        if (!state.panel) return;
-        const cur = panelRegion();
-        const row = (i) => {
-            const q = state.quotes[i.s];
-            const pc = q
-                ? `<small style="color:${pctColor(q.pct)}">${arrow(q.pct)}${Math.abs(q.pct).toFixed(2)}%</small>`
-                : '<small>--</small>';
-            return (
-                `<li><button class="li" data-s="${i.s}"><span class="li-i">${flagHtml(i.e)}</span>` +
-                `<span class="li-n"><b>${i.zh}</b><small>${i.s}</small></span>` +
-                `<span class="li-v"><b>${q ? fmtN(q.p) : '--'}</b>${pc}</span></button></li>`
-            );
-        };
-        const sec = (title, list) => (list.length ? `<h4>${title}</h4><ul>${list.map(row).join('')}</ul>` : '');
-        const by = (r) => state.bars.filter((i) => i.r === r);
-        const others = REGION_ORDER.filter((r) => r !== cur)
-            .map((r) => sec(`${REGIONS[r].label} 其它指數`, by(r)))
-            .join('');
-        const st = p.scrollTop;
-        p.innerHTML =
-            `<div class="ph"><span class="grip" aria-hidden="true"></span><h3>📊 其它指數</h3>` +
-            `<button class="x gbtn" data-act="close-panel" aria-label="關閉其它指數">✕</button></div>` +
-            `<div class="pb">${sec(`${REGIONS[cur].label} 其它指數`, by(cur))}${sec('🌐 全球行情', by('global'))}${others}</div>`;
-        p.scrollTop = st;
     }
 
     /* ================= 彈窗 ================= */
@@ -3130,7 +3469,6 @@
     function refreshView() {
         paintLand();
         scheduleLayout();
-        renderPanel();
         renderHud();
     }
     function tick() {
@@ -3142,7 +3480,8 @@
         const [cfg, topo] = await Promise.all([fetchJSON('markets.json'), d3.json(TOPO_URL)]);
         state.cfg = cfg;
         state.maps = cfg.items.filter((i) => i.type === 'map').sort((a, b) => a.w - b.w);
-        state.bars = cfg.items.filter((i) => i.type === 'bar');
+        state.topics = cfg.topics || [];
+        state.landmarks = cfg.landmarks || [];
         cfg.items.forEach((i) => (state.bySym[i.s] = i));
         // 同國其他指數（type "sub"，of 指向主指數）併成一組，主指數排第一個
         state.maps.forEach((m) => (m.group = [m, ...cfg.items.filter((i) => i.type === 'sub' && i.of === m.s)]));
@@ -3156,6 +3495,9 @@
 
         // 開啟網頁時選「現在正在開盤」的區域（都休市就選最快開盤的），之後由使用者自己切換
         state.activeRegion = pickAutoRegion();
+        // 網址加上 #fx、#geo、#asia… 可以直接開在指定的篩選
+        const hash = location.hash.slice(1);
+        if (TOPICS[hash] || ['all', 'asia', 'americas', 'europe', 'mea'].includes(hash)) state.activeRegion = hash;
 
         buildSvg();
         buildRail();
@@ -3169,21 +3511,11 @@
         $('#loading').classList.add('gone');
         startWalk();
 
-        $('#panel').addEventListener('click', (e) => {
-            if (e.target.closest('[data-act="close-panel"]')) {
-                setPanel(false);
-                return;
-            }
-            const b = e.target.closest('.li');
-            if (b && state.bySym[b.dataset.s]) openCard(state.bySym[b.dataset.s]);
-        });
         $('#sheet').addEventListener('click', onSheetClick);
         $('#btnSet').addEventListener('click', openSettings);
-        // Esc：先關詳情卡，再關其它指數面板
+        // Esc：關掉詳情卡
         document.addEventListener('keydown', (e) => {
-            if (e.key !== 'Escape') return;
-            if (!$('#sheet').hidden) $('#sheet').hidden = true;
-            else if (state.panel) setPanel(false);
+            if (e.key === 'Escape') $('#sheet').hidden = true;
         });
 
         let rt = 0;

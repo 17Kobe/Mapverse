@@ -6,6 +6,8 @@
 - Yahoo 沒有的指數改用其他來源（markets.json 的 "src" 欄位）：
     tpex  櫃買指數，櫃買中心官方 OpenAPI（日資料，盤中不會跳動）
     yjp   TOPIX，Yahoo!ファイナンス日本版網頁（沒有官方 API，網頁改版時會抓失敗而沿用舊資料）
+    cnbc  各國公債殖利率（美、德、日、英、中），CNBC 報價介面；p 是殖利率 %，c 是變動的百分點
+    te    台灣 10 年公債殖利率，Trading Economics 頁面摘要（網頁改版時會抓失敗而沿用舊資料）
 - 某個代碼抓失敗時，沿用上一版（PREV_FILE）的資料並標記 stale，網頁不會出現空洞
 """
 import json
@@ -96,11 +98,49 @@ def fetch_yjp(code):
     return _make(_num(m.group(1)), _num(m.group(2)), time.time())
 
 
+def fetch_cnbc(code):
+    """公債殖利率：last 是 "4.933%"，change 是百分點"""
+    url = ("https://quote.cnbc.com/quote-html-webservice/restQuote/symbolType/symbol?symbols="
+           + urllib.parse.quote(code, safe="") + "&requestMethod=itv&noform=1&partnerId=2&fund=1&exthrs=1&output=json&events=1")
+    d = json.loads(_get(url))
+    q = d["FormattedQuoteResult"]["FormattedQuote"][0]
+    if not q.get("last") or q.get("change") in (None, ""):
+        return None
+    try:
+        t = datetime.strptime(q["last_time"], "%Y-%m-%dT%H:%M:%S.%f%z").timestamp()
+    except Exception:
+        t = time.time()
+    return _make(_num(q["last"].rstrip("%")), _num(q["change"]), t)
+
+
+def fetch_te(path):
+    """Trading Economics 頁面的 meta 摘要，例如 'eased to 1.99% on October 30, 2026, marking a 0.02 percentage points decrease'"""
+    html = _get("https://tradingeconomics.com/" + path)
+    m = re.search(r'id="metaDesc"[^>]*content="([^"]*)"', html)
+    if not m:
+        return None
+    desc = m.group(1)
+    mp = re.search(r"(?:to|at)\s+([\d.]+)%\s+on\s+(\w+ \d+, \d{4})", desc)
+    if not mp:
+        return None
+    mc = re.search(r"([\d.]+) percentage points? (increase|decrease)", desc)
+    chg = (float(mc.group(1)) * (1 if mc.group(2) == "increase" else -1)) if mc else 0.0
+    t = datetime.strptime(mp.group(2), "%B %d, %Y").replace(hour=12, tzinfo=timezone.utc).timestamp()
+    return _make(float(mp.group(1)), chg, t)
+
+
 def fetch_special(item):
     src, err = item.get("src"), ""
     for attempt in range(3):
         try:
-            q = fetch_tpex() if src == "tpex" else fetch_yjp(item.get("code", item["s"]))
+            if src == "tpex":
+                q = fetch_tpex()
+            elif src == "cnbc":
+                q = fetch_cnbc(item.get("code", item["s"]))
+            elif src == "te":
+                q = fetch_te(item["code"])
+            else:
+                q = fetch_yjp(item.get("code", item["s"]))
             if q:
                 return item["s"], q, ""
             err = "empty result"
