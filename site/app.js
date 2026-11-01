@@ -1628,25 +1628,14 @@
         const baseRects = rects.slice();
         // 旗幟整體放大倍率：手機螢幕小，指數數字要放大才看得清楚（旗幟內部仍用原本的座標畫，最後再整個 scale）
         const U = desktopMQ.matches ? 1 : BUBBLE_SCALE_MOBILE;
-        // 手機版：pin 的國家（中、港、日、韓、台、星、馬、印尼）改用左右兩欄排版。
-        // 每張旗幟盡量放在自己動物的正上方，同一欄依動物由北到南往下疊，擠不下再整欄往上收，
-        // 這樣每張都能完整列出，也不會被擠到離自己國家很遠的地方。排不下時回傳 null，改用一般的避讓排法。
-        // 全球檢視：十大市值國家靠畫面下緣排兩欄（g10 = L/R + 由上而下的序號），每張旗幟一律 full，多指數輪播，地圖留在上方
+        // 全球檢視：十大市值國家靠畫面下緣排兩欄（g10 = L/R + 由上而下的序號），地圖留在上方。
+        // 多指數的國家整張列出；兩欄放不下時退回 full（多指數輪播）
         const layoutTop10 = () => {
             const ps = [...vis.values()].filter((o) => o.m.g10 && state.quotes[o.m.s]);
             if (!ps.length) return null;
             const GAP = 4;
-            const items = ps.map((o) => {
-                const n = o.m.group.length;
-                return {
-                    o,
-                    col: o.m.g10[0] === 'L' ? 0 : 1,
-                    no: +o.m.g10.slice(1),
-                    w: Math.round((n > 1 ? Math.max(136, headNeedW(o.m, n * 6 + 4)) : Math.max(118, headNeedW(o.m, 0))) * U),
-                    h: Math.round(FULL_H * U),
-                };
-            });
-            const w = Math.min(Math.floor((W - 8 - GAP) / 2), Math.max(...items.map((it) => it.w)));
+            const colW = Math.floor((W - 8 - GAP) / 2);
+            const multiW = Math.min(colW, Math.round(Math.min(166, Math.floor((W - 10) / 2 / U)) * U));
             const top0 = Math.max(2, ...uiRects(['#chips', '#hud']).map((z) => z.y + z.h)) + GAP;
             // 下緣：地圖資料來源那行字、右下角的災難按鈕、展開的面板之上；兩欄對齊同一條底線
             const lim = Math.min(
@@ -1655,18 +1644,41 @@
                     .filter((z) => z.y > H / 2)
                     .map((z) => z.y - GAP),
             );
-            const out = new Map();
-            for (const col of [0, 1]) {
-                const seq = items.filter((it) => it.col === col).sort((a, b) => a.no - b.no);
-                let y = lim - seq.reduce((s, it) => s + it.h + GAP, -GAP);
-                if (seq.length && y < top0) return null;
-                for (const it of seq) {
-                    out.set(it.o.m.s, { r: { x: col ? W - 4 - w : 4, y, w, h: it.h }, mode: 'full', pos: 'col' });
-                    y += it.h + GAP;
+            const build = (multi) => {
+                const items = ps.map((o) => {
+                    const n = o.m.group.length,
+                        mu = multi && n > 1;
+                    return {
+                        o,
+                        mu,
+                        col: o.m.g10[0] === 'L' ? 0 : 1,
+                        no: +o.m.g10.slice(1),
+                        w: mu ? multiW : Math.round(Math.max(n > 1 ? 136 : 118, headNeedW(o.m, n > 1 ? n * 6 + 4 : 0)) * U),
+                        h: Math.round((mu ? 24 + n * 16 + 4 : FULL_H) * U),
+                    };
+                });
+                const w = Math.min(colW, Math.max(...items.map((it) => it.w)));
+                const out = new Map();
+                for (const col of [0, 1]) {
+                    const seq = items.filter((it) => it.col === col).sort((a, b) => a.no - b.no);
+                    let y = lim - seq.reduce((s, it) => s + it.h + GAP, -GAP);
+                    if (seq.length && y < top0) return null;
+                    for (const it of seq) {
+                        out.set(it.o.m.s, {
+                            r: { x: col ? W - 4 - w : 4, y, w, h: it.h },
+                            mode: it.mu ? 'multi' : 'full',
+                            pos: 'col',
+                        });
+                        y += it.h + GAP;
+                    }
                 }
-            }
-            return out;
+                return out;
+            };
+            return build(true) || build(false);
         };
+        // 手機版：pin 的國家（中、港、日、韓、台、星、馬、印尼）改用左右兩欄排版。
+        // 每張旗幟盡量放在自己動物的正上方，同一欄依動物由北到南往下疊，擠不下再整欄往上收，
+        // 這樣每張都能完整列出，也不會被擠到離自己國家很遠的地方。排不下時回傳 null，改用一般的避讓排法。
         const layoutPinColumns = () => {
             // 只排目前區域的 pin 國家（全球檢視沿用亞太），不同區域的旗幟不會被塞進同一欄
             const pinR = state.activeRegion === 'all' ? 'asia' : state.activeRegion;
