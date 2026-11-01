@@ -243,12 +243,17 @@ body.travel #dzBtn,body.travel #dzMenu{display:none}
 .corps .rkt{font-size:9px;fill:#3a2604}
 .corps .snm{font-size:10.5px;fill:#fff;paint-order:stroke;stroke:rgba(0,0,0,.3);stroke-width:1.2px}
 .corps .cfx{pointer-events:none}
-/* 商標立牌：白底、深色描邊、兩支小腳，像立在建築前的招牌 */
-.corps .plq{fill:#fbfaf6;stroke:var(--outline);stroke-width:.8}
-.corps .plq-leg{stroke:#5d6470;stroke-width:1.2}
-.corps .plqs,.corps .plq-row{filter:drop-shadow(0 1px 1px rgba(0,0,0,.45))}
-.corps .plq-t{font-family:'Arial Black','Segoe UI',system-ui,sans-serif;font-weight:900;letter-spacing:-.02em;stroke:none;paint-order:normal}
-.corps .plq-t.serif{font-family:Georgia,'Times New Roman',serif;font-weight:700;letter-spacing:-.04em}
+/* 嵌在大樓正面的商標：白色外框，像企業總部大樓頂部的標誌 */
+.corps .lgf{fill:#fbfaf6;stroke:rgba(10,18,30,.6);stroke-width:.35}
+.corps .lgt{font-family:'Arial Black','Segoe UI',system-ui,sans-serif;font-weight:900;letter-spacing:-.02em;stroke:none;paint-order:normal}
+/* 玻璃帷幕的窗框、反光；圓柱塔的帶狀窗；天線頂的航空警示燈 */
+.corps .mu{fill:none;stroke:rgba(12,22,38,.3);stroke-width:.3}
+.corps .gl{fill:url(#corp-sheen);pointer-events:none}
+.corps .wl{fill:none;stroke:#bcd8f2;transition:stroke .8s}
+.corps.up .wl{stroke:#ffe07a}
+.corps.down .wl{stroke:#2c3748}
+.corps .bk{animation:corp-blink 1.8s steps(1) infinite}
+.corps .flame{transform-box:fill-box;transform-origin:50% 100%;animation:corp-flame .5s ease-in-out infinite alternate}
 .corps .fw,.corps .storm{display:none}
 .corps.boom .fw,.corps.crash .storm{display:inline}
 .corps .burst{transform-box:fill-box;transform-origin:center;opacity:0;animation:corp-burst 2.6s ease-out infinite}
@@ -258,13 +263,17 @@ body.travel #dzBtn,body.travel #dzMenu{display:none}
 @keyframes corp-burst{0%{opacity:0;transform:scale(.15)}8%{opacity:1}45%{opacity:.9;transform:scale(1)}70%,100%{opacity:0;transform:scale(1.25)}}
 @keyframes corp-rain{0%{opacity:0;transform:translateY(-2px)}20%{opacity:.9}100%{opacity:0;transform:translateY(14px)}}
 @keyframes corp-bolt{0%,86%,90%,93%,100%{opacity:0}87%,89%,94%,96%{opacity:1}}
+@keyframes corp-blink{50%{opacity:.15}}
+@keyframes corp-flame{to{transform:scale(.8,1.15)}}
 body.noanim .corps .burst{animation:none;opacity:1;transform:none}
 body.noanim .corps .rain path{animation:none;opacity:.8}
 body.noanim .corps .bolt{animation:none;opacity:1}
+body.noanim .corps .bk,body.noanim .corps .flame{animation:none}
 @media (prefers-reduced-motion:reduce){
   .corps .burst{animation:none;opacity:1;transform:none}
   .corps .rain path{animation:none;opacity:.8}
   .corps .bolt{animation:none;opacity:1}
+  .corps .bk,.corps .flame{animation:none}
 }
 
 /* 動物棋子 */
@@ -299,6 +308,9 @@ body.noanim .corps .bolt{animation:none;opacity:1}
 .bubble .dots circle.on{fill:var(--gold-l)}
 .bubble text{font-family:var(--font);font-weight:700;fill:var(--cream);text-anchor:middle;dominant-baseline:central;pointer-events:none;paint-order:stroke;stroke:rgba(0,0,0,.45);stroke-width:2px}
 .bubble .t1{font-size:12px}
+.bubble .t1 .a{fill:#fff}
+.bubble .tsb{fill:rgba(8,14,28,.62);stroke:rgba(255,226,150,.35);stroke-width:.6}
+.bubble .ts{font-size:9.5px;font-weight:700;text-anchor:end;fill:#ffd66b;stroke:none}
 .bubble .t2{font-size:12px;fill:#fff}
 .bubble .flag-b{fill:none;stroke:var(--gold-l);stroke-width:1;stroke-opacity:.85}
 /* ---------- 旅遊地圖（台灣） ---------- */

@@ -7,7 +7,7 @@ const TOPO_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json'
 // 區域篩選：縮放範圍改由該區市場的實際位置計算（見 regionTransform），不再用一大塊經緯度框
 const REGIONS = {
   all:      { label: '🌍 全球' },
-  asia:     { label: '🌏 亞太' },
+  asia:     { label: '⛩️ 亞太' },
   europe:   { label: '🏰 歐洲' },
   americas: { label: '🗽 美洲' },
   mea:      { label: '🐪 中東非洲' }
@@ -662,6 +662,9 @@ function buildSvg() {
     const t1 = b.append('text').attr('class', 't1');
     t1.append('tspan').attr('class', 'a');
     t1.append('tspan').attr('class', 'm');
+    // 色帶右側：報價時間（開盤中顯示時:分，收盤後顯示日期），深色底小膠囊，才不會和國名混在一起
+    b.append('rect').attr('class', 'tsb').attr('rx', 5);
+    b.append('text').attr('class', 'ts');
     const t2 = b.append('text').attr('class', 't2');
     t2.append('tspan').attr('class', 'lb');
     t2.append('tspan').attr('class', 'va');
@@ -1075,11 +1078,27 @@ function textWidth(node) {
   }
   return w;
 }
-// 還沒建出旗幟就要知道寬度時用：拿一個看不見的 .bubble .t1 量（同一套快取）
-let measT1 = null;
-function textWidthOf(str) {
-  if (!measT1) measT1 = svg.append('g').attr('class', 'bubble').style('visibility', 'hidden').attr('aria-hidden', 'true').append('text').attr('class', 't1');
-  return textWidth(measT1.text(str).node());
+// 還沒建出旗幟就要知道寬度時用：拿看不見的 .bubble 文字量（同一套快取）
+const measT = {};
+function textWidthOf(str, cls = 't1') {
+  if (!measT[cls]) measT[cls] = svg.append('g').attr('class', 'bubble').style('visibility', 'hidden').attr('aria-hidden', 'true').append('text').attr('class', cls);
+  return textWidth(measT[cls].text(str).node());
+}
+// 旗幟色帶右側的報價時間（使用者的時區，和詳細面板的「最後成交」一致）：
+// 開盤中（含午休）顯示 11:30；收盤後顯示 10/31(六)
+const WEEK_ZH = '日一二三四五六';
+function quoteStamp(m) {
+  const q = state.quotes[m.s];
+  if (!q || !q.t) return '';
+  const d = new Date(q.t * 1000), st = marketStatus(m);
+  // 開盤中（含午休）且報價是最近的才顯示時間；假日剛好落在午休時段時，舊報價仍顯示日期
+  if ((st === 'open' || st === 'break') && Date.now() - d.getTime() < 12 * 3600e3) return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+  return `${d.getMonth() + 1}/${d.getDate()}(${WEEK_ZH[d.getDay()]})`;
+}
+// 色帶要放下「國旗 + 名稱 + 時間 + 輪播圓點」需要的寬度（未放大的座標）
+function headNeedW(m, dotW) {
+  const ts = quoteStamp(m);
+  return Math.ceil(32 + textWidthOf(m.short) + (ts ? 16 + textWidthOf(ts, 'ts') : 0) + 5 + dotW);
 }
 
 function layoutMarkers() {
@@ -1134,7 +1153,7 @@ function layoutMarkers() {
       const n = o.m.group.length;
       return {
         o, mode: n > 1 ? 'multi' : 'full',
-        w: n > 1 ? multiW : Math.min(colW, Math.round(118 * U)),
+        w: n > 1 ? multiW : Math.min(colW, Math.round(Math.max(118, headNeedW(o.m, 0)) * U)),
         h: Math.round((n > 1 ? 24 + n * 16 + 4 : 40) * U)
       };
     });
@@ -1210,8 +1229,8 @@ function layoutMarkers() {
       // 窄螢幕：整張列出的旗幟最多佔半個畫面寬，這樣左右可以並排兩張
       const multiW = Math.min(166, Math.floor((W - 10) / 2 / U));
       const modes = (n > 1
-        ? [{ w: multiW, h: 24 + n * 16 + 4, mode: 'multi' }, { w: 136, h: 40, mode: 'full' }, { w: 80, h: 22, mode: 'mini' }]
-        : [{ w: 118, h: 40, mode: 'full' }, { w: 80, h: 22, mode: 'mini' }]
+        ? [{ w: multiW, h: 24 + n * 16 + 4, mode: 'multi' }, { w: Math.max(136, headNeedW(m, n * 6 + 4)), h: 40, mode: 'full' }, { w: 80, h: 22, mode: 'mini' }]
+        : [{ w: Math.max(118, headNeedW(m, 0)), h: 40, mode: 'full' }, { w: 80, h: 22, mode: 'mini' }]
       ).map((md) => ({ ...md, w: Math.round(md.w * U), h: Math.round(md.h * U) }));
       outer:
       for (const md of modes) {
@@ -1361,7 +1380,14 @@ function layoutMarkers() {
     b.select('.dots').styleQ('display', dotW ? null : 'none').selectAll('circle')
       .attrQ('cx', (_, i) => w - 9 - (n - 1 - i) * 6).attrQ('cy', 12)
       .attrQ('class', (_, i) => (i === state.rot % n ? 'on' : null));
-    const tx0 = hasFlag ? fx + fw + 2 : 0, tx1 = w - dotW; // 文字置中在國旗和圓點之間
+    const tx0 = hasFlag ? fx + fw + 2 : 0;
+    // 報價時間：靠右（在輪播圓點左邊）；名稱放不下時就不顯示時間
+    const ts = mini ? '' : quoteStamp(m), tsW = ts ? textWidthOf(ts, 'ts') : 0;
+    const pr = w - 5 - dotW, pillW = tsW + 8; // 時間膠囊的右緣與寬度
+    const showTs = !!ts && textWidthOf(m.short) + pillW + 8 <= pr - tx0;
+    b.select('.tsb').styleQ('display', showTs ? null : 'none').attrQ('x', pr - pillW).attrQ('y', 5.5).attrQ('width', pillW).attrQ('height', 14);
+    b.select('.ts').styleQ('display', showTs ? null : 'none').attrQ('x', pr - 4).attrQ('y', 12.7).textQ(showTs ? ts : '');
+    const tx1 = showTs ? pr - pillW : w - dotW; // 文字置中在國旗和時間膠囊（圓點）之間
     const t1 = b.select('.t1').attrQ('x', (tx0 + tx1) / 2).attrQ('y', mini ? h / 2 + 0.5 : 12.5);
     const t2 = b.select('.t2').attrQ('x', w / 2).attrQ('y', 30).styleQ('display', mode === 'full' ? null : 'none');
     b.select('.rows').styleQ('display', multi ? null : 'none');
@@ -1926,7 +1952,7 @@ function toast(msg) {
 }
 
 function buildChips() {
-  const defs = [['all', '🌍', '全球'], ['asia', '🌏', '亞太'], ['americas', '🗽', '美洲'], ['europe', '🏰', '歐洲'], ['mea', '🐪', '中東非洲']];
+  const defs = [['all', '🌍', '全球'], ['asia', '⛩️', '亞太'], ['americas', '🗽', '美洲'], ['europe', '🏰', '歐洲'], ['mea', '🐪', '中東非洲']];
   const chip = (k, i, t) => `<button class="chip gbtn" data-k="${k}" aria-pressed="false"><span class="ci">${i}</span>${t}</button>`;
   const nav = $('#chips');
   // 旅遊地圖：本島與各離島（設定在 travel.json 的 areas）
