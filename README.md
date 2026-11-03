@@ -41,6 +41,7 @@ site/
   index.html  style.css  app.js   前端（d3 + SVG，無需構建）
   markets.json                    所有市場 / 指數 / 商品的設定（改這個就能增刪）
   corps.js  corp-logos.js         台灣島上的前十大公司建築與商標
+  natives.js                      各國原住民小人（依主要指數漲跌歡呼 / 沮喪，目前只有台灣）
   travel.json                     旅遊地圖的區域膠囊與地點
   assets/geo/                     旅遊地圖的縣市界與迷霧多邊形（由 build_tw_geo.py 產生）
 scripts/serve_local.py            本機預覽伺服器
@@ -54,6 +55,7 @@ scripts/build_tw_geo.py           產生 site/assets/geo/（只需執行一次�
 - **主題卡片**：`site/markets.json` 的 `topics` 每一筆是一張卡片：`cat` 是篩選（`commodity` / `bond` / `rate` / `fx` / `geo` / `econ`），`short` 與 `flag` 是標題的國家，`lon` / `lat` 是放置的位置，`rows` 是列。有行情的列填 `s`（對應 `items` 的代碼）與 `l`（名稱），債券加 `"k": "y"`（以 bp 顯示變動），`calc` 可算兩個代碼的差（例如 10Y-2Y 利差）；手動維護的列填 `l` 與 `v`（數值），可加 `d`（和前期的差）、`tone`（`ok` / `warn` / `bad` 決定顏色），純文字說明用 `note`；`stamp` 是標題右側的資料期間。**利率、地緣、經濟數據目前是手動整理的資料，不會自動更新，需要時直接改這裡。** `landmarks` 是永遠留在地圖上的圖示（央行、白宮、地緣動畫），`card` 指向點擊後要開啟的卡片。
 - **換動物**：改 `a` 欄位的 emoji。地圖上的 3D 動物圖放在 `site/assets/animals/`，對照表在 `app.js` 的 `ANIMALS`（含面向、走路方式）；沒有對應圖檔的 emoji 會直接顯示 emoji。國旗圖在 `site/assets/flags/`，依 `flag` 欄位自動對應。
 - **小角色（海洋生物、船、各地人物）**：在 `app.js` 的 `CRITTERS` 加一筆，填圖檔、經緯度和動作 `mode`（`wander` 走動、`swim` 游、`whale` 噴水、`dolphin` 跳出水面、`boat` 划船、`surf` 衝浪、`ski` 滑雪、`chase` 追逐、`still` 不動）。圖放在 `site/assets/critters/`（Fluent 3D）或 `site/assets/people/`（自繪 SVG：因紐特人、冰屋、維京長船）。會擋到市場旗幟時自動隱藏。
+- **原住民小人（目前只有台灣）**：`site/natives.js`。該國主要指數（`market`）漲（≥ +0.15%）時，小人左右手交替高舉歡呼並原地蹦跳；跌（≤ −0.15%）時低頭哭泣、頭上下雨；平盤時散步、偶爾揮手、眨眼。漲跌超過 2% 時歡呼會撒彩帶、哭泣會打雷；休市時動作放慢；動畫關閉或系統要求減少動態時只擺一個靜態姿勢。要推廣到其他國家，在 `Natives.FOLK` 加幾筆（`market` 填該國主指數代碼、`lon`/`lat` 是位置、`ox`/`oy` 是組內的相對位置、`look` 選 `LOOKS` 的外觀或自訂顏色與頭飾），服飾請以該族群真實的傳統色彩與織紋為靈感，保持友善、不要刻板化。小人會自動避開旗幟，國家附近沒有空位時（例如手機版的雙欄旗幟）會移到畫面上最近的空地，並用虛線連回國家。
 - **雲**：用 canvas 即時畫在 `#clouds`，固定在經緯度上，跟著地圖移動與左右循環，並隨西風慢慢往東飄。數量、風速在 `app.js` 的 `CLOUD_N`、`CLOUD_WIND`。關閉動畫或系統開啟「減少動態效果」時，雲和小角色都會停住。
 - **紅漲綠跌 / 綠漲紅跌**：圖層列最下方的 ⚙️ 設定切換（預設紅漲綠跌）。
 - **上帝視角的災難（股市地圖）**：在地圖上按右鍵（手機長按，或右下角的災難按鈕）選災難，預設「下雨」；選好後左鍵點地圖空白處就在那裡降下災難（點動物 / 旗幟仍是開詳情卡）。有下雨、冰雹、颱風、地震、海嘯、龍捲風、火山爆發、瘋狗浪、森林大火。效果畫在 `#fx` canvas、錨定經緯度跟著地圖移動，程式在 `site/disasters.js`：新增災難就在 `TYPES` 加一筆（icon、label、秒數），再到 `FX` 寫 `make`（產生粒子）與 `draw`（每幀畫）。`Disasters.active()` 可取得目前的災難，之後讓角色躲災難用。股市地圖的雙擊不再放大。

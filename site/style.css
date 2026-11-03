@@ -218,6 +218,13 @@ body.travel #dzBtn,body.travel #dzMenu{display:none}
 /* 小角色（海洋生物、船、人物）：陸上用柔和影子，海上用白色水波 */
 .cr .shadow{fill:#0f1a08;opacity:.45;transform-box:fill-box;transform-origin:center}
 .cr .wake{fill:#e8f6ff;transform-box:fill-box;transform-origin:center}
+/* 小人找不到國家附近的空位時，用虛線連回國家的位置（和主題卡片的引線同一個風格） */
+.folk-lead{pointer-events:none}
+.folk-lead line{stroke:var(--gold-l);stroke-width:1.2;stroke-opacity:.85;stroke-dasharray:3 3}
+.folk-lead circle{fill:var(--gold-l);stroke:var(--outline);stroke-width:1.5}
+/* 原住民小人：漲跌超過 2% 才顯示的彩帶（歡呼）和閃電（沮喪） */
+.cr .nv .big{display:none}
+.cr .nv.is-big .big{display:inline}
 #attrib{position:absolute;right:4px;bottom:3px;z-index:2;font-size:10px;color:#fff;opacity:.75;text-shadow:0 1px 2px #000;pointer-events:none;font-family:system-ui,sans-serif}
 
 /* 台股市值前十大的建築（corps.js）：漲 → 窗戶亮燈、地上一圈暖光；跌 → 褪色變暗；大漲放煙火、重挫烏雲打雷 */

@@ -84,6 +84,29 @@
         { src: 'critters/surfer.png', lon: 155, lat: -30, mode: 'surf', face: 'R', s: 0.9, sea: true }, // 澳洲黃金海岸衝浪
         { src: 'critters/skier.png', lon: 14, lat: 65, mode: 'ski', face: 'R', s: 0.85 }, // 挪威山上滑雪
     ];
+    // 原住民小人（natives.js）：該國主要指數漲就歡呼跳舞、跌就沮喪哭泣，平盤時散步 / 揮手 / 眨眼
+    // mode 'folk'；market = 看哪個指數；ox / oy = 相對位置點的偏移（單位：小角色基準大小）；minK = 縮小到這個倍率以下就收起來
+    if (window.Natives)
+        CRITTERS.push(
+            ...Natives.FOLK.map((f, i, all) => {
+                const grp = all.filter((o) => o.market === f.market);
+                return {
+                    ...f,
+                    folk: true,
+                    mode: 'folk',
+                    face: 'F',
+                    minK: 1.4,
+                    first: grp[0] === f, // 同一組的第一個成員
+                    grpOx: grp.reduce((a, o) => a + (o.ox || 0), 0) / grp.length, // 組中心（相對位置點）
+                    grpOy: grp.reduce((a, o) => a + (o.oy || 0), 0) / grp.length,
+                };
+            }),
+        );
+    // 小人整組找空位時依序試的偏移（單位：小角色基準大小）：先原地，再由近到遠繞一圈圈
+    const FOLK_SPOTS = [[0, 0]];
+    for (const ring of [1.8, 3, 4.2])
+        for (const a of [0, 180, 90, 270, 45, 135, 225, 315])
+            FOLK_SPOTS.push([Math.cos((a * Math.PI) / 180) * ring * 1.5, Math.sin((a * Math.PI) / 180) * ring * 0.9]);
     // 雲：固定在地球上（經緯度），隨西風慢慢往東飄，地圖拖曳時跟著地面走
     const CLOUD_N = 13,
         CLOUD_WIND = 0.5; // 每秒往東飄幾度經度
@@ -652,7 +675,15 @@
     /* ---------- 小角色：海洋生物、船、各地人物 ---------- */
     const critters = [];
     const faceDir = (c, dx) => (c.face === 'F' ? 1 : dx > 0 === (c.face === 'L') ? -1 : 1);
+    const folkLeads = new Map(); // 小人找不到國家附近的空位時，用虛線連回國家的位置
     function buildCritters() {
+        for (const d of CRITTERS) {
+            if (!d.folk || folkLeads.has(d.market)) continue;
+            const g = gDecor.append('g').attr('class', 'folk-lead').style('display', 'none');
+            g.append('line');
+            g.append('circle').attr('r', 3.2);
+            folkLeads.set(d.market, g.node());
+        }
         for (const d of CRITTERS) {
             const g = gDecor.append('g').attr('class', 'cr').style('display', 'none');
             const wk = g.append('g');
@@ -661,13 +692,34 @@
                 .attr('class', d.sea ? 'wake' : 'shadow')
                 .attr('filter', 'url(#soft)');
             const body = wk.append('g');
-            const img = body
-                .append('image')
-                .attr('href', 'assets/' + d.src)
-                .attr('preserveAspectRatio', 'xMidYMax meet')
-                .attr('filter', 'url(#cast)');
+            let img, poses = null;
+            if (d.folk) {
+                // 原住民小人（natives.js）：每個姿勢是 <svg> 裡的一個 <g>，依漲跌切換顯示哪一個
+                img = body.append('g').append('svg');
+                img.attr('class', 'nv')
+                    .attr('viewBox', Natives.VIEWBOX)
+                    .attr('preserveAspectRatio', 'xMidYMax meet')
+                    .attr('overflow', 'visible');
+                img.node().innerHTML = Natives.markup(d.look, d.id);
+                poses = {};
+                img.node()
+                    .querySelectorAll('[data-pose]')
+                    .forEach((p) => (poses[p.getAttribute('data-pose')] = p));
+                poses.idle.style.display = '';
+            } else {
+                img = body
+                    .append('image')
+                    .attr('href', 'assets/' + d.src)
+                    .attr('preserveAspectRatio', 'xMidYMax meet')
+                    .attr('filter', 'url(#cast)');
+            }
             if (d.alt) new Image().src = 'assets/' + d.alt; // 先載入另一張（鯨魚噴水 / 不噴水）
             critters.push({
+                poses,
+                pose: 'idle',
+                big: false,
+                st: 'open',
+                stAt: -99,
                 d,
                 g: g.node(),
                 wk: wk.node(),
@@ -712,6 +764,66 @@
         if (Math.abs(dx) > 0.3) c.dir = faceDir(c, dx);
         return true;
     }
+    // 原住民小人這一幀的姿勢與動作。漲跌看該國主要指數（c.d.market）：
+    //  漲（≥ +0.15%）：左右手交替高舉歡呼，原地蹦跳（漲超過 2% 跳得更高、還撒彩帶）
+    //  跌（≤ −0.15%）：低頭哭泣，一下垂手一下擦眼淚，身體微微顫抖（跌超過 2% 頭上打雷）
+    //  平盤：慢慢散步、偶爾揮手、眨眼
+    // 休市時動作放慢。動畫關閉 / 系統要求減少動態時只擺一個靜態姿勢
+    function folkStep(c, dt, t, still) {
+        const q = state.quotes[c.d.market];
+        const pct = q ? q.pct : 0;
+        const mood = pct >= 0.15 ? 'up' : pct <= -0.15 ? 'down' : 'flat';
+        const big = mood !== 'flat' && Math.abs(pct) >= BIG_MOVE;
+        // 市場狀態每 2 秒更新一次就好（marketStatus 比較貴）
+        if (t - c.stAt > 2) {
+            c.stAt = t;
+            const mk = state.bySym[c.d.market];
+            c.st = mk ? marketStatus(mk) : 'open';
+        }
+        const tempo = c.st === 'open' ? 1 : 0.55;
+        const R = c.size;
+        const T = t + c.ph + (c.d.ph || 0);
+        let pose = 'idle',
+            hop = 0,
+            rot = 0,
+            sy = 1;
+        if (still) {
+            c.x = c.y = 0;
+            pose = mood === 'up' ? 'cheerA' : mood === 'down' ? 'sadA' : 'idle';
+        } else if (mood === 'up') {
+            const beat = T * tempo * 3.2;
+            pose = Math.floor(beat) % 2 ? 'cheerB' : 'cheerA';
+            const s = Math.abs(Math.sin(beat * Math.PI));
+            hop = -s * R * (big ? 0.2 : 0.12);
+            sy = 1 + s * 0.05 - Math.pow(1 - s, 6) * 0.08; // 騰空拉長、落地壓扁
+            rot = Math.sin(beat * Math.PI) * 2;
+        } else if (mood === 'down') {
+            pose = Math.floor(T * tempo * 1.2) % 2 ? 'sadB' : 'sadA';
+            rot = Math.sin(T * 9 * tempo) * 1.1; // 抽泣時肩膀顫抖
+            sy = 0.965 + Math.sin(T * 1.6) * 0.008;
+        } else {
+            if (wander(c, dt, R * 0.28 * tempo, 0.7, 0.35)) {
+                c.wp = (c.wp || 0) + dt * 8;
+                hop = -Math.abs(Math.sin(c.wp)) * R * 0.035;
+                rot = Math.sin(c.wp) * 2;
+            } else {
+                sy = 1 + Math.sin(T * 2.2) * 0.02; // 站著輕輕呼吸
+                const cyc = T % 10;
+                if (cyc < 1.8) pose = Math.floor(T * 4) % 2 ? 'wave2' : 'wave1'; // 偶爾揮手
+                else if (T % 3.4 < 0.14) pose = 'idleBlink'; // 眨眼
+            }
+        }
+        if (pose !== c.pose) {
+            c.poses[c.pose].style.display = 'none';
+            c.poses[pose].style.display = '';
+            c.pose = pose;
+        }
+        if (big !== c.big) {
+            c.big = big;
+            c.img.classList.toggle('is-big', big);
+        }
+        return { hop, rot, sy };
+    }
     function stepCritters(dt, t) {
         const still = !state.anim || reduceMotion.matches;
         for (const c of critters) {
@@ -739,6 +851,11 @@
                     hop = -s * R * 0.13;
                     rot = Math.sin(c.ph) * 4;
                 }
+            } else if (m === 'folk') {
+                const f = folkStep(c, dt, t, still);
+                hop = f.hop;
+                rot = f.rot;
+                sy = f.sy;
             } else if (still || m === 'still') {
                 c.x = c.y = 0;
             } else if (m === 'wander') {
@@ -2291,6 +2408,56 @@
         // 浮動介面（篩選列、概況卡）蓋住的地方，氣泡不要放進去
         const ui = uiRects(['#chips', '#hud']);
         rects.push(...ui);
+        // 小角色的基準大小（小角色比市場動物大一點，世界視角也看得出在做什麼）
+        const csz = Math.max(24, Math.min(44, 16 + k * 5));
+        // 原住民小人（一個國家一組）：整組一起找離國家最近、不被動物 / 建築 / 旗幟 / 介面蓋住的空位。
+        // 電腦版：在旗幟排版之前先找，找到後把這塊地方登記成「動物」的佔位框，旗幟就會避開（和市場動物一樣）。
+        // 手機版：旗幟排成左右兩欄、不會避讓別人，所以要等旗幟排好再找空位，找不到就在畫面上找最近的空地（會畫一條虛線連回國家）
+        const folkShift = new Map();
+        const placeFolk = (avoid, wide) => {
+            for (const c of critters) {
+                if (c.d.mode !== 'folk' || folkShift.has(c.d.market)) continue;
+                const grp = critters.filter((o) => o.d.mode === 'folk' && o.d.market === c.d.market);
+                let pick = null;
+                if (k >= (c.d.minK || 0) && !topicMode) {
+                    const [bx, by] = screenXY(c.d.lon, c.d.lat);
+                    const rectsAt = (dx, dy) =>
+                        grp.map((o) => {
+                            const x = bx + ((o.d.ox || 0) + dx) * csz,
+                                y = by + ((o.d.oy || 0) + dy) * csz;
+                            return { x: x - csz * 0.9, y: y - csz * 1.9, w: csz * 1.8, h: csz * 2.1, an: true };
+                        });
+                    const free = (rs) =>
+                        rs.every(
+                            (r) =>
+                                r.x >= 2 &&
+                                r.x + r.w <= W - 2 &&
+                                r.y >= 2 &&
+                                r.y + r.h <= H - 2 &&
+                                !avoid.some((q) => inter(r, q) / (r.w * r.h) > 0.12),
+                        );
+                    let cand = FOLK_SPOTS;
+                    if (wide) {
+                        // 比附近的小範圍更廣：整個畫面的格點，由近到遠
+                        const step = csz * 0.8,
+                            more = [];
+                        for (let gx = 0; gx < W; gx += step)
+                            for (let gy = 0; gy < H; gy += step) more.push([(gx - bx) / csz, (gy - by) / csz]);
+                        more.sort((p, q) => p[0] ** 2 + p[1] ** 2 - (q[0] ** 2 + q[1] ** 2));
+                        cand = FOLK_SPOTS.concat(more);
+                    }
+                    for (const [dx, dy] of cand) {
+                        const rs = rectsAt(dx, dy);
+                        if (!free(rs)) continue;
+                        pick = [dx, dy];
+                        if (!wide) rects.push(...rs);
+                        break;
+                    }
+                }
+                folkShift.set(c.d.market, pick);
+            }
+        };
+        if (desktopMQ.matches) placeFolk(rects, false);
         // 第二輪：放氣泡，先試完整版，再試迷你版
         const baseRects = rects.slice();
         // 旗幟整體放大倍率：手機螢幕小，指數數字要放大才看得清楚（旗幟內部仍用原本的座標畫，最後再整個 scale）
@@ -2854,25 +3021,53 @@
 
         // 小角色：活動範圍不壓住市場標記才顯示；放大到街道等級就收起來
         // 小角色比市場動物大一點，世界視角也看得出在做什麼
-        const csz = Math.max(24, Math.min(44, 16 + k * 5));
+        if (!desktopMQ.matches)
+            placeFolk(
+                rects.concat([...vis.values()].filter((o) => o.b).map((o) => o.b.r)),
+                true,
+            );
         for (const c of critters) {
-            const [x, y] = screenXY(c.d.lon, c.d.lat);
+            const folk = c.d.mode === 'folk';
             const size = csz,
-                z = size * c.d.s,
-                reach = { chase: 2.4, dolphin: 2.4, surf: 2, ski: 1.6 }[c.d.mode] || 1.1;
+                z = size * c.d.s;
+            const [x0, y0] = screenXY(c.d.lon, c.d.lat);
+            const fs = folk ? folkShift.get(c.d.market) : null;
+            // 原住民小人以位置點為中心，各自往旁邊挪開一點，三個人才不會疊在一起
+            const x = x0 + (folk && fs ? ((c.d.ox || 0) + fs[0]) * size : 0),
+                y = y0 + (folk && fs ? ((c.d.oy || 0) + fs[1]) * size : 0);
+            const reach = { chase: 2.4, dolphin: 2.4, surf: 2, ski: 1.6 }[c.d.mode] || 1.1;
             const r = { x: x - size * reach, y: y - size * 1.1, w: size * reach * 2, h: size * 1.4 };
             const hide =
                 k > 6 ||
+                (folk && !fs) || // 找不到空位（或國家縮得只剩一個點）就先收起來
                 x < -size * 3 ||
                 x > W + size * 3 ||
                 y < -size * 2 ||
                 y > H + size * 2 ||
-                rects.some((q) => inter(r, q) / (r.w * r.h) > 0.15);
+                (!folk && rects.some((q) => inter(r, q) / (r.w * r.h) > 0.15));
             c.vis = !hide;
             c.size = z;
             c.base = size;
             // 每度經度在螢幕上有幾 px：追逐的繞圈範圍要用「地理距離」限制，才不會縮小地圖時跑出海岸線
             if (c.d.mode === 'chase') c.ppd = Math.max(0.5, screenXY(c.d.lon + 1, c.d.lat)[0] - x);
+            if (folk && c.d.first) {
+                // 每組只由第一個成員負責畫虛線：組的中心不在國家附近（距離超過 3 個基準大小）才畫
+                const ld = folkLeads.get(c.d.market);
+                const gx = x0 + (c.d.grpOx + (fs ? fs[0] : 0)) * size,
+                    gy = y0 + (c.d.grpOy + (fs ? fs[1] : 0)) * size;
+                const far = !hide && fs && Math.hypot(gx - x0, gy - y0) > size * 3;
+                ld.style.display = far ? '' : 'none';
+                if (far) {
+                    const ln = ld.firstChild,
+                        dt = ld.lastChild;
+                    setQ(ln, 'x1', x0.toFixed(1));
+                    setQ(ln, 'y1', y0.toFixed(1));
+                    setQ(ln, 'x2', gx.toFixed(1));
+                    setQ(ln, 'y2', (gy - size * 0.4).toFixed(1));
+                    setQ(dt, 'cx', x0.toFixed(1));
+                    setQ(dt, 'cy', y0.toFixed(1));
+                }
+            }
             const disp = hide ? 'none' : '';
             if (c.g.style.display !== disp) c.g.style.display = disp;
             if (hide) continue;
