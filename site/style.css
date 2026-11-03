@@ -435,7 +435,6 @@ html.embed #rail,html.embed #hud{display:none}
   html.embed #chips{top:calc(env(safe-area-inset-top) + 6px)}
 }
 @media (min-width:900px){
-  /* 沒有概況卡：篩選列靠左，其它指數面板移到篩選列下方 */
+  /* 沒有概況卡：篩選列靠左 */
   html.embed #chips{left:12px}
-  html.embed #side{top:60px}
 }
