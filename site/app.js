@@ -1722,6 +1722,7 @@
     }
     // 一列資料要顯示的文字：名稱、數值、變動（含顏色）。行情從 state.quotes 取，沒有行情的用 markets.json 寫的 v / d
     function topicRowView(r) {
+        if (r.sec) return { sec: r.sec };
         if (r.note) return { note: r.note };
         const bp = (d) => `${arrow(d)}${Math.abs(d).toFixed(1)}bp`;
         const v = { lab: r.l, val: '--', chg: '', col: null, vcol: null };
@@ -1879,12 +1880,20 @@
                 .attrQ('y', y)
                 .attrQ('width', w - 8)
                 .attrQ('height', 16)
-                .classed('odd', i % 2 === 1);
+                .classed('odd', i % 2 === 1 && !x.sec)
+                .classed('sec', !!x.sec);
+            rn.classed('sec', !!x.sec);
             // 名稱放不下時才縮小字級，數字維持原本大小
             const fit = (txt, room) => {
                 const lw = textWidthOf(txt, 'rn');
                 return lw > room ? `${Math.max(8, (11 * room) / lw).toFixed(1)}px` : null;
             };
+            if (x.sec) {
+                rn.attrQ('x', 9).attrQ('y', y + 11.8).styleQ('font-size', null).textQ(`◆ ${x.sec}`);
+                rv.textQ('');
+                rp.textQ('');
+                return;
+            }
             if (x.note) {
                 rn.attrQ('x', 9)
                     .attrQ('y', y + 12.5)
@@ -2077,7 +2086,9 @@
         const rows = c.rows
             .map(topicRowView)
             .map((x) =>
-                x.note
+                x.sec
+                    ? `<div style="margin-top:8px;padding:2px 8px;background:rgba(214,164,58,.3);border-radius:4px"><b style="color:#fff1c4;letter-spacing:3px">◆ ${esc(x.sec)}</b></div>`
+                    : x.note
                     ? `<div>${esc(x.note)}</div>`
                     : `<div><b>${esc(x.lab)}</b>　<span style="color:${x.vcol || '#fff'}">${esc(x.val)}</span>${x.chg ? `　<span style="color:${x.col}">${esc(x.chg)}</span>` : ''}${x.ref ? `　<span class="small">${esc(x.ref)}${x.stale ? ' ⚠️沿用舊資料' : ''}</span>` : ''}</div>`,
             )

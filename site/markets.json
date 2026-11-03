@@ -1712,13 +1712,203 @@
       "mc": "L1"
     },
     {
-      "id": "ec-us-p",
+      "id": "ec-cn",
       "cat": "econ",
-      "short": "美國 物價",
+      "short": "中國",
+      "flag": "🇨🇳",
+      "lon": 108,
+      "lat": 34,
+      "rows": [
+        {
+          "sec": "成長"
+        },
+        {
+          "e": "CN_PMI_MFG",
+          "l": "製造業PMI",
+          "f": "idx",
+          "v": "52.1",
+          "d": 0.6
+        },
+        {
+          "e": "CN_PMI_NMFG",
+          "l": "非製造業PMI",
+          "f": "idx"
+        },
+        {
+          "e": "CN_GDP",
+          "l": "GDP 年增",
+          "f": "pct"
+        },
+        {
+          "sec": "物價"
+        },
+        {
+          "e": "CN_CPI",
+          "l": "CPI 年增",
+          "f": "pct"
+        },
+        {
+          "e": "CN_PPI",
+          "l": "PPI 年增",
+          "f": "pct"
+        }
+      ],
+      "stamp": "9月",
+      "src": "iKDx-realtime（FRED、Eurostat、Trading Economics、國發會）",
+      "note": "中國官方統計。PMI 以 50 為榮枯線；PPI 是工廠出廠價，反映上游需求與產能過剩。",
+      "mc": "L1"
+    },
+    {
+      "id": "ec-jp",
+      "cat": "econ",
+      "short": "日本",
+      "flag": "🇯🇵",
+      "lon": 138,
+      "lat": 36.5,
+      "rows": [
+        {
+          "sec": "成長"
+        },
+        {
+          "e": "JP_GDP",
+          "l": "GDP 年增",
+          "f": "pct"
+        },
+        {
+          "e": "JP_TRADE",
+          "l": "貿易收支",
+          "f": "amt"
+        },
+        {
+          "sec": "物價"
+        },
+        {
+          "e": "JP_CPI",
+          "l": "CPI 年增",
+          "f": "pct",
+          "v": "2.1%",
+          "d": 0.2
+        },
+        {
+          "e": "JP_CORE_CPI",
+          "l": "核心CPI 年增",
+          "f": "pct",
+          "v": "2.1%"
+        },
+        {
+          "sec": "就業"
+        },
+        {
+          "e": "JP_UNRATE",
+          "l": "失業率",
+          "f": "pct"
+        }
+      ],
+      "stamp": "9月",
+      "src": "iKDx-realtime（FRED、Eurostat、Trading Economics、國發會）",
+      "note": "日本經濟指標。貿易收支為負代表逆差。",
+      "mc": "L2"
+    },
+    {
+      "id": "ec-tw",
+      "cat": "econ",
+      "short": "台灣",
+      "flag": "🇹🇼",
+      "lon": 120.9,
+      "lat": 23.7,
+      "rows": [
+        {
+          "sec": "成長"
+        },
+        {
+          "e": "TW_LIGHT",
+          "l": "景氣燈號",
+          "f": "light"
+        },
+        {
+          "e": "TW_ORDERS",
+          "l": "外銷訂單",
+          "f": "amt"
+        },
+        {
+          "e": "TW_EXPORT",
+          "l": "出口 年增",
+          "f": "pct"
+        },
+        {
+          "e": "TW_GDP",
+          "l": "GDP 年增",
+          "f": "pct",
+          "dp": 2
+        },
+        {
+          "sec": "物價"
+        },
+        {
+          "e": "TW_CPI",
+          "l": "CPI 年增",
+          "f": "pct",
+          "dp": 2
+        },
+        {
+          "sec": "就業"
+        },
+        {
+          "e": "TW_UNRATE",
+          "l": "失業率",
+          "f": "pct",
+          "dp": 2
+        }
+      ],
+      "stamp": "",
+      "src": "iKDx-realtime（FRED、Eurostat、Trading Economics、國發會）",
+      "note": "景氣對策信號 9～45 分：藍燈（衰退）、黃藍燈、綠燈（穩定）、黃紅燈、紅燈（過熱），來源國發會。外銷訂單為經濟部統計（美元），出口為海關統計，物價、就業與 GDP 為主計總處統計。",
+      "mc": "L3"
+    },
+    {
+      "id": "ec-us",
+      "cat": "econ",
+      "short": "美國",
       "flag": "🇺🇸",
       "lon": -98,
       "lat": 39,
       "rows": [
+        {
+          "sec": "成長"
+        },
+        {
+          "e": "US_GDP",
+          "l": "GDP 年化季增",
+          "f": "pct",
+          "v": "3.4%"
+        },
+        {
+          "e": "US_ISM_MFG",
+          "l": "ISM製造業",
+          "f": "idx",
+          "v": "54.5",
+          "d": -0.1
+        },
+        {
+          "e": "US_ISM_SVC",
+          "l": "ISM服務業",
+          "f": "idx",
+          "v": "54.9",
+          "d": -0.5
+        },
+        {
+          "e": "US_UMICH",
+          "l": "密大消費者信心",
+          "f": "idx"
+        },
+        {
+          "e": "US_RETAIL",
+          "l": "零售銷售 月增",
+          "f": "pct"
+        },
+        {
+          "sec": "物價"
+        },
         {
           "e": "US_CPI",
           "l": "CPI 年增",
@@ -1745,21 +1935,10 @@
           "f": "pct",
           "v": "3.1%",
           "d": 0.1
-        }
-      ],
-      "stamp": "9月",
-      "src": "iKDx-realtime（FRED、Eurostat、Trading Economics、國發會）",
-      "note": "通膨指標。PCE 是聯準會最重視的物價指標，核心指標不含食品與能源。",
-      "mc": "R1"
-    },
-    {
-      "id": "ec-us-g",
-      "cat": "econ",
-      "short": "美國 就業景氣",
-      "flag": "🇺🇸",
-      "lon": -98,
-      "lat": 39,
-      "rows": [
+        },
+        {
+          "sec": "就業"
+        },
         {
           "e": "US_NFP",
           "l": "非農新增就業",
@@ -1774,71 +1953,15 @@
           "d": 0.1
         },
         {
-          "e": "US_GDP",
-          "l": "GDP 年化季增",
-          "f": "pct",
-          "v": "3.4%"
-        },
-        {
-          "e": "US_ISM_MFG",
-          "l": "ISM製造業",
-          "f": "idx",
-          "v": "54.5",
-          "d": -0.1
-        },
-        {
-          "e": "US_ISM_SVC",
-          "l": "ISM服務業",
-          "f": "idx",
-          "v": "54.9",
-          "d": -0.5
+          "e": "US_CLAIMS",
+          "l": "初領失業金",
+          "f": "claims"
         }
       ],
-      "stamp": "9月",
+      "stamp": "",
       "src": "iKDx-realtime（FRED、Eurostat、Trading Economics、國發會）",
-      "note": "就業與景氣指標。ISM 指數以 50 為榮枯線，高於 50 代表擴張。",
-      "mc": "R2"
-    },
-    {
-      "id": "ec-cn",
-      "cat": "econ",
-      "short": "中國",
-      "flag": "🇨🇳",
-      "lon": 108,
-      "lat": 34,
-      "rows": [
-        {
-          "e": "CN_PMI_MFG",
-          "l": "製造業PMI",
-          "f": "idx",
-          "v": "52.1",
-          "d": 0.6
-        },
-        {
-          "e": "CN_PMI_NMFG",
-          "l": "非製造業PMI",
-          "f": "idx"
-        },
-        {
-          "e": "CN_CPI",
-          "l": "CPI 年增",
-          "f": "pct"
-        },
-        {
-          "e": "CN_PPI",
-          "l": "PPI 年增",
-          "f": "pct"
-        },
-        {
-          "e": "CN_GDP",
-          "l": "GDP 年增",
-          "f": "pct"
-        }
-      ],
-      "stamp": "9月",
-      "src": "iKDx-realtime（FRED、Eurostat、Trading Economics、國發會）",
-      "note": "中國官方統計。PMI 以 50 為榮枯線；PPI 是工廠出廠價，反映上游需求與產能過剩。",
-      "mc": "L1"
+      "note": "成長與消費：ISM 指數以 50 為榮枯線，高於 50 代表擴張。物價：PCE 是聯準會最重視的物價指標，核心指標不含食品與能源。就業：非農新增就業與失業率每月公布，初領失業金每週公布，是最即時的勞動市場訊號。",
+      "mc": "R1"
     },
     {
       "id": "ec-eu",
@@ -1849,11 +1972,7 @@
       "lat": 49.5,
       "rows": [
         {
-          "e": "EU_CPI",
-          "l": "CPI 年增",
-          "f": "pct",
-          "v": "3.8%",
-          "d": 0.6
+          "sec": "成長"
         },
         {
           "e": "EU_GDP",
@@ -1871,6 +1990,19 @@
           "f": "idx"
         },
         {
+          "sec": "物價"
+        },
+        {
+          "e": "EU_CPI",
+          "l": "CPI 年增",
+          "f": "pct",
+          "v": "3.8%",
+          "d": 0.6
+        },
+        {
+          "sec": "就業"
+        },
+        {
           "e": "EU_UNRATE",
           "l": "失業率",
           "f": "pct"
@@ -1879,139 +2011,7 @@
       "stamp": "9月",
       "src": "iKDx-realtime（FRED、Eurostat、Trading Economics、國發會）",
       "note": "歐元區經濟指標。PMI 以 50 為榮枯線。",
-      "mc": "R4"
-    },
-    {
-      "id": "ec-jp",
-      "cat": "econ",
-      "short": "日本",
-      "flag": "🇯🇵",
-      "lon": 138,
-      "lat": 36.5,
-      "rows": [
-        {
-          "e": "JP_CPI",
-          "l": "CPI 年增",
-          "f": "pct",
-          "v": "2.1%",
-          "d": 0.2
-        },
-        {
-          "e": "JP_CORE_CPI",
-          "l": "核心CPI 年增",
-          "f": "pct",
-          "v": "2.1%"
-        },
-        {
-          "e": "JP_GDP",
-          "l": "GDP 年增",
-          "f": "pct"
-        },
-        {
-          "e": "JP_UNRATE",
-          "l": "失業率",
-          "f": "pct"
-        },
-        {
-          "e": "JP_TRADE",
-          "l": "貿易收支",
-          "f": "amt"
-        }
-      ],
-      "stamp": "9月",
-      "src": "iKDx-realtime（FRED、Eurostat、Trading Economics、國發會）",
-      "note": "日本經濟指標。貿易收支為負代表逆差。",
-      "mc": "L2"
-    },
-    {
-      "id": "ec-us-c",
-      "cat": "econ",
-      "short": "美國 消費",
-      "flag": "🇺🇸",
-      "lon": -98,
-      "lat": 39,
-      "rows": [
-        {
-          "e": "US_RETAIL",
-          "l": "零售銷售 月增",
-          "f": "pct"
-        },
-        {
-          "e": "US_CLAIMS",
-          "l": "初領失業金",
-          "f": "claims"
-        },
-        {
-          "e": "US_UMICH",
-          "l": "密大消費者信心",
-          "f": "idx"
-        }
-      ],
-      "stamp": "",
-      "src": "iKDx-realtime（FRED、Eurostat、Trading Economics、國發會）",
-      "note": "消費面的領先指標：零售銷售、每週初領失業救濟金人數，以及密西根大學消費者信心指數。",
-      "mc": "R3"
-    },
-    {
-      "id": "ec-tw-g",
-      "cat": "econ",
-      "short": "台灣 景氣",
-      "flag": "🇹🇼",
-      "lon": 120.9,
-      "lat": 23.7,
-      "rows": [
-        {
-          "e": "TW_LIGHT",
-          "l": "景氣燈號",
-          "f": "light"
-        },
-        {
-          "e": "TW_ORDERS",
-          "l": "外銷訂單",
-          "f": "amt"
-        },
-        {
-          "e": "TW_EXPORT",
-          "l": "出口 年增",
-          "f": "pct"
-        }
-      ],
-      "stamp": "",
-      "src": "iKDx-realtime（FRED、Eurostat、Trading Economics、國發會）",
-      "note": "景氣對策信號 9～45 分：藍燈（衰退）、黃藍燈、綠燈（穩定）、黃紅燈、紅燈（過熱），來源國發會。外銷訂單為經濟部統計（美元），出口為海關統計。",
-      "mc": "L3"
-    },
-    {
-      "id": "ec-tw-p",
-      "cat": "econ",
-      "short": "台灣 物價就業",
-      "flag": "🇹🇼",
-      "lon": 120.9,
-      "lat": 23.7,
-      "rows": [
-        {
-          "e": "TW_CPI",
-          "l": "CPI 年增",
-          "f": "pct",
-          "dp": 2
-        },
-        {
-          "e": "TW_UNRATE",
-          "l": "失業率",
-          "f": "pct",
-          "dp": 2
-        },
-        {
-          "e": "TW_GDP",
-          "l": "GDP 年增",
-          "f": "pct",
-          "dp": 2
-        }
-      ],
-      "stamp": "",
-      "src": "iKDx-realtime（FRED、Eurostat、Trading Economics、國發會）",
-      "note": "台灣主計總處統計：消費者物價、失業率與經濟成長率。",
-      "mc": "L4"
+      "mc": "R2"
     }
   ],
   "landmarks": [

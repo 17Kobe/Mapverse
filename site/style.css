@@ -288,6 +288,9 @@ body.noanim .corps .bk,body.noanim .corps .flame{animation:none}
 /* 多指數旗幟：每列一個指數 */
 .bubble .rbg{fill:transparent}
 .bubble .rbg.odd{fill:rgba(255,255,255,.05)}
+/* 卡內的分隔標題（成長 / 物價 / 就業）：實底金色帶 + 邊線，字放大加粗，和資料列明顯分開 */
+.bubble .rbg.sec{fill:rgba(214,164,58,.42);stroke:rgba(255,224,150,.75);stroke-width:.7}
+.bubble .rn.sec{font-size:11px;font-weight:800;letter-spacing:3px;fill:#fff1c4;paint-order:stroke;stroke:rgba(60,36,4,.55);stroke-width:2px;stroke-linejoin:round}
 .bubble .rn{text-anchor:start;font-size:11px;fill:var(--gold-l);dominant-baseline:alphabetic}
 .bubble .rv{text-anchor:end;font-size:15px;fill:#fff;font-family:var(--num);font-variant-numeric:tabular-nums;letter-spacing:.2px;dominant-baseline:alphabetic}
 .bubble .rp{text-anchor:end;font-size:13.5px;font-family:var(--num);font-variant-numeric:tabular-nums;letter-spacing:.2px;dominant-baseline:alphabetic}
