@@ -1019,7 +1019,7 @@
             .scaleExtent([1, 16])
             .on('zoom', (e) => {
                 state.t = wrapT(e.transform);
-                onTransform();
+                onTransform(!e.sourceEvent);
             });
         // 股市地圖的雙擊不放大：左鍵是用來降下災難的，連點時地圖才不會一直縮放（旅遊地圖照舊）
         zoomB.filter(
@@ -1479,7 +1479,10 @@
         Terrain.prefetch(views, S0, W, H, dpr);
     }
 
-    function onTransform() {
+    // sync：切換篩選 / 飛到某處的動畫（d3 計時器，沒有使用者事件）。國界線（SVG）當下就更新，
+    // 但地形畫布與旗幟若排到下一幀才重畫，動畫中就會落後一幀，國界線和國家分離（飛得越快差越多）。
+    // 所以動畫時改成在同一個更新裡同步重畫；拖曳是使用者事件，本來就在幀與幀之間處理，維持排到下一幀合併重畫。
+    function onTransform(sync) {
         gZoom.attr('transform', state.t.toString());
         if (state.layer === 'travel') {
             // 旅遊地圖不畫世界國界，改畫台灣自己的海岸線與縣市界（內政部資料，放大到街道也對得齊）
@@ -1493,8 +1496,17 @@
             gZoom.style('opacity', op).style('display', op > 0 ? null : 'none');
             if (op > 0) worldLod.update(state.t.k);
         }
-        scheduleTerrain();
-        scheduleLayout();
+        if (sync) {
+            cancelAnimationFrame(terrainRaf);
+            terrainRaf = 0;
+            cancelAnimationFrame(raf);
+            raf = 0;
+            drawTerrain();
+            layoutMarkers();
+        } else {
+            scheduleTerrain();
+            scheduleLayout();
+        }
     }
 
     /* ---------- 標記佈局（螢幕座標，自動避讓） ---------- */
