@@ -3425,7 +3425,7 @@
         const nav = $('#chips');
         // 旅遊地圖：本島與各離島（設定在 travel.json 的 areas）
         if (state.layer === 'travel') {
-            nav.innerHTML = state.travel.areas.map((a) => chip(a.k, a.icon, a.label)).join('');
+            nav.innerHTML = `<div class="crow">${state.travel.areas.map((a) => chip(a.k, a.icon, a.label)).join('')}</div>`;
             nav.onclick = (e) => {
                 const b = e.target.closest('.chip');
                 if (!b) return;
@@ -3436,12 +3436,13 @@
             return;
         }
         // 左邊是股票的區域，右邊（分隔線之後）是商品 / 債券 / 利率 / 匯率 / 地緣 / 經濟數據；都是單選
+        // 手機版分兩列（股票一列、主題一列），桌機版仍是同一列（見 style.css 的 .crow）
         nav.innerHTML =
-            defs.map((d) => chip(...d)).join('') +
+            `<div class="crow">${defs.map((d) => chip(...d)).join('')}</div>` +
             '<span class="csep" aria-hidden="true"></span>' +
-            Object.entries(TOPICS)
+            `<div class="crow">${Object.entries(TOPICS)
                 .map(([k, t]) => chip(k, t.img ? `<img src="${t.img}" alt="">` : t.icon, t.label))
-                .join('');
+                .join('')}</div>`;
         nav.onclick = (e) => {
             const b = e.target.closest('.chip');
             if (!b) return;
