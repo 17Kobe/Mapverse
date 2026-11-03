@@ -13,12 +13,13 @@
     const GLOBAL_LON = 196; // 手機版全球檢視（和大部分主題篩選）的中心經度：太平洋
     const GLOBAL_LEFT_LON = -155; // 桌機版全球檢視的左邊界經度
     const TOPICS = {
+        // 物件的順序就是篩選列的順序：商品、匯率、經濟數據、地緣、利率、債券
         commodity: { icon: '🛢️', label: '商品', mlon: -35 }, // 大西洋：左邊看到一點美洲、右邊看到一點歐洲
-        bond: { icon: '🏦', label: '債券', mlon: GLOBAL_LON },
-        rate: { icon: '🏛️', label: '利率', mlon: GLOBAL_LON },
-        fx: { icon: '💱', label: '匯率', mlon: GLOBAL_LON },
+        fx: { icon: '💵', label: '匯率', mlon: GLOBAL_LON },
+        econ: { icon: '💹', label: '經濟數據', mlon: GLOBAL_LON },
         geo: { icon: '⚔️', label: '地緣', mlon: 85 },
-        econ: { icon: '📊', label: '經濟數據', mlon: GLOBAL_LON },
+        rate: { icon: '🏛️', label: '利率', mlon: GLOBAL_LON },
+        bond: { icon: '🏦', label: '債券', mlon: GLOBAL_LON },
     };
     // 地緣狀態的色帶與文字顏色
     const TONES = { ok: '#79e3a0', warn: '#ffc66b', bad: '#ff8d85' };
@@ -1735,7 +1736,7 @@
             if (a && b) {
                 const d = (a.c - b.c) * 100,
                     spread = Math.round((a.p - b.p) * 100);
-                Object.assign(v, { val: `${spread}bp`, chg: bp(d), col: pctColor(d) });
+                Object.assign(v, { val: `${spread}bp`, chg: bp(d), col: pctColor(d), cd: d });
                 // 長天期殖利率低於短天期（殖利率曲線倒掛），常被視為景氣衰退的前兆
                 if (spread < 0) Object.assign(v, { lab: `${r.l} 倒掛`, vcol: TONES.bad });
             }
@@ -1745,29 +1746,30 @@
                 const x = econView(r, q);
                 Object.assign(v, { val: x.val, chg: x.chg, vcol: x.vcol || null, ref: econRefLabel(q.ref), stale: !!q.stale });
                 const cd = x.cd != null ? x.cd : q.d;
-                if (cd) v.col = pctColor(cd);
+                if (cd) Object.assign(v, { col: pctColor(cd), cd });
             } else if (r.v != null) {
                 // 連不上 econ.json：退回手寫的備用值
                 v.val = r.v;
-                if (r.d) Object.assign(v, { chg: `${arrow(r.d)}${Math.abs(r.d)}`, col: pctColor(r.d) });
+                if (r.d) Object.assign(v, { chg: `${arrow(r.d)}${Math.abs(r.d)}`, col: pctColor(r.d), cd: r.d });
             }
         } else if (r.s) {
             const q = state.quotes[r.s];
             if (q && r.k === 'y') {
                 const d = q.c * 100;
-                Object.assign(v, { val: `${q.p.toFixed(2)}%`, chg: bp(d), col: pctColor(d) });
+                Object.assign(v, { val: `${q.p.toFixed(2)}%`, chg: bp(d), col: pctColor(d), cd: d });
             } else if (q) {
                 const p = r.dp != null ? q.p.toFixed(r.dp) : fmtN(q.p, 'short');
                 Object.assign(v, {
                     val: (r.u || '') + p,
                     chg: `${arrow(q.pct)}${Math.abs(q.pct).toFixed(2)}%`,
                     col: pctColor(q.pct),
+                    cd: q.pct,
                 });
             }
         } else {
             v.val = r.v;
             v.vcol = TONES[r.tone] || null;
-            if (r.d) Object.assign(v, { chg: `${arrow(r.d)}${Math.abs(r.d)}`, col: pctColor(r.d) });
+            if (r.d) Object.assign(v, { chg: `${arrow(r.d)}${Math.abs(r.d)}`, col: pctColor(r.d), cd: r.d });
         }
         return v;
     }
@@ -1791,10 +1793,14 @@
         }
         return '';
     }
-    // 地緣卡片的色帶看狀態：緩和綠、緊張橘、衝突紅；其他一律藍色
+    // 色帶顏色：地緣卡片看狀態（緩和綠、緊張橘、衝突紅）；其他卡片和單一指數的旗幟一樣，
+    // 用「最重要的一列」（第一個資料列，markets.json 已依重要程度排好）的漲跌決定紅 / 綠，沒有漲跌資料時是藍色
     const topicBand = (c) => {
         const r = c.rows.find((x) => x.tone);
-        return r ? TONE_BAND[r.tone] : '#34568a';
+        if (r) return TONE_BAND[r.tone];
+        const lead = c.rows.find((x) => !x.sec && !x.note);
+        const cd = lead && topicRowView(lead).cd;
+        return cd ? bandColor(cd) : '#34568a';
     };
     function buildTopics() {
         gTopic.selectAll('*').remove();
