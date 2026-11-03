@@ -11,6 +11,7 @@
     // 商品 / 債券 / 利率 / 匯率 / 地緣 / 經濟數據是另一組篩選，只顯示 markets.json 的 topics（股票動物與旗幟都收起來）。
     // mlon：手機版地圖的中心經度（手機上卡片排成左右兩欄，地圖只當背景）
     const GLOBAL_LON = 196; // 手機版全球檢視（和大部分主題篩選）的中心經度：太平洋
+    const GLOBAL_LAT = 36; // 桌機版全球檢視的垂直中心緯度：美國、中國所在的位置
     const TOPICS = {
         commodity: { icon: '🛢️', label: '商品', mlon: -35 }, // 大西洋：左邊看到一點美洲、右邊看到一點歐洲
         bond: { icon: '🏦', label: '債券', mlon: GLOBAL_LON },
@@ -1378,6 +1379,17 @@
         if (key === 'all' && !desktopMQ.matches)
             return zoomB.constrain()(
                 d3.zoomIdentity.translate(W / 2 - projection([GLOBAL_LON, 0])[0], 0),
+                [
+                    [0, 0],
+                    [W, H],
+                ],
+                panExtent(),
+            );
+        // 桌機版全球：世界縮到最小，讓美國、中國所在的緯度落在畫面垂直中央
+        // （市場集中在北緯 20～50 度，預設貼著北緣會太偏北，上面空出一大片北極）
+        if (key === 'all')
+            return zoomB.constrain()(
+                d3.zoomIdentity.translate(0, H / 2 - projection([0, GLOBAL_LAT])[1]),
                 [
                     [0, 0],
                     [W, H],
