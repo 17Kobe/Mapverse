@@ -299,6 +299,8 @@ body.noanim .corps .bk,body.noanim .corps .flame{animation:none}
 /* 多指數旗幟：每列一個指數 */
 .bubble .rbg{fill:transparent}
 .bubble .rbg.odd{fill:rgba(255,255,255,.05)}
+/* 漲跌幅超過 2% 的底色（實心紅 / 綠 + 白字，顏色由程式寫入） */
+.bubble .hl,.bubble .rhl{stroke:rgba(255,255,255,.4);stroke-width:.7}
 /* 卡內的分隔標題（成長 / 物價 / 就業）：藍綠色實底帶 + 白字，和金色的資料標籤、深色資料列明顯不同；列高只有 12px */
 .bubble .rbg.sec{fill:#1f7f95;stroke:rgba(150,230,245,.6);stroke-width:.6}
 .bubble .rn.sec{font-size:9.5px;font-weight:800;letter-spacing:4px;fill:#fff}

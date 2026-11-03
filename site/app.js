@@ -1001,6 +1001,7 @@
                 b.append('image').attr('class', 'flag').attr('href', fs).attr('preserveAspectRatio', 'none');
                 b.append('rect').attr('class', 'flag-b').attr('rx', 1.5);
             }
+            b.append('rect').attr('class', 'hl').attr('rx', 3).style('display', 'none'); // 漲跌幅超過 2% 的底色
             const t1 = b.append('text').attr('class', 't1');
             t1.append('tspan').attr('class', 'a');
             t1.append('tspan').attr('class', 'm');
@@ -1017,6 +1018,7 @@
                 (d.group10 || d.group).forEach((x) => {
                     const r = rows.append('g').attr('class', 'row');
                     r.append('rect').attr('class', 'rbg');
+                    r.append('rect').attr('class', 'rhl').attr('rx', 3).style('display', 'none');
                     r.append('text')
                         .attr('class', 'rn')
                         .text(x.abbr || x.zh);
@@ -1648,6 +1650,26 @@
                 .attr('class', cls);
         return textWidth(measT[cls].text(str).node());
     }
+    // 量文字裡某個 <tspan> 的寬度（例如 .t2 裡的 .va / .pc）：拿看不見的「父文字 + tspan」量，同一套快取
+    const measTs = {};
+    function tspanWidthOf(str, parentCls, cls, size) {
+        const key = `${parentCls}|${cls}|${size || ''}`;
+        if (!measTs[key]) {
+            const t = svg
+                .append('g')
+                .attr('class', 'bubble')
+                .style('visibility', 'hidden')
+                .attr('aria-hidden', 'true')
+                .append('text')
+                .attr('class', parentCls);
+            if (size) t.style('font-size', size);
+            measTs[key] = t.append('tspan').attr('class', cls);
+        }
+        return textWidth(measTs[key].text(str).node());
+    }
+    // 漲跌幅超過這個值（%）的指數用醒目的底色標示（像自選股清單的漲跌幅欄）
+    const BIG_MOVE = 2;
+    const hlColor = (pct) => (isRed(pct) ? 'hsl(4,74%,47%)' : 'hsl(146,62%,34%)');
     // 旗幟色帶右側的報價時間（使用者的時區，和詳細面板的「最後成交」一致）：
     // 開盤中（含午休）顯示 11:30；收盤後顯示 10/31(六)
     const WEEK_ZH = '日一二三四五六';
@@ -2644,12 +2666,28 @@
                 t1.select('.a').textQ(hasFlag ? m.short : `${m.flag} ${m.short}`);
                 t1.select('.m').textQ('');
             }
+            // 漲跌幅超過 BIG_MOVE 的數字：實心底色 + 白字（單一指數 / 輪播 / 迷你版共用這顆矩形）
+            const hl = b.select('.hl');
+            let hlBox = null,
+                hlPct = 0;
             if (mode === 'full') {
-                t2.select('.lb').textQ(n > 1 ? (cur.abbr || cur.zh) + ' ' : '');
-                t2.select('.va').textQ(cq ? fmtN(cq.p, 'short') : '--');
+                const lb = n > 1 ? (cur.abbr || cur.zh) + ' ' : '',
+                    vs = cq ? fmtN(cq.p, 'short') : '--',
+                    ps = cq ? `${arrow(cp)}${Math.abs(cp).toFixed(2)}%` : '';
+                t2.select('.lb').textQ(lb);
+                t2.select('.va').textQ(vs);
+                const big = !!cq && Math.abs(cp) >= BIG_MOVE;
                 t2.select('.pc')
-                    .attrQ('fill', pctColor(cp))
-                    .textQ(cq ? `${arrow(cp)}${Math.abs(cp).toFixed(2)}%` : '');
+                    .attrQ('fill', big ? '#fff' : pctColor(cp))
+                    .textQ(ps);
+                if (big) {
+                    // t2 整行置中：算出漲跌幅這一段的位置（lb + va + 5px 間距 + pc）
+                    const lw = lb ? tspanWidthOf(lb, 't2', 'lb') : 0,
+                        vw = tspanWidthOf(vs, 't2', 'va'),
+                        pw = tspanWidthOf(ps, 't2', 'pc');
+                    hlBox = { x: w / 2 - (lw + vw + 5 + pw) / 2 + lw + vw + 5 - 3, y: FULL_BASE - 12.5, w: pw + 6, h: 16 };
+                    hlPct = cp;
+                }
             } else if (multi) {
                 b.selectAll('.row').each(function (_, i) {
                     // 注意：d3 append 的子元素會繼承父層資料，所以要用序號去 group 裡拿對應的指數
@@ -2681,19 +2719,44 @@
                         .attrQ('x', rvx)
                         .attrQ('y', y + 13.5)
                         .textQ(vs);
+                    const big = !!rq && Math.abs(rq.pct) >= BIG_MOVE;
+                    r.select('.rhl')
+                        .styleQ('display', big ? null : 'none')
+                        .attrQ('x', w - 8 - (big ? textWidthOf(ps, 'rp') : 0) - 3)
+                        .attrQ('y', y + 1.5)
+                        .attrQ('width', big ? textWidthOf(ps, 'rp') + 6 : 0)
+                        .attrQ('height', 14)
+                        .styleQ('fill', big ? hlColor(rq.pct) : null);
                     r.select('.rp')
                         .attrQ('x', w - 8)
                         .attrQ('y', y + 13.5)
-                        .styleQ('fill', rq ? pctColor(rq.pct) : null)
+                        .styleQ('fill', big ? '#fff' : rq ? pctColor(rq.pct) : null)
                         .textQ(ps);
                 });
             } else {
+                const ms = fmtPct(pct, 1),
+                    big = Math.abs(pct) >= BIG_MOVE;
+                const adx = hasFlag ? 0 : 3;
                 t1.select('.a').textQ(hasFlag ? '' : m.flag);
                 t1.select('.m')
-                    .attrQ('fill', col)
-                    .attrQ('dx', hasFlag ? 0 : 3)
-                    .textQ(fmtPct(pct, 1));
+                    .attrQ('fill', big ? '#fff' : col)
+                    .attrQ('dx', adx)
+                    .textQ(ms);
+                if (big) {
+                    // 迷你版 t1 以 (tx0+tx1)/2 置中：國旗 emoji（沒有國旗圖時）+ 間距 + 漲跌幅
+                    const aw = hasFlag ? 0 : tspanWidthOf(m.flag, 't1', 'a', '12px'),
+                        mw = tspanWidthOf(ms, 't1', 'm', '12px');
+                    hlBox = { x: (tx0 + tx1) / 2 - (aw + adx + mw) / 2 + aw + adx - 3, y: h / 2 - 7, w: mw + 6, h: 14 };
+                    hlPct = pct;
+                }
             }
+            hl.styleQ('display', hlBox ? null : 'none');
+            if (hlBox)
+                hl.attrQ('x', hlBox.x)
+                    .attrQ('y', hlBox.y)
+                    .attrQ('width', hlBox.w)
+                    .attrQ('height', hlBox.h)
+                    .styleQ('fill', hlColor(hlPct));
         });
         // 地標（央行、白宮、地緣動畫）和主題卡片：卡片要避開地標
         layoutLandmarks(rects, ui);
