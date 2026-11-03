@@ -3,6 +3,9 @@
     'use strict';
 
     const TOPO_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json';
+    // 行情資料由 iKDx-realtime 專案統一抓取並發佈（quotes.json 各國指數 / 商品 / 匯率 / 殖利率，tw-top.json 台股市值排行）。
+    // 本機要改用別的來源時，在 index.html 先設定 window.MAPVERSE_DATA_BASE
+    const DATA_BASE = window.MAPVERSE_DATA_BASE || 'https://ikdx-realtime.pages.dev/data/world/';
 
     // 篩選：全球 / 亞太 / 美洲 / 歐洲 / 中東非洲只顯示股票（縮放範圍由該區市場的實際位置計算，見 regionTransform）。
     // 商品 / 債券 / 利率 / 匯率 / 地緣 / 經濟數據是另一組篩選，只顯示 markets.json 的 topics（股票動物與旗幟都收起來）。
@@ -346,7 +349,7 @@
     }
     async function loadQuotes() {
         try {
-            const j = await fetchJSON('quotes.json?_=' + Date.now());
+            const j = await fetchJSON(DATA_BASE + 'quotes.json?_=' + Date.now());
             state.quotes = j.quotes || {};
             state.generated = j.generated || null;
             state.demo = false;
@@ -356,6 +359,14 @@
                 state.generated = new Date().toISOString();
                 state.demo = true;
             }
+        }
+    }
+    // 台股市值排行：失敗就沿用 corps.js 內建的資料
+    async function loadTwTop() {
+        try {
+            if (window.Corps) Corps.applyFeed(await fetchJSON(DATA_BASE + 'tw-top.json?_=' + Date.now()));
+        } catch (e) {
+            /* 沿用內建資料 */
         }
     }
     function makeDemo() {
@@ -3317,7 +3328,7 @@
             ? new Date(state.generated).toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' })
             : '--';
         const topic = TOPICS[state.activeRegion];
-        if (state.demo) line = '🎮 演示資料（還沒部署爬蟲，數字是隨機的）';
+        if (state.demo) line = '🎮 演示資料（連不上行情來源，數字是隨機的）';
         else if (topic) line = `${topic.icon} ${topic.label} · 更新於 ${when} · 行情約延遲 15 分鐘，其餘為手動維護`;
         else line = `🟢 ${open.length} 個市場開盤中 · 更新於 ${when} · 資料約延遲 15 分鐘`;
         $('#statusLine').textContent = line;
@@ -3344,8 +3355,7 @@
     }
     // 台股前十大公司的詳情卡；c 是 null 時（縮小時的小城市）列出全部十家
     function openCorp(c) {
-        const C = Corps.CORPS,
-            tq = state.quotes['^TWII'];
+        const tq = state.quotes['^TWII'];
         const mood = !tq
             ? ''
             : tq.pct >= Corps.BOOM
@@ -3360,10 +3370,15 @@
         const twii = tq
             ? `<div class="chg" style="color:${pctColor(tq.pct)}">台股加權 ${fmtN(tq.p)}　${arrow(tq.pct)} ${Math.abs(tq.pct).toFixed(2)}%</div>`
             : '';
-        const note = `<p class="small">市值為 ${Corps.DATA_DATE} 收盤附近的約略數字（新台幣），不同網站的統計口徑可能略有差異；總部地址取自證交所上市公司基本資料。</p>`;
+        const note = Corps.LIVE
+            ? `<p class="small">市值 = ${Corps.DATA_DATE} 收盤價 × 已發行普通股數（新台幣），資料取自證交所，每天自動更新；總部地址取自證交所上市公司基本資料。</p>`
+            : `<p class="small">市值為 ${Corps.DATA_DATE} 收盤附近的約略數字（新台幣），不同網站的統計口徑可能略有差異；總部地址取自證交所上市公司基本資料。</p>`;
+        const pctTag = (p) => (p == null ? '' : `　<span style="color:${pctColor(p)}">${arrow(p)} ${Math.abs(p).toFixed(2)}%</span>`);
         if (!c) {
             showSheet(`<h3>🏙️ 台股市值前十大</h3>${twii}${mood ? `<p class="desc">${mood}</p>` : ''}
-      <div class="meta">${C.map((x) => `<div><b>${x.rk}. ${x.name}</b>（${x.s}）　${x.cap.toFixed(2)} 兆　<span class="small">${x.ind}</span></div>`).join('')}</div>
+      <div class="meta">${Corps.topList()
+          .map((x) => `<div><b>${x.rk}. ${x.name}</b>（${x.s}）　${x.cap.toFixed(2)} 兆${pctTag(x.pct)}　<span class="small">${x.ind}</span></div>`)
+          .join('')}</div>
       <p class="small">放大到台灣，就能看到每家公司蓋在自己總部的建築。</p>${note}`);
             return;
         }
@@ -3372,7 +3387,7 @@
       <div><div class="nm">${c.name}</div><div class="sym">${c.s} · 台股市值第 ${c.rk} 名</div></div></div>
     <div class="px">${c.cap.toFixed(2)} 兆</div>
     ${twii}
-    <div class="meta"><div><b>主要產業</b>　${c.ind}</div><div><b>總部</b>　${c.addr}</div>${mood ? `<div>${mood}</div>` : ''}</div>
+    <div class="meta">${c.p != null ? `<div><b>收盤</b>　${fmtN(c.p)}${pctTag(c.pct)}</div>` : ''}<div><b>主要產業</b>　${c.ind}</div><div><b>總部</b>　${c.addr}</div>${mood ? `<div>${mood}</div>` : ''}</div>
     ${note}`);
     }
     function openCard(m) {
@@ -3494,7 +3509,7 @@
         );
         state.maps.forEach((m) => (state.byId[pad3(m.id)] = m));
         state.countries = topojson.feature(topo, topo.objects.countries).features;
-        await loadQuotes();
+        await Promise.all([loadQuotes(), loadTwTop()]);
 
         // 開啟網頁時選「現在正在開盤」的區域（都休市就選最快開盤的），之後由使用者自己切換
         state.activeRegion = pickAutoRegion();

@@ -27,7 +27,6 @@
       "type": "sub",
       "of": "^TWII",
       "s": "TPEX",
-      "src": "tpex",
       "zh": "櫃買指數",
       "abbr": "櫃買",
       "e": "🌱"
@@ -63,8 +62,6 @@
       "type": "sub",
       "of": "^N225",
       "s": "TOPIX",
-      "src": "yjp",
-      "code": "998405.T",
       "zh": "TOPIX",
       "abbr": "TOPIX",
       "e": "🗼"
@@ -712,7 +709,7 @@
     {
       "type": "map",
       "s": "^IPSA",
-      "zh": "智利IPSA",
+      "zh": "智利IPSA（MSCI）",
       "short": "智利",
       "flag": "🇨🇱",
       "a": "🦙",
@@ -832,108 +829,84 @@
       "s": "US2Y",
       "zh": "美國2年期公債殖利率",
       "e": "🏦",
-      "r": "global",
-      "src": "cnbc",
-      "code": "US2Y"
+      "r": "global"
     },
     {
       "type": "bar",
       "s": "US10Y",
       "zh": "美國10年期公債殖利率",
       "e": "🏦",
-      "r": "global",
-      "src": "cnbc",
-      "code": "US10Y"
+      "r": "global"
     },
     {
       "type": "bar",
       "s": "US30Y",
       "zh": "美國30年期公債殖利率",
       "e": "🏦",
-      "r": "global",
-      "src": "cnbc",
-      "code": "US30Y"
+      "r": "global"
     },
     {
       "type": "bar",
       "s": "DE10Y",
       "zh": "德國10年期公債殖利率",
       "e": "🏦",
-      "r": "global",
-      "src": "cnbc",
-      "code": "DE10Y-DE"
+      "r": "global"
     },
     {
       "type": "bar",
       "s": "JP10Y",
       "zh": "日本10年期公債殖利率",
       "e": "🏦",
-      "r": "global",
-      "src": "cnbc",
-      "code": "JP10Y-JP"
+      "r": "global"
     },
     {
       "type": "bar",
       "s": "GB10Y",
       "zh": "英國10年期公債殖利率",
       "e": "🏦",
-      "r": "global",
-      "src": "cnbc",
-      "code": "GB10Y-GB"
+      "r": "global"
     },
     {
       "type": "bar",
       "s": "CN10Y",
       "zh": "中國10年期公債殖利率",
       "e": "🏦",
-      "r": "global",
-      "src": "cnbc",
-      "code": "CN10Y-CN"
+      "r": "global"
     },
     {
       "type": "bar",
       "s": "TW10Y",
       "zh": "台灣10年期公債殖利率",
       "e": "🏦",
-      "r": "global",
-      "src": "te",
-      "code": "taiwan/government-bond-yield"
+      "r": "global"
     },
     {
       "type": "bar",
       "s": "FR10Y",
       "zh": "法國10年期公債殖利率",
       "e": "🏦",
-      "r": "global",
-      "src": "cnbc",
-      "code": "FR10Y-FR"
+      "r": "global"
     },
     {
       "type": "bar",
       "s": "IT10Y",
       "zh": "義大利10年期公債殖利率",
       "e": "🏦",
-      "r": "global",
-      "src": "cnbc",
-      "code": "IT10Y-IT"
+      "r": "global"
     },
     {
       "type": "bar",
       "s": "CA10Y",
       "zh": "加拿大10年期公債殖利率",
       "e": "🏦",
-      "r": "global",
-      "src": "cnbc",
-      "code": "CA10Y-CA"
+      "r": "global"
     },
     {
       "type": "bar",
       "s": "AU10Y",
       "zh": "澳洲10年期公債殖利率",
       "e": "🏦",
-      "r": "global",
-      "src": "cnbc",
-      "code": "AU10Y-AU"
+      "r": "global"
     },
     {
       "type": "bar",

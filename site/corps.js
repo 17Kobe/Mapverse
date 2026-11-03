@@ -7,8 +7,11 @@
 (function () {
   'use strict';
 
-  // 市值資料：2026 年 10 月 23 日收盤附近（新台幣兆元）；總部地址取自證交所上市公司基本資料
-  const DATA_DATE = '2026-10-23';
+  // 市值資料：內建的是 2026 年 10 月 23 日收盤附近（新台幣兆元）的備用值；總部地址取自證交所上市公司基本資料。
+  // 網頁載入後會用 iKDx-realtime 每天更新的 tw-top.json 覆蓋市值與名次（applyFeed），連不上就沿用這裡的數字
+  let dataDate = '2026-10-23';
+  let live = false;
+  const TOP_SHOWN = 10; // 只畫前十大；掉出前十的公司建築自動收起來
   const CORPS = [
     { rk: 1, s: '2330', name: '台積電', cap: 61.85, ind: '晶圓代工', kind: 'tsmc', col: '#d71920', lon: 121.0135, lat: 24.7745, addr: '新竹科學園區力行六路 8 號' },
     { rk: 2, s: '2454', name: '聯發科', cap: 6.44, ind: 'IC 設計', kind: 'mtk', col: '#f08c00', lon: 121.0225, lat: 24.7790, addr: '新竹科學園區篤行一路 1 號' },
@@ -325,7 +328,7 @@
       '<stop offset="0" stop-color="#fff" stop-opacity=".5"/><stop offset=".38" stop-color="#fff" stop-opacity="0"/>' +
       '<stop offset=".62" stop-color="#fff" stop-opacity=".16"/><stop offset=".75" stop-color="#fff" stop-opacity="0"/></linearGradient>';
     // 先放特效的底層（低迷時地上的陰影）再放建築，最後是特效（煙火、烏雲）
-    cluster = { g: el('g', { class: 'bld mk cluster', role: 'button', tabindex: 0, 'aria-label': '台股市值前三大：台積電、聯發科、台達電' }, root) };
+    cluster = { g: el('g', { class: 'bld mk cluster', role: 'button', tabindex: 0, 'aria-label': '台股權值股小城市：台積電、聯發科、台達電' }, root) };
     el('ellipse', { class: 'gs', filter: 'url(#soft)' }, cluster.g);
     cluster.art = el('g', { class: 'art' }, cluster.g);
     const ca = clusterArt();
@@ -433,6 +436,7 @@
       const vis = [];
       for (const it of items) {
         const c = it.c, [hx, hy] = xy(c.lon, c.lat);
+        if (c.rk > TOP_SHOWN) { show(it.g, false); show(it.lg, false); continue; }
         const s = u * (0.82 + 0.3 * Math.sqrt(c.cap / CORPS[0].cap));
         const bb = bboxOf(it);
         const box = (x, y) => ({ x: x + bb.x * s, y: y + bb.y * s, w: bb.w * s, h: bb.h * s });
@@ -504,5 +508,43 @@
     return w > 0 && h > 0 ? (w * h) / (a.w * a.h) : 0;
   };
 
-  window.Corps = { CORPS, DATA_DATE, build, layout, BOOM, CRASH };
+  /* ---------- 排行資料 ---------- */
+  let feedTop = null;
+  // 套用最新排行（tw-top.json：{ date, top: [{ rk, s, name, cap, p, c, pct, ind }] }）：更新市值與名次。
+  // 排行裡沒有設計過建築的公司只會出現在清單；要幫新公司蓋建築，在 CORPS 加一筆（含 kind 與 ART 造型）
+  function applyFeed(feed) {
+    if (!feed || !Array.isArray(feed.top) || feed.top.length < TOP_SHOWN) return false;
+    feedTop = feed.top;
+    const by = new Map(feed.top.map((t) => [String(t.s), t]));
+    for (const c of CORPS) {
+      const t = by.get(c.s);
+      if (!t) continue;
+      c.cap = t.cap; c.rk = t.rk; c.p = t.p; c.pct = t.pct;
+    }
+    if (feed.date) dataDate = feed.date;
+    live = true;
+    // 已經建好的招牌跟著換名次
+    for (const it of items) {
+      const t = it.sign && it.sign.querySelector('.rkt');
+      if (t) t.textContent = it.c.rk;
+      it.g.setAttribute('aria-label', `${it.c.name}（市值第 ${it.c.rk} 名）`);
+    }
+    lastOrder = '';
+    return true;
+  }
+  // 前十大清單（詳情卡用）：有最新排行就用排行，沒有就用內建資料；built 表示地圖上有這家的建築
+  function topList() {
+    const byS = new Map(CORPS.map((c) => [c.s, c]));
+    const src = feedTop ? feedTop.slice(0, TOP_SHOWN) : CORPS.slice().sort((a, b) => a.rk - b.rk);
+    return src.map((t) => {
+      const c = byS.get(String(t.s));
+      return { rk: t.rk, s: String(t.s), name: c ? c.name : t.name, cap: c ? c.cap : t.cap, ind: c ? c.ind : t.ind || '', pct: t.pct, c: c || null };
+    });
+  }
+
+  window.Corps = {
+    CORPS, build, layout, applyFeed, topList, BOOM, CRASH,
+    get DATA_DATE() { return dataDate; },
+    get LIVE() { return live; }
+  };
 })();
