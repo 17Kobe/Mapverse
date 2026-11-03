@@ -1666,7 +1666,10 @@
     /* ================= 商品 / 債券 / 利率 / 匯率 / 地緣 / 經濟數據 ================= */
     // 卡片的座標一律用「未放大」的尺寸畫（寬 TOPIC_W、色帶 24 + 每列 16 + 底部 4），最後再整個 scale(U)
     const TOPIC_W = 176;
-    const topicH = (n) => 24 + n * 16 + 4;
+    // 資料列 16px；卡內的分隔標題（成長 / 物價 / 就業）只要 12px，不佔太多高度
+    const SEC_H = 12;
+    const rowH = (r) => (r.sec ? SEC_H : 16);
+    const topicH = (c) => 24 + c.rows.reduce((s, r) => s + rowH(r), 0) + 4;
     const dateStamp = (t) => {
         const d = new Date(t * 1000);
         return `${d.getMonth() + 1}/${d.getDate()}(${WEEK_ZH[d.getDay()]})`;
@@ -1868,10 +1871,16 @@
             .attrQ('y', 17.2);
         b.select('.t1 .a').textQ(hasFlag ? c.short : `${c.flag} ${c.short}`);
         const rows = c.rows.map(topicRowView);
+        let yAcc = 24;
+        const rowY = c.rows.map((r) => {
+            const y = yAcc;
+            yAcc += rowH(r);
+            return y;
+        });
         b.selectAll('.row').each(function (_, i) {
             const x = rows[i],
                 g = d3.select(this),
-                y = 24 + i * 16,
+                y = rowY[i],
                 rn = g.select('.rn'),
                 rv = g.select('.rv'),
                 rp = g.select('.rp');
@@ -1879,7 +1888,7 @@
                 .attrQ('x', 4)
                 .attrQ('y', y)
                 .attrQ('width', w - 8)
-                .attrQ('height', 16)
+                .attrQ('height', rowH(c.rows[i]))
                 .classed('odd', i % 2 === 1 && !x.sec)
                 .classed('sec', !!x.sec);
             rn.classed('sec', !!x.sec);
@@ -1889,7 +1898,7 @@
                 return lw > room ? `${Math.max(8, (11 * room) / lw).toFixed(1)}px` : null;
             };
             if (x.sec) {
-                rn.attrQ('x', 9).attrQ('y', y + 11.8).styleQ('font-size', null).textQ(`◆ ${x.sec}`);
+                rn.attrQ('x', 9).attrQ('y', y + 9.2).styleQ('font-size', null).textQ(x.sec);
                 rv.textQ('');
                 rp.textQ('');
                 return;
@@ -1926,18 +1935,30 @@
         const cards = state.topics.filter((c) => c.cat === state.activeRegion);
         for (const c of state.topics) if (c.cat !== state.activeRegion) d3.select(c.el).styleQ('display', 'none');
         if (!desktopMQ.matches) {
-            const U = BUBBLE_SCALE_MOBILE,
-                GAP = 4,
+            const GAP = 4,
                 colW = Math.floor((W - 8 - GAP) / 2);
-            const w = Math.min(colW, Math.round(Math.min(TOPIC_W, Math.floor((W - 10) / 2 / U)) * U));
             const top0 = Math.max(2, ...uiRects(['#chips', '#hud']).map((z) => z.y + z.h)) + GAP;
-            const ys = [top0, top0];
             // markets.json 的 mc（L / R + 由上而下的序號）指定欄位與順序；沒寫的卡片放進比較短的那欄
             const num = (c) => (c.mc ? +c.mc.slice(1) : 99);
             const order = cards.slice().sort((a, b) => num(a) - num(b));
+            const colOf = new Map(),
+                colH = [0, 0],
+                colN = [0, 0];
             for (const c of order) {
-                const col = c.mc ? (c.mc[0] === 'R' ? 1 : 0) : ys[1] < ys[0] ? 1 : 0,
-                    h = Math.round(topicH(c.rows.length) * U);
+                const col = c.mc ? (c.mc[0] === 'R' ? 1 : 0) : colH[1] < colH[0] ? 1 : 0;
+                colOf.set(c, col);
+                colH[col] += topicH(c);
+                colN[col]++;
+            }
+            // 卡片太高放不下時整體縮小（不低於 0.6 倍），讓每一欄一眼看完，不用往下滑
+            // 底部多留 34px：右下角的災難按鈕與地圖來源標示不要壓到卡片
+            const room = H - top0 - 34 - GAP * (Math.max(colN[0], colN[1]) - 1);
+            const U = Math.max(0.6, Math.min(BUBBLE_SCALE_MOBILE, room / Math.max(colH[0], colH[1], 1)));
+            const w = Math.min(colW, Math.round(Math.min(200, Math.floor(colW / U)) * U));
+            const ys = [top0, top0];
+            for (const c of order) {
+                const col = colOf.get(c),
+                    h = Math.round(topicH(c) * U);
                 const r = { x: col ? W - 4 - w : 4, y: ys[col], w, h };
                 ys[col] += h + GAP;
                 drawTopic(c, r, U, null);
@@ -1949,7 +1970,7 @@
             w = TOPIC_W;
         for (const c of cards) {
             const [ax, ay] = screenXY(c.lon, c.lat),
-                h = topicH(c.rows.length),
+                h = topicH(c),
                 el = d3.select(c.el);
             if (ax < -10 || ax > W + 10 || ay < -10 || ay > H + 10) {
                 el.styleQ('display', 'none');
@@ -2087,7 +2108,7 @@
             .map(topicRowView)
             .map((x) =>
                 x.sec
-                    ? `<div style="margin-top:8px;padding:2px 8px;background:rgba(214,164,58,.3);border-radius:4px"><b style="color:#fff1c4;letter-spacing:3px">◆ ${esc(x.sec)}</b></div>`
+                    ? `<div style="margin-top:8px;padding:2px 8px;background:#1f7f95;border-radius:4px"><b style="color:#fff;letter-spacing:4px">${esc(x.sec)}</b></div>`
                     : x.note
                     ? `<div>${esc(x.note)}</div>`
                     : `<div><b>${esc(x.lab)}</b>　<span style="color:${x.vcol || '#fff'}">${esc(x.val)}</span>${x.chg ? `　<span style="color:${x.col}">${esc(x.chg)}</span>` : ''}${x.ref ? `　<span class="small">${esc(x.ref)}${x.stale ? ' ⚠️沿用舊資料' : ''}</span>` : ''}</div>`,
