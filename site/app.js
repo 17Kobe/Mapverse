@@ -1192,16 +1192,17 @@
             // 同一國家有多個指數（例如美國：標普 / 那斯達克 / 道瓊 / 費城半導體）
             if (d.group.length > 1) {
                 const rows = b.append('g').attr('class', 'rows');
-                (d.group10 || d.group).forEach((x) => {
+                const mkRow = (label) => {
                     const r = rows.append('g').attr('class', 'row');
                     r.append('rect').attr('class', 'rbg');
                     r.append('rect').attr('class', 'rhl').attr('rx', 3).style('display', 'none');
-                    r.append('text')
-                        .attr('class', 'rn')
-                        .text(x.abbr || x.zh);
+                    r.append('text').attr('class', 'rn').text(label);
                     r.append('text').attr('class', 'rv');
                     r.append('text').attr('class', 'rp');
-                });
+                };
+                (d.group10 || d.group).forEach((x) => mkRow(x.abbr || x.zh));
+                // markets.json 的 extra: "corps"（台灣）：放大時在指數下面多列一條分隔標題 + 市值前十大公司
+                if (d.extra === 'corps') for (let i = 0; i <= EXTRA_N; i++) mkRow('');
                 const dots = b.append('g').attr('class', 'dots');
                 (d.group10 || d.group).forEach(() => dots.append('circle').attr('r', 1.9));
             }
@@ -1844,6 +1845,16 @@
         }
         return textWidth(measTs[key].text(str).node());
     }
+    // 台灣旗幟放大時（縮放倍率 ≥ extraK），在加權 / 櫃買下面加一條分隔標題和市值前十大公司（股價 + 漲跌幅）
+    const EXTRA_N = 10,
+        EXTRA_K = 3; // SEC_H（分隔標題的高度）在下方主題卡片那段定義
+    const extraList = (m) =>
+        m.extra === 'corps' && window.Corps && state.t.k >= (m.extraK ?? EXTRA_K) ? Corps.topList().slice(0, EXTRA_N) : [];
+    // 整張列出（multi）時的旗幟高度（未放大的座標）：色帶 24 + 每個指數 16 + 底部 4，再加上額外的公司列
+    const multiH = (m, n) => {
+        const ex = extraList(m);
+        return 24 + n * 16 + 4 + (ex.length ? SEC_H + ex.length * 16 : 0);
+    };
     // 漲跌幅超過這個值（%）的指數用醒目的底色標示（像自選股清單的漲跌幅欄）
     const BIG_MOVE = 2;
     const hlColor = (pct) => (isRed(pct) ? 'hsl(4,74%,47%)' : 'hsl(146,62%,34%)');
@@ -2483,7 +2494,7 @@
             // 每張旗幟的未放大高度（multi = 所有指數整張列出）
             const h1 = (o, multi) => {
                 const n = grpOf(o.m).length;
-                return multi && n > 1 ? 24 + n * 16 + 4 : FULL_H;
+                return multi && n > 1 ? multiH(o.m, n) : FULL_H;
             };
             const colsOf = (list) => [0, 1].map((col) => list.filter((o) => (o.m.g10[0] === 'L' ? 0 : 1) === col));
             // 最大放大倍率：讓較高的那欄剛好放進「上緣到下緣」之間（不超過手機版的 U）
@@ -2555,11 +2566,15 @@
             const bot0 = H - 18; // 下緣：留出地圖資料來源那一行字
             const items = ps.map((o) => {
                 const n = o.m.group.length;
+                // 台灣放大時多了十家公司的列，整張很高：這張旗幟自己縮小（最多縮到 0.7 倍），高度不超過一欄的 45%，兩欄才排得下
+                const hu = n > 1 ? multiH(o.m, n) : FULL_H;
+                const u = hu > 24 + n * 16 + 4 + 1 ? Math.max(0.7, Math.min(U, ((bot0 - top0) * 0.45) / hu)) : U;
                 return {
                     o,
+                    u,
                     mode: n > 1 ? 'multi' : 'full',
-                    w: n > 1 ? multiW : Math.min(colW, Math.round(Math.max(118, headNeedW(o.m, 0)) * U)),
-                    h: Math.round((n > 1 ? 24 + n * 16 + 4 : FULL_H) * U),
+                    w: n > 1 ? (u === U ? multiW : Math.min(colW, Math.round(Math.min(166, Math.floor(colW / u)) * u))) : Math.min(colW, Math.round(Math.max(118, headNeedW(o.m, 0)) * U)),
+                    h: Math.round(hu * u),
                 };
             });
             const byS = new Map(items.map((it) => [it.o.m.s, it]));
@@ -2622,7 +2637,7 @@
                 if (ui.some((z) => inter(r, z) > 0)) return null;
                 // 剛好在自己動物正上方才畫指向動物的小尾巴
                 const up = it.tail && !it.parent && Math.abs(it.y - it.want) < 1 && Math.abs(it.x + it.w / 2 - it.o.x) < 6;
-                out.set(it.o.m.s, { r, mode: it.mode, pos: up ? 'up' : 'col' });
+                out.set(it.o.m.s, { r, mode: it.mode, pos: up ? 'up' : 'col', u: it.u });
             }
             return out;
         };
@@ -2659,7 +2674,7 @@
                 const modes = (
                     n > 1
                         ? [
-                              { w: multiW, h: 24 + n * 16 + 4, mode: 'multi' },
+                              { w: multiW, h: multiH(m, n), mode: 'multi' },
                               { w: Math.max(136, headNeedW(m, n * 6 + 4)), h: FULL_H, mode: 'full' },
                               { w: 80, h: 22, mode: 'mini' },
                           ]
@@ -2945,33 +2960,59 @@
                     hlPct = cp;
                 }
             } else if (multi) {
+                const list = grpOf(m),
+                    ex = extraList(m),
+                    base = 24 + list.length * 16; // 額外的公司列從這裡開始
                 b.selectAll('.row').each(function (_, i) {
                     // 注意：d3 append 的子元素會繼承父層資料，所以要用序號去 group 裡拿對應的指數
-                    const x = grpOf(m)[i],
-                        r = d3.select(this);
-                    r.styleQ('display', x ? null : 'none');
-                    if (!x) return;
-                    const rq = state.quotes[x.s],
-                        y = 24 + i * 16;
-                    setFlash(r, flashOf(x.s));
+                    // 列的種類：idx = 指數；sec = 分隔標題（台股市值前十大）；corp = 公司
+                    const r = d3.select(this);
+                    const k2 =
+                        i < list.length
+                            ? 'idx'
+                            : ex.length && i === list.length
+                              ? 'sec'
+                              : ex.length && i <= list.length + ex.length
+                                ? 'corp'
+                                : null;
+                    r.styleQ('display', k2 ? null : 'none');
+                    if (!k2) return;
+                    const ci = i - list.length - 1; // 公司的序號
+                    const x = k2 === 'idx' ? list[i] : k2 === 'corp' ? ex[ci] : null;
+                    const y = k2 === 'idx' ? 24 + i * 16 : k2 === 'sec' ? base : base + SEC_H + ci * 16;
                     r.select('.rbg')
                         .attrQ('x', 4)
                         .attrQ('y', y)
                         .attrQ('width', w - 8)
-                        .attrQ('height', 16)
-                        .classed('odd', i % 2 === 1);
+                        .attrQ('height', k2 === 'sec' ? SEC_H : 16)
+                        .classed('odd', (k2 === 'idx' ? i : ci) % 2 === 1 && k2 !== 'sec')
+                        .classed('sec', k2 === 'sec');
+                    r.select('.rn').classed('sec', k2 === 'sec');
+                    if (k2 === 'sec') {
+                        // 分隔線：和經濟數據卡片的分隔標題同一個樣式
+                        setFlash(r, null);
+                        r.select('.rn').attrQ('x', 9).attrQ('y', y + 9.2).styleQ('font-size', null).textQ('台股市值前十大');
+                        r.select('.rv').textQ('');
+                        r.select('.rp').textQ('');
+                        r.select('.rhl').styleQ('display', 'none');
+                        return;
+                    }
+                    // 指數用即時報價；公司用 tw-top.json 的收盤價與漲跌幅
+                    const rq = k2 === 'idx' ? state.quotes[x.s] : x.pct == null ? null : { p: x.price, pct: x.pct };
+                    setFlash(r, k2 === 'idx' ? flashOf(x.s) : null);
                     // 數字用 .rv/.rp（<text>）：CSS 的 fill 會蓋過屬性，漲跌色要用行內樣式；兩欄靠右對齊，依漲跌幅實際寬度排
-                    const vs = rq ? fmtN(rq.p, 'short') : '--',
+                    const vs = rq && rq.p != null ? fmtN(rq.p, 'short') : '--',
                         ps = rq ? `${arrow(rq.pct)}${Math.abs(rq.pct).toFixed(2)}%` : '';
                     const rvx = w - 8 - (ps ? textWidthOf(ps, 'rp') : 0) - 5;
                     // 數字維持和單一指數一樣大，名稱放不下時才縮小名稱
-                    const lbl = x.abbr || x.zh,
+                    const lbl = k2 === 'idx' ? x.abbr || x.zh : `${x.rk} ${x.name}`,
                         lw = textWidthOf(lbl, 'rn'),
                         room = rvx - textWidthOf(vs, 'rv') - 9 - 4;
                     r.select('.rn')
                         .attrQ('x', 9)
                         .attrQ('y', y + 12.5)
-                        .styleQ('font-size', lw > room ? `${Math.max(8.5, (11 * room) / lw).toFixed(1)}px` : null);
+                        .styleQ('font-size', lw > room ? `${Math.max(8.5, (11 * room) / lw).toFixed(1)}px` : null)
+                        .textQ(lbl);
                     r.select('.rv')
                         .attrQ('x', rvx)
                         .attrQ('y', y + 13.5)

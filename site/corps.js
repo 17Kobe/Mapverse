@@ -538,7 +538,7 @@
     const src = feedTop ? feedTop.slice(0, TOP_SHOWN) : CORPS.slice().sort((a, b) => a.rk - b.rk);
     return src.map((t) => {
       const c = byS.get(String(t.s));
-      return { rk: t.rk, s: String(t.s), name: c ? c.name : t.name, cap: c ? c.cap : t.cap, ind: c ? c.ind : t.ind || '', pct: t.pct, c: c || null };
+      return { rk: t.rk, s: String(t.s), name: c ? c.name : t.name, cap: c ? c.cap : t.cap, ind: c ? c.ind : t.ind || '', pct: t.pct, price: t.p != null ? t.p : c ? c.p : null, c: c || null };
     });
   }
 

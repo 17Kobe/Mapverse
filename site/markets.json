@@ -4,6 +4,7 @@
       "type": "map",
       "s": "^TWII",
       "g10": "L4",
+      "extra": "corps",
       "pin": 1,
       "abbr": "加權",
       "zh": "台灣加權",
