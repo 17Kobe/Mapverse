@@ -352,6 +352,8 @@ a.big-btn{text-align:center;text-decoration:none}
 #loading{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(circle,#263d63 0%,#0c1628 80%);color:var(--gold-l);font-weight:700;z-index:8;transition:opacity .5s}
 #loading.gone{opacity:0;pointer-events:none}
 #loading .spin{font-size:64px;animation:bob 1s ease-in-out infinite;font-family:var(--emoji)}
+/* 載入中的地球：大一點，外圍有一圈淡淡的大氣光暈 */
+#loading canvas.globe{width:clamp(150px,40vmin,240px);height:clamp(150px,40vmin,240px);filter:drop-shadow(0 0 22px rgba(96,176,255,.5))}
 
 /* ---------- 彈窗 ---------- */
 #sheet{position:fixed;inset:0;z-index:20;display:flex;align-items:flex-end;justify-content:center}
