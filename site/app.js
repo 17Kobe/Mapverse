@@ -1726,6 +1726,11 @@
     // 漲跌幅超過這個值（%）的指數用醒目的底色標示（像自選股清單的漲跌幅欄）
     const BIG_MOVE = 2;
     const hlColor = (pct) => (isRed(pct) ? 'hsl(4,74%,47%)' : 'hsl(146,62%,34%)');
+    // 詳情卡等 HTML 文字用的漲跌幅：超過 BIG_MOVE 就是實心底色 + 白字的小標籤，否則只有彩色文字
+    const pctSpan = (pct, txt) =>
+        Math.abs(pct) >= BIG_MOVE
+            ? `<span class="pill" style="background:${hlColor(pct)}">${txt}</span>`
+            : `<span style="color:${pctColor(pct)}">${txt}</span>`;
     // 旗幟色帶右側的報價時間（使用者的時區，和詳細面板的「最後成交」一致）：
     // 開盤中（含午休）顯示 11:30；收盤後顯示 10/31(六)
     const WEEK_ZH = '日一二三四五六';
@@ -1845,6 +1850,7 @@
                     chg: `${arrow(q.pct)}${Math.abs(q.pct).toFixed(2)}%`,
                     col: pctColor(q.pct),
                     cd: q.pct,
+                    pq: true, // 漲跌幅是百分比（商品、匯率…）：超過 BIG_MOVE 要用醒目的底色
                 });
             }
         } else {
@@ -1910,6 +1916,7 @@
             c.rows.forEach(() => {
                 const r = rows.append('g').attr('class', 'row');
                 r.append('rect').attr('class', 'rbg');
+                r.append('rect').attr('class', 'rhl').attr('rx', 3).style('display', 'none');
                 r.append('text').attr('class', 'rn');
                 r.append('text').attr('class', 'rv');
                 r.append('text').attr('class', 'rp');
@@ -2012,9 +2019,19 @@
                 .attrQ('y', y + 13.5)
                 .styleQ('fill', x.vcol)
                 .textQ(x.val);
+            // 漲跌幅超過 BIG_MOVE（%）：實心底色 + 白字，和股市旗幟一致
+            const big = !!x.pq && !!x.chg && Math.abs(x.cd) >= BIG_MOVE,
+                cw = x.chg ? textWidthOf(x.chg, 'rp') : 0;
+            g.select('.rhl')
+                .styleQ('display', big ? null : 'none')
+                .attrQ('x', w - 8 - cw - 3)
+                .attrQ('y', y + 1.5)
+                .attrQ('width', big ? cw + 6 : 0)
+                .attrQ('height', 14)
+                .styleQ('fill', big ? hlColor(x.cd) : null);
             rp.attrQ('x', w - 8)
                 .attrQ('y', y + 13.5)
-                .styleQ('fill', x.col)
+                .styleQ('fill', big ? '#fff' : x.col)
                 .textQ(x.chg);
         });
     }
@@ -2202,7 +2219,7 @@
                     ? `<div style="margin-top:8px;padding:2px 8px;background:#1f7f95;border-radius:4px"><b style="color:#fff;letter-spacing:4px">${esc(x.sec)}</b></div>`
                     : x.note
                     ? `<div>${esc(x.note)}</div>`
-                    : `<div><b>${esc(x.lab)}</b>　<span style="color:${x.vcol || '#fff'}">${esc(x.val)}</span>${x.chg ? `　<span style="color:${x.col}">${esc(x.chg)}</span>` : ''}${x.ref ? `　<span class="small">${esc(x.ref)}${x.stale ? ' ⚠️沿用舊資料' : ''}</span>` : ''}</div>`,
+                    : `<div><b>${esc(x.lab)}</b>　<span style="color:${x.vcol || '#fff'}">${esc(x.val)}</span>${x.chg ? `　${x.pq ? pctSpan(x.cd, esc(x.chg)) : `<span style="color:${x.col}">${esc(x.chg)}</span>`}` : ''}${x.ref ? `　<span class="small">${esc(x.ref)}${x.stale ? ' ⚠️沿用舊資料' : ''}</span>` : ''}</div>`,
             )
             .join('');
         const quoted = c.rows.some((r) => r.s || r.calc);
@@ -3685,12 +3702,12 @@
                     ? '🌫️ 台股下跌，城市一片低迷'
                     : '';
         const twii = tq
-            ? `<div class="chg" style="color:${pctColor(tq.pct)}">台股加權 ${fmtN(tq.p)}　${arrow(tq.pct)} ${Math.abs(tq.pct).toFixed(2)}%</div>`
+            ? `<div class="chg">台股加權 ${fmtN(tq.p)}　${pctSpan(tq.pct, `${arrow(tq.pct)} ${Math.abs(tq.pct).toFixed(2)}%`)}</div>`
             : '';
         const note = Corps.LIVE
             ? `<p class="small">市值 = ${Corps.DATA_DATE} 收盤價 × 已發行普通股數（新台幣），資料取自證交所，每天自動更新；總部地址取自證交所上市公司基本資料。</p>`
             : `<p class="small">市值為 ${Corps.DATA_DATE} 收盤附近的約略數字（新台幣），不同網站的統計口徑可能略有差異；總部地址取自證交所上市公司基本資料。</p>`;
-        const pctTag = (p) => (p == null ? '' : `　<span style="color:${pctColor(p)}">${arrow(p)} ${Math.abs(p).toFixed(2)}%</span>`);
+        const pctTag = (p) => (p == null ? '' : `　${pctSpan(p, `${arrow(p)} ${Math.abs(p).toFixed(2)}%`)}`);
         if (!c) {
             showSheet(`<h3>🏙️ 台股市值前十大</h3>${twii}${mood ? `<p class="desc">${mood}</p>` : ''}
       <div class="meta">${Corps.topList()
@@ -3745,7 +3762,7 @@
                   .map((x) => {
                       const xq = state.quotes[x.s];
                       const xp = xq
-                          ? `<span style="color:${pctColor(xq.pct)}">${arrow(xq.pct)}${Math.abs(xq.pct).toFixed(2)}%</span>`
+                          ? pctSpan(xq.pct, `${arrow(xq.pct)}${Math.abs(xq.pct).toFixed(2)}%`)
                           : '<span>--</span>';
                       return `<button class="gtab gbtn${x === m ? ' on' : ''}" role="tab" aria-selected="${x === m}" data-s="${x.s}"><b>${x.abbr || x.zh}</b>${xp}</button>`;
                   })
@@ -3756,7 +3773,7 @@
       <div><div class="nm">${host ? flagHtml(host.flag) + ' ' : ''}${m.zh}</div><div class="sym">${m.s}</div></div></div>
     ${tabs}
     <div class="px">${q ? fmtN(q.p) : '--'}</div>
-    <div class="chg" style="color:${col}">${chg}</div>
+    <div class="chg" style="color:${col}">${q ? pctSpan(q.pct, chg) : chg}</div>
     ${q ? spark(q.spark, col) : ''}
     <div class="meta">${meta}</div>`);
     }
