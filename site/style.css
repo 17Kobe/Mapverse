@@ -119,6 +119,7 @@ button{font:inherit;color:inherit;cursor:pointer}
   border-radius:999px;font-weight:700;font-size:14px;white-space:nowrap;
 }
 .chip .ci{font-family:var(--emoji);font-size:15px;line-height:1}
+.chip .ci img{display:block;width:20px;height:20px;margin:-2px 0}
 .chip.on{
   background:linear-gradient(180deg,#fff0bf 0%,#f0c75e 50%,#c89533 100%);
   border-color:var(--gold-l);color:var(--ink);text-shadow:0 1px 0 rgba(255,255,255,.5);

@@ -16,7 +16,8 @@
         // 物件的順序就是篩選列的順序：商品、匯率、經濟數據、地緣、利率、債券
         commodity: { icon: '🛢️', label: '商品', mlon: -35 }, // 大西洋：左邊看到一點美洲、右邊看到一點歐洲
         fx: { icon: '💵', label: '匯率', mlon: GLOBAL_LON },
-        econ: { icon: '💹', label: '經濟數據', mlon: GLOBAL_LON },
+        // img：篩選按鈕改用 3D 圖片（系統 emoji 的長條圖太陽春）；icon 仍用在文字場合
+        econ: { icon: '�', img: 'assets/icons/bar_chart.png', label: '經濟數據', mlon: GLOBAL_LON },
         geo: { icon: '⚔️', label: '地緣', mlon: 85 },
         rate: { icon: '🏛️', label: '利率', mlon: GLOBAL_LON },
         bond: { icon: '🏦', label: '債券', mlon: GLOBAL_LON },
@@ -282,6 +283,8 @@
     // 介面改成深色遊戲面板，漲跌色要用較亮的版本才看得清楚
     const pctColor = (pct) => (isRed(pct) ? 'hsl(4,88%,64%)' : 'hsl(140,70%,52%)');
     const bandColor = (pct) => (isRed(pct) ? 'hsl(4,62%,38%)' : 'hsl(146,55%,28%)');
+    // 休市的色帶仍依漲跌上色，但比開盤中暗、飽和度低，看得出已經收盤
+    const closedBandColor = (pct) => (isRed(pct) ? 'hsl(4,42%,31%)' : 'hsl(146,36%,24%)');
     // 國土只上一層半透明的漲跌色，讓底下的地形透出來
     function fillFor(m) {
         const q = state.quotes[m.s];
@@ -2557,7 +2560,7 @@
             // 旗幟上半部的名稱色帶（漲跌色；休市時變灰），迷你版不畫色帶
             drawBanner(b, w, h, {
                 bg: st === 'closed' ? 'url(#bannerOff)' : 'url(#bannerBg)',
-                band: mini ? null : st === 'closed' ? '#4a5466' : bandColor(pct),
+                band: mini ? null : st === 'closed' ? closedBandColor(pct) : bandColor(pct),
                 tail: o.b.pos === 'up',
             });
             // 國旗：完整版放在名稱色帶左側，迷你版放在漲跌幅左邊
@@ -3437,7 +3440,7 @@
             defs.map((d) => chip(...d)).join('') +
             '<span class="csep" aria-hidden="true"></span>' +
             Object.entries(TOPICS)
-                .map(([k, t]) => chip(k, t.icon, t.label))
+                .map(([k, t]) => chip(k, t.img ? `<img src="${t.img}" alt="">` : t.icon, t.label))
                 .join('');
         nav.onclick = (e) => {
             const b = e.target.closest('.chip');
