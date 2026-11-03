@@ -189,6 +189,7 @@
         anim: store.get('anim', true),
         t: d3.zoomIdentity,
         rot: 0, // 多指數旗幟的輪播序號
+        flash: {}, // 剛更新的報價：代碼 → { until, up }，旗幟 / 卡片用它閃一下（見 animateQuotes）
     };
 
     /* ================= 時間 / 開盤狀態 ================= */
@@ -366,6 +367,60 @@
                 state.demo = true;
             }
         }
+    }
+    /* ---------- 報價更新動畫 ----------
+     * 新報價進來時，價格有變的代碼會：
+     * 1. 數字在 0.9 秒內從舊值滾到新值（直接改 state.quotes 裡的內插值，旗幟、卡片、概況卡都跟著動）
+     * 2. 閃一下漲跌色（旗幟外框發光、數字區塊與該列底色淡出），持續約 2 秒
+     * 價格沒變的完全不動，所以看到閃的就是「剛剛有更新」。 */
+    const FLASH_MS = 2400,
+        ROLL_MS = 900;
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion:reduce)');
+    // 代碼目前閃的顏色：'lvr'（紅光）/'lvg'（綠光）/null（沒在閃）。價格上漲的顏色依「紅漲綠跌 / 綠漲紅跌」設定
+    function flashOf(sym) {
+        const f = state.flash[sym];
+        if (!f || performance.now() >= f.until) return null;
+        return isRed(f.up ? 1 : -1) ? 'lvr' : 'lvg';
+    }
+    const setFlash = (sel, cls) => sel.classed('lvr', cls === 'lvr').classed('lvg', cls === 'lvg');
+    function animateQuotes(old) {
+        const target = state.quotes;
+        if (!state.anim || reducedMotion.matches || document.hidden || state.demo || !old || target === old) return;
+        const ch = [];
+        for (const s in target) {
+            const o = old[s],
+                n = target[s];
+            if (o && n && isFinite(o.p) && isFinite(n.p) && o.p !== n.p) ch.push([s, o, n]);
+        }
+        if (!ch.length) return;
+        const until = performance.now() + FLASH_MS;
+        for (const [s, o, n] of ch) state.flash[s] = { until, up: n.p > o.p };
+        setTimeout(scheduleLayout, FLASH_MS + 50); // 閃完了，把 class 拿掉
+        const cur = { ...target };
+        state.quotes = cur;
+        const t0 = performance.now();
+        const step = (now) => {
+            if (state.quotes !== cur) return; // 途中又有更新的報價進來，這一輪就放棄
+            const k = Math.max(0, Math.min(1, (now - t0) / ROLL_MS)), // rAF 的時間戳可能比 t0 早一點，要夾住
+                e = 1 - (1 - k) ** 3;
+            const lerp = (a, b) => (a == null || b == null ? b : a + (b - a) * e);
+            for (const [s, o, n] of ch) cur[s] = { ...n, p: lerp(o.p, n.p), c: lerp(o.c, n.c), pct: lerp(o.pct, n.pct) };
+            if (k < 1) {
+                scheduleLayout();
+                requestAnimationFrame(step);
+            } else {
+                state.quotes = target;
+                refreshView();
+            }
+        };
+        step(t0);
+        requestAnimationFrame(step);
+        // 保險：畫面被節流、rAF 停住時，也一定要把數字停在最新的報價
+        setTimeout(() => {
+            if (state.quotes !== cur) return;
+            state.quotes = target;
+            refreshView();
+        }, ROLL_MS + 150);
     }
     // 台股市值排行：失敗就沿用 corps.js 內建的資料
     async function loadTwTop() {
@@ -1001,6 +1056,7 @@
                 b.append('image').attr('class', 'flag').attr('href', fs).attr('preserveAspectRatio', 'none');
                 b.append('rect').attr('class', 'flag-b').attr('rx', 1.5);
             }
+            b.append('rect').attr('class', 'fl').attr('rx', 4); // 報價更新時，數字區塊閃一下的光
             b.append('rect').attr('class', 'hl').attr('rx', 3).style('display', 'none'); // 漲跌幅超過 2% 的底色
             const t1 = b.append('text').attr('class', 't1');
             t1.append('tspan').attr('class', 'a');
@@ -1902,6 +1958,9 @@
             .attrQ('y', 17.2);
         b.select('.t1 .a').textQ(hasFlag ? c.short : `${c.flag} ${c.short}`);
         const rows = c.rows.map(topicRowView);
+        // 報價剛更新：該列底色閃一下，卡片外框發光
+        const rowFlash = c.rows.map((r) => flashOf(r.s) || (r.calc && (flashOf(r.calc[0]) || flashOf(r.calc[1]))) || null);
+        setFlash(b, rowFlash.find(Boolean) || null);
         let yAcc = 24;
         const rowY = c.rows.map((r) => {
             const y = yAcc;
@@ -1915,6 +1974,7 @@
                 rn = g.select('.rn'),
                 rv = g.select('.rv'),
                 rp = g.select('.rp');
+            setFlash(g, rowFlash[i]);
             g.select('.rbg')
                 .attrQ('x', 4)
                 .attrQ('y', y)
@@ -2666,6 +2726,12 @@
                 t1.select('.a').textQ(hasFlag ? m.short : `${m.flag} ${m.short}`);
                 t1.select('.m').textQ('');
             }
+            // 報價剛更新：外框發光（群組裡任何一個指數有更新就閃）、數字區塊閃一下
+            setFlash(b, grpOf(m).map((x) => flashOf(x.s)).find(Boolean) || null);
+            const fl = b.select('.fl');
+            setFlash(fl, multi ? null : flashOf(mode === 'full' ? cur.s : m.s));
+            if (mini) fl.attrQ('x', 3).attrQ('y', 3).attrQ('width', w - 6).attrQ('height', h - 6);
+            else fl.attrQ('x', 4).attrQ('y', 23).attrQ('width', w - 8).attrQ('height', Math.max(0, h - 26));
             // 漲跌幅超過 BIG_MOVE 的數字：實心底色 + 白字（單一指數 / 輪播 / 迷你版共用這顆矩形）
             const hl = b.select('.hl');
             let hlBox = null,
@@ -2697,6 +2763,7 @@
                     if (!x) return;
                     const rq = state.quotes[x.s],
                         y = 24 + i * 16;
+                    setFlash(r, flashOf(x.s));
                     r.select('.rbg')
                         .attrQ('x', 4)
                         .attrQ('y', y)
@@ -3801,7 +3868,9 @@
         }
 
         setInterval(async () => {
+            const old = state.quotes;
             await Promise.all([loadQuotes(), loadEcon()]);
+            animateQuotes(old);
             tick();
         }, 60000);
         setInterval(tick, 30000);
@@ -3813,7 +3882,9 @@
         }, 4000);
         document.addEventListener('visibilitychange', async () => {
             if (!document.hidden) {
+                const old = state.quotes;
                 await Promise.all([loadQuotes(), loadEcon()]);
+                animateQuotes(old);
                 tick();
             }
         });

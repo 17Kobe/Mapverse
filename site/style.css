@@ -299,6 +299,21 @@ body.noanim .corps .bk,body.noanim .corps .flame{animation:none}
 /* 多指數旗幟：每列一個指數 */
 .bubble .rbg{fill:transparent}
 .bubble .rbg.odd{fill:rgba(255,255,255,.05)}
+/* 報價剛更新（lvr = 紅光、lvg = 綠光，顏色是「這次價格漲或跌」，程式依紅漲綠跌設定決定）：
+   旗幟 / 卡片外框發光、數字區塊或該列底色淡出。持續約 2 秒後程式會把 class 拿掉 */
+.bubble .fl{fill:transparent;opacity:0;pointer-events:none}
+.bubble .fl.lvr{fill:hsl(4,95%,60%);animation:liveWash 1.9s ease-out}
+.bubble .fl.lvg{fill:hsl(140,85%,48%);animation:liveWash 1.9s ease-out}
+.bubble.lvr .rim{animation:liveRimR 2.2s ease-out}
+.bubble.lvg .rim{animation:liveRimG 2.2s ease-out}
+.bubble .row.lvr .rbg{animation:liveRowR 1.9s ease-out}
+.bubble .row.lvg .rbg{animation:liveRowG 1.9s ease-out}
+@keyframes liveWash{0%{opacity:.8}100%{opacity:0}}
+@keyframes liveRimR{0%,15%{stroke:#ff9a90;stroke-width:3.2}100%{}}
+@keyframes liveRimG{0%,15%{stroke:#8dffb0;stroke-width:3.2}100%{}}
+@keyframes liveRowR{0%{fill:rgba(255,80,70,.7)}100%{}}
+@keyframes liveRowG{0%{fill:rgba(60,235,120,.65)}100%{}}
+@media (prefers-reduced-motion:reduce){.bubble .fl,.bubble.lvr .rim,.bubble.lvg .rim,.bubble .row.lvr .rbg,.bubble .row.lvg .rbg{animation:none!important}}
 /* 漲跌幅超過 2% 的底色（實心紅 / 綠 + 白字，顏色由程式寫入） */
 .bubble .hl,.bubble .rhl{stroke:rgba(255,255,255,.4);stroke-width:.7}
 /* 卡內的分隔標題（成長 / 物價 / 就業）：藍綠色實底帶 + 白字，和金色的資料標籤、深色資料列明顯不同；列高只有 12px */
