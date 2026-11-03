@@ -282,10 +282,14 @@
     const isRed = (pct) => pct >= 0 === state.redUp;
     const hue = (pct) => (isRed(pct) ? 4 : 142);
     // 介面改成深色遊戲面板，漲跌色要用較亮的版本才看得清楚
-    const pctColor = (pct) => (isRed(pct) ? 'hsl(4,88%,64%)' : 'hsl(140,70%,52%)');
-    const bandColor = (pct) => (isRed(pct) ? 'hsl(4,62%,38%)' : 'hsl(146,55%,28%)');
+    // 平盤（四捨五入到小數 2 位是 0.00%）不算漲也不算跌：文字和色帶用灰色，不要被當成「上漲」上紅色
+    const isFlat = (pct) => !(Math.abs(pct) >= 0.005);
+    const FLAT_TEXT = '#a8b3c7',
+        FLAT_BAND = '#4a5466';
+    const pctColor = (pct) => (isFlat(pct) ? FLAT_TEXT : isRed(pct) ? 'hsl(4,88%,64%)' : 'hsl(140,70%,52%)');
+    const bandColor = (pct) => (isFlat(pct) ? FLAT_BAND : isRed(pct) ? 'hsl(4,62%,38%)' : 'hsl(146,55%,28%)');
     // 休市的色帶仍依漲跌上色，但比開盤中暗、飽和度低，看得出已經收盤
-    const closedBandColor = (pct) => (isRed(pct) ? 'hsl(4,42%,31%)' : 'hsl(146,36%,24%)');
+    const closedBandColor = (pct) => (isFlat(pct) ? FLAT_BAND : isRed(pct) ? 'hsl(4,42%,31%)' : 'hsl(146,36%,24%)');
     // 國土只上一層半透明的漲跌色，讓底下的地形透出來
     function fillFor(m) {
         const q = state.quotes[m.s];
@@ -1814,13 +1818,15 @@
     function topicRowView(r) {
         if (r.sec) return { sec: r.sec };
         if (r.note) return { note: r.note };
-        const bp = (d) => `${arrow(d)}${Math.abs(d).toFixed(1)}bp`;
+        // bp（基點）：殖利率變動的單位，1bp = 0.01 個百分點。四捨五入到 0.1bp 是 0 就當平盤，顯示「0bp」（灰色）
+        const flatBp = (d) => (Math.abs(d) < 0.05 ? 0 : d);
+        const bp = (d) => (d === 0 ? '0bp' : `${arrow(d)}${Math.abs(d).toFixed(1)}bp`);
         const v = { lab: r.l, val: '--', chg: '', col: null, vcol: null };
         if (r.calc) {
             const a = state.quotes[r.calc[0]],
                 b = state.quotes[r.calc[1]];
             if (a && b) {
-                const d = (a.c - b.c) * 100,
+                const d = flatBp((a.c - b.c) * 100),
                     spread = Math.round((a.p - b.p) * 100);
                 Object.assign(v, { val: `${spread}bp`, chg: bp(d), col: pctColor(d), cd: d });
                 // 長天期殖利率低於短天期（殖利率曲線倒掛），常被視為景氣衰退的前兆
@@ -1841,13 +1847,13 @@
         } else if (r.s) {
             const q = state.quotes[r.s];
             if (q && r.k === 'y') {
-                const d = q.c * 100;
+                const d = flatBp(q.c * 100);
                 Object.assign(v, { val: `${q.p.toFixed(2)}%`, chg: bp(d), col: pctColor(d), cd: d });
             } else if (q) {
                 const p = r.dp != null ? q.p.toFixed(r.dp) : fmtN(q.p, 'short');
                 Object.assign(v, {
                     val: (r.u || '') + p,
-                    chg: `${arrow(q.pct)}${Math.abs(q.pct).toFixed(2)}%`,
+                    chg: isFlat(q.pct) ? '0.00%' : `${arrow(q.pct)}${Math.abs(q.pct).toFixed(2)}%`,
                     col: pctColor(q.pct),
                     cd: q.pct,
                     pq: true, // 漲跌幅是百分比（商品、匯率…）：超過 BIG_MOVE 要用醒目的底色
@@ -1887,7 +1893,7 @@
         if (r) return TONE_BAND[r.tone];
         const lead = c.rows.find((x) => !x.sec && !x.note);
         const cd = lead && topicRowView(lead).cd;
-        return cd ? bandColor(cd) : '#34568a';
+        return cd && !isFlat(cd) ? bandColor(cd) : '#34568a';
     };
     function buildTopics() {
         gTopic.selectAll('*').remove();
