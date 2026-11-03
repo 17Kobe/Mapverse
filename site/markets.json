@@ -798,6 +798,13 @@
     },
     {
       "type": "bar",
+      "s": "^VIX",
+      "zh": "VIX恐慌指數",
+      "e": "😱",
+      "r": "global"
+    },
+    {
+      "type": "bar",
       "s": "EURUSD=X",
       "zh": "歐元/美元",
       "e": "💶",
@@ -917,6 +924,27 @@
     },
     {
       "type": "bar",
+      "s": "AUDUSD=X",
+      "zh": "澳幣/美元",
+      "e": "💵",
+      "r": "global"
+    },
+    {
+      "type": "bar",
+      "s": "CAD=X",
+      "zh": "美元/加幣",
+      "e": "💵",
+      "r": "global"
+    },
+    {
+      "type": "bar",
+      "s": "CNH=X",
+      "zh": "美元/離岸人民幣",
+      "e": "💵",
+      "r": "global"
+    },
+    {
+      "type": "bar",
       "s": "JPYTWD=X",
       "zh": "日圓/台幣",
       "e": "💴",
@@ -934,6 +962,20 @@
       "s": "GBPTWD=X",
       "zh": "英鎊/台幣",
       "e": "💷",
+      "r": "global"
+    },
+    {
+      "type": "bar",
+      "s": "CNYTWD=X",
+      "zh": "人民幣/台幣",
+      "e": "💵",
+      "r": "global"
+    },
+    {
+      "type": "bar",
+      "s": "AUDTWD=X",
+      "zh": "澳幣/台幣",
+      "e": "💵",
       "r": "global"
     },
     {
@@ -998,9 +1040,14 @@
           "l": "USDC 穩定幣",
           "u": "$",
           "dp": 4
+        },
+        {
+          "s": "^VIX",
+          "l": "VIX 恐慌",
+          "dp": 2
         }
       ],
-      "note": "WTI 原油與天然氣為紐約商品交易所（NYMEX）期貨；比特幣、以太幣與穩定幣（USDT、USDC，錨定 1 美元）以美元計價。",
+      "note": "WTI 原油與天然氣為紐約商品交易所（NYMEX）期貨；比特幣、以太幣與穩定幣（USDT、USDC，錨定 1 美元）以美元計價。 VIX 由標普 500 選擇權價格算出，代表市場預期未來 30 天的波動：約 20 以下偏平靜，20～30 偏緊張，30 以上是恐慌。",
       "mc": "L1"
     },
     {
@@ -1104,7 +1151,7 @@
           "k": "y"
         }
       ],
-      "note": "美國公債殖利率。10年減2年利差為正代表殖利率曲線正常，轉負常被視為衰退警訊。",
+      "note": "美國公債殖利率。10年減2年利差為正代表殖利率曲線正常，轉負常被視為衰退警訊。 10Y-2Y 利差為負（殖利率曲線倒掛）常被視為景氣衰退的前兆。",
       "mc": "R1"
     },
     {
@@ -1426,7 +1473,7 @@
         }
       ],
       "note": "1 歐元可兌換多少美元。",
-      "mc": "R2"
+      "mc": "R3"
     },
     {
       "id": "fx-uk",
@@ -1443,7 +1490,7 @@
         }
       ],
       "note": "1 英鎊可兌換多少美元。",
-      "mc": "R3"
+      "mc": "R4"
     },
     {
       "id": "fx-jp",
@@ -1471,11 +1518,16 @@
       "rows": [
         {
           "s": "CNY=X",
-          "l": "美元/人民幣",
+          "l": "美元/在岸人民幣",
+          "dp": 3
+        },
+        {
+          "s": "CNH=X",
+          "l": "美元/離岸人民幣",
           "dp": 3
         }
       ],
-      "note": "1 美元可兌換多少人民幣（在岸）。",
+      "note": "在岸人民幣（CNY）受央行中間價與每日 ±2% 區間管理；離岸人民幣（CNH）在香港等海外市場交易，較能反映市場預期。兩者價差大時，常被視為資金流向的訊號。",
       "mc": "L1"
     },
     {
@@ -1535,10 +1587,54 @@
         {
           "s": "GBPTWD=X",
           "l": "英鎊/台幣"
+        },
+        {
+          "s": "CNYTWD=X",
+          "l": "人民幣/台幣",
+          "dp": 3
+        },
+        {
+          "s": "AUDTWD=X",
+          "l": "澳幣/台幣",
+          "dp": 3
         }
       ],
-      "note": "新台幣兌美元、日圓、歐元、英鎊的市場中間價；銀行現金買賣價會因價差而略有不同。",
+      "note": "新台幣兌美元、日圓、歐元、英鎊、人民幣、澳幣的市場中間價；銀行現金買賣價會因價差而略有不同。",
       "mc": "L5"
+    },
+    {
+      "id": "fx-au",
+      "cat": "fx",
+      "short": "澳洲",
+      "flag": "🇦🇺",
+      "lon": 134,
+      "lat": -25.5,
+      "rows": [
+        {
+          "s": "AUDUSD=X",
+          "l": "澳幣/美元",
+          "dp": 4
+        }
+      ],
+      "note": "澳幣常被當作大宗商品與中國景氣的代理貨幣。",
+      "mc": "L6"
+    },
+    {
+      "id": "fx-ca",
+      "cat": "fx",
+      "short": "加拿大",
+      "flag": "🇨🇦",
+      "lon": -100,
+      "lat": 57,
+      "rows": [
+        {
+          "s": "CAD=X",
+          "l": "美元/加幣",
+          "dp": 4
+        }
+      ],
+      "note": "加幣與原油價格連動度高，也受美加利差影響。",
+      "mc": "R2"
     },
     {
       "id": "geo-trade",
@@ -1624,28 +1720,36 @@
       "lat": 39,
       "rows": [
         {
+          "e": "US_CPI",
           "l": "CPI 年增",
+          "f": "pct",
           "v": "3.7%",
           "d": 0.3
         },
         {
+          "e": "US_CORE_CPI",
           "l": "核心CPI 年增",
+          "f": "pct",
           "v": "2.6%"
         },
         {
+          "e": "US_PCE",
           "l": "PCE 年增",
+          "f": "pct",
           "v": "3.6%",
           "d": 0.2
         },
         {
+          "e": "US_CORE_PCE",
           "l": "核心PCE 年增",
+          "f": "pct",
           "v": "3.1%",
           "d": 0.1
         }
       ],
       "stamp": "9月",
-      "src": "Trading Economics",
-      "note": "美國 9 月通膨：CPI、PCE 皆較 8 月上升。",
+      "src": "iKDx-realtime（FRED、Eurostat、Trading Economics、國發會）",
+      "note": "通膨指標。PCE 是聯準會最重視的物價指標，核心指標不含食品與能源。",
       "mc": "R1"
     },
     {
@@ -1657,32 +1761,42 @@
       "lat": 39,
       "rows": [
         {
+          "e": "US_NFP",
           "l": "非農新增就業",
+          "f": "k",
           "v": "+29K"
         },
         {
+          "e": "US_UNRATE",
           "l": "失業率",
+          "f": "pct",
           "v": "4.2%",
           "d": 0.1
         },
         {
-          "l": "GDP Q3 年化季增",
+          "e": "US_GDP",
+          "l": "GDP 年化季增",
+          "f": "pct",
           "v": "3.4%"
         },
         {
+          "e": "US_ISM_MFG",
           "l": "ISM製造業",
+          "f": "idx",
           "v": "54.5",
           "d": -0.1
         },
         {
+          "e": "US_ISM_SVC",
           "l": "ISM服務業",
+          "f": "idx",
           "v": "54.9",
           "d": -0.5
         }
       ],
       "stamp": "9月",
-      "src": "Trading Economics",
-      "note": "非農與失業率為 9 月；GDP 為第三季年化季增率初值；ISM 為 9 月。",
+      "src": "iKDx-realtime（FRED、Eurostat、Trading Economics、國發會）",
+      "note": "就業與景氣指標。ISM 指數以 50 為榮枯線，高於 50 代表擴張。",
       "mc": "R2"
     },
     {
@@ -1694,14 +1808,36 @@
       "lat": 34,
       "rows": [
         {
+          "e": "CN_PMI_MFG",
           "l": "製造業PMI",
+          "f": "idx",
           "v": "52.1",
           "d": 0.6
+        },
+        {
+          "e": "CN_PMI_NMFG",
+          "l": "非製造業PMI",
+          "f": "idx"
+        },
+        {
+          "e": "CN_CPI",
+          "l": "CPI 年增",
+          "f": "pct"
+        },
+        {
+          "e": "CN_PPI",
+          "l": "PPI 年增",
+          "f": "pct"
+        },
+        {
+          "e": "CN_GDP",
+          "l": "GDP 年增",
+          "f": "pct"
         }
       ],
       "stamp": "9月",
-      "src": "Trading Economics",
-      "note": "中國製造業 PMI，9 月。",
+      "src": "iKDx-realtime（FRED、Eurostat、Trading Economics、國發會）",
+      "note": "中國官方統計。PMI 以 50 為榮枯線；PPI 是工廠出廠價，反映上游需求與產能過剩。",
       "mc": "L1"
     },
     {
@@ -1713,15 +1849,37 @@
       "lat": 49.5,
       "rows": [
         {
+          "e": "EU_CPI",
           "l": "CPI 年增",
+          "f": "pct",
           "v": "3.8%",
           "d": 0.6
+        },
+        {
+          "e": "EU_GDP",
+          "l": "GDP 年增",
+          "f": "pct"
+        },
+        {
+          "e": "EU_PMI_MFG",
+          "l": "製造業PMI",
+          "f": "idx"
+        },
+        {
+          "e": "EU_PMI_COMP",
+          "l": "綜合PMI",
+          "f": "idx"
+        },
+        {
+          "e": "EU_UNRATE",
+          "l": "失業率",
+          "f": "pct"
         }
       ],
       "stamp": "9月",
-      "src": "Trading Economics",
-      "note": "歐元區 9 月通膨。",
-      "mc": "R3"
+      "src": "iKDx-realtime（FRED、Eurostat、Trading Economics、國發會）",
+      "note": "歐元區經濟指標。PMI 以 50 為榮枯線。",
+      "mc": "R4"
     },
     {
       "id": "ec-jp",
@@ -1732,19 +1890,128 @@
       "lat": 36.5,
       "rows": [
         {
+          "e": "JP_CPI",
           "l": "CPI 年增",
+          "f": "pct",
           "v": "2.1%",
           "d": 0.2
         },
         {
+          "e": "JP_CORE_CPI",
           "l": "核心CPI 年增",
+          "f": "pct",
           "v": "2.1%"
+        },
+        {
+          "e": "JP_GDP",
+          "l": "GDP 年增",
+          "f": "pct"
+        },
+        {
+          "e": "JP_UNRATE",
+          "l": "失業率",
+          "f": "pct"
+        },
+        {
+          "e": "JP_TRADE",
+          "l": "貿易收支",
+          "f": "amt"
         }
       ],
       "stamp": "9月",
-      "src": "Trading Economics",
-      "note": "日本 9 月通膨。",
+      "src": "iKDx-realtime（FRED、Eurostat、Trading Economics、國發會）",
+      "note": "日本經濟指標。貿易收支為負代表逆差。",
       "mc": "L2"
+    },
+    {
+      "id": "ec-us-c",
+      "cat": "econ",
+      "short": "美國 消費",
+      "flag": "🇺🇸",
+      "lon": -98,
+      "lat": 39,
+      "rows": [
+        {
+          "e": "US_RETAIL",
+          "l": "零售銷售 月增",
+          "f": "pct"
+        },
+        {
+          "e": "US_CLAIMS",
+          "l": "初領失業金",
+          "f": "claims"
+        },
+        {
+          "e": "US_UMICH",
+          "l": "密大消費者信心",
+          "f": "idx"
+        }
+      ],
+      "stamp": "",
+      "src": "iKDx-realtime（FRED、Eurostat、Trading Economics、國發會）",
+      "note": "消費面的領先指標：零售銷售、每週初領失業救濟金人數，以及密西根大學消費者信心指數。",
+      "mc": "R3"
+    },
+    {
+      "id": "ec-tw-g",
+      "cat": "econ",
+      "short": "台灣 景氣",
+      "flag": "🇹🇼",
+      "lon": 120.9,
+      "lat": 23.7,
+      "rows": [
+        {
+          "e": "TW_LIGHT",
+          "l": "景氣燈號",
+          "f": "light"
+        },
+        {
+          "e": "TW_ORDERS",
+          "l": "外銷訂單",
+          "f": "amt"
+        },
+        {
+          "e": "TW_EXPORT",
+          "l": "出口 年增",
+          "f": "pct"
+        }
+      ],
+      "stamp": "",
+      "src": "iKDx-realtime（FRED、Eurostat、Trading Economics、國發會）",
+      "note": "景氣對策信號 9～45 分：藍燈（衰退）、黃藍燈、綠燈（穩定）、黃紅燈、紅燈（過熱），來源國發會。外銷訂單為經濟部統計（美元），出口為海關統計。",
+      "mc": "L3"
+    },
+    {
+      "id": "ec-tw-p",
+      "cat": "econ",
+      "short": "台灣 物價就業",
+      "flag": "🇹🇼",
+      "lon": 120.9,
+      "lat": 23.7,
+      "rows": [
+        {
+          "e": "TW_CPI",
+          "l": "CPI 年增",
+          "f": "pct",
+          "dp": 2
+        },
+        {
+          "e": "TW_UNRATE",
+          "l": "失業率",
+          "f": "pct",
+          "dp": 2
+        },
+        {
+          "e": "TW_GDP",
+          "l": "GDP 年增",
+          "f": "pct",
+          "dp": 2
+        }
+      ],
+      "stamp": "",
+      "src": "iKDx-realtime（FRED、Eurostat、Trading Economics、國發會）",
+      "note": "台灣主計總處統計：消費者物價、失業率與經濟成長率。",
+      "mc": "L4"
     }
   ],
   "landmarks": [

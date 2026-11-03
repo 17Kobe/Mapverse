@@ -174,6 +174,7 @@
         byId: {},
         countries: [],
         quotes: {},
+        econ: {}, // 經濟數據（econ.json 的 items）：代碼 → { v, prev, d, unit, ref, light?, stale? }
         generated: null,
         demo: false,
         activeRegion: 'all',
@@ -368,6 +369,18 @@
             if (window.Corps) Corps.applyFeed(await fetchJSON(DATA_BASE + 'tw-top.json?_=' + Date.now()));
         } catch (e) {
             /* 沿用內建資料 */
+        }
+    }
+    // 經濟數據：一個月才更新一次，最多每 10 分鐘讀一次。失敗就沿用上一份，沒有的話各列退回 markets.json 手寫的備用值
+    let econAt = 0;
+    async function loadEcon() {
+        if (Date.now() - econAt < 600e3) return;
+        econAt = Date.now();
+        try {
+            const j = await fetchJSON(DATA_BASE + 'econ.json?_=' + Date.now());
+            state.econ = j.items || {};
+        } catch (e) {
+            econAt = 0; // 失敗了，下一輪再試
         }
     }
     function makeDemo() {
@@ -1658,6 +1671,55 @@
         const d = new Date(t * 1000);
         return `${d.getMonth() + 1}/${d.getDate()}(${WEEK_ZH[d.getDay()]})`;
     };
+    // 經濟數據的顯示格式（markets.json 每列的 f）。數值來自 state.econ（iKDx-realtime 的 econ.json）
+    const LIGHTS = {
+        blue: ['藍燈', '#6db3ff'],
+        'yellow-blue': ['黃藍燈', '#8fd3d9'],
+        green: ['綠燈', '#62d58a'],
+        'yellow-red': ['黃紅燈', '#ffb34d'],
+        red: ['紅燈', '#ff6b6b'],
+    };
+    const fmtInt = (n) => Math.round(n).toLocaleString('en-US');
+    // 金額換算成「億」：TE 的單位是 USD Million / JPY Billion，其他單位不認得就回傳 null
+    const toYi = (v, unit) => (/Million/i.test(unit) ? v / 100 : /Billion/i.test(unit) ? v * 10 : null);
+    const signed = (n, s) => (n > 0 ? '+' : n < 0 ? '-' : '') + s;
+    function econView(r, q) {
+        const dp = r.dp != null ? r.dp : 1,
+            d = q.d,
+            arrowD = (txt) => (d == null ? '' : `${arrow(d)}${txt}`);
+        switch (r.f || 'pct') {
+            case 'idx':
+                return { val: q.v.toFixed(1), chg: arrowD(Math.abs(d).toFixed(1)) };
+            case 'k': // 千人（非農就業新增人數）
+                return { val: `${signed(q.v, fmtInt(Math.abs(q.v)))}K`, chg: arrowD(`${fmtInt(Math.abs(d))}K`) };
+            case 'claims':
+                return { val: `${fmtInt(q.v)}K`, chg: arrowD(fmtInt(Math.abs(d))) };
+            case 'amt': {
+                const yi = toYi(q.v, q.unit);
+                if (yi == null) return { val: fmtInt(q.v), chg: '' };
+                const pyi = q.prev == null ? null : toYi(q.prev, q.unit);
+                // 前後期都是正數（外銷訂單）才顯示變動幅度；貿易收支這類會正負翻轉的只顯示數值（差額沒意義，也佔寬度）
+                const chg =
+                    pyi != null && pyi > 0 && yi > 0 ? `${arrow(yi - pyi)}${Math.abs(((yi - pyi) / pyi) * 100).toFixed(1)}%` : '';
+                return { val: `${yi < 0 ? '-' : ''}${fmtInt(Math.abs(yi))}億`, chg, cd: pyi == null ? 0 : yi - pyi };
+            }
+            case 'light': {
+                const [name, col] = LIGHTS[q.light] || ['', null];
+                return { val: `${q.v}分 ${name}`.trim(), chg: arrowD(Math.abs(d)), vcol: col };
+            }
+            default: // pct
+                return { val: `${q.v.toFixed(dp)}%`, chg: arrowD(Math.abs(d).toFixed(dp)) };
+        }
+    }
+    // 期間：'2026-09' → 9月、'2026-Q3' → Q3、'2026-10-24' → 10/24
+    function econRefLabel(ref) {
+        let m = /^\d{4}-Q(\d)$/.exec(ref || '');
+        if (m) return `Q${m[1]}`;
+        m = /^\d{4}-(\d{2})-(\d{2})$/.exec(ref || '');
+        if (m) return `${+m[1]}/${+m[2]}`;
+        m = /^\d{4}-(\d{2})$/.exec(ref || '');
+        return m ? `${+m[1]}月` : '';
+    }
     // 一列資料要顯示的文字：名稱、數值、變動（含顏色）。行情從 state.quotes 取，沒有行情的用 markets.json 寫的 v / d
     function topicRowView(r) {
         if (r.note) return { note: r.note };
@@ -1667,8 +1729,23 @@
             const a = state.quotes[r.calc[0]],
                 b = state.quotes[r.calc[1]];
             if (a && b) {
-                const d = (a.c - b.c) * 100;
-                Object.assign(v, { val: `${Math.round((a.p - b.p) * 100)}bp`, chg: bp(d), col: pctColor(d) });
+                const d = (a.c - b.c) * 100,
+                    spread = Math.round((a.p - b.p) * 100);
+                Object.assign(v, { val: `${spread}bp`, chg: bp(d), col: pctColor(d) });
+                // 長天期殖利率低於短天期（殖利率曲線倒掛），常被視為景氣衰退的前兆
+                if (spread < 0) Object.assign(v, { lab: `${r.l} 倒掛`, vcol: TONES.bad });
+            }
+        } else if (r.e) {
+            const q = state.econ[r.e];
+            if (q) {
+                const x = econView(r, q);
+                Object.assign(v, { val: x.val, chg: x.chg, vcol: x.vcol || null, ref: econRefLabel(q.ref), stale: !!q.stale });
+                const cd = x.cd != null ? x.cd : q.d;
+                if (cd) v.col = pctColor(cd);
+            } else if (r.v != null) {
+                // 連不上 econ.json：退回手寫的備用值
+                v.val = r.v;
+                if (r.d) Object.assign(v, { chg: `${arrow(r.d)}${Math.abs(r.d)}`, col: pctColor(r.d) });
             }
         } else if (r.s) {
             const q = state.quotes[r.s];
@@ -1690,8 +1767,19 @@
         }
         return v;
     }
-    // 卡片標題右側的時間：手動維護的寫在 stamp，有行情的用第一個行情的成交日
+    // 卡片標題右側的時間：有經濟數據的用最新的統計期間；手動維護的寫在 stamp；有行情的用第一個行情的成交日
     function topicStamp(c) {
+        const refs = c.rows.map((r) => r.e && state.econ[r.e] && state.econ[r.e].ref).filter(Boolean);
+        if (refs.length) {
+            // 期間字串 'YYYY-MM' / 'YYYY-Qn' / 'YYYY-MM-DD'：換成可比較的月份數，取最新的那個
+            const key = (s) => {
+                const q = /^(\d{4})-Q(\d)$/.exec(s);
+                if (q) return +q[1] * 12 + +q[2] * 3;
+                const m = /^(\d{4})-(\d{2})/.exec(s);
+                return m ? +m[1] * 12 + +m[2] : 0;
+            };
+            return econRefLabel(refs.reduce((a, b) => (key(b) > key(a) ? b : a)));
+        }
         if (c.stamp) return c.stamp;
         for (const r of c.rows) {
             const q = state.quotes[r.s || (r.calc && r.calc[0])];
@@ -1991,13 +2079,16 @@
             .map((x) =>
                 x.note
                     ? `<div>${esc(x.note)}</div>`
-                    : `<div><b>${esc(x.lab)}</b>　<span style="color:${x.vcol || '#fff'}">${esc(x.val)}</span>${x.chg ? `　<span style="color:${x.col}">${esc(x.chg)}</span>` : ''}</div>`,
+                    : `<div><b>${esc(x.lab)}</b>　<span style="color:${x.vcol || '#fff'}">${esc(x.val)}</span>${x.chg ? `　<span style="color:${x.col}">${esc(x.chg)}</span>` : ''}${x.ref ? `　<span class="small">${esc(x.ref)}${x.stale ? ' ⚠️沿用舊資料' : ''}</span>` : ''}</div>`,
             )
             .join('');
         const quoted = c.rows.some((r) => r.s || r.calc);
-        const src = quoted
-            ? '行情來自 Yahoo Finance、CNBC、Trading Economics，通常延遲 15 分鐘以上。'
-            : `資料來源：${c.src || '手動整理'}。這是手動維護的資料，可能不是最新。`;
+        const econ = c.rows.some((r) => r.e);
+        const src = econ
+            ? `資料來源：${c.src || '手動整理'}。各項為最近一次公布的數值，右側小字是統計期間；變動是和前一期的差。`
+            : quoted
+              ? '行情來自 Yahoo Finance、CNBC、Trading Economics，通常延遲 15 分鐘以上。'
+              : `資料來源：${c.src || '手動整理'}。這是手動維護的資料，可能不是最新。`;
         showSheet(`
     <div class="hd"><span class="big">${flagHtml(c.flag, 'flg big-flg')}</span>
       <div><div class="nm">${esc(c.short)}</div><div class="sym">${T.icon} ${T.label}</div></div></div>
@@ -3354,7 +3445,15 @@
             : '--';
         const topic = TOPICS[state.activeRegion];
         if (state.demo) line = '🎮 演示資料（連不上行情來源，數字是隨機的）';
-        else if (topic) line = `${topic.icon} ${topic.label} · 更新於 ${when} · 行情約延遲 15 分鐘，其餘為手動維護`;
+        else if (topic) {
+            const note =
+                state.activeRegion === 'econ'
+                    ? '自動更新，顯示最近一次公布值'
+                    : ['rate', 'geo'].includes(state.activeRegion)
+                      ? '手動整理，可能不是最新'
+                      : '行情約延遲 15 分鐘';
+            line = `${topic.icon} ${topic.label} · 更新於 ${when} · ${note}`;
+        }
         else line = `🟢 ${open.length} 個市場開盤中 · 更新於 ${when} · 資料約延遲 15 分鐘`;
         $('#statusLine').textContent = line;
     }
@@ -3534,7 +3633,7 @@
         );
         state.maps.forEach((m) => (state.byId[pad3(m.id)] = m));
         state.countries = topojson.feature(topo, topo.objects.countries).features;
-        await Promise.all([loadQuotes(), loadTwTop()]);
+        await Promise.all([loadQuotes(), loadTwTop(), loadEcon()]);
 
         // 開啟網頁時選「現在正在開盤」的區域（都休市就選最快開盤的），之後由使用者自己切換
         state.activeRegion = pickAutoRegion();
@@ -3576,7 +3675,7 @@
         }
 
         setInterval(async () => {
-            await loadQuotes();
+            await Promise.all([loadQuotes(), loadEcon()]);
             tick();
         }, 60000);
         setInterval(tick, 30000);
@@ -3588,7 +3687,7 @@
         }, 4000);
         document.addEventListener('visibilitychange', async () => {
             if (!document.hidden) {
-                await loadQuotes();
+                await Promise.all([loadQuotes(), loadEcon()]);
                 tick();
             }
         });
