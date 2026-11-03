@@ -6,6 +6,8 @@
 <meta name="theme-color" content="#1a2b47">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>地圖世界</title>
+<!-- 嵌入模式（網址加 ?embed=1，例如 iKDx 的「探索」分頁）：只留股市地圖，隱藏概況卡與圖層列。在載入 CSS 前加上 class 避免閃一下 -->
+<script>if (/[?&]embed=1(&|$)/.test(location.search)) document.documentElement.classList.add('embed');</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Barlow+Semi+Condensed:wght@600;700&display=swap" rel="stylesheet">

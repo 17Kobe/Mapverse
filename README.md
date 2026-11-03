@@ -21,6 +21,8 @@
 > 本機預覽（Windows）：直接雙擊 `start_local.bat`，或執行 `python scripts/serve_local.py`，會先抓一次真實報價再開啟 `http://localhost:8000/`。加上 `--no-fetch` 可跳過抓取。不能直接雙擊 `index.html`，瀏覽器的 CORS 限制會擋掉 `markets.json`。
 >
 > 本地預覽（手動）：`cd site && python3 -m http.server 8000`，沒有 `quotes.json` 時會顯示隨機的「演示資料」。
+>
+> 嵌入模式：網址加上 `?embed=1`（例如 `https://你的使用者名稱.github.io/儲存庫名/?embed=1`）只會顯示股市地圖，隱藏上方的概況卡（全球情緒、更新時間）與圖層列，適合用 `<iframe>` 嵌進其它網站（例如 iKDx 的「探索」分頁）。不加參數時一切照舊。
 
 ## 檔案結構
 

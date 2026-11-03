@@ -428,3 +428,14 @@ a.big-btn{text-align:center;text-decoration:none}
 @keyframes slidein{from{transform:translateX(-24px);opacity:0}to{transform:none;opacity:1}}
 
 body.noanim *,body.noanim *::before{animation:none!important;transition:none!important}
+
+/* ---------- 嵌入模式（?embed=1）：只留股市地圖，隱藏概況卡與圖層列（也就沒有旅遊等其它圖層、設定按鈕） ---------- */
+html.embed #rail,html.embed #hud{display:none}
+@media (max-width:899px){
+  html.embed #chips{top:calc(env(safe-area-inset-top) + 6px)}
+}
+@media (min-width:900px){
+  /* 沒有概況卡：篩選列靠左，其它指數面板移到篩選列下方 */
+  html.embed #chips{left:12px}
+  html.embed #side{top:60px}
+}
