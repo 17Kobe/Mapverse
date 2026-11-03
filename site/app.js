@@ -2208,7 +2208,24 @@
                     .filter((z) => z.y > H / 2)
                     .map((z) => z.y - GAP),
             );
-            const build = (multi) => {
+            // 每張旗幟的未放大高度（multi = 所有指數整張列出）
+            const h1 = (o, multi) => {
+                const n = grpOf(o.m).length;
+                return multi && n > 1 ? 24 + n * 16 + 4 : FULL_H;
+            };
+            const colsOf = (list) => [0, 1].map((col) => list.filter((o) => (o.m.g10[0] === 'L' ? 0 : 1) === col));
+            // 最大放大倍率：讓較高的那欄剛好放進「上緣到下緣」之間（不超過手機版的 U）
+            const fitU = (multi) =>
+                Math.min(
+                    U,
+                    ...colsOf(ps).map((seq) =>
+                        seq.length ? (lim - top0 - GAP * (seq.length - 1)) / seq.reduce((s, o) => s + h1(o, multi), 0) : U,
+                    ),
+                );
+            // u：這一組旗幟共用的放大倍率。畫面放不下整張列出時會縮小（和主題卡片一樣），
+            // 所以多指數的國家不用輪播，也能一眼看完所有指數
+            const build = (multi, u) => {
+                const iw = Math.min(166, Math.floor(colW / u)); // 未放大的寬度
                 const items = ps.map((o) => {
                     const n = grpOf(o.m).length,
                         mu = multi && n > 1;
@@ -2217,30 +2234,33 @@
                         mu,
                         col: o.m.g10[0] === 'L' ? 0 : 1,
                         no: +o.m.g10.slice(1),
-                        w: mu ? multiW : Math.round(Math.max(n > 1 ? 136 : 118, headNeedW(o.m, n > 1 ? n * 6 + 4 : 0)) * U),
-                        h: Math.round((mu ? 24 + n * 16 + 4 : FULL_H) * U),
+                        w: mu ? Math.round(iw * u) : Math.round(Math.max(n > 1 ? 136 : 118, headNeedW(o.m, n > 1 ? n * 6 + 4 : 0)) * u),
+                        h: Math.round(h1(o, multi) * u),
                     };
                 });
                 const w = Math.min(colW, Math.max(...items.map((it) => it.w)));
                 const out = new Map();
                 const cols = [0, 1].map((col) => items.filter((it) => it.col === col).sort((a, b) => a.no - b.no));
                 const hs = cols.map((seq) => seq.reduce((s, it) => s + it.h + GAP, -GAP));
-                const y0 = lim - Math.max(...hs);
-                if (y0 < top0) return null;
+                // 由上往下排（和主題卡片一樣從篩選列下方開始），超出下緣就放棄
+                if (top0 + Math.max(...hs) > lim) return null;
                 cols.forEach((seq, col) => {
-                    let y = y0;
+                    let y = top0;
                     for (const it of seq) {
                         out.set(it.o.m.s, {
                             r: { x: col ? W - 4 - w : 4, y, w, h: it.h },
                             mode: it.mu ? 'multi' : 'full',
                             pos: 'col',
+                            u,
                         });
                         y += it.h + GAP;
                     }
                 });
                 return out;
             };
-            return build(true) || build(false);
+            const u0 = fitU(true),
+                uMulti = u0 < U ? u0 * 0.99 : u0; // 取整數像素會多出幾 px，留一點餘裕
+            return (uMulti >= 0.6 && build(true, uMulti)) || build(false, Math.max(0.6, fitU(false)));
         };
         // 手機版：pin 的國家（中、港、日、韓、台、星、馬、印尼）改用左右兩欄排版。
         // 每張旗幟盡量放在自己動物的正上方，同一欄依動物由北到南往下疊，擠不下再整欄往上收，
@@ -2542,8 +2562,9 @@
                 return;
             }
             // 旗幟內部用「未放大」的座標畫，所以寬高要除回倍率，最後在 transform 再 scale(U)
-            const w = o.b.r.w / U,
-                h = o.b.r.h / U,
+            const Uc = o.b.u || U; // 全球檢視縮小排版時，每張旗幟自己的倍率
+            const w = o.b.r.w / Uc,
+                h = o.b.r.h / Uc,
                 mode = o.b.mode,
                 mini = mode === 'mini',
                 multi = mode === 'multi';
@@ -2556,7 +2577,7 @@
             // 對齊整數像素，細線才會銳利
             const bx = Math.round(o.b.r.x),
                 by = Math.round(o.b.r.y);
-            b.styleQ('display', null).attrQ('transform', `translate(${bx - o.x},${by - o.y}) scale(${U})`);
+            b.styleQ('display', null).attrQ('transform', `translate(${bx - o.x},${by - o.y}) scale(${Uc})`);
             // 旗幟上半部的名稱色帶（漲跌色；休市時變灰），迷你版不畫色帶
             drawBanner(b, w, h, {
                 bg: st === 'closed' ? 'url(#bannerOff)' : 'url(#bannerBg)',
