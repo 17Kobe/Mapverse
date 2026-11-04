@@ -408,6 +408,63 @@
             if (this.textContent !== s) this.textContent = s;
         });
     };
+    // 白色數值（股價、商品、匯率、經濟數據）的小字處理：小數部分與單位（萬、億、K、B、%、bp…）縮小，
+    // 有無小數點的數字視覺上才好比較。切成「一般 / 小字」片段，小字片段包成 <tspan class="nd">（CSS 縮到 NUM_SMALL 倍）
+    const NUM_SMALL = 0.72;
+    const NUM_TOK = /(\.\d+)|(\d[\d,]*)|(×100M|×10K|bp|[%KBM萬万만億亿억兆])/g;
+    function numParts(s) {
+        const out = [];
+        const push = (t, small) => {
+            if (!t) return;
+            const p = out[out.length - 1];
+            if (p && p[1] === small) p[0] += t;
+            else out.push([t, small]);
+        };
+        let last = 0,
+            afterNum = false,
+            m;
+        NUM_TOK.lastIndex = 0;
+        while ((m = NUM_TOK.exec(s))) {
+            if (m.index > last) {
+                push(s.slice(last, m.index), false);
+                afterNum = false;
+            }
+            if (m[2]) {
+                push(m[0], false);
+                afterNum = true;
+            } else if (m[1]) {
+                push(m[0], true);
+                afterNum = true;
+            } else push(m[0], afterNum); // 單位只在緊接數字之後才縮小（避免誤傷其他文字）
+            last = NUM_TOK.lastIndex;
+        }
+        push(s.slice(last), false);
+        return out;
+    }
+    // 含小字片段的數值寬度（以 .rv 的字級量一般片段，小字片段按比例縮）
+    function numW(s, cls = 'rv') {
+        let w = 0;
+        for (const [t, small] of numParts(s == null ? '' : String(s))) w += textWidthOf(t, cls) * (small ? NUM_SMALL : 1);
+        return w;
+    }
+    d3.selection.prototype.numQ = function (v) {
+        return this.each(function (d, i, g) {
+            const x = typeof v === 'function' ? v.call(this, d, i, g) : v,
+                s = x == null ? '' : String(x);
+            if (this._nv === s && (s === '' || this.firstChild)) return;
+            this._nv = s;
+            while (this.firstChild) this.removeChild(this.firstChild);
+            for (const [t, small] of numParts(s)) {
+                if (!small) this.appendChild(document.createTextNode(t));
+                else {
+                    const e = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+                    e.setAttribute('class', 'nd');
+                    e.textContent = t;
+                    this.appendChild(e);
+                }
+            }
+        });
+    };
     const fmtPct = (p, d = 2) => (p >= 0 ? '+' : '') + p.toFixed(d) + '%';
     const arrow = (p) => (p > 0 ? '▲' : p < 0 ? '▼' : '–');
 
@@ -2278,12 +2335,12 @@
             const rvx = w - 8 - (x.chg ? textWidthOf(x.chg, 'rp') + 5 : 0);
             rn.attrQ('x', 9)
                 .attrQ('y', y + 12.5)
-                .styleQ('font-size', fit(x.lab, rvx - textWidthOf(x.val, 'rv') - 13))
+                .styleQ('font-size', fit(x.lab, rvx - numW(x.val) - 13))
                 .textQ(x.lab);
             rv.attrQ('x', rvx)
                 .attrQ('y', y + 13.5)
                 .styleQ('fill', x.vcol)
-                .textQ(x.val);
+                .numQ(x.val);
             // 漲跌幅超過 BIG_MOVE（%）：實心底色 + 白字，和股市旗幟一致
             const big = !!x.pq && !!x.chg && Math.abs(x.cd) >= BIG_MOVE,
                 cw = x.chg ? textWidthOf(x.chg, 'rp') : 0;
@@ -3129,7 +3186,7 @@
                     vs = cq ? fmtN(cq.p, 'short') : '--',
                     ps = cq ? `${arrow(cp)}${Math.abs(cp).toFixed(2)}%` : '';
                 t2.select('.lb').textQ(lb);
-                t2.select('.va').textQ(vs);
+                t2.select('.va').numQ(vs);
                 const big = !!cq && Math.abs(cp) >= BIG_MOVE;
                 t2.select('.pc')
                     .attrQ('fill', big ? '#fff' : pctColor(cp))
@@ -3137,7 +3194,7 @@
                 if (big) {
                     // t2 整行置中：算出漲跌幅這一段的位置（lb + va + 5px 間距 + pc）
                     const lw = lb ? tspanWidthOf(lb, 't2', 'lb') : 0,
-                        vw = tspanWidthOf(vs, 't2', 'va'),
+                        vw = numW(vs),
                         pw = tspanWidthOf(ps, 't2', 'pc');
                     hlBox = { x: w / 2 - (lw + vw + 5 + pw) / 2 + lw + vw + 5 - 3, y: FULL_BASE - 12.5, w: pw + 6, h: 16 };
                     hlPct = cp;
@@ -3197,7 +3254,7 @@
                         nx = isCorp ? 22 : 9,
                         lbl = isCorp ? $t(x.name) : x.abbr || x.zh,
                         lw = textWidthOf(lbl, 'rn'),
-                        room = rvx - textWidthOf(vs, 'rv') - nx - 4;
+                        room = rvx - numW(vs) - nx - 4;
                     r.select('.rk')
                         .attrQ('x', 19.5)
                         .attrQ('y', y + 12.3)
@@ -3210,7 +3267,7 @@
                     r.select('.rv')
                         .attrQ('x', rvx)
                         .attrQ('y', y + 13.5)
-                        .textQ(vs);
+                        .numQ(vs);
                     const big = !!rq && Math.abs(rq.pct) >= BIG_MOVE;
                     r.select('.rhl')
                         .styleQ('display', big ? null : 'none')
