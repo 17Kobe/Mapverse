@@ -82,8 +82,9 @@
 
     function t(key, params) {
         if (key == null) return '';
-        var s = Object.prototype.hasOwnProperty.call(dict, key) ? dict[key] : key;
-        if (s === key && lang !== 'zh-TW' && HAN.test(key)) missing[key] = 1;
+        var has = Object.prototype.hasOwnProperty.call(dict, key);
+        var s = has ? dict[key] : key;
+        if (!has && lang !== 'zh-TW' && HAN.test(key)) missing[key] = 1; // 字典沒有這個 key（譯文跟原文一樣的不算）
         if (params) s = String(s).replace(/\{(\w+)\}/g, function (m, k) {
             return params[k] != null ? params[k] : m;
         });
@@ -114,7 +115,7 @@
         browserLang: function () {
             return fromBrowser() || 'en';
         },
-        // 字典裡沒有的中文字串（開發時用：網址加 ?i18n=missing，或在 console 看 I18n.missingKeys()）
+        // 字典裡沒有的中文字串（開發時用：在 console 執行 I18n.missingKeys()）
         missingKeys: function () {
             return Object.keys(missing);
         },

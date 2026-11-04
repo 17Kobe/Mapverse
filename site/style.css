@@ -490,3 +490,6 @@ html.embed #rail,html.embed #hud{display:none}
 /* 設定面板的語言選單：3 欄 */
 .gtabs.langs{grid-template-columns:repeat(3,minmax(0,1fr))}
 .gtabs.langs .gtab{padding:8px 2px}
+/* 分隔標題的字距是為中日文設計的（4px）；英文、韓文字母本身就比較寬，字距縮小 */
+html[lang="en"] .bubble .rn.sec{letter-spacing:.6px}
+html[lang="ko"] .bubble .rn.sec{letter-spacing:1.6px}

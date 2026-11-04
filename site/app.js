@@ -3195,7 +3195,7 @@
                     // 名次用淺藍色，和金色的名稱分得出來
                     const isCorp = k2 === 'corp',
                         nx = isCorp ? 22 : 9,
-                        lbl = isCorp ? x.name : x.abbr || x.zh,
+                        lbl = isCorp ? $t(x.name) : x.abbr || x.zh,
                         lw = textWidthOf(lbl, 'rn'),
                         room = rvx - textWidthOf(vs, 'rv') - nx - 4;
                     r.select('.rk')
