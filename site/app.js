@@ -234,7 +234,7 @@
         countries: [],
         quotes: {},
         econ: {}, // 經濟數據（econ.json 的 items）：代碼 → { v, prev, d, unit, ref, light?, stale? }
-        tops: null, // 其它九個十大市值國家的市值前十大公司（top10.json 的 countries）：國家代碼 → { title, cur, date, top, rows }
+        tops: null, // 其它十個國家 / 地區的市值前十大公司（top10.json 的 countries）：國家代碼 → { title, cur, date, top, rows }
         generated: null,
         demo: false,
         activeRegion: 'all',
@@ -492,7 +492,7 @@
             /* 沿用內建資料 */
         }
     }
-    // 其它九個十大市值國家（中日韓印英德法美加）的市值前十大公司：iKDx-realtime 的 top10.json，最多每 4 分鐘讀一次。
+    // 其它十個國家 / 地區（中日韓印英德法美加港）的市值前十大公司：iKDx-realtime 的 top10.json，最多每 4 分鐘讀一次。
     // 失敗就沿用上一份，沒有的話那一國的旗幟照舊（不會多出公司列）
     let topsAt = 0;
     async function loadTops() {
@@ -1908,7 +1908,7 @@
     // 台灣旗幟放大時（縮放倍率 ≥ extraK），在加權 / 櫃買下面加一條分隔標題和市值前十大公司（股價 + 漲跌幅）
     const EXTRA_N = 10,
         EXTRA_K = 3; // SEC_H（分隔標題的高度）在下方主題卡片那段定義
-    // 其它十大市值國家：markets.json 的 top 是 top10.json 的國家代碼（cn / jp / kr / in / uk / de / fr / us / ca）。
+    // 其它國家 / 地區：markets.json 的 top 是 top10.json 的國家代碼（cn / jp / kr / in / uk / de / fr / us / ca / hk）。
     // 資料不到十家（還沒讀到、或抓取失敗）就當作沒有，旗幟維持原樣
     const topFeedOf = (m) => {
         const t = m.top && state.tops && state.tops[m.top];

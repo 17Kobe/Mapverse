@@ -103,6 +103,7 @@
     {
       "type": "map",
       "s": "^HSI",
+      "top": "hk",
       "pin": 1,
       "under": "000001.SS",
       "nx": 120,
