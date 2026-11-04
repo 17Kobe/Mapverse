@@ -312,16 +312,41 @@
     }
     // 開啟網頁時只在這三個主要區域之間挑（中東非洲市場少，需要時手動點）
     const AUTO_REGIONS = ['asia', 'europe', 'americas'];
+    // 剛開盤的前 30 分鐘：行情有 15 分鐘延遲，最新一筆還是前一天收盤，會被 marketStatus 的「資料太舊」規則判成休市；
+    // 挑區域時這段時間改看交易時段表，不然美股剛開盤時會被忽略
+    function justOpened(m) {
+        if (statusAt(m, new Date()) !== 'open') return false;
+        const { min } = parts(m.tz, new Date());
+        const s = m.ses.map((x) => toMin(x[0])).filter((t) => t <= min);
+        return s.length > 0 && min - Math.max(...s) < 30;
+    }
+    const isOpenNow = (m) => marketStatus(m) === 'open' || justOpened(m);
     function pickAutoRegion() {
-        const count = {};
-        AUTO_REGIONS.forEach((r) => (count[r] = 0));
-        for (const m of state.maps) if (count[m.r] != null && marketStatus(m) === 'open') count[m.r]++;
+        // 優先順序：1) 台股開盤中 → 亞太；2) 美股開盤中 → 美洲（時段用各市場自己的時區算，夏令 / 冬令自動換算）；
+        // 3) 其餘時間比較各區域「開盤中最重要的市場」權重（markets.json 的 w），歐洲約台灣下午 3~4 點到凌晨，
+        //    美股收盤到亞洲開盤之間（清晨）是亞太（澳紐先開）。
+        // 不用「開盤家數」：歐洲小市場多，晚上美股開盤時家數還是歐洲比較多，會一直停在歐洲
+        for (const [sym, region] of [
+            ['^TWII', 'asia'],
+            ['^GSPC', 'americas'],
+        ]) {
+            const m = state.bySym[sym];
+            if (m && isOpenNow(m)) return region;
+        }
+        const count = {},
+            score = {};
+        AUTO_REGIONS.forEach((r) => (count[r] = score[r] = 0));
+        for (const m of state.maps)
+            if (count[m.r] != null && isOpenNow(m)) {
+                count[m.r]++;
+                score[m.r] = Math.max(score[m.r], m.w || 0);
+            }
         let best = null,
             bc = 0;
         for (const r of AUTO_REGIONS)
-            if (count[r] > bc) {
+            if (count[r] > 0 && score[r] > bc) {
                 best = r;
-                bc = count[r];
+                bc = score[r];
             }
         if (best) return best;
         // 都休市：選最快開盤的區域
