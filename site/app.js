@@ -412,7 +412,8 @@
     // 有無小數點的數字視覺上才好比較。切成「一般 / 小字」片段，小字片段包成 <tspan class="nd">（CSS 縮到 NUM_SMALL 倍）
     const NUM_SMALL = 0.72;
     const NUM_TOK = /(\.\d+)|(\d[\d,]*)|(×100M|×10K|bp|[%KBM萬万만億亿억兆])/g;
-    function numParts(s) {
+    // uo（unit only）：漲跌幅用，只縮小 % 和 bp，小數維持原大小
+    function numParts(s, uo) {
         const out = [];
         const push = (t, small) => {
             if (!t) return;
@@ -433,32 +434,32 @@
                 push(m[0], false);
                 afterNum = true;
             } else if (m[1]) {
-                push(m[0], true);
+                push(m[0], !uo);
                 afterNum = true;
-            } else push(m[0], afterNum); // 單位只在緊接數字之後才縮小（避免誤傷其他文字）
+            } else push(m[0], afterNum && (!uo || m[0] === '%' || m[0] === 'bp')); // 單位只在緊接數字之後才縮小（避免誤傷其他文字）
             last = NUM_TOK.lastIndex;
         }
         push(s.slice(last), false);
         return out;
     }
     // 含小字片段的數值寬度（以 .rv 的字級量一般片段，小字片段按比例縮）
-    function numW(s, cls = 'rv') {
+    function numW(s, cls = 'rv', uo) {
         let w = 0;
-        for (const [t, small] of numParts(s == null ? '' : String(s))) w += textWidthOf(t, cls) * (small ? NUM_SMALL : 1);
+        for (const [t, small] of numParts(s == null ? '' : String(s), uo)) w += textWidthOf(t, cls) * (small ? NUM_SMALL : 1);
         return w;
     }
-    d3.selection.prototype.numQ = function (v) {
+    d3.selection.prototype.numQ = function (v, uo) {
         return this.each(function (d, i, g) {
             const x = typeof v === 'function' ? v.call(this, d, i, g) : v,
                 s = x == null ? '' : String(x);
             if (this._nv === s && (s === '' || this.firstChild)) return;
             this._nv = s;
             while (this.firstChild) this.removeChild(this.firstChild);
-            for (const [t, small] of numParts(s)) {
+            for (const [t, small] of numParts(s, uo)) {
                 if (!small) this.appendChild(document.createTextNode(t));
                 else {
                     const e = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
-                    e.setAttribute('class', 'nd');
+                    e.setAttribute('class', uo ? 'nu' : 'nd');
                     e.textContent = t;
                     this.appendChild(e);
                 }
@@ -2332,7 +2333,7 @@
                 rp.textQ('');
                 return;
             }
-            const rvx = w - 8 - (x.chg ? textWidthOf(x.chg, 'rp') + 5 : 0);
+            const rvx = w - 8 - (x.chg ? numW(x.chg, 'rp', true) + 5 : 0);
             rn.attrQ('x', 9)
                 .attrQ('y', y + 12.5)
                 .styleQ('font-size', fit(x.lab, rvx - numW(x.val) - 13))
@@ -2343,7 +2344,7 @@
                 .numQ(x.val);
             // 漲跌幅超過 BIG_MOVE（%）：實心底色 + 白字，和股市旗幟一致
             const big = !!x.pq && !!x.chg && Math.abs(x.cd) >= BIG_MOVE,
-                cw = x.chg ? textWidthOf(x.chg, 'rp') : 0;
+                cw = x.chg ? numW(x.chg, 'rp', true) : 0;
             g.select('.rhl')
                 .styleQ('display', big ? null : 'none')
                 .attrQ('x', w - 8 - cw - 3)
@@ -2354,7 +2355,7 @@
             rp.attrQ('x', w - 8)
                 .attrQ('y', y + 13.5)
                 .styleQ('fill', big ? '#fff' : x.col)
-                .textQ(x.chg);
+                .numQ(x.chg, true);
         });
     }
     // 目前篩選的卡片位置：手機版排成左右兩欄；電腦版放在各自國家附近，彼此與地標、介面都不重疊
@@ -3190,12 +3191,12 @@
                 const big = !!cq && Math.abs(cp) >= BIG_MOVE;
                 t2.select('.pc')
                     .attrQ('fill', big ? '#fff' : pctColor(cp))
-                    .textQ(ps);
+                    .numQ(ps, true);
                 if (big) {
                     // t2 整行置中：算出漲跌幅這一段的位置（lb + va + 5px 間距 + pc）
                     const lw = lb ? tspanWidthOf(lb, 't2', 'lb') : 0,
                         vw = numW(vs),
-                        pw = tspanWidthOf(ps, 't2', 'pc');
+                        pw = numW(ps, 'rp', true); // .pc 與 .rp 同為 13.5px
                     hlBox = { x: w / 2 - (lw + vw + 5 + pw) / 2 + lw + vw + 5 - 3, y: FULL_BASE - 12.5, w: pw + 6, h: 16 };
                     hlPct = cp;
                 }
@@ -3246,7 +3247,7 @@
                     const vs =
                         rq && rq.p != null ? (k2 === 'corp' && rq.p >= 1e5 ? fmtWan(rq.p) : fmtN(rq.p, 'short')) : '--',
                         ps = rq ? `${arrow(rq.pct)}${Math.abs(rq.pct).toFixed(2)}%` : '';
-                    const rvx = w - 8 - (ps ? textWidthOf(ps, 'rp') : 0) - 5;
+                    const rvx = w - 8 - (ps ? numW(ps, 'rp', true) : 0) - 5;
                     // 數字維持和單一指數一樣大，名稱放不下時才縮小名稱
                     // 公司列：名次（.rk，靠右對齊在固定欄寬內，個位數和十位數的名稱才會對齊）和名稱（.rn）分開畫，
                     // 名次用淺藍色，和金色的名稱分得出來
@@ -3271,16 +3272,16 @@
                     const big = !!rq && Math.abs(rq.pct) >= BIG_MOVE;
                     r.select('.rhl')
                         .styleQ('display', big ? null : 'none')
-                        .attrQ('x', w - 8 - (big ? textWidthOf(ps, 'rp') : 0) - 3)
+                        .attrQ('x', w - 8 - (big ? numW(ps, 'rp', true) : 0) - 3)
                         .attrQ('y', y + 1.5)
-                        .attrQ('width', big ? textWidthOf(ps, 'rp') + 6 : 0)
+                        .attrQ('width', big ? numW(ps, 'rp', true) + 6 : 0)
                         .attrQ('height', 14)
                         .styleQ('fill', big ? hlColor(rq.pct) : null);
                     r.select('.rp')
                         .attrQ('x', w - 8)
                         .attrQ('y', y + 13.5)
                         .styleQ('fill', big ? '#fff' : rq ? pctColor(rq.pct) : null)
-                        .textQ(ps);
+                        .numQ(ps, true);
                 });
             } else {
                 const ms = fmtPct(pct, 1),

@@ -350,6 +350,8 @@ body.noanim .corps .bk,body.noanim .corps .flame{animation:none}
 .bubble .t2 .pc{font-size:13.5px}
 /* 白色數值的小數部分與單位（萬、億、K、%…）縮小；倍率要和 app.js 的 NUM_SMALL 一致 */
 .bubble .nd{font-size:.72em;letter-spacing:0;fill-opacity:.62}
+/* 漲跌幅的 % 與 bp：只縮小，不變色 */
+.bubble .nu{font-size:.72em;letter-spacing:0}
 .bubble .flag-b{fill:none;stroke:var(--gold-l);stroke-width:1;stroke-opacity:.85}
 /* ---------- 旅遊地圖（台灣） ---------- */
 body.travel #hud .hp{display:none}
