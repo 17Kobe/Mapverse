@@ -11,6 +11,7 @@
   // 網頁載入後會用 iKDx-realtime 每天更新的 tw-top.json 覆蓋市值與名次（applyFeed），連不上就沿用這裡的數字
   let dataDate = '2026-10-23';
   let live = false;
+  let liveAt = '';
   const TOP_SHOWN = 10; // 只畫前十大；掉出前十的公司建築自動收起來
   const CORPS = [
     { rk: 1, s: '2330', name: '台積電', cap: 61.85, ind: '晶圓代工', kind: 'tsmc', col: '#d71920', lon: 121.0135, lat: 24.7745, addr: '新竹科學園區力行六路 8 號' },
@@ -522,6 +523,8 @@
       c.cap = t.cap; c.rk = t.rk; c.p = t.p; c.pct = t.pct;
     }
     if (feed.date) dataDate = feed.date;
+    // 有即時價的公司（盤中）：記下最新的即時時間（例如 '11/04 10:43'）給說明文字用
+    liveAt = feed.top.map((t) => t.live).filter(Boolean).sort().pop() || '';
     live = true;
     // 已經建好的招牌跟著換名次
     for (const it of items) {
@@ -545,6 +548,7 @@
   window.Corps = {
     CORPS, build, layout, applyFeed, topList, BOOM, CRASH,
     get DATA_DATE() { return dataDate; },
+    get LIVE_AT() { return liveAt; },
     get LIVE() { return live; }
   };
 })();

@@ -1943,32 +1943,42 @@
     // 金額換算成「億」：TE 的單位是 USD Million / JPY Billion，其他單位不認得就回傳 null
     const toYi = (v, unit) => (/Million/i.test(unit) ? v / 100 : /Billion/i.test(unit) ? v * 10 : null);
     const signed = (n, s) => (n > 0 ? '+' : n < 0 ? '-' : '') + s;
+    // 變動值的顯示：四捨五入後是 0 就當「持平」，顯示 0（不帶箭頭、不帶正負號、灰色），不要出現「–0.0」「▲0.0」
+    // txt 是已經四捨五入好的絕對值字串（例如 '0.0'、'104'）；回傳 { chg, flat }
+    const chgText = (d, txt) => {
+        if (d == null) return { chg: '', flat: false };
+        if (!(parseFloat(String(txt).replace(/,/g, '')) > 0)) return { chg: '0', flat: true };
+        return { chg: `${arrow(d)}${txt}`, flat: false };
+    };
     function econView(r, q) {
         const dp = r.dp != null ? r.dp : 1,
-            d = q.d,
-            arrowD = (txt) => (d == null ? '' : `${arrow(d)}${txt}`);
+            d = q.d;
+        const mk = (txt, extra) => {
+            const { chg, flat } = chgText(d, txt);
+            return { chg, flat, ...extra };
+        };
         switch (r.f || 'pct') {
             case 'idx':
-                return { val: q.v.toFixed(1), chg: arrowD(Math.abs(d).toFixed(1)) };
+                return mk(Math.abs(d ?? 0).toFixed(1), { val: q.v.toFixed(1) });
             case 'k': // 千人（非農就業新增人數）
-                return { val: `${signed(q.v, fmtInt(Math.abs(q.v)))}K`, chg: arrowD(`${fmtInt(Math.abs(d))}K`) };
+                return mk(fmtInt(Math.abs(d ?? 0)), { val: `${signed(q.v, fmtInt(Math.abs(q.v)))}K` });
             case 'claims':
-                return { val: `${fmtInt(q.v)}K`, chg: arrowD(fmtInt(Math.abs(d))) };
+                return mk(fmtInt(Math.abs(d ?? 0)), { val: `${fmtInt(q.v)}K` });
             case 'amt': {
                 const yi = toYi(q.v, q.unit);
                 if (yi == null) return { val: fmtInt(q.v), chg: '' };
                 const pyi = q.prev == null ? null : toYi(q.prev, q.unit);
                 // 前後期都是正數（外銷訂單）才顯示變動幅度；貿易收支這類會正負翻轉的只顯示數值（差額沒意義，也佔寬度）
-                const chg =
-                    pyi != null && pyi > 0 && yi > 0 ? `${arrow(yi - pyi)}${Math.abs(((yi - pyi) / pyi) * 100).toFixed(1)}%` : '';
-                return { val: `${yi < 0 ? '-' : ''}${fmtInt(Math.abs(yi))}億`, chg, cd: pyi == null ? 0 : yi - pyi };
+                const pct = pyi != null && pyi > 0 && yi > 0 ? ((yi - pyi) / pyi) * 100 : null;
+                const { chg, flat } = pct == null ? { chg: '', flat: false } : chgText(pct, Math.abs(pct).toFixed(1) + '%');
+                return { val: `${yi < 0 ? '-' : ''}${fmtInt(Math.abs(yi))}億`, chg: flat ? '0%' : chg, flat, cd: pyi == null ? 0 : yi - pyi };
             }
             case 'light': {
                 const [name, col] = LIGHTS[q.light] || ['', null];
-                return { val: `${q.v}分 ${name}`.trim(), chg: arrowD(Math.abs(d)), vcol: col };
+                return mk(String(Math.abs(d ?? 0)), { val: `${q.v}分 ${name}`.trim(), vcol: col });
             }
             default: // pct
-                return { val: `${q.v.toFixed(dp)}%`, chg: arrowD(Math.abs(d).toFixed(dp)) };
+                return mk(Math.abs(d ?? 0).toFixed(dp), { val: `${q.v.toFixed(dp)}%` });
         }
     }
     // 期間：'2026-09' → 9月、'2026-Q3' → Q3、'2026-10-24' → 10/24
@@ -2003,8 +2013,12 @@
             if (q) {
                 const x = econView(r, q);
                 Object.assign(v, { val: x.val, chg: x.chg, vcol: x.vcol || null, ref: econRefLabel(q.ref), stale: !!q.stale });
-                const cd = x.cd != null ? x.cd : q.d;
-                if (cd) Object.assign(v, { col: pctColor(cd), cd });
+                // 持平（變動四捨五入後是 0）：用灰色的平盤色，不要有漲跌顏色
+                if (x.flat) Object.assign(v, { col: FLAT_TEXT, cd: 0 });
+                else {
+                    const cd = x.cd != null ? x.cd : q.d;
+                    if (cd) Object.assign(v, { col: pctColor(cd), cd });
+                }
             } else if (r.v != null) {
                 // 連不上 econ.json：退回手寫的備用值
                 v.val = r.v;
@@ -4018,9 +4032,11 @@
             ? `<div class="chg">台股加權 ${fmtN(tq.p)}　${pctSpan(tq.pct, `${arrow(tq.pct)} ${Math.abs(tq.pct).toFixed(2)}%`)}</div>`
             : '';
         const note = Corps.LIVE
-            ? `<p class="small">市值 = ${Corps.DATA_DATE} 收盤價 × 已發行普通股數（新台幣），資料取自證交所，每天自動更新；總部地址取自證交所上市公司基本資料。</p>`
+            ? `<p class="small">市值 = ${Corps.LIVE_AT ? `${Corps.LIVE_AT} 盤中價` : `${Corps.DATA_DATE} 收盤價`} × 已發行普通股數（新台幣），價格與漲跌幅對前一個交易日收盤；資料取自證交所與即時報價，每 10 分鐘自動更新；總部地址取自證交所上市公司基本資料。</p>`
             : `<p class="small">市值為 ${Corps.DATA_DATE} 收盤附近的約略數字（新台幣），不同網站的統計口徑可能略有差異；總部地址取自證交所上市公司基本資料。</p>`;
-        const pctTag = (p) => (p == null ? '' : `　${pctSpan(p, `${arrow(p)} ${Math.abs(p).toFixed(2)}%`)}`);
+        // 漲跌幅四捨五入到 2 位後是 0 就當平盤：灰色「0.00%」，不帶箭頭
+        const pctTag = (p) =>
+            p == null ? '' : isFlat(p) ? `　<span style="color:${FLAT_TEXT}">0.00%</span>` : `　${pctSpan(p, `${arrow(p)} ${Math.abs(p).toFixed(2)}%`)}`;
         if (!c) {
             showSheet(`<h3>🏙️ 台股市值前十大</h3>${twii}${mood ? `<p class="desc">${mood}</p>` : ''}
       <div class="meta">${Corps.topList()
