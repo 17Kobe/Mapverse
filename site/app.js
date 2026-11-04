@@ -2,6 +2,8 @@
 (function () {
     'use strict';
 
+    const $t = I18n.t; // 多語系：以繁體中文原文當 key（見 i18n.js）
+
     const TOPO_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json';
     // 行情資料由 iKDx-realtime 專案統一抓取並發佈（quotes.json 各國指數 / 商品 / 匯率 / 殖利率，tw-top.json 台股市值排行）。
     // 本機要改用別的來源時，在 index.html 先設定 window.MAPVERSE_DATA_BASE
@@ -14,13 +16,13 @@
     const GLOBAL_LEFT_LON = -155; // 桌機版全球檢視的左邊界經度
     const TOPICS = {
         // 物件的順序就是篩選列的順序：商品、匯率、經濟數據、地緣、利率、債券
-        commodity: { icon: '🛢️', label: '商品', mlon: -35 }, // 大西洋：左邊看到一點美洲、右邊看到一點歐洲
-        fx: { icon: '💵', label: '匯率', mlon: GLOBAL_LON },
+        commodity: { icon: '🛢️', label: $t('商品'), mlon: -35 }, // 大西洋：左邊看到一點美洲、右邊看到一點歐洲
+        fx: { icon: '💵', label: $t('匯率'), mlon: GLOBAL_LON },
         // img：篩選按鈕改用 3D 圖片（系統 emoji 的長條圖太陽春）；icon 仍用在文字場合
-        econ: { icon: '�', img: 'assets/icons/bar_chart.png', label: '經濟數據', mlon: GLOBAL_LON },
-        geo: { icon: '⚔️', label: '地緣', mlon: 85 },
-        rate: { icon: '🏛️', label: '利率', mlon: GLOBAL_LON },
-        bond: { icon: '🏦', label: '債券', mlon: GLOBAL_LON },
+        econ: { icon: '�', img: 'assets/icons/bar_chart.png', label: $t('經濟數據'), mlon: GLOBAL_LON },
+        geo: { icon: '⚔️', label: $t('地緣'), mlon: 85 },
+        rate: { icon: '🏛️', label: $t('利率'), mlon: GLOBAL_LON },
+        bond: { icon: '🏦', label: $t('債券'), mlon: GLOBAL_LON },
     };
     // 地緣狀態的色帶與文字顏色
     const TONES = { ok: '#79e3a0', warn: '#ffc66b', bad: '#ff8d85' };
@@ -31,10 +33,10 @@
 
     // 左側圖層列（手機版是底部導覽列）。之後要加新地圖，在這裡加一筆並把 ready 設成 true 即可
     const LAYERS = [
-        { k: 'stocks', icon: '📈', label: '股市', title: '股市', desc: '目前的指數地圖', ready: true },
-        { k: 'travel', icon: '✈️', label: '旅遊', title: '旅遊', desc: '美食、慶典、活動、景點、花季', ready: true },
-        { k: 'living', icon: '🏠', label: '民生', title: '民生', desc: '電力供需、水庫蓄水、油價、菜價、空氣品質' },
-        { k: 'weather', icon: '🌦️', label: '天氣災防', title: '天氣災防', desc: '颱風路徑、地震、雨量' },
+        { k: 'stocks', icon: '📈', label: $t('股市'), title: $t('股市'), desc: $t('目前的指數地圖'), ready: true },
+        { k: 'travel', icon: '✈️', label: $t('旅遊'), title: $t('旅遊'), desc: $t('美食、慶典、活動、景點、花季'), ready: true },
+        { k: 'living', icon: '🏠', label: $t('民生'), title: $t('民生'), desc: $t('電力供需、水庫蓄水、油價、菜價、空氣品質') },
+        { k: 'weather', icon: '🌦️', label: $t('天氣災防'), title: $t('天氣災防'), desc: $t('颱風路徑、地震、雨量') },
     ];
     const desktopMQ = window.matchMedia('(min-width:900px)');
     // 手機版城市旗幟的放大倍率（數字太小看不清楚）
@@ -1925,9 +1927,23 @@
         return t ? t.rows.slice(0, EXTRA_N) : [];
     };
     // 分隔標題：「台股市值前十大」、「美股市值前十大」…
+    // tw-top.json 的 live 是台灣時間的字串（例如 '11/04 13:30'）；換成看的人所在時區的同一個時刻
+    function liveAtLocal(str) {
+        const m = /^(\d{2})\/(\d{2}) (\d{2}):(\d{2})$/.exec(str || '');
+        if (!m) return str || '';
+        const y = new Date().getFullYear();
+        const ms = Date.UTC(y, +m[1] - 1, +m[2], +m[3] - 8, +m[4]); // 台灣 = UTC+8
+        const d = new Date(ms > Date.now() + 30 * 86400e3 ? Date.UTC(y - 1, +m[1] - 1, +m[2], +m[3] - 8, +m[4]) : ms);
+        const p2 = (x) => String(x).padStart(2, '0');
+        return `${p2(d.getMonth() + 1)}/${p2(d.getDate())} ${p2(d.getHours())}:${p2(d.getMinutes())}`;
+    }
     // 台股還沒讀到最新排行（用的是 corps.js 內建的備用數字）時加註「備用」，不要讓人以為是最新的
     const extraTitle = (m) =>
-        m.extra === 'corps' ? (window.Corps && !Corps.LIVE ? '台股市值前十大（備用）' : '台股市值前十大') : (topFeedOf(m) || {}).title || '';
+        m.extra === 'corps'
+            ? window.Corps && !Corps.LIVE
+                ? $t('台股市值前十大（備用）')
+                : $t('台股市值前十大')
+            : $t((topFeedOf(m) || {}).title || '');
     // 這張旗幟能不能整張列出（multi）：有多個指數，或放大到有公司列。單一指數又沒有公司列的國家只有 full / mini
     const hasRows = (m, n = m.group.length) => n > 1 || extraList(m).length > 0;
     // 整張列出（multi）時的旗幟高度（未放大的座標）：色帶 24 + 每個指數 16 + 底部 4，再加上額外的公司列
@@ -1945,7 +1961,6 @@
             : `<span style="color:${pctColor(pct)}">${txt}</span>`;
     // 旗幟色帶右側的報價時間（使用者的時區，和詳細面板的「最後成交」一致）：
     // 開盤中（含午休）顯示 11:30；收盤後顯示 10/31(六)
-    const WEEK_ZH = '日一二三四五六';
     function quoteStamp(m) {
         const q = state.quotes[m.s];
         if (!q || !q.t) return '';
@@ -1954,7 +1969,7 @@
         // 開盤中（含午休）且報價是最近的才顯示時間；假日剛好落在午休時段時，舊報價仍顯示日期
         if ((st === 'open' || st === 'break') && Date.now() - d.getTime() < 12 * 3600e3)
             return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
-        return `${d.getMonth() + 1}/${d.getDate()}(${WEEK_ZH[d.getDay()]})`;
+        return `${d.getMonth() + 1}/${d.getDate()}(${I18n.weekday(d.getDay())})`;
     }
     // 色帶要放下「國旗 + 名稱 + 時間 + 輪播圓點」需要的寬度（未放大的座標）
     function headNeedW(m, dotW) {
@@ -1971,18 +1986,31 @@
     const topicH = (c) => 24 + c.rows.reduce((s, r) => s + rowH(r), 0) + 4;
     const dateStamp = (t) => {
         const d = new Date(t * 1000);
-        return `${d.getMonth() + 1}/${d.getDate()}(${WEEK_ZH[d.getDay()]})`;
+        return `${d.getMonth() + 1}/${d.getDate()}(${I18n.weekday(d.getDay())})`;
     };
     // 經濟數據的顯示格式（markets.json 每列的 f）。數值來自 state.econ（iKDx-realtime 的 econ.json）
     const LIGHTS = {
-        blue: ['藍燈', '#6db3ff'],
-        'yellow-blue': ['黃藍燈', '#8fd3d9'],
-        green: ['綠燈', '#62d58a'],
-        'yellow-red': ['黃紅燈', '#ffb34d'],
-        red: ['紅燈', '#ff6b6b'],
+        blue: [$t('藍燈'), '#6db3ff'],
+        'yellow-blue': [$t('黃藍燈'), '#8fd3d9'],
+        green: [$t('綠燈'), '#62d58a'],
+        'yellow-red': [$t('黃紅燈'), '#ffb34d'],
+        red: [$t('紅燈'), '#ff6b6b'],
     };
     const fmtInt = (n) => Math.round(n).toLocaleString('en-US');
     // 金額換算成「億」：TE 的單位是 USD Million / JPY Billion，其他單位不認得就回傳 null
+    // 金額（單位：億）。英文沒有「億」，換成 B（十億）
+    const fmtYi = (a) => {
+        if (I18n.lang === 'en') {
+            const b = a / 10;
+            return (b >= 100 ? fmtInt(b) : b >= 10 ? b.toFixed(1) : b.toFixed(2)) + 'B';
+        }
+        return $t('{n}億', { n: fmtInt(a) });
+    };
+    // 股價超過 10 萬（韓股）：中日韓用「萬」，英文用 K
+    const fmtWan = (p) => (I18n.lang === 'en' ? `${fmtInt(p / 1e3)}K` : $t('{n}萬', { n: (p / 1e4).toFixed(1) }));
+    // 月份：英文用 Sep，其他語言用「9月」
+    const monthLabel = (n) =>
+        I18n.lang === 'en' ? new Intl.DateTimeFormat('en-US', { month: 'short' }).format(new Date(2024, n - 1, 1)) : $t('{m}月', { m: n });
     const toYi = (v, unit) => (/Million/i.test(unit) ? v / 100 : /Billion/i.test(unit) ? v * 10 : null);
     const signed = (n, s) => (n > 0 ? '+' : n < 0 ? '-' : '') + s;
     // 變動值的顯示：四捨五入後是 0 就當「持平」，顯示 0（不帶箭頭、不帶正負號、灰色），不要出現「–0.0」「▲0.0」
@@ -2013,7 +2041,7 @@
                 // 前後期都是正數（外銷訂單）才顯示變動幅度；貿易收支這類會正負翻轉的只顯示數值（差額沒意義，也佔寬度）
                 const pct = pyi != null && pyi > 0 && yi > 0 ? ((yi - pyi) / pyi) * 100 : null;
                 const { chg, flat } = pct == null ? { chg: '', flat: false } : chgText(pct, Math.abs(pct).toFixed(1) + '%');
-                return { val: `${yi < 0 ? '-' : ''}${fmtInt(Math.abs(yi))}億`, chg: flat ? '0%' : chg, flat, cd: pyi == null ? 0 : yi - pyi };
+                return { val: `${yi < 0 ? '-' : ''}${fmtYi(Math.abs(yi))}`, chg: flat ? '0%' : chg, flat, cd: pyi == null ? 0 : yi - pyi };
             }
             case 'rate': {
                 // 央行政策利率：只顯示目前水準（有下限 lo 時是目標區間，例如 3.75–4.00%），不顯示變動
@@ -2026,7 +2054,7 @@
             }
             case 'light': {
                 const [name, col] = LIGHTS[q.light] || ['', null];
-                return mk(String(Math.abs(d ?? 0)), { val: `${q.v}分 ${name}`.trim(), vcol: col });
+                return mk(String(Math.abs(d ?? 0)), { val: $t('{v}分 {name}', { v: q.v, name }).trim(), vcol: col });
             }
             default: // pct
                 return mk(Math.abs(d ?? 0).toFixed(dp), { val: `${q.v.toFixed(dp)}%` });
@@ -2039,7 +2067,7 @@
         m = /^\d{4}-(\d{2})-(\d{2})$/.exec(ref || '');
         if (m) return `${+m[1]}/${+m[2]}`;
         m = /^\d{4}-(\d{2})$/.exec(ref || '');
-        return m ? `${+m[1]}月` : '';
+        return m ? monthLabel(+m[1]) : '';
     }
     // 一列資料要顯示的文字：名稱、數值、變動（含顏色）。行情從 state.quotes 取，沒有行情的用 markets.json 寫的 v / d
     function topicRowView(r) {
@@ -2057,7 +2085,7 @@
                     spread = Math.round((a.p - b.p) * 100);
                 Object.assign(v, { val: `${spread}bp`, chg: bp(d), col: pctColor(d), cd: d });
                 // 長天期殖利率低於短天期（殖利率曲線倒掛），常被視為景氣衰退的前兆
-                if (spread < 0) Object.assign(v, { lab: `${r.l} 倒掛`, vcol: TONES.bad });
+                if (spread < 0) Object.assign(v, { lab: $t('{l} 倒掛', { l: r.l }), vcol: TONES.bad });
             }
         } else if (r.e) {
             const q = state.econ[r.e];
@@ -2448,7 +2476,7 @@
     }
     // 主題卡片的詳情：列出所有項目的數值與說明
     function openTopic(c) {
-        const T = TOPICS[c.cat] || { icon: '🏛️', label: '政策' }; // 白宮卡片不屬於任何篩選，只由地標開啟
+        const T = TOPICS[c.cat] || { icon: '🏛️', label: $t('政策') }; // 白宮卡片不屬於任何篩選，只由地標開啟
         const rows = c.rows
             .map(topicRowView)
             .map((x) =>
@@ -2456,16 +2484,16 @@
                     ? `<div style="margin-top:8px;padding:2px 8px;background:#1f7f95;border-radius:4px"><b style="color:#fff;letter-spacing:4px">${esc(x.sec)}</b></div>`
                     : x.note
                     ? `<div>${esc(x.note)}</div>`
-                    : `<div><b>${esc(x.lab)}</b>　<span style="color:${x.vcol || '#fff'}">${esc(x.val)}</span>${x.chg ? `　${x.pq ? pctSpan(x.cd, esc(x.chg)) : `<span style="color:${x.col}">${esc(x.chg)}</span>`}` : ''}${x.ref ? `　<span class="small">${esc(x.ref)}${x.stale ? ' ⚠️沿用舊資料' : ''}</span>` : ''}</div>`,
+                    : `<div><b>${esc(x.lab)}</b>　<span style="color:${x.vcol || '#fff'}">${esc(x.val)}</span>${x.chg ? `　${x.pq ? pctSpan(x.cd, esc(x.chg)) : `<span style="color:${x.col}">${esc(x.chg)}</span>`}` : ''}${x.ref ? `　<span class="small">${esc(x.ref)}${x.stale ? ' ⚠️' + $t('沿用舊資料') : ''}</span>` : ''}</div>`,
             )
             .join('');
         const quoted = c.rows.some((r) => r.s || r.calc);
         const econ = c.rows.some((r) => r.e);
         const src = econ
-            ? `資料來源：${c.src || '手動整理'}。各項為最近一次公布的數值，右側小字是統計期間；變動是和前一期的差。`
+            ? $t('資料來源：{src}。各項為最近一次公布的數值，右側小字是統計期間；變動是和前一期的差。', { src: c.src || $t('手動整理') })
             : quoted
-              ? '行情來自 Yahoo Finance、CNBC、Trading Economics，通常延遲 15 分鐘以上。'
-              : `資料來源：${c.src || '手動整理'}。這是手動維護的資料，可能不是最新。`;
+              ? $t('行情來自 Yahoo Finance、CNBC、Trading Economics，通常延遲 15 分鐘以上。')
+              : $t('資料來源：{src}。這是手動維護的資料，可能不是最新。', { src: c.src || $t('手動整理') });
         showSheet(`
     <div class="hd"><span class="big">${flagHtml(c.flag, 'flg big-flg')}</span>
       <div><div class="nm">${esc(c.short)}</div><div class="sym">${T.icon} ${T.label}</div></div></div>
@@ -3159,7 +3187,7 @@
                     // 數字用 .rv/.rp（<text>）：CSS 的 fill 會蓋過屬性，漲跌色要用行內樣式；兩欄靠右對齊，依漲跌幅實際寬度排
                     // 公司股價超過 10 萬（韓股常見，例如 1,318,000）改用「萬」，不然數字太寬會擠到名稱
                     const vs =
-                        rq && rq.p != null ? (k2 === 'corp' && rq.p >= 1e5 ? `${(rq.p / 1e4).toFixed(1)}萬` : fmtN(rq.p, 'short')) : '--',
+                        rq && rq.p != null ? (k2 === 'corp' && rq.p >= 1e5 ? fmtWan(rq.p) : fmtN(rq.p, 'short')) : '--',
                         ps = rq ? `${arrow(rq.pct)}${Math.abs(rq.pct).toFixed(2)}%` : '';
                     const rvx = w - 8 - (ps ? textWidthOf(ps, 'rp') : 0) - 5;
                     // 數字維持和單一指數一樣大，名稱放不下時才縮小名稱
@@ -3295,10 +3323,10 @@
     // 地點分類：旗幟色帶的顏色與狀態列的圖示
     const TRAVEL_CATS = {
         // 色帶要亮：地圖上是深綠山林，太暗的底色會和地形混在一起
-        sight: { label: '景點', emoji: '📸', band: 'hsl(172,78%,37%)' },
-        food: { label: '餐廳', emoji: '🍽️', band: 'hsl(24,92%,49%)' },
-        hotel: { label: '飯店', emoji: '🏨', band: 'hsl(268,62%,56%)' },
-        event: { label: '活動', emoji: '🎉', band: 'hsl(338,80%,55%)' },
+        sight: { label: $t('景點'), emoji: '📸', band: 'hsl(172,78%,37%)' },
+        food: { label: $t('餐廳'), emoji: '🍽️', band: 'hsl(24,92%,49%)' },
+        hotel: { label: $t('飯店'), emoji: '🏨', band: 'hsl(268,62%,56%)' },
+        event: { label: $t('活動'), emoji: '🎉', band: 'hsl(338,80%,55%)' },
     };
     // 地點的顯示等級（travel.json 的 tier）：第 1 級一直顯示，第 2、3 級要放大到這個圖磚層級才出現
     const TIER_Z = [0, 9.3, 10.5];
@@ -3734,9 +3762,9 @@
     <div class="hd"><span class="big"><img class="beast3d" src="assets/travel/${esc(s.icon)}.png" alt=""></span>
       <div><div class="nm">${esc(spotLabel(s))}</div><div class="sym">${cat.emoji} ${cat.label} · ${esc(s.county)}${esc(s.town)}</div></div></div>
     <p class="desc">${esc(s.desc)}</p>
-    <div class="meta">${s.full ? `<div><b>名稱</b>　${esc(s.full)}</div>` : ''}${s.months ? `<div><b>通常月份</b>　${esc(s.months)}</div>` : ''}${s.note ? `<div><b>備註</b>　${esc(s.note)}</div>` : ''}${s.addr ? `<div><b>地址</b>　${esc(s.addr)}</div>` : ''}</div>
-    <a class="big-btn gbtn" href="https://www.google.com/maps/search/?api=1&amp;query=${q}" target="_blank" rel="noopener noreferrer">🗺️ 在 Google 地圖開啟</a>
-    <button class="big-btn gbtn" data-act="zoom-spot" data-id="${esc(s.id)}">🔍 放大到這裡</button>`);
+    <div class="meta">${s.full ? `<div><b>${$t('名稱')}</b>　${esc(s.full)}</div>` : ''}${s.months ? `<div><b>${$t('通常月份')}</b>　${esc(s.months)}</div>` : ''}${s.note ? `<div><b>${$t('備註')}</b>　${esc(s.note)}</div>` : ''}${s.addr ? `<div><b>${$t('地址')}</b>　${esc(s.addr)}</div>` : ''}</div>
+    <a class="big-btn gbtn" href="https://www.google.com/maps/search/?api=1&amp;query=${q}" target="_blank" rel="noopener noreferrer">🗺️ ${$t('在 Google 地圖開啟')}</a>
+    <button class="big-btn gbtn" data-act="zoom-spot" data-id="${esc(s.id)}">🔍 ${$t('放大到這裡')}</button>`);
     }
 
     // 地點標記：一顆小水滴圖釘（顏色依分類，不會動）+ 文明帝國式旗幟（和股市的城市旗幟同款）
@@ -3917,16 +3945,16 @@
     function buildRail() {
         $('#layers').innerHTML = LAYERS.map(
             (l) =>
-                `<button class="rl${l.k === state.layer ? ' on' : ''}" data-k="${l.k}" title="${l.title}：${l.desc}${l.ready ? '' : '（即將推出）'}"` +
+                `<button class="rl${l.k === state.layer ? ' on' : ''}" data-k="${l.k}" title="${l.title}：${l.desc}${l.ready ? '' : $t('（即將推出）')}"` +
                 ` aria-pressed="${l.k === state.layer}"${l.ready ? '' : ' aria-disabled="true"'}>` +
-                `<span class="ri">${l.icon}</span><span class="rt">${l.label}</span>${l.ready ? '' : '<i class="soon">即將</i>'}</button>`,
+                `<span class="ri">${l.icon}</span><span class="rt">${l.label}</span>${l.ready ? '' : `<i class="soon">${$t('即將')}</i>`}</button>`,
         ).join('');
         $('#layers').onclick = (e) => {
             const b = e.target.closest('.rl');
             if (!b) return;
             const l = LAYERS.find((x) => x.k === b.dataset.k);
             if (!l.ready) {
-                toast(`🚧 ${l.icon} ${l.title}（${l.desc}）即將推出`);
+                toast(`🚧 ${l.icon} ${$t('{title}（{desc}）即將推出', { title: l.title, desc: l.desc })}`);
                 return;
             }
             setLayer(l.k);
@@ -3940,7 +3968,7 @@
                 await loadTravel();
             } catch (e) {
                 console.error(e);
-                toast('😵 旅遊地圖載入失敗，請檢查網路後再試');
+                toast('😵 ' + $t('旅遊地圖載入失敗，請檢查網路後再試'));
                 return;
             }
         }
@@ -3967,12 +3995,8 @@
             walkers.forEach((w) => (w.vis = false));
             critters.forEach((c) => (c.vis = false));
         }
-        $('#map').setAttribute('aria-label', travel ? '台灣旅遊地圖' : '世界股市地圖');
-        $('#attrib').textContent =
-            '地形資料 © Mapzen/AWS Terrain Tiles · Esri, Maxar, Earthstar Geographics' +
-            (travel
-                ? ' · 行政界 © 內政部國土測繪中心 · Natural Earth' + (state.travel.roads ? ' · 道路 © OpenStreetMap 貢獻者' : '')
-                : '');
+        $('#map').setAttribute('aria-label', travel ? $t('台灣旅遊地圖') : $t('世界股市地圖'));
+        $('#attrib').textContent = attribText(travel);
         buildChips();
         updateChips();
         setZoomLimits();
@@ -3981,6 +4005,17 @@
         applyRegion(true);
         renderHud();
         scheduleTerrain();
+    }
+    // 地圖左下角的圖資來源（旅遊地圖多了行政界與道路）
+    function attribText(travel) {
+        return (
+            $t('地形資料') +
+            ' © Mapzen/AWS Terrain Tiles · Esri, Maxar, Earthstar Geographics' +
+            (travel
+                ? ` · ${$t('行政界')} © ${$t('內政部國土測繪中心')} · Natural Earth` +
+                  (state.travel.roads ? ` · ${$t('道路')} © OpenStreetMap ${$t('貢獻者')}` : '')
+                : '')
+        );
     }
     let toastT = 0;
     function toast(msg) {
@@ -3993,11 +4028,11 @@
 
     function buildChips() {
         const defs = [
-            ['all', '🌍', '全球'],
-            ['asia', '⛩️', '亞太'],
-            ['americas', '🗽', '美洲'],
-            ['europe', '🏰', '歐洲'],
-            ['mea', '🐪', '中東非洲'],
+            ['all', '🌍', $t('全球')],
+            ['asia', '⛩️', $t('亞太')],
+            ['americas', '🗽', $t('美洲')],
+            ['europe', '🏰', $t('歐洲')],
+            ['mea', '🐪', $t('中東非洲')],
         ];
         const chip = (k, i, t) =>
             `<button class="chip gbtn" data-k="${k}" aria-pressed="false"><span class="ci">${i}</span>${t}</button>`;
@@ -4062,22 +4097,22 @@
         $('#hpText').textContent = fmtPct(avg);
         let line;
         const when = state.generated
-            ? new Date(state.generated).toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' })
+            ? new Date(state.generated).toLocaleTimeString(I18n.intl, { hour: '2-digit', minute: '2-digit' })
             : '--';
         const topic = TOPICS[state.activeRegion];
-        if (state.demo) line = '🎮 演示資料（連不上行情來源，數字是隨機的）';
+        if (state.demo) line = '🎮 ' + $t('演示資料（連不上行情來源，數字是隨機的）');
         else if (topic) {
             const note =
                 state.activeRegion === 'econ'
-                    ? '自動更新，顯示最近一次公布值'
+                    ? $t('自動更新，顯示最近一次公布值')
                     : state.activeRegion === 'rate'
-                      ? '央行利率自動更新'
+                      ? $t('央行利率自動更新')
                       : state.activeRegion === 'geo'
-                        ? '手動整理，可能不是最新'
-                        : '行情約延遲 15 分鐘';
-            line = `${topic.icon} ${topic.label} · 更新於 ${when} · ${note}`;
+                        ? $t('手動整理，可能不是最新')
+                        : $t('行情約延遲 15 分鐘');
+            line = `${topic.icon} ${topic.label} · ${$t('更新於 {when}', { when })} · ${note}`;
         }
-        else line = `🟢 ${open.length} 個市場開盤中 · 更新於 ${when} · 資料約延遲 15 分鐘`;
+        else line = `🟢 ${$t('{n} 個市場開盤中', { n: open.length })} · ${$t('更新於 {when}', { when })} · ${$t('資料約延遲 15 分鐘')}`;
         $('#statusLine').textContent = line;
     }
 
@@ -4085,7 +4120,7 @@
     function showSheet(html) {
         const s = $('#sheet');
         const still = !s.hidden; // 已經打開時（例如切換分頁）就不要再播放滑入動畫
-        s.innerHTML = `<div class="back"></div><div class="box${still ? ' still' : ''}"><button class="x gbtn" aria-label="關閉">✕</button>${html}</div>`;
+        s.innerHTML = `<div class="back"></div><div class="box${still ? ' still' : ''}"><button class="x gbtn" aria-label="${$t('關閉')}">✕</button>${html}</div>`;
         s.hidden = false;
     }
     function spark(arr, col) {
@@ -4106,37 +4141,37 @@
         const mood = !tq
             ? ''
             : tq.pct >= Corps.BOOM
-              ? '🎆 台股大漲，整座城市放煙火！'
+              ? '🎆 ' + $t('台股大漲，整座城市放煙火！')
               : tq.pct > 0
-                ? '💡 台股上漲，建築燈火通明'
+                ? '💡 ' + $t('台股上漲，建築燈火通明')
                 : tq.pct <= Corps.CRASH
-                  ? '⛈️ 台股重挫，城市籠罩在暴風雨裡'
+                  ? '⛈️ ' + $t('台股重挫，城市籠罩在暴風雨裡')
                   : tq.pct < 0
-                    ? '🌫️ 台股下跌，城市一片低迷'
+                    ? '🌫️ ' + $t('台股下跌，城市一片低迷')
                     : '';
         const twii = tq
-            ? `<div class="chg">台股加權 ${fmtN(tq.p)}　${pctSpan(tq.pct, `${arrow(tq.pct)} ${Math.abs(tq.pct).toFixed(2)}%`)}</div>`
+            ? `<div class="chg">${$t('台股加權')} ${fmtN(tq.p)}　${pctSpan(tq.pct, `${arrow(tq.pct)} ${Math.abs(tq.pct).toFixed(2)}%`)}</div>`
             : '';
         const note = Corps.LIVE
-            ? `<p class="small">市值 = ${Corps.LIVE_AT ? `${Corps.LIVE_AT} 盤中價` : `${Corps.DATA_DATE} 收盤價`} × 已發行普通股數（新台幣），價格與漲跌幅對前一個交易日收盤；資料取自證交所與即時報價，每 10 分鐘自動更新；總部地址取自證交所上市公司基本資料。</p>`
-            : `<p class="small">市值為 ${Corps.DATA_DATE} 收盤附近的約略數字（新台幣），不同網站的統計口徑可能略有差異；總部地址取自證交所上市公司基本資料。</p>`;
+            ? `<p class="small">${$t('市值 = {when} × 已發行普通股數（新台幣），價格與漲跌幅對前一個交易日收盤；資料取自證交所與即時報價，每 10 分鐘自動更新；總部地址取自證交所上市公司基本資料。', { when: Corps.LIVE_AT ? $t('{t} 盤中價', { t: liveAtLocal(Corps.LIVE_AT) }) : $t('{d} 收盤價', { d: Corps.DATA_DATE }) })}</p>`
+            : `<p class="small">${$t('市值為 {d} 收盤附近的約略數字（新台幣），不同網站的統計口徑可能略有差異；總部地址取自證交所上市公司基本資料。', { d: Corps.DATA_DATE })}</p>`;
         // 漲跌幅四捨五入到 2 位後是 0 就當平盤：灰色「0.00%」，不帶箭頭
         const pctTag = (p) =>
             p == null ? '' : isFlat(p) ? `　<span style="color:${FLAT_TEXT}">0.00%</span>` : `　${pctSpan(p, `${arrow(p)} ${Math.abs(p).toFixed(2)}%`)}`;
         if (!c) {
-            showSheet(`<h3>🏙️ 台股市值前十大</h3>${twii}${mood ? `<p class="desc">${mood}</p>` : ''}
+            showSheet(`<h3>🏙️ ${$t('台股市值前十大')}</h3>${twii}${mood ? `<p class="desc">${mood}</p>` : ''}
       <div class="meta">${Corps.topList()
-          .map((x) => `<div><b>${x.rk}. ${x.name}</b>（${x.s}）　${x.cap.toFixed(2)} 兆${pctTag(x.pct)}　<span class="small">${x.ind}</span></div>`)
+          .map((x) => `<div><b>${x.rk}. ${$t(x.name)}</b>（${x.s}）　${$t('{n} 兆', { n: x.cap.toFixed(2) })}${pctTag(x.pct)}　<span class="small">${$t(x.ind)}</span></div>`)
           .join('')}</div>
-      <p class="small">放大到台灣，就能看到每家公司蓋在自己總部的建築。</p>${note}`);
+      <p class="small">${$t('放大到台灣，就能看到每家公司蓋在自己總部的建築。')}</p>${note}`);
             return;
         }
         showSheet(`
     <div class="hd"><span class="big" style="color:${c.col}">🏢</span>
-      <div><div class="nm">${c.name}</div><div class="sym">${c.s} · 台股市值第 ${c.rk} 名</div></div></div>
-    <div class="px">${c.cap.toFixed(2)} 兆</div>
+      <div><div class="nm">${$t(c.name)}</div><div class="sym">${c.s} · ${$t('台股市值第 {n} 名', { n: c.rk })}</div></div></div>
+    <div class="px">${$t('{n} 兆', { n: c.cap.toFixed(2) })}</div>
     ${twii}
-    <div class="meta">${c.p != null ? `<div><b>收盤</b>　${fmtN(c.p)}${pctTag(c.pct)}</div>` : ''}<div><b>主要產業</b>　${c.ind}</div><div><b>總部</b>　${c.addr}</div>${mood ? `<div>${mood}</div>` : ''}</div>
+    <div class="meta">${c.p != null ? `<div><b>${$t('收盤')}</b>　${fmtN(c.p)}${pctTag(c.pct)}</div>` : ''}<div><b>${$t('主要產業')}</b>　${$t(c.ind)}</div><div><b>${$t('總部')}</b>　${c.addr}</div>${mood ? `<div>${mood}</div>` : ''}</div>
     ${note}`);
     }
     function openCard(m) {
@@ -4148,28 +4183,28 @@
         let meta = '';
         if (host) {
             const st = marketStatus(host);
-            const label = { open: '🟢 開盤中', break: '🍱 午休中', closed: '😴 休市' }[st];
-            const local = new Intl.DateTimeFormat('zh-TW', {
+            const label = { open: '🟢 ' + $t('開盤中'), break: '🍱 ' + $t('午休中'), closed: '😴 ' + $t('休市') }[st];
+            const local = new Intl.DateTimeFormat(I18n.intl, {
                 timeZone: host.tz,
                 weekday: 'short',
                 hour: '2-digit',
                 minute: '2-digit',
                 hour12: false,
             }).format(new Date());
-            meta += `<div><b>狀態</b>　${label}</div><div><b>當地時間</b>　${local}（${host.tz}）</div>`;
+            meta += `<div><b>${$t('狀態')}</b>　${label}</div><div><b>${$t('當地時間')}</b>　${local}（${host.tz}）</div>`;
             if (st !== 'open') {
                 const n = nextOpen(host);
                 if (n)
-                    meta += `<div><b>下次開盤</b>　${new Date(n).toLocaleString('zh-TW', { weekday: 'short', hour: '2-digit', minute: '2-digit', hour12: false })}（你的時區）</div>`;
+                    meta += `<div><b>${$t('下次開盤')}</b>　${new Date(n).toLocaleString(I18n.intl, { weekday: 'short', hour: '2-digit', minute: '2-digit', hour12: false })}${$t('（你的時區）')}</div>`;
             }
         }
         if (q && q.t)
-            meta += `<div><b>最後成交</b>　${new Date(q.t * 1000).toLocaleString('zh-TW', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false })}${q.stale ? '　⚠️ 本輪抓取失敗，沿用舊資料' : ''}</div>`;
+            meta += `<div><b>${$t('最後成交')}</b>　${new Date(q.t * 1000).toLocaleString(I18n.intl, { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false })}${q.stale ? '　⚠️ ' + $t('本輪抓取失敗，沿用舊資料') : ''}</div>`;
         const beast = isMap ? animalOf(m.a) : null;
         const bigIcon = beast
             ? `<img class="beast3d" src="${beast.src}" alt="${m.a}">`
             : flagHtml(isMap ? m.a : m.e, 'flg big-flg');
-        const chg = q ? `${arrow(q.pct)} ${q.c >= 0 ? '+' : '−'}${fmtN(Math.abs(q.c))}（${fmtPct(q.pct)}）` : '暫無資料';
+        const chg = q ? `${arrow(q.pct)} ${q.c >= 0 ? '+' : '−'}${fmtN(Math.abs(q.c))}（${fmtPct(q.pct)}）` : $t('暫無資料');
         // 多指數國家：卡片上方一排分頁，點一下切換到該指數
         const grp = host && host.group && host.group.length > 1 ? host.group : null;
         const tabs = grp
@@ -4185,18 +4220,19 @@
             : '';
         // 其它十大市值國家：卡片下方列出市值前十大公司（旗幟上只有股價與漲跌幅，市值數字看這裡）
         const tf = host && topFeedOf(host);
-        const capTxt = (c) => `${c >= 100 ? c.toFixed(0) : c >= 10 ? c.toFixed(1) : c.toFixed(2)} 兆${esc(tf.cur)}`;
+        const capTxt = (c) =>
+            $t('{n} 兆{cur}', { n: c >= 100 ? c.toFixed(0) : c >= 10 ? c.toFixed(1) : c.toFixed(2), cur: esc($t(tf.cur)) });
         const topHtml = tf
-            ? `<h3 style="margin-top:14px">🏢 ${esc(tf.title)}</h3>
+            ? `<h3 style="margin-top:14px">🏢 ${esc($t(tf.title))}</h3>
     <div class="meta">${tf.rows
         .map(
             (x) =>
-                `<div><b>${x.rk}. ${esc(x.name)}</b>（${esc(x.s)}）　${capTxt(x.cap)}　${
+                `<div><b>${x.rk}. ${esc($t(x.name))}</b>（${esc(x.s)}）　${capTxt(x.cap)}　${
                     isFlat(x.pct) ? `<span style="color:${FLAT_TEXT}">0.00%</span>` : pctSpan(x.pct, `${arrow(x.pct)} ${Math.abs(x.pct).toFixed(2)}%`)
                 }</div>`,
         )
         .join('')}</div>
-    <p class="small">市值 = 本地幣別的市值（Yahoo Finance 盤中資料，約延遲 15 分鐘）；漲跌幅對前一個交易日收盤。不同網站的統計口徑可能略有差異。</p>`
+    <p class="small">${$t('市值 = 本地幣別的市值（Yahoo Finance 盤中資料，約延遲 15 分鐘）；漲跌幅對前一個交易日收盤。不同網站的統計口徑可能略有差異。')}</p>`
             : '';
         showSheet(`
     <div class="hd"><span class="big">${bigIcon}</span>
@@ -4208,12 +4244,24 @@
     <div class="meta">${meta}</div>${topHtml}`);
     }
     function openSettings() {
+        const pref = I18n.pref();
+        const cur = I18n.LANGS.find((l) => l.code === I18n.lang);
+        let tz = '';
+        try {
+            tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+        } catch (e) {}
+        const langBtn = (v, label) =>
+            `<button class="gtab gbtn${pref === v ? ' on' : ''}" data-act="lang" data-lang="${v}" aria-pressed="${pref === v}"><b>${esc(label)}</b></button>`;
         showSheet(`
-    <h3>⚙️ 設定</h3>
-    <button class="big-btn gbtn" data-act="color">${state.redUp ? '🔴 紅漲綠跌（點我切換）' : '🟢 綠漲紅跌（點我切換）'}</button>
-    <button class="big-btn gbtn" data-act="anim">${state.anim ? '🎬 動畫：開（點我關閉）' : '⏸️ 動畫：關（點我開啟）'}</button>
-    <p class="small">資料來自 Yahoo Finance，由 GitHub Actions 定時抓取，通常延遲 15 分鐘以上，僅供娛樂參考，不構成投資建議。開盤狀態按各交易所常規時段推算，遇到假日會在資料停止更新後自動變為休市。</p>
-    <p class="small">遊戲風地形由程式即時繪製：高度資料來自 AWS Terrain Tiles（Mapzen / SRTM 等），地貌判斷參考 Esri World Imagery（Esri、Maxar、Earthstar Geographics）。3D 動物與旅遊圖示來自 Microsoft Fluent Emoji（MIT 授權），國旗圖來自 flagcdn.com。旅遊地圖的縣市界來自內政部國土測繪中心（政府資料開放授權，經 taiwan-atlas 轉檔），周邊陸地來自 Natural Earth，主要道路來自 OpenStreetMap（© OpenStreetMap 貢獻者，ODbL 授權）。</p>`);
+    <h3>⚙️ ${$t('設定')}</h3>
+    <button class="big-btn gbtn" data-act="color">${state.redUp ? '🔴 ' + $t('紅漲綠跌（點我切換）') : '🟢 ' + $t('綠漲紅跌（點我切換）')}</button>
+    <button class="big-btn gbtn" data-act="anim">${state.anim ? '🎬 ' + $t('動畫：開（點我關閉）') : '⏸️ ' + $t('動畫：關（點我開啟）')}</button>
+    <h3 style="margin-top:16px">🌐 ${$t('語言')}</h3>
+    <div class="gtabs langs">${langBtn('auto', $t('自動'))}${I18n.LANGS.map((l) => langBtn(l.code, l.name)).join('')}</div>
+    <p class="small">${$t('目前顯示：{name}。「自動」會跟著瀏覽器的語言；如果偵測錯了，直接點選要用的語言，之後會記住你的選擇。', { name: cur.name })}${I18n.source === 'url' ? ' ' + $t('（這次由網址的 lang 參數指定）') : ''}</p>
+    <p class="small">${$t('時間以你所在的時區顯示：{tz}。', { tz })}</p>
+    <p class="small">${$t('資料來自 Yahoo Finance，由 GitHub Actions 定時抓取，通常延遲 15 分鐘以上，僅供娛樂參考，不構成投資建議。開盤狀態按各交易所常規時段推算，遇到假日會在資料停止更新後自動變為休市。')}</p>
+    <p class="small">${$t('遊戲風地形由程式即時繪製：高度資料來自 AWS Terrain Tiles（Mapzen / SRTM 等），地貌判斷參考 Esri World Imagery（Esri、Maxar、Earthstar Geographics）。3D 動物與旅遊圖示來自 Microsoft Fluent Emoji（MIT 授權），國旗圖來自 flagcdn.com。旅遊地圖的縣市界來自內政部國土測繪中心（政府資料開放授權，經 taiwan-atlas 轉檔），周邊陸地來自 Natural Earth，主要道路來自 OpenStreetMap（© OpenStreetMap 貢獻者，ODbL 授權）。')}</p>`);
     }
     function onSheetClick(e) {
         const s = $('#sheet');
@@ -4232,6 +4280,16 @@
             s.hidden = true;
             const sp = state.travel && state.travel.spots.find((x) => x.id === a.dataset.id);
             if (sp) zoomToSpots([sp]);
+            return;
+        }
+        if (a.dataset.act === 'lang') {
+            // 換語言：存起來再重新載入（旗幟、卡片的文字都是載入時建好的）。網址上的 ?lang= 要拿掉，不然會蓋過剛選的語言
+            I18n.setPref(a.dataset.lang);
+            const u = new URL(location.href);
+            if (u.searchParams.has('lang')) {
+                u.searchParams.delete('lang');
+                location.replace(u.toString());
+            } else location.reload();
             return;
         }
         if (a.dataset.act === 'color') {
@@ -4257,9 +4315,25 @@
         refreshView();
     }
 
+    // 把 markets.json 裡的名稱、卡片文字換成目前語言（原文是繁體中文；字典沒有的字串維持中文）。
+    // 地緣、白宮的說明文字是手動維護的新聞式內容，不翻譯（維持中文）
+    function localizeCfg(cfg) {
+        if (I18n.lang === 'zh-TW') return;
+        const loc = (o, keys) => keys.forEach((k) => typeof o[k] === 'string' && (o[k] = $t(o[k])));
+        for (const i of cfg.items) loc(i, ['zh', 'short', 'abbr']);
+        for (const c of cfg.topics || []) {
+            const news = c.cat === 'geo' || c.cat === 'policy';
+            loc(c, news ? ['short', 'src', 'stamp'] : ['short', 'src', 'stamp', 'note']);
+            for (const r of c.rows) loc(r, news ? ['l', 'sec', 'v'] : ['l', 'sec', 'v', 'note']);
+        }
+        for (const l of cfg.landmarks || []) loc(l, ['label']);
+    }
     async function init() {
         document.body.classList.toggle('noanim', !state.anim);
+        I18n.applyDom();
+        $('#attrib').textContent = attribText(false);
         const [cfg, topo] = await Promise.all([fetchJSON('markets.json'), d3.json(TOPO_URL)]);
+        localizeCfg(cfg);
         state.cfg = cfg;
         state.maps = cfg.items.filter((i) => i.type === 'map').sort((a, b) => a.w - b.w);
         state.topics = cfg.topics || [];
@@ -4340,6 +4414,6 @@
     init().catch((e) => {
         console.error(e);
         const l = $('#loading');
-        if (l) l.innerHTML = '<div class="spin">😵</div><p>地圖載入失敗，請檢查網路後重新整理</p>';
+        if (l) l.innerHTML = '<div class="spin">😵</div><p>' + (window.I18n ? I18n.t('地圖載入失敗，請檢查網路後重新整理') : '地圖載入失敗，請檢查網路後重新整理') + '</p>';
     });
 })();

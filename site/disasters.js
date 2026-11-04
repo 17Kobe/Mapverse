@@ -619,19 +619,20 @@
   }
 
   /* ---------- 選單（右鍵 / 長按 / 右下角按鈕） ---------- */
+  const T_ = (k, p) => (window.I18n ? I18n.t(k, p) : String(k).replace(/\{(\w+)\}/g, (m, n) => (p && p[n] != null ? p[n] : m)));
   function select(k, announce) {
     if (!BY[k]) k = 'rain';
     cur = k;
     try { localStorage.setItem('disaster', JSON.stringify(k)); } catch (e) {}
     const T = BY[k];
-    btn.innerHTML = `<span class="dz-i" aria-hidden="true">${T.icon}</span><span class="dz-l">${T.label}</span><span class="dz-c" aria-hidden="true">▾</span>`;
-    btn.setAttribute('aria-label', `目前災難：${T.label}，按一下更換`);
+    btn.innerHTML = `<span class="dz-i" aria-hidden="true">${T.icon}</span><span class="dz-l">${T_(T.label)}</span><span class="dz-c" aria-hidden="true">▾</span>`;
+    btn.setAttribute('aria-label', T_('目前災難：{label}，按一下更換', { label: T_(T.label) }));
     menu.querySelectorAll('.dz-it').forEach((b) => {
       const on = b.dataset.k === k;
       b.classList.toggle('on', on);
       b.setAttribute('aria-checked', on);
     });
-    if (announce && o.toast) o.toast(`${T.icon} 已選「${T.label}」，點地圖降下災難`);
+    if (announce && o.toast) o.toast(`${T.icon} ${T_('已選「{label}」，點地圖降下災難', { label: T_(T.label) })}`);
   }
   function open(clientX, clientY, fromBtn) {
     if (!o || !o.enabled()) return;
@@ -659,7 +660,7 @@
     btn.className = 'gbtn';
     btn.setAttribute('aria-haspopup', 'menu');
     btn.setAttribute('aria-expanded', 'false');
-    btn.title = '選擇災難（也可以在地圖上按右鍵）';
+    btn.title = T_('選擇災難（也可以在地圖上按右鍵）');
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
       if (!menu.hidden) { close(); return; }
@@ -670,10 +671,10 @@
     menu.id = 'dzMenu';
     menu.className = 'gpanel';
     menu.setAttribute('role', 'menu');
-    menu.setAttribute('aria-label', '選擇災難');
+    menu.setAttribute('aria-label', T_('選擇災難'));
     menu.hidden = true;
-    menu.innerHTML = '<div class="dz-h">⚡ 上帝之手<small>選好後，點地圖降下災難</small></div>' +
-      TYPES.map((t) => `<button type="button" role="menuitemradio" class="dz-it" data-k="${t.k}"><span class="dz-i" aria-hidden="true">${t.icon}</span>${t.label}</button>`).join('');
+    menu.innerHTML = '<div class="dz-h">⚡ ' + T_('上帝之手') + '<small>' + T_('選好後，點地圖降下災難') + '</small></div>' +
+      TYPES.map((t) => `<button type="button" role="menuitemradio" class="dz-it" data-k="${t.k}"><span class="dz-i" aria-hidden="true">${t.icon}</span>${T_(t.label)}</button>`).join('');
     menu.addEventListener('click', (e) => {
       const b = e.target.closest('.dz-it');
       if (!b) return;

@@ -19,6 +19,11 @@
   --num:'Barlow Semi Condensed','Segoe UI','SF Pro Text','Helvetica Neue','Roboto',Arial,system-ui,sans-serif;
   --emoji:'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif;
 }
+/* 各語言的中日韓字型（html 的 lang 由 i18n.js 設定）：日文 / 韓文 / 簡體不能用繁體字型，不然會用到字形不對的字 */
+html[lang="ja"]{--font:'Fredoka','Nunito','Hiragino Sans','Yu Gothic UI','Yu Gothic','Meiryo',system-ui,sans-serif}
+html[lang="ko"]{--font:'Fredoka','Nunito','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif}
+html[lang="zh-CN"]{--font:'Fredoka','Nunito','PingFang SC','Microsoft YaHei',system-ui,sans-serif}
+html[lang="en"]{--font:'Fredoka','Nunito',system-ui,'Segoe UI',Roboto,Arial,sans-serif}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;margin:0;background:var(--navy-d);color:var(--cream);font-family:var(--font);overscroll-behavior:none}
 body{display:flex;flex-direction:column;height:100vh;height:100dvh;overflow:hidden}
@@ -482,3 +487,6 @@ html.embed #rail,html.embed #hud{display:none}
   /* 沒有概況卡：篩選列靠左 */
   html.embed #chips{left:12px}
 }
+/* 設定面板的語言選單：3 欄 */
+.gtabs.langs{grid-template-columns:repeat(3,minmax(0,1fr))}
+.gtabs.langs .gtab{padding:8px 2px}

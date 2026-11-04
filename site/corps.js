@@ -41,6 +41,11 @@
   };
   const dark = (c, f) => mix(c, '#0b1220', f), light = (c, f) => mix(c, '#ffffff', f);
   const f1 = (n) => +n.toFixed(2);
+  // 多語系：公司名稱以繁體中文原文當 key（見 i18n.js），字典沒有就維持中文
+  const T = (k, p) => (window.I18n ? I18n.t(k, p) : String(k).replace(/\{(\w+)\}/g, (m, n) => (p && p[n] != null ? p[n] : m)));
+  const nm = (c) => T(c.name);
+  // 招牌寬度：中日韓字約 11px 一個字，英文約 6.4px
+  const nameW = (n) => [...n].reduce((w, ch) => w + (/[\u3000-\u9fff\uac00-\ud7af]/.test(ch) ? 11 : 6.4), 0);
 
   // 正面與側面的窗戶。樣式：grid 方格窗、band 橫向帶狀玻璃（加直向窗框）、col 直向長窗（加樓層線）
   function windows(x, w, d, t, b, [rows, cols, style = 'grid']) {
@@ -157,7 +162,7 @@
       const n = ++logoSeq, uid = svg.replace(/id="([^"]+)"/g, (_, i) => `id="${i}-${n}"`).replace(/url\(#([^)]+)\)/g, (_, i) => `url(#${i}-${n})`);
       return s + uid.replace('<svg ', `<svg x="${f1(x + pad)}" y="${f1(y + pad)}" width="${f1(size)}" height="${f1(size)}" `);
     }
-    return s + `<text class="lgt" x="${f1(cx)}" y="${f1(y + w / 2)}" fill="${c.col}" font-size="${f1(size * 0.36)}">${c.name}</text>`;
+    return s + `<text class="lgt" x="${f1(cx)}" y="${f1(y + w / 2)}" fill="${c.col}" font-size="${f1(size * 0.36)}">${nm(c)}</text>`;
   }
 
   // 每種建築：svg 內容、top（建築最高點，給招牌和特效用）
@@ -316,7 +321,7 @@
     el('rect', { class: 'sb', rx: 4, height: 15, fill: c.col }, g);
     el('circle', { class: 'rkb', r: 7.5, cx: 0, cy: 7.5 }, g);
     el('text', { class: 'rkt', x: 0, y: 8 }, g).textContent = c.rk;
-    el('text', { class: 'snm', y: 8 }, g).textContent = c.name;
+    el('text', { class: 'snm', y: 8 }, g).textContent = nm(c);
     return g;
   }
 
@@ -329,7 +334,7 @@
       '<stop offset="0" stop-color="#fff" stop-opacity=".5"/><stop offset=".38" stop-color="#fff" stop-opacity="0"/>' +
       '<stop offset=".62" stop-color="#fff" stop-opacity=".16"/><stop offset=".75" stop-color="#fff" stop-opacity="0"/></linearGradient>';
     // 先放特效的底層（低迷時地上的陰影）再放建築，最後是特效（煙火、烏雲）
-    cluster = { g: el('g', { class: 'bld mk cluster', role: 'button', tabindex: 0, 'aria-label': '台股權值股小城市：台積電、聯發科、台達電' }, root) };
+    cluster = { g: el('g', { class: 'bld mk cluster', role: 'button', tabindex: 0, 'aria-label': T('台股權值股小城市：台積電、聯發科、台達電') }, root) };
     el('ellipse', { class: 'gs', filter: 'url(#soft)' }, cluster.g);
     cluster.art = el('g', { class: 'art' }, cluster.g);
     const ca = clusterArt();
@@ -338,7 +343,7 @@
     cluster.g.addEventListener('click', () => onPick && onPick(null));
     const labLayer = el('g', { class: 'labels' });
     for (const c of CORPS) {
-      const g = el('g', { class: 'bld mk', role: 'button', tabindex: 0, 'aria-label': `${c.name}（市值第 ${c.rk} 名）` }, root);
+      const g = el('g', { class: 'bld mk', role: 'button', tabindex: 0, 'aria-label': T('{name}（市值第 {n} 名）', { name: nm(c), n: c.rk }) }, root);
       const lead = el('path', { class: 'lead' }, g);
       const dot = el('circle', { class: 'hq', r: 2.2, fill: c.col }, g);
       const body = el('g', {}, g);
@@ -473,7 +478,7 @@
         show(it.lead, moved); show(it.dot, moved);
         if (moved) setA(it.lead, 'd', `M0,0L${f1(px - hx)},${f1(py - hy)}`);
         // 招牌：先試建築正上方，再試左上、右上、往上一層；和其他招牌、介面重疊就換位置，都不行就先不掛
-        const sw = 6 + 20 + c.name.length * 11, sh = 15, cx = px + (bb.x + bb.w / 2) * s, top = py + bb.y * s;
+        const sw = 6 + 20 + nameW(nm(c)), sh = 15, cx = px + (bb.x + bb.w / 2) * s, top = py + bb.y * s;
         const cands = [[0, 0], [-0.55, 0], [0.55, 0], [0, -1]];
         let spot = null;
         for (const [fx0, fy] of cands) {
@@ -530,7 +535,7 @@
     for (const it of items) {
       const t = it.sign && it.sign.querySelector('.rkt');
       if (t) t.textContent = it.c.rk;
-      it.g.setAttribute('aria-label', `${it.c.name}（市值第 ${it.c.rk} 名）`);
+      it.g.setAttribute('aria-label', T('{name}（市值第 {n} 名）', { name: nm(it.c), n: it.c.rk }));
     }
     lastOrder = '';
     return true;
