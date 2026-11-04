@@ -234,6 +234,7 @@
         countries: [],
         quotes: {},
         econ: {}, // 經濟數據（econ.json 的 items）：代碼 → { v, prev, d, unit, ref, light?, stale? }
+        tops: null, // 其它九個十大市值國家的市值前十大公司（top10.json 的 countries）：國家代碼 → { title, cur, date, top, rows }
         generated: null,
         demo: false,
         activeRegion: 'all',
@@ -489,6 +490,26 @@
             if (window.Corps) Corps.applyFeed(await fetchJSON(DATA_BASE + 'tw-top.json?_=' + Date.now()));
         } catch (e) {
             /* 沿用內建資料 */
+        }
+    }
+    // 其它九個十大市值國家（中日韓印英德法美加）的市值前十大公司：iKDx-realtime 的 top10.json，最多每 4 分鐘讀一次。
+    // 失敗就沿用上一份，沒有的話那一國的旗幟照舊（不會多出公司列）
+    let topsAt = 0;
+    async function loadTops() {
+        if (Date.now() - topsAt < 240e3) return;
+        topsAt = Date.now();
+        try {
+            const j = await fetchJSON(DATA_BASE + 'top10.json?_=' + Date.now());
+            const cs = j && j.countries;
+            if (!cs || typeof cs !== 'object') throw new Error('top10.json 格式不對');
+            for (const c of Object.values(cs)) {
+                if (!Array.isArray(c.top)) continue;
+                // 旗幟的公司列用 { rk, name, price, pct }（和台股的 Corps.topList() 同一個形狀）
+                c.rows = c.top.map((x) => ({ rk: x.rk, s: x.s, name: x.name, cap: x.cap, price: x.p, pct: x.pct }));
+            }
+            state.tops = cs;
+        } catch (e) {
+            topsAt = 0; // 失敗了，下一輪再試
         }
     }
     // 經濟數據：一個月才更新一次，最多每 10 分鐘讀一次。失敗就沿用上一份，沒有的話各列退回 markets.json 手寫的備用值
@@ -1227,7 +1248,8 @@
             t2.append('tspan').attr('class', 'va');
             t2.append('tspan').attr('class', 'pc').attr('dx', 5);
             // 同一國家有多個指數（例如美國：標普 / 那斯達克 / 道瓊 / 費城半導體）
-            if (d.group.length > 1) {
+            // 單一指數、但有市值前十大公司列的國家（d.top）也要有 rows（放大時才會用到）
+            if (d.group.length > 1 || d.top) {
                 const rows = b.append('g').attr('class', 'rows');
                 const mkRow = (label) => {
                     const r = rows.append('g').attr('class', 'row');
@@ -1239,7 +1261,7 @@
                 };
                 (d.group10 || d.group).forEach((x) => mkRow(x.abbr || x.zh));
                 // markets.json 的 extra: "corps"（台灣）：放大時在指數下面多列一條分隔標題 + 市值前十大公司
-                if (d.extra === 'corps') for (let i = 0; i <= EXTRA_N; i++) mkRow('');
+                if (d.extra === 'corps' || d.top) for (let i = 0; i <= EXTRA_N; i++) mkRow('');
                 const dots = b.append('g').attr('class', 'dots');
                 (d.group10 || d.group).forEach(() => dots.append('circle').attr('r', 1.9));
             }
@@ -1886,8 +1908,22 @@
     // 台灣旗幟放大時（縮放倍率 ≥ extraK），在加權 / 櫃買下面加一條分隔標題和市值前十大公司（股價 + 漲跌幅）
     const EXTRA_N = 10,
         EXTRA_K = 3; // SEC_H（分隔標題的高度）在下方主題卡片那段定義
-    const extraList = (m) =>
-        m.extra === 'corps' && window.Corps && state.t.k >= (m.extraK ?? EXTRA_K) ? Corps.topList().slice(0, EXTRA_N) : [];
+    // 其它十大市值國家：markets.json 的 top 是 top10.json 的國家代碼（cn / jp / kr / in / uk / de / fr / us / ca）。
+    // 資料不到十家（還沒讀到、或抓取失敗）就當作沒有，旗幟維持原樣
+    const topFeedOf = (m) => {
+        const t = m.top && state.tops && state.tops[m.top];
+        return t && t.rows && t.rows.length >= EXTRA_N ? t : null;
+    };
+    const extraList = (m) => {
+        if (state.t.k < (m.extraK ?? EXTRA_K)) return [];
+        if (m.extra === 'corps') return window.Corps ? Corps.topList().slice(0, EXTRA_N) : [];
+        const t = topFeedOf(m);
+        return t ? t.rows.slice(0, EXTRA_N) : [];
+    };
+    // 分隔標題：「台股市值前十大」、「美股市值前十大」…
+    const extraTitle = (m) => (m.extra === 'corps' ? '台股市值前十大' : (topFeedOf(m) || {}).title || '');
+    // 這張旗幟能不能整張列出（multi）：有多個指數，或放大到有公司列。單一指數又沒有公司列的國家只有 full / mini
+    const hasRows = (m, n = m.group.length) => n > 1 || extraList(m).length > 0;
     // 整張列出（multi）時的旗幟高度（未放大的座標）：色帶 24 + 每個指數 16 + 底部 4，再加上額外的公司列
     const multiH = (m, n) => {
         const ex = extraList(m);
@@ -2576,7 +2612,7 @@
             // 每張旗幟的未放大高度（multi = 所有指數整張列出）
             const h1 = (o, multi) => {
                 const n = grpOf(o.m).length;
-                return multi && n > 1 ? multiH(o.m, n) : FULL_H;
+                return multi && hasRows(o.m, n) ? multiH(o.m, n) : FULL_H;
             };
             const colsOf = (list) => [0, 1].map((col) => list.filter((o) => (o.m.g10[0] === 'L' ? 0 : 1) === col));
             // 最大放大倍率：讓較高的那欄剛好放進「上緣到下緣」之間（不超過手機版的 U）
@@ -2593,7 +2629,7 @@
                 const iw = Math.min(166, Math.floor(colW / u)); // 未放大的寬度
                 const items = ps.map((o) => {
                     const n = grpOf(o.m).length,
-                        mu = multi && n > 1;
+                        mu = multi && hasRows(o.m, n);
                     return {
                         o,
                         mu,
@@ -2649,13 +2685,14 @@
             const items = ps.map((o) => {
                 const n = o.m.group.length;
                 // 台灣放大時多了十家公司的列，整張很高：這張旗幟自己縮小（最多縮到 0.7 倍），高度不超過一欄的 45%，兩欄才排得下
-                const hu = n > 1 ? multiH(o.m, n) : FULL_H;
+                const rows = hasRows(o.m, n); // 多指數，或放大後有公司列（英、法、德這類單一指數的國家也是）
+                const hu = rows ? multiH(o.m, n) : FULL_H;
                 const u = hu > 24 + n * 16 + 4 + 1 ? Math.max(0.7, Math.min(U, ((bot0 - top0) * 0.45) / hu)) : U;
                 return {
                     o,
                     u,
-                    mode: n > 1 ? 'multi' : 'full',
-                    w: n > 1 ? (u === U ? multiW : Math.min(colW, Math.round(Math.min(166, Math.floor(colW / u)) * u))) : Math.min(colW, Math.round(Math.max(118, headNeedW(o.m, 0)) * U)),
+                    mode: rows ? 'multi' : 'full',
+                    w: rows ? (u === U ? multiW : Math.min(colW, Math.round(Math.min(166, Math.floor(colW / u)) * u))) : Math.min(colW, Math.round(Math.max(118, headNeedW(o.m, 0)) * U)),
                     h: Math.round(hu * u),
                 };
             });
@@ -2754,10 +2791,10 @@
                 // 窄螢幕：整張列出的旗幟最多佔半個畫面寬，這樣左右可以並排兩張
                 const multiW = Math.min(166, Math.floor((W - 10) / 2 / U));
                 const modes = (
-                    n > 1
+                    hasRows(m, n)
                         ? [
                               { w: multiW, h: multiH(m, n), mode: 'multi' },
-                              { w: Math.max(136, headNeedW(m, n * 6 + 4)), h: FULL_H, mode: 'full' },
+                              { w: Math.max(n > 1 ? 136 : 118, headNeedW(m, n > 1 ? n * 6 + 4 : 0)), h: FULL_H, mode: 'full' },
                               { w: 80, h: 22, mode: 'mini' },
                           ]
                         : [
@@ -2842,7 +2879,7 @@
                 if (!o.b) continue;
                 sc +=
                     (o.b.mode === 'multi' ? 100 : o.b.mode === 'full' ? 10 : 1) *
-                    (o.m.group.length > 1 ? 3 : 1) *
+                    (hasRows(o.m) ? 3 : 1) *
                     (o.m.pin ? 20 : 1);
                 // pin 的旗幟離自己的動物越遠越扣分（扣不到讓它變成非整張列出，只是讓位置盡量靠近）
                 if (o.m.pin && o.b.mode !== 'mini' && o.b.pos !== 'under') {
@@ -2855,7 +2892,7 @@
             return sc;
         };
         // 先依權重由大到小放；如果有多指數的國家沒能整張列出，就讓它優先再排一次（最多重排幾次，取最好的）
-        let order = arr.slice().sort((a, b) => !!b.pin - !!a.pin || (b.group.length > 1) - (a.group.length > 1));
+        let order = arr.slice().sort((a, b) => !!b.pin - !!a.pin || hasRows(b) - hasRows(a));
         let best = null;
         // pin 的國家誰先放會影響彼此的位置，所以正序、反序各排一輪，取分數最高的
         const pins = order.filter((m) => m.pin);
@@ -2874,7 +2911,7 @@
                 if (!best || sc > best.sc) best = { sc, snap: [...vis.values()].map((o) => [o, o.b]) };
                 // 沒能整張列出的多指數國家，或沒能以完整版（非迷你）列出的 pin 國家，下一輪優先排
                 const missing = (m) =>
-                    (m.group.length > 1 || m.pin) &&
+                    (hasRows(m) || m.pin) &&
                     !(top10 && !m.g10) &&
                     !(pinCols && pinCols.has(m.s)) &&
                     !tried.has(m.s) &&
@@ -2882,7 +2919,7 @@
                     state.quotes[m.s] &&
                     !(
                         vis.get(m.s).b &&
-                        (vis.get(m.s).b.mode === 'multi' || (m.group.length === 1 && vis.get(m.s).b.mode === 'full'))
+                        (vis.get(m.s).b.mode === 'multi' || (!hasRows(m) && vis.get(m.s).b.mode === 'full'))
                     );
                 const miss = order.find((m) => m.pin && missing(m)) || order.find(missing);
                 if (!miss) break;
@@ -3073,7 +3110,7 @@
                     if (k2 === 'sec') {
                         // 分隔線：和經濟數據卡片的分隔標題同一個樣式
                         setFlash(r, null);
-                        r.select('.rn').attrQ('x', 9).attrQ('y', y + 9.2).styleQ('font-size', null).textQ('台股市值前十大');
+                        r.select('.rn').attrQ('x', 9).attrQ('y', y + 9.2).styleQ('font-size', null).textQ(extraTitle(m));
                         r.select('.rv').textQ('');
                         r.select('.rp').textQ('');
                         r.select('.rhl').styleQ('display', 'none');
@@ -3083,7 +3120,9 @@
                     const rq = k2 === 'idx' ? state.quotes[x.s] : x.pct == null ? null : { p: x.price, pct: x.pct };
                     setFlash(r, k2 === 'idx' ? flashOf(x.s) : null);
                     // 數字用 .rv/.rp（<text>）：CSS 的 fill 會蓋過屬性，漲跌色要用行內樣式；兩欄靠右對齊，依漲跌幅實際寬度排
-                    const vs = rq && rq.p != null ? fmtN(rq.p, 'short') : '--',
+                    // 公司股價超過 10 萬（韓股常見，例如 1,318,000）改用「萬」，不然數字太寬會擠到名稱
+                    const vs =
+                        rq && rq.p != null ? (k2 === 'corp' && rq.p >= 1e5 ? `${(rq.p / 1e4).toFixed(1)}萬` : fmtN(rq.p, 'short')) : '--',
                         ps = rq ? `${arrow(rq.pct)}${Math.abs(rq.pct).toFixed(2)}%` : '';
                     const rvx = w - 8 - (ps ? textWidthOf(ps, 'rp') : 0) - 5;
                     // 數字維持和單一指數一樣大，名稱放不下時才縮小名稱
@@ -4097,6 +4136,21 @@
                   })
                   .join('')}</div>`
             : '';
+        // 其它十大市值國家：卡片下方列出市值前十大公司（旗幟上只有股價與漲跌幅，市值數字看這裡）
+        const tf = host && topFeedOf(host);
+        const capTxt = (c) => `${c >= 100 ? c.toFixed(0) : c >= 10 ? c.toFixed(1) : c.toFixed(2)} 兆${esc(tf.cur)}`;
+        const topHtml = tf
+            ? `<h3 style="margin-top:14px">🏢 ${esc(tf.title)}</h3>
+    <div class="meta">${tf.rows
+        .map(
+            (x) =>
+                `<div><b>${x.rk}. ${esc(x.name)}</b>（${esc(x.s)}）　${capTxt(x.cap)}　${
+                    isFlat(x.pct) ? `<span style="color:${FLAT_TEXT}">0.00%</span>` : pctSpan(x.pct, `${arrow(x.pct)} ${Math.abs(x.pct).toFixed(2)}%`)
+                }</div>`,
+        )
+        .join('')}</div>
+    <p class="small">市值 = 本地幣別的市值（Yahoo Finance 盤中資料，約延遲 15 分鐘）；漲跌幅對前一個交易日收盤。不同網站的統計口徑可能略有差異。</p>`
+            : '';
         showSheet(`
     <div class="hd"><span class="big">${bigIcon}</span>
       <div><div class="nm">${host ? flagHtml(host.flag) + ' ' : ''}${m.zh}</div><div class="sym">${m.s}</div></div></div>
@@ -4104,7 +4158,7 @@
     <div class="px">${q ? fmtN(q.p) : '--'}</div>
     <div class="chg" style="color:${col}">${q ? pctSpan(q.pct, chg) : chg}</div>
     ${q ? spark(q.spark, col) : ''}
-    <div class="meta">${meta}</div>`);
+    <div class="meta">${meta}</div>${topHtml}`);
     }
     function openSettings() {
         showSheet(`
@@ -4172,7 +4226,7 @@
         );
         state.maps.forEach((m) => (state.byId[pad3(m.id)] = m));
         state.countries = topojson.feature(topo, topo.objects.countries).features;
-        await Promise.all([loadQuotes(), loadTwTop(), loadEcon()]);
+        await Promise.all([loadQuotes(), loadTwTop(), loadTops(), loadEcon()]);
 
         // 開啟網頁時選「現在正在開盤」的區域（都休市就選最快開盤的），之後由使用者自己切換
         state.activeRegion = pickAutoRegion();
@@ -4215,7 +4269,7 @@
 
         setInterval(async () => {
             const old = state.quotes;
-            await Promise.all([loadQuotes(), loadEcon()]);
+            await Promise.all([loadQuotes(), loadTops(), loadEcon()]);
             animateQuotes(old);
             tick();
         }, 60000);
@@ -4229,7 +4283,7 @@
         document.addEventListener('visibilitychange', async () => {
             if (!document.hidden) {
                 const old = state.quotes;
-                await Promise.all([loadQuotes(), loadEcon()]);
+                await Promise.all([loadQuotes(), loadTops(), loadEcon()]);
                 animateQuotes(old);
                 tick();
             }
