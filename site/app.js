@@ -1256,6 +1256,7 @@
                     r.append('rect').attr('class', 'rbg');
                     r.append('rect').attr('class', 'rhl').attr('rx', 3).style('display', 'none');
                     r.append('text').attr('class', 'rn').text(label);
+                    r.append('text').attr('class', 'rk'); // 公司列的名次（獨立一個字，顏色和名稱不同）
                     r.append('text').attr('class', 'rv');
                     r.append('text').attr('class', 'rp');
                 };
@@ -2682,19 +2683,22 @@
             // 上緣：概況卡、篩選列的下方
             const top0 = Math.max(2, ...ui.filter((z) => z.y < H / 3).map((z) => z.y + z.h)) + GAP;
             const bot0 = H - 18; // 下緣：留出地圖資料來源那一行字
+            // 依倍率 u 算出這張旗幟的寬高（hu 是未放大的高度）
+            const fit = (it, u) => {
+                it.u = u;
+                it.w = it.rows
+                    ? u === U
+                        ? multiW
+                        : Math.min(colW, Math.round(Math.min(166, Math.floor(colW / u)) * u))
+                    : Math.min(colW, Math.round(Math.max(118, headNeedW(it.o.m, 0)) * U));
+                it.h = Math.round(it.hu * u);
+            };
             const items = ps.map((o) => {
                 const n = o.m.group.length;
-                // 台灣放大時多了十家公司的列，整張很高：這張旗幟自己縮小（最多縮到 0.7 倍），高度不超過一欄的 45%，兩欄才排得下
                 const rows = hasRows(o.m, n); // 多指數，或放大後有公司列（英、法、德這類單一指數的國家也是）
-                const hu = rows ? multiH(o.m, n) : FULL_H;
-                const u = hu > 24 + n * 16 + 4 + 1 ? Math.max(0.7, Math.min(U, ((bot0 - top0) * 0.45) / hu)) : U;
-                return {
-                    o,
-                    u,
-                    mode: rows ? 'multi' : 'full',
-                    w: rows ? (u === U ? multiW : Math.min(colW, Math.round(Math.min(166, Math.floor(colW / u)) * u))) : Math.min(colW, Math.round(Math.max(118, headNeedW(o.m, 0)) * U)),
-                    h: Math.round(hu * u),
-                };
+                const it = { o, n, rows, hu: rows ? multiH(o.m, n) : FULL_H, mode: rows ? 'multi' : 'full' };
+                fit(it, U);
+                return it;
             });
             const byS = new Map(items.map((it) => [it.o.m.s, it]));
             for (const it of items) it.parent = (it.o.m.under && byS.get(it.o.m.under)) || null;
@@ -2702,6 +2706,24 @@
             const colOf = (it) =>
                 it.parent ? colOf(it.parent) : it.o.m.col === 'L' ? 0 : it.o.m.col === 'R' ? 1 : it.o.x < W / 2 ? 0 : 1;
             for (const it of items) it.col = colOf(it);
+            // 放大後有公司列的旗幟很高：同一欄放不下時，這一欄的高旗幟一起等比例縮小（最多縮到 0.7 倍），放得下就維持原本大小，字才看得清楚
+            for (const c of [0, 1]) {
+                const [x0, x1] = colR[c];
+                const mine = items.filter((it) => it.col === c);
+                const talls = mine.filter((it) => it.hu > 24 + it.n * 16 + 5);
+                if (!talls.length) continue;
+                const lim = Math.min(
+                    bot0,
+                    ...ui
+                        .concat(uiRects(['#dzBtn']))
+                        .filter((z) => z.y > H / 2 && z.x < x1 && z.x + z.w > x0)
+                        .map((z) => z.y - GAP),
+                );
+                const fixed = mine.filter((it) => !talls.includes(it)).reduce((s, it) => s + it.h, 0) + GAP * (mine.length - 1);
+                const need = talls.reduce((s, it) => s + it.hu, 0);
+                const u = Math.max(0.7, Math.min(U, Math.floor(((lim - top0 - fixed - talls.length) / need) * 100) / 100));
+                for (const it of talls) fit(it, u);
+            }
             const overX = (it, a) => it.x < a.x + a.w && it.x + it.w > a.x;
             // 一整組（自己 + 接在下面的 under 國家）的總高度
             const blockH = (it) => it.h + items.filter((c) => c.parent === it).reduce((s, c) => s + GAP + blockH(c), 0);
@@ -2723,7 +2745,7 @@
                 let y = top0;
                 for (const it of seq) {
                     // 水平：對齊自己的動物，但不超出這一欄；under 的國家和依附的國家左緣對齊
-                    it.x = it.parent ? it.parent.x : Math.max(x0, Math.min(x1 - it.w, it.o.x - it.w / 2));
+                    it.x = Math.max(x0, Math.min(x1 - it.w, it.parent ? it.parent.x : it.o.x - it.w / 2));
                     // 動物正上方；有 under 的國家（上證 + 香港）要整組一起放在動物上方，下面那張才不會蓋住上面國家的動物
                     const bh = blockH(it);
                     it.want = it.o.a.y - bh - 5;
@@ -3111,6 +3133,7 @@
                         // 分隔線：和經濟數據卡片的分隔標題同一個樣式
                         setFlash(r, null);
                         r.select('.rn').attrQ('x', 9).attrQ('y', y + 9.2).styleQ('font-size', null).textQ(extraTitle(m));
+                        r.select('.rk').textQ('');
                         r.select('.rv').textQ('');
                         r.select('.rp').textQ('');
                         r.select('.rhl').styleQ('display', 'none');
@@ -3126,11 +3149,19 @@
                         ps = rq ? `${arrow(rq.pct)}${Math.abs(rq.pct).toFixed(2)}%` : '';
                     const rvx = w - 8 - (ps ? textWidthOf(ps, 'rp') : 0) - 5;
                     // 數字維持和單一指數一樣大，名稱放不下時才縮小名稱
-                    const lbl = k2 === 'idx' ? x.abbr || x.zh : `${x.rk} ${x.name}`,
+                    // 公司列：名次（.rk，靠右對齊在固定欄寬內，個位數和十位數的名稱才會對齊）和名稱（.rn）分開畫，
+                    // 名次用淺藍色，和金色的名稱分得出來
+                    const isCorp = k2 === 'corp',
+                        nx = isCorp ? 22 : 9,
+                        lbl = isCorp ? x.name : x.abbr || x.zh,
                         lw = textWidthOf(lbl, 'rn'),
-                        room = rvx - textWidthOf(vs, 'rv') - 9 - 4;
+                        room = rvx - textWidthOf(vs, 'rv') - nx - 4;
+                    r.select('.rk')
+                        .attrQ('x', 19.5)
+                        .attrQ('y', y + 12.3)
+                        .textQ(isCorp ? x.rk : '');
                     r.select('.rn')
-                        .attrQ('x', 9)
+                        .attrQ('x', nx)
                         .attrQ('y', y + 12.5)
                         .styleQ('font-size', lw > room ? `${Math.max(8.5, (11 * room) / lw).toFixed(1)}px` : null)
                         .textQ(lbl);

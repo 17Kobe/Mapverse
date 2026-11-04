@@ -327,6 +327,8 @@ body.noanim .corps .bk,body.noanim .corps .flame{animation:none}
 .bubble .rbg.sec{fill:#1f7f95;stroke:rgba(150,230,245,.6);stroke-width:.6}
 .bubble .rn.sec{font-size:9.5px;font-weight:800;letter-spacing:4px;fill:#fff}
 .bubble .rn{text-anchor:start;font-size:11px;fill:var(--gold-l);dominant-baseline:alphabetic}
+/* 市值前十大的名次：淺藍色，和金色的公司名稱區分 */
+.bubble .rk{text-anchor:end;font-size:10px;font-weight:800;fill:#8fdcff;dominant-baseline:alphabetic}
 .bubble .rv{text-anchor:end;font-size:15px;fill:#fff;font-family:var(--num);font-variant-numeric:tabular-nums;letter-spacing:.2px;dominant-baseline:alphabetic}
 .bubble .rp{text-anchor:end;font-size:13.5px;font-family:var(--num);font-variant-numeric:tabular-nums;letter-spacing:.2px;dominant-baseline:alphabetic}
 .bubble .lb{fill:var(--gold-l);font-size:10.5px}
