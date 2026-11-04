@@ -109,6 +109,8 @@
             FOLK_SPOTS.push([Math.cos((a * Math.PI) / 180) * ring * 1.5, Math.sin((a * Math.PI) / 180) * ring * 0.9]);
     // 國家的陸地放不下整組小人時，依序縮小再試（相對基準大小的倍率）
     const FOLK_SCALES = [1, 0.8, 0.64, 0.5, 0.4];
+    // 三個人之間的間距倍率：陸地很小時往中間靠攏（1 = 原本的間距）
+    const FOLK_SPREADS = [1, 0.7, 0.5, 0.35];
     const FOLK_MAX_K = 40; // 小人放大到這個倍率以上才收起來（其他小角色放大超過 6 倍就收起來）
     // 小人的腳要站在「自己國家」的陸地上：國家輪廓轉成 Path2D（世界座標）後用 isPointInPath 判斷，比 d3.geoContains 快很多。
     // 國家太小（例如台灣縮小時）放不下就不顯示，不會跑到海上或別的國家。投影換了（視窗大小改變）要清掉重建
@@ -524,6 +526,7 @@
         gEdge,
         gDecor,
         gCorp,
+        gFolk,
         gMk,
         gBub,
         gLm,
@@ -711,13 +714,13 @@
     function buildCritters() {
         for (const d of CRITTERS) {
             if (!d.folk || folkLeads.has(d.market)) continue;
-            const g = gDecor.append('g').attr('class', 'folk-lead').style('display', 'none');
+            const g = gFolk.append('g').attr('class', 'folk-lead').style('display', 'none');
             g.append('line');
             g.append('circle').attr('r', 3.2);
             folkLeads.set(d.market, g.node());
         }
         for (const d of CRITTERS) {
-            const g = gDecor.append('g').attr('class', 'cr').style('display', 'none');
+            const g = (d.folk ? gFolk : gDecor).append('g').attr('class', 'cr').style('display', 'none');
             const wk = g.append('g');
             const shadow = wk
                 .append('ellipse')
@@ -1135,6 +1138,8 @@
         // 台股市值前十大公司的建築（corps.js），在動物和旗幟下面
         gCorp = svg.append('g');
         if (window.Corps) Corps.build(gCorp.node(), { onPick: openCorp });
+        // 原住民小人獨立一層，畫在公司建築上面：台灣縮小時整座島都是建築（小城市比島還大），小人才不會被蓋住看不見
+        gFolk = svg.append('g').attr('class', 'folk-layer').style('pointer-events', 'none');
         // 央行、白宮、地緣動畫圖示：不論篩選都留在地圖上，畫在動物下面
         gLm = svg.append('g').attr('class', 'landmarks');
         gMk = svg.append('g').attr('class', 'markers');
@@ -2428,7 +2433,7 @@
             const forced = top10 && m.g10; // 旗幟不跟著動物走，動物在畫面外也要保留
             if (!forced && (x < -20 || x > W + 20 || y < -20 || y > H + 20)) continue;
             // 原點是腳下的地面，身體往上長；佔位框也包含牠走動的範圍
-            const a = { x: x - size * 0.75, y: y - size * 1.05, w: size * 1.5, h: size * 1.35, an: true };
+            const a = { x: x - size * 0.75, y: y - size * 1.05, w: size * 1.5, h: size * 1.35, an: true, mk: m.s };
             const area = a.w * a.h;
             // 手機版要排進左右兩欄的國家（pin，或 markets.json 指定了 col）動物不能被擠掉，否則旗幟也跟著不見
             if (!forced && rects.some((r) => inter(a, r) / area > (m.pin || (m.col && !desktopMQ.matches) ? 0.8 : 0.3))) continue;
@@ -2446,7 +2451,7 @@
                     pct: tq ? tq.pct : null,
                     visible: !topicMode,
                     avoid: uiRects(['#chips', '#hud']),
-                }),
+                }).map((r) => ({ ...r, corp: true })), // 標記：小人可以站在公司建築前面（台灣縮小時整座島都是建築）
             );
         }
         // 浮動介面（篩選列、概況卡）蓋住的地方，氣泡不要放進去
@@ -2465,51 +2470,67 @@
                 let pick = null;
                 if (k >= (c.d.minK || 0) && !topicMode) {
                     const [bx, by] = screenXY(c.d.lon, c.d.lat);
-                    // 比附近的小範圍更廣：整個畫面的格點（螢幕座標），由近到遠
-                    let grid = null;
+                    // 比附近的小範圍更廣：整個畫面裡「在這個國家陸地上」的格點（螢幕座標），由近到遠
+                    let landPts = null;
                     if (wide) {
                         const step = Math.max(8, csz * 0.4);
-                        grid = [];
-                        for (let gx = 0; gx < W; gx += step) for (let gy = 0; gy < H; gy += step) grid.push([gx, gy]);
-                        grid.sort((p, q) => (p[0] - bx) ** 2 + (p[1] - by) ** 2 - ((q[0] - bx) ** 2 + (q[1] - by) ** 2));
+                        landPts = [];
+                        for (let gx = 0; gx < W; gx += step)
+                            for (let gy = 0; gy < H; gy += step) if (onLand(c.d.market, gx, gy)) landPts.push([gx, gy]);
+                        landPts.sort((p, q) => (p[0] - bx) ** 2 + (p[1] - by) ** 2 - ((q[0] - bx) ** 2 + (q[1] - by) ** 2));
                     }
-                    // 先試正常大小；國家的陸地放不下三個人就縮小再試（最小約 13px），還是放不下就先收起來
-                    for (const sc of FOLK_SCALES) {
-                        const cz = csz * sc;
-                        if (cz < 13) break;
-                        const feet = (dx, dy) =>
-                            grp.map((o) => [bx + ((o.d.ox || 0) + dx) * cz, by + ((o.d.oy || 0) + dy) * cz]);
-                        const rectsAt = (dx, dy) =>
-                            feet(dx, dy).map(([x, y]) => ({ x: x - cz * 0.9, y: y - cz * 1.9, w: cz * 1.8, h: cz * 2.1, an: true }));
-                        const free = (rs) =>
-                            rs.every(
-                                (r) =>
-                                    r.x >= 2 &&
-                                    r.x + r.w <= W - 2 &&
-                                    r.y >= 2 &&
-                                    r.y + r.h <= H - 2 &&
-                                    !avoid.some((q) => inter(r, q) / (r.w * r.h) > 0.12),
-                            );
-                        // 每個人的腳（左、中、右三點）都要踩在自己國家的陸地上
-                        const landOk = (dx, dy) =>
-                            feet(dx, dy).every(
-                                ([x, y]) =>
-                                    onLand(c.d.market, x, y) &&
-                                    onLand(c.d.market, x - cz * 0.4, y) &&
-                                    onLand(c.d.market, x + cz * 0.4, y),
-                            );
-                        const cand = grid
-                            ? FOLK_SPOTS.concat(grid.map(([gx, gy]) => [(gx - bx) / cz, (gy - by) / cz]))
-                            : FOLK_SPOTS;
-                        for (const [dx, dy] of cand) {
-                            if (!landOk(dx, dy)) continue;
-                            const rs = rectsAt(dx, dy);
-                            if (!free(rs)) continue;
-                            pick = [dx, dy, sc];
-                            if (!wide) rects.push(...rs);
-                            break;
+                    // 分三級找位置，越前面越嚴格：① 三個人的腳都在自己國家的陸地上 ② 至少 2/3 在陸地上 ③ 整組的中心在陸地上。
+                    // 每一級先試正常大小的小人，陸地放不下就縮小（最小約 13px）、或把三個人往中間靠攏（像一小群人擠在小島上）；
+                    // 三級都找不到才收起來。這樣國家小（例如台灣）時，三個人也會在島上，不會跑到海上或別的國家
+                    outer: for (const need of [1, 2 / 3, 0]) {
+                        for (const sc of FOLK_SCALES) {
+                            const cz = csz * sc;
+                            if (cz < 13) break;
+                            for (const sp of FOLK_SPREADS) {
+                                const feet = (dx, dy) =>
+                                    grp.map((o) => [bx + ((o.d.ox || 0) * sp + dx) * cz, by + ((o.d.oy || 0) * sp + dy) * cz]);
+                                const rectsAt = (dx, dy) =>
+                                    feet(dx, dy).map(([x, y]) => ({ x: x - cz * 0.9, y: y - cz * 1.9, w: cz * 1.8, h: cz * 2.1, an: true }));
+                                const free = (rs) =>
+                                    rs.every(
+                                        (r) =>
+                                            r.x >= 2 &&
+                                            r.x + r.w <= W - 2 &&
+                                            r.y >= 2 &&
+                                            r.y + r.h <= H - 2 &&
+                                            // 自己國家的動物：小人可以站在旁邊（台灣縮小時動物和小人都在島上）。
+                                            // 公司建築：小人畫在它上面（見 gFolk），所以可以站在建築前面，不會被蓋住
+                                            !avoid.some(
+                                                (q) => inter(r, q) / (r.w * r.h) > (q.corp ? 0.9 : q.mk === c.d.market ? 0.8 : 0.12),
+                                            ),
+                                    );
+                                const landOk = (dx, dy) => {
+                                    const f = feet(dx, dy);
+                                    if (need === 0) {
+                                        const cx = f.reduce((s, p) => s + p[0], 0) / f.length,
+                                            cy = f.reduce((s, p) => s + p[1], 0) / f.length;
+                                        return onLand(c.d.market, cx, cy);
+                                    }
+                                    return f.filter(([x, y]) => onLand(c.d.market, x, y)).length >= Math.ceil(f.length * need - 1e-9);
+                                };
+                                const cand = landPts
+                                    ? FOLK_SPOTS.concat(
+                                          landPts.map(([gx, gy]) => [
+                                              (gx - bx) / cz - (c.d.grpOx || 0) * sp,
+                                              (gy - by) / cz - (c.d.grpOy || 0) * sp,
+                                          ]),
+                                      )
+                                    : FOLK_SPOTS;
+                                for (const [dx, dy] of cand) {
+                                    if (!landOk(dx, dy)) continue;
+                                    const rs = rectsAt(dx, dy);
+                                    if (!free(rs)) continue;
+                                    pick = [dx, dy, sc, sp];
+                                    if (!wide) rects.push(...rs);
+                                    break outer;
+                                }
+                            }
                         }
-                        if (pick) break;
                     }
                 }
                 folkShift.set(c.d.market, pick);
@@ -3117,13 +3138,14 @@
         for (const c of critters) {
             const folk = c.d.mode === 'folk';
             const fs = folk ? folkShift.get(c.d.market) : null;
-            // 小人如果陸地放不下，會縮小到放得下（fs[2] 是縮小倍率）
+            // 小人如果陸地放不下，會縮小（fs[2]）並把三個人往中間靠攏（fs[3]）到放得下
             const size = folk && fs ? csz * fs[2] : csz,
+                sp = folk && fs ? fs[3] : 1,
                 z = size * c.d.s;
             const [x0, y0] = screenXY(c.d.lon, c.d.lat);
             // 原住民小人以位置點為中心，各自往旁邊挪開一點，三個人才不會疊在一起
-            const x = x0 + (folk && fs ? ((c.d.ox || 0) + fs[0]) * size : 0),
-                y = y0 + (folk && fs ? ((c.d.oy || 0) + fs[1]) * size : 0);
+            const x = x0 + (folk && fs ? ((c.d.ox || 0) * sp + fs[0]) * size : 0),
+                y = y0 + (folk && fs ? ((c.d.oy || 0) * sp + fs[1]) * size : 0);
             const reach = { chase: 2.4, dolphin: 2.4, surf: 2, ski: 1.6 }[c.d.mode] || 1.1;
             const r = { x: x - size * reach, y: y - size * 1.1, w: size * reach * 2, h: size * 1.4 };
             const hide =
@@ -3142,8 +3164,8 @@
             if (folk && c.d.first) {
                 // 每組只由第一個成員負責畫虛線：組的中心不在國家附近（距離超過 3 個基準大小）才畫
                 const ld = folkLeads.get(c.d.market);
-                const gx = x0 + (c.d.grpOx + (fs ? fs[0] : 0)) * size,
-                    gy = y0 + (c.d.grpOy + (fs ? fs[1] : 0)) * size;
+                const gx = x0 + (c.d.grpOx * sp + (fs ? fs[0] : 0)) * size,
+                    gy = y0 + (c.d.grpOy * sp + (fs ? fs[1] : 0)) * size;
                 const far = !hide && fs && Math.hypot(gx - x0, gy - y0) > size * 3;
                 ld.style.display = far ? '' : 'none';
                 if (far) {
@@ -3839,6 +3861,7 @@
         if (travel) gTopic.style('display', 'none');
         gDecor.style('display', travel ? 'none' : null);
         gCorp.style('display', travel ? 'none' : null);
+        gFolk.style('display', travel ? 'none' : null);
         gTw.style('display', travel ? null : 'none');
         gRoadTag.style('display', travel ? null : 'none');
         gPoi.style('display', travel ? null : 'none');
