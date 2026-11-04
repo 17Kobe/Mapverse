@@ -1332,18 +1332,18 @@
       "lat": 39,
       "rows": [
         {
+          "e": "US_RATE",
           "l": "聯邦基金利率",
-          "v": "4.00%"
+          "f": "rate"
         },
         {
           "l": "12月升息機率",
-          "v": "約72%",
+          "v": "約72%(10/28)",
           "tone": "warn"
         }
       ],
-      "stamp": "10/28",
-      "src": "Trading Economics",
-      "note": "美國聯準會（Fed）10 月維持利率不變；升息機率來自 CME FedWatch（經 Trading Economics 轉述）。",
+      "src": "iKDx-realtime（FRED、Trading Economics）",
+      "note": "美國聯準會（Fed）聯邦基金利率的目標區間，數值由 FRED 自動取得。「12月升息機率」是 10/28 手動整理的 CME FedWatch 數字，不會自動更新。",
       "mc": "R1"
     },
     {
@@ -1377,12 +1377,12 @@
       "lat": 50,
       "rows": [
         {
+          "e": "EU_RATE",
           "l": "主要再融資利率",
-          "v": "2.65%"
+          "f": "rate"
         }
       ],
-      "stamp": "10月",
-      "src": "Trading Economics",
+      "src": "iKDx-realtime（FRED、Trading Economics）",
       "note": "歐洲央行（ECB）主要再融資利率。",
       "mc": "R2"
     },
@@ -1395,12 +1395,12 @@
       "lat": 36.5,
       "rows": [
         {
+          "e": "JP_RATE",
           "l": "政策利率",
-          "v": "1.25%"
+          "f": "rate"
         }
       ],
-      "stamp": "10月",
-      "src": "Trading Economics",
+      "src": "iKDx-realtime（FRED、Trading Economics）",
       "note": "日本央行（BOJ）政策利率。",
       "mc": "L2"
     },
@@ -1413,12 +1413,12 @@
       "lat": 34,
       "rows": [
         {
+          "e": "CN_RATE",
           "l": "1年期LPR",
-          "v": "3.00%"
+          "f": "rate"
         }
       ],
-      "stamp": "10月",
-      "src": "Trading Economics",
+      "src": "iKDx-realtime（FRED、Trading Economics）",
       "note": "中國人民銀行 1 年期貸款市場報價利率（LPR）。",
       "mc": "L1"
     },
@@ -1431,12 +1431,12 @@
       "lat": 23.7,
       "rows": [
         {
+          "e": "TW_RATE",
           "l": "重貼現率",
-          "v": "2.00%"
+          "f": "rate"
         }
       ],
-      "stamp": "9月",
-      "src": "Trading Economics",
+      "src": "iKDx-realtime（FRED、Trading Economics）",
       "note": "中央銀行重貼現率。",
       "mc": "L3"
     },
@@ -1449,12 +1449,12 @@
       "lat": 53,
       "rows": [
         {
+          "e": "UK_RATE",
           "l": "基準利率",
-          "v": "3.75%"
+          "f": "rate"
         }
       ],
-      "stamp": "9月",
-      "src": "Trading Economics",
+      "src": "iKDx-realtime（FRED、Trading Economics）",
       "note": "英格蘭銀行（BoE）基準利率。",
       "mc": "R3"
     },

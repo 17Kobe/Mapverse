@@ -484,12 +484,15 @@
             refreshView();
         }, ROLL_MS + 150);
     }
-    // 台股市值排行：失敗就沿用 corps.js 內建的資料
+    // 台股市值排行：最多每 4 分鐘讀一次（和 60 秒輪詢、切回分頁一起呼叫）。失敗就沿用上一份或 corps.js 內建的資料
+    let twTopAt = 0;
     async function loadTwTop() {
+        if (Date.now() - twTopAt < 240e3) return;
+        twTopAt = Date.now();
         try {
             if (window.Corps) Corps.applyFeed(await fetchJSON(DATA_BASE + 'tw-top.json?_=' + Date.now()));
         } catch (e) {
-            /* 沿用內建資料 */
+            twTopAt = 0; // 失敗了，下一輪再試
         }
     }
     // 其它十個國家 / 地區（中日韓印英德法美加港）的市值前十大公司：iKDx-realtime 的 top10.json，最多每 4 分鐘讀一次。
@@ -1922,7 +1925,9 @@
         return t ? t.rows.slice(0, EXTRA_N) : [];
     };
     // 分隔標題：「台股市值前十大」、「美股市值前十大」…
-    const extraTitle = (m) => (m.extra === 'corps' ? '台股市值前十大' : (topFeedOf(m) || {}).title || '');
+    // 台股還沒讀到最新排行（用的是 corps.js 內建的備用數字）時加註「備用」，不要讓人以為是最新的
+    const extraTitle = (m) =>
+        m.extra === 'corps' ? (window.Corps && !Corps.LIVE ? '台股市值前十大（備用）' : '台股市值前十大') : (topFeedOf(m) || {}).title || '';
     // 這張旗幟能不能整張列出（multi）：有多個指數，或放大到有公司列。單一指數又沒有公司列的國家只有 full / mini
     const hasRows = (m, n = m.group.length) => n > 1 || extraList(m).length > 0;
     // 整張列出（multi）時的旗幟高度（未放大的座標）：色帶 24 + 每個指數 16 + 底部 4，再加上額外的公司列
@@ -2009,6 +2014,15 @@
                 const pct = pyi != null && pyi > 0 && yi > 0 ? ((yi - pyi) / pyi) * 100 : null;
                 const { chg, flat } = pct == null ? { chg: '', flat: false } : chgText(pct, Math.abs(pct).toFixed(1) + '%');
                 return { val: `${yi < 0 ? '-' : ''}${fmtInt(Math.abs(yi))}億`, chg: flat ? '0%' : chg, flat, cd: pyi == null ? 0 : yi - pyi };
+            }
+            case 'rate': {
+                // 央行政策利率：只顯示目前水準（有下限 lo 時是目標區間，例如 3.75–4.00%），不顯示變動
+                const rdp = r.dp != null ? r.dp : 2;
+                return {
+                    val: q.lo != null ? `${q.lo.toFixed(rdp)}–${q.v.toFixed(rdp)}%` : `${q.v.toFixed(rdp)}%`,
+                    chg: '',
+                    flat: true,
+                };
             }
             case 'light': {
                 const [name, col] = LIGHTS[q.light] || ['', null];
@@ -4056,9 +4070,11 @@
             const note =
                 state.activeRegion === 'econ'
                     ? '自動更新，顯示最近一次公布值'
-                    : ['rate', 'geo'].includes(state.activeRegion)
-                      ? '手動整理，可能不是最新'
-                      : '行情約延遲 15 分鐘';
+                    : state.activeRegion === 'rate'
+                      ? '央行利率自動更新'
+                      : state.activeRegion === 'geo'
+                        ? '手動整理，可能不是最新'
+                        : '行情約延遲 15 分鐘';
             line = `${topic.icon} ${topic.label} · 更新於 ${when} · ${note}`;
         }
         else line = `🟢 ${open.length} 個市場開盤中 · 更新於 ${when} · 資料約延遲 15 分鐘`;
@@ -4300,7 +4316,7 @@
 
         setInterval(async () => {
             const old = state.quotes;
-            await Promise.all([loadQuotes(), loadTops(), loadEcon()]);
+            await Promise.all([loadQuotes(), loadTwTop(), loadTops(), loadEcon()]);
             animateQuotes(old);
             tick();
         }, 60000);
@@ -4314,7 +4330,7 @@
         document.addEventListener('visibilitychange', async () => {
             if (!document.hidden) {
                 const old = state.quotes;
-                await Promise.all([loadQuotes(), loadTops(), loadEcon()]);
+                await Promise.all([loadQuotes(), loadTwTop(), loadTops(), loadEcon()]);
                 animateQuotes(old);
                 tick();
             }
