@@ -43,6 +43,7 @@
     const BUBBLE_SCALE_MOBILE = 1.25;
     // 電腦版股市旗幟（連字型）最多放大的倍率，實際倍率依畫面大小與擁擠程度決定（見 layoutMarkers）
     const DESK_SCALE_MAX = 1.5;
+    const DESK_SCALE_ALL = 1.2; // 全球檢視比較擠，上限低一些
     const deskUCache = new Map();
     // 單一指數旗幟的高度：色帶（含邊框）下方留 22px 放指數，數字的基線固定在 FULL_BASE，各瀏覽器位置才會一致
     const FULL_H = 44,
@@ -3290,13 +3291,25 @@
                 U = 1;
                 best = solve();
                 pick = 1;
-                const uMax = Math.max(1, Math.min(DESK_SCALE_MAX, W / 1280, H / 720));
+                // 全球檢視國家多、很擠：倍率上限較低，並容許最多 2 個國家從完整版退成迷你版（不能消失、整張列出的不能退）
+                const isAll = state.activeRegion === 'all';
+                const uMax = Math.max(1, Math.min(isAll ? DESK_SCALE_ALL : DESK_SCALE_MAX, W / 1280, H / 720));
                 if (uMax > 1.03) {
                     const base = new Map(best.snap.map(([o, b]) => [o.m.s, rank(b)]));
+                    const okRank = (t) => {
+                        let down = 0;
+                        for (const [o, b] of t.snap) {
+                            const r0 = base.get(o.m.s),
+                                r1 = rank(b);
+                            if (r1 >= r0) continue;
+                            if (!isAll || r0 === 3 || r1 < 1 || ++down > 2) return false;
+                        }
+                        return true;
+                    };
                     for (const u of [uMax, 1 + (uMax - 1) * 0.66, 1 + (uMax - 1) * 0.33]) {
                         U = u;
                         const t = solve();
-                        if (t.snap.every(([o, b]) => rank(b) >= base.get(o.m.s))) {
+                        if (okRank(t)) {
                             best = t;
                             pick = u;
                             break;
