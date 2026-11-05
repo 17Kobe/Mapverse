@@ -1393,6 +1393,10 @@
                 b.append('image').attr('class', 'flag').attr('href', fs).attr('preserveAspectRatio', 'none');
                 b.append('rect').attr('class', 'flag-b').attr('rx', 1.5);
             }
+            // 旗幟離自己的國家很遠時（電腦版），畫一條虛線連回動物，才看得出是哪個國家
+            const ml = b.insert('g', ':first-child').attr('class', 'mlead').style('display', 'none');
+            ml.append('line');
+            ml.append('circle').attr('r', 3);
             b.append('rect').attr('class', 'fl').attr('rx', 4); // 報價更新時，數字區塊閃一下的光
             b.append('rect').attr('class', 'hl').attr('rx', 3).style('display', 'none'); // 漲跌幅超過 2% 的底色
             const t1 = b.append('text').attr('class', 't1');
@@ -2101,6 +2105,10 @@
         return textWidth(measTs[key].text(str).node());
     }
     // 台灣旗幟放大時（縮放倍率 ≥ extraK），在加權 / 櫃買下面加一條分隔標題和市值前十大公司（股價 + 漲跌幅）
+    const REGION_TOPS = ['asia', 'americas', 'europe'];
+    // 十大市值公司列：名稱放大（原本 11px 常被縮到看不清楚），數字稍微縮小讓出位置；整張旗幟也加寬
+    const CORP_FS = { rn: 12.5, rv: 13.5, rp: 12.5 };
+    const LIST_W = 194;
     const EXTRA_N = 10,
         EXTRA_K = 3; // SEC_H（分隔標題的高度）在下方主題卡片那段定義
     // 其它國家 / 地區：markets.json 的 top 是 top10.json 的國家代碼（cn / jp / kr / in / uk / de / fr / us / ca / hk）。
@@ -2110,7 +2118,9 @@
         return t && t.rows && t.rows.length >= EXTRA_N ? t : null;
     };
     const extraList = (m) => {
-        if (state.t.k < (m.extraK ?? EXTRA_K)) return [];
+        // 電腦版點亞太 / 美洲 / 歐洲：該區有十大市值資料的國家直接列出公司，不用再放大
+        const byRegion = desktopMQ.matches && state.activeRegion === m.r && REGION_TOPS.includes(m.r);
+        if (!byRegion && state.t.k < (m.extraK ?? EXTRA_K)) return [];
         if (m.extra === 'corps') return window.Corps ? Corps.topList().slice(0, EXTRA_N) : [];
         const t = topFeedOf(m);
         return t ? t.rows.slice(0, EXTRA_N) : [];
@@ -3073,11 +3083,16 @@
                 // 多指數的國家：空間夠就整張列出（multi），不夠就輪播（full），再不夠只顯示主指數（mini）
                 const n = m.group.length;
                 // 窄螢幕：整張列出的旗幟最多佔半個畫面寬，這樣左右可以並排兩張
-                const multiW = Math.min(166, Math.floor((W - 10) / 2 / U));
+                const hasList = extraList(m).length > 0;
+                const multiW = Math.min(hasList ? LIST_W : 166, Math.floor((W - 10) / 2 / U));
+                // 電腦版有十大市值清單的旗幟：動物旁邊擠不下時，沿整個畫面找最近的空位（旗幟會畫引線連回國家），
+                // 還是放不下才縮小到 0.86 倍（名稱要盡量維持清楚）
+                const smaller = hasList && desktopMQ.matches ? [{ grid: true }, { s: 0.86, grid: true }] : [];
                 const modes = (
                     hasRows(m, n)
                         ? [
                               { w: multiW, h: multiH(m, n), mode: 'multi' },
+                              ...smaller.map((v) => ({ w: multiW, h: multiH(m, n), mode: 'multi', ...v })),
                               { w: Math.max(n > 1 ? 136 : 118, headNeedW(m, n > 1 ? n * 6 + 4 : 0)), h: FULL_H, mode: 'full' },
                               { w: 80, h: 22, mode: 'mini' },
                           ]
@@ -3085,7 +3100,12 @@
                               { w: Math.max(118, headNeedW(m, 0)), h: FULL_H, mode: 'full' },
                               { w: 80, h: 22, mode: 'mini' },
                           ]
-                ).map((md) => ({ ...md, w: Math.round(md.w * U), h: Math.round(md.h * U) }));
+                ).map((md) => ({
+                    ...md,
+                    w: Math.round(md.w * U * (md.s || 1)),
+                    h: Math.round(md.h * U * (md.s || 1)),
+                    u: md.s ? U * md.s : undefined,
+                }));
                 outer: for (const md of modes) {
                     const cands = [
                         { x: o.x - md.w / 2, y: o.a.y - md.h - 5, pos: 'up' },
@@ -3101,9 +3121,10 @@
                         cands.push({ x: o.a.x - md.w - 2, y: o.y - md.h / 2 + f * md.h * 1.1, pos: 'left~' });
                     }
                     // pin 的國家（上證、韓國）寧可離動物遠一點也要整張列出：沿著整個畫面用格點再找一輪空位
-                    if (m.pin && md.mode !== 'mini') {
-                        for (let gy = 2; gy + md.h <= H - 2; gy += 8)
-                            for (let gx = 2; gx + md.w <= W - 2; gx += 8) cands.push({ x: gx, y: gy, pos: 'grid' });
+                    if ((m.pin || md.grid) && md.mode !== 'mini') {
+                        const st = m.pin ? 8 : 12;
+                        for (let gy = 2; gy + md.h <= H - 2; gy += st)
+                            for (let gx = 2; gx + md.w <= W - 2; gx += st) cands.push({ x: gx, y: gy, pos: 'grid' });
                     }
                     // markets.json 的 under：緊接在指定國家的旗幟正下方（例如香港放在上證下面），左緣對齊
                     const po = m.under && vis.get(m.under);
@@ -3134,7 +3155,7 @@
                             }
                         }
                         rs.push(r);
-                        o.b = { r, mode: md.mode, pos: c.pos };
+                        o.b = { r, mode: md.mode, pos: c.pos, u: md.u };
                         break outer;
                     }
                 }
@@ -3274,6 +3295,19 @@
                 band: mini ? null : st === 'closed' ? closedBandColor(pct) : bandColor(pct),
                 tail: o.b.pos === 'up',
             });
+            // 引線：旗幟邊緣離動物頭上超過 18px 才畫（座標是旗幟內部座標，不含倍率）
+            {
+                const ax = (o.x - bx) / Uc,
+                    ay = (o.y - o.size * 0.55 - by) / Uc,
+                    nx = Math.max(0, Math.min(w, ax)),
+                    ny = Math.max(0, Math.min(h, ay));
+                const far = desktopMQ.matches && !mini && Math.hypot(ax - nx, ay - ny) * Uc > 18;
+                const ml = b.select('.mlead').styleQ('display', far ? null : 'none');
+                if (far) {
+                    ml.select('line').attrQ('x1', nx).attrQ('y1', ny).attrQ('x2', ax).attrQ('y2', ay);
+                    ml.select('circle').attrQ('cx', ax).attrQ('cy', ay);
+                }
+            }
             // 國旗：完整版放在名稱色帶左側，迷你版放在漲跌幅左邊
             const hasFlag = !b.select('.flag').empty();
             const fw = mini ? 18 : 24,
@@ -3409,15 +3443,22 @@
                     const vs =
                         rq && rq.p != null ? (k2 === 'corp' && rq.p >= 1e5 ? fmtWan(rq.p) : fmtN(rq.p, 'short')) : '--',
                         ps = rq ? `${arrow(rq.pct)}${Math.abs(rq.pct).toFixed(2)}%` : '';
-                    const rvx = w - 8 - (ps ? numW(ps, 'rp', true) : 0) - 5;
-                    // 數字維持和單一指數一樣大，名稱放不下時才縮小名稱
+                    // 公司列：名稱放大、數字略縮（CORP_FS）；指數列維持原本字級。寬度要乘上字級比例
+                    const isCorp = k2 === 'corp',
+                        fs = isCorp ? CORP_FS : null,
+                        sv = fs ? fs.rv / 15 : 1,
+                        sp = fs ? fs.rp / 13.5 : 1,
+                        sn = fs ? fs.rn / 11 : 1;
+                    const pw = ps ? numW(ps, 'rp', true) * sp : 0;
+                    const rvx = w - 8 - pw - 5;
+                    // 名稱放不下時才縮小名稱
                     // 公司列：名次（.rk，靠右對齊在固定欄寬內，個位數和十位數的名稱才會對齊）和名稱（.rn）分開畫，
                     // 名次用淺藍色，和金色的名稱分得出來
-                    const isCorp = k2 === 'corp',
-                        nx = isCorp ? 22 : 9,
+                    const nx = isCorp ? 22 : 9,
                         lbl = isCorp ? $t(x.name) : x.abbr || x.zh,
-                        lw = textWidthOf(lbl, 'rn'),
-                        room = rvx - numW(vs) - nx - 4;
+                        lw = textWidthOf(lbl, 'rn') * sn,
+                        room = rvx - numW(vs) * sv - nx - 4,
+                        baseFs = fs ? fs.rn : 11;
                     r.select('.rk')
                         .attrQ('x', 19.5)
                         .attrQ('y', y + 12.3)
@@ -3425,23 +3466,25 @@
                     r.select('.rn')
                         .attrQ('x', nx)
                         .attrQ('y', y + 12.5)
-                        .styleQ('font-size', lw > room ? `${Math.max(8.5, (11 * room) / lw).toFixed(1)}px` : null)
+                        .styleQ('font-size', lw > room ? `${Math.max(9, (baseFs * room) / lw).toFixed(1)}px` : fs ? `${fs.rn}px` : null)
                         .textQ(lbl);
                     r.select('.rv')
                         .attrQ('x', rvx)
                         .attrQ('y', y + 13.5)
+                        .styleQ('font-size', fs ? `${fs.rv}px` : null)
                         .numQ(vs);
                     const big = !!rq && Math.abs(rq.pct) >= BIG_MOVE;
                     r.select('.rhl')
                         .styleQ('display', big ? null : 'none')
-                        .attrQ('x', w - 8 - (big ? numW(ps, 'rp', true) : 0) - 3)
+                        .attrQ('x', w - 8 - (big ? pw : 0) - 3)
                         .attrQ('y', y + 1.5)
-                        .attrQ('width', big ? numW(ps, 'rp', true) + 6 : 0)
+                        .attrQ('width', big ? pw + 6 : 0)
                         .attrQ('height', 14)
                         .styleQ('fill', big ? hlColor(rq.pct) : null);
                     r.select('.rp')
                         .attrQ('x', w - 8)
                         .attrQ('y', y + 13.5)
+                        .styleQ('font-size', fs ? `${fs.rp}px` : null)
                         .styleQ('fill', big ? '#fff' : rq ? pctColor(rq.pct) : null)
                         .numQ(ps, true);
                 });
