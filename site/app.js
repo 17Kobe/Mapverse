@@ -2066,12 +2066,9 @@
         return `${p2(d.getMonth() + 1)}/${p2(d.getDate())} ${p2(d.getHours())}:${p2(d.getMinutes())}`;
     }
     // 台股還沒讀到最新排行（用的是 corps.js 內建的備用數字）時加註「備用」，不要讓人以為是最新的
+    // 旗幟上的分隔標題：所有國家統一寫「市值前十大」（國家已經看旗幟與國名，不再加「台股」「德股」…）
     const extraTitle = (m) =>
-        m.extra === 'corps'
-            ? window.Corps && !Corps.LIVE
-                ? $t('台股市值前十大（備用）')
-                : $t('台股市值前十大')
-            : $t((topFeedOf(m) || {}).title || '');
+        m.extra === 'corps' && window.Corps && !Corps.LIVE ? $t('市值前十大（備用）') : $t('市值前十大');
     // 這張旗幟能不能整張列出（multi）：有多個指數，或放大到有公司列。單一指數又沒有公司列的國家只有 full / mini
     const hasRows = (m, n = m.group.length) => n > 1 || extraList(m).length > 0;
     // 整張列出（multi）時的旗幟高度（未放大的座標）：色帶 24 + 每個指數 16 + 底部 4，再加上額外的公司列

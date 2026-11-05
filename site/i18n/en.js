@@ -16,6 +16,8 @@ I18n.add('en', {
   "颱風路徑、地震、雨量": "Typhoon tracks, earthquakes, rainfall",
   "台股市值前十大（備用）": "Taiwan Top 10 by Mkt Cap (Backup)",
   "台股市值前十大": "Taiwan Top 10 by Mkt Cap",
+  "市值前十大（備用）": "Top 10 by Mkt Cap (Backup)",
+  "市值前十大": "Top 10 by Mkt Cap",
   "藍燈": "Blue",
   "黃藍燈": "Yellow-Blue",
   "綠燈": "Green",
