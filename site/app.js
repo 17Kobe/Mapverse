@@ -41,6 +41,9 @@
     const desktopMQ = window.matchMedia('(min-width:900px)');
     // 手機版城市旗幟的放大倍率（數字太小看不清楚）
     const BUBBLE_SCALE_MOBILE = 1.25;
+    // 電腦版股市旗幟（連字型）最多放大的倍率，實際倍率依畫面大小與擁擠程度決定（見 layoutMarkers）
+    const DESK_SCALE_MAX = 1.5;
+    const deskUCache = new Map();
     // 單一指數旗幟的高度：色帶（含邊框）下方留 22px 放指數，數字的基線固定在 FULL_BASE，各瀏覽器位置才會一致
     const FULL_H = 44,
         FULL_BASE = 37.5;
@@ -2176,6 +2179,10 @@
     /* ================= 商品 / 債券 / 利率 / 匯率 / 地緣 / 經濟數據 ================= */
     // 卡片的座標一律用「未放大」的尺寸畫（寬 TOPIC_W、色帶 24 + 每列 16 + 底部 4），最後再整個 scale(U)
     const TOPIC_W = 176;
+    // 電腦版卡片（連字型）最多放大的倍率
+    const TOPIC_SCALE_MAX = 1.7;
+    // 卡片邊緣離自己國家的距離上限（px）：超過就寧可縮小卡片，讓它貼近國家
+    const TOPIC_NEAR = 200;
     // 資料列 16px；卡內的分隔標題（成長 / 物價 / 就業）只要 12px，不佔太多高度
     const SEC_H = 12;
     const rowH = (r) => (r.sec ? SEC_H : 16);
@@ -2535,48 +2542,83 @@
             }
             return;
         }
-        const gap = 14,
-            w = TOPIC_W;
-        for (const c of cards) {
-            const [ax, ay] = screenXY(c.lon, c.lat),
-                h = topicH(c),
-                el = d3.select(c.el);
-            if (ax < -10 || ax > W + 10 || ay < -10 || ay > H + 10) {
-                el.styleQ('display', 'none');
-                continue;
-            }
-            const cands = [];
-            // 先試正上、正下、右、左，再沿著邊滑動、再往外一圈
-            for (const m of [0, 1, 2]) {
-                const up = ay - h - gap - m * (h + 6),
-                    dn = ay + gap + m * (h + 6);
-                for (const f of [0, -0.4, 0.4, -0.8, 0.8, -1.2, 1.2]) {
-                    cands.push({ x: ax - w / 2 + f * w, y: up }, { x: ax - w / 2 + f * w, y: dn });
+        // 電腦版空間夠大：卡片連同字型整體放大（U 倍），從最大倍率往下試，取「全部卡片都放得下」的最大值；
+        // 最小為 1（原尺寸），這時放不下的卡片才隱藏
+        const place = (U, base) => {
+            const out = [],
+                used = base.slice(),
+                gap = 14,
+                w = Math.round(TOPIC_W * U);
+            let miss = 0,
+                far = 0;
+            for (const c of cards) {
+                const [ax, ay] = screenXY(c.lon, c.lat),
+                    h = Math.round(topicH(c) * U);
+                if (ax < -10 || ax > W + 10 || ay < -10 || ay > H + 10) {
+                    out.push({ c, hit: null });
+                    continue;
                 }
-                for (const f of [0, -0.6, 0.6, -1.2, 1.2]) {
-                    cands.push(
-                        { x: ax + gap + m * (w + 6), y: ay - h / 2 + f * h },
-                        { x: ax - w - gap - m * (w + 6), y: ay - h / 2 + f * h },
-                    );
+                const cands = [];
+                // 正上、正下、右、左，沿著邊細細滑動（每 0.1 個卡片寬 / 高一格），再往外一圈；
+                // 右、左還會把卡片橫向多推開一點（越過擋住的地標），這樣卡片才能盡量貼近自己的國家
+                for (const m of [0, 1, 2]) {
+                    const up = ay - h - gap - m * (h + 6),
+                        dn = ay + gap + m * (h + 6);
+                    for (let f = -1.2; f <= 1.201; f += 0.1) {
+                        cands.push({ x: ax - w / 2 + f * w, y: up }, { x: ax - w / 2 + f * w, y: dn });
+                    }
+                    for (let f = -1.2; f <= 1.201; f += 0.1) {
+                        for (let j = 0; j < 6; j++) {
+                            const off = gap + j * 24 + m * (w + 6);
+                            cands.push({ x: ax + off, y: ay - h / 2 + f * h }, { x: ax - w - off, y: ay - h / 2 + f * h });
+                        }
+                    }
                 }
+                cands.forEach((q, i) => ((q.i = i), (q.d = (q.x + w / 2 - ax) ** 2 + (q.y + h / 2 - ay) ** 2)));
+                cands.sort((p, q) => p.d - q.d || p.i - q.i);
+                let hit = null;
+                for (const q of cands) {
+                    const r = { x: q.x, y: q.y, w, h };
+                    if (r.x < 2 || r.y < 2 || r.x + w > W - 2 || r.y + h > H - 2) continue;
+                    if (used.some((z) => inter(r, z) > 0)) continue;
+                    hit = r;
+                    break;
+                }
+                if (!hit) {
+                    miss++;
+                    out.push({ c, hit: null });
+                    continue;
+                }
+                used.push(hit);
+                out.push({ c, hit, pin: { x: ax, y: ay } });
+                // 卡片邊緣離國家的距離（卡片蓋在國家上方算 0）
+                far = Math.max(far, Math.hypot(Math.max(hit.x - ax, 0, ax - hit.x - hit.w), Math.max(hit.y - ay, 0, ay - hit.y - hit.h)));
             }
-            cands.forEach((q, i) => ((q.i = i), (q.d = (q.x + w / 2 - ax) ** 2 + (q.y + h / 2 - ay) ** 2)));
-            cands.sort((p, q) => p.d - q.d || p.i - q.i);
-            let hit = null;
-            for (const q of cands) {
-                const r = { x: q.x, y: q.y, w, h };
-                if (r.x < 2 || r.y < 2 || r.x + w > W - 2 || r.y + h > H - 2) continue;
-                if (rects.some((z) => inter(r, z) > 0)) continue;
-                hit = r;
+            return { out, miss, used, far };
+        };
+        // 全部放得下，而且每張卡片都貼近自己的國家（邊緣離國家不超過 TOPIC_NEAR px）的最大倍率；
+        // 沒有這樣的倍率就退而求其次，取全部放得下的最大倍率
+        let best = null,
+            bestU = 1,
+            alt = null,
+            altU = 1;
+        for (let U = TOPIC_SCALE_MAX; U > 1.001; U -= 0.1) {
+            const t = place(U, rects);
+            if (t.miss) continue;
+            if (t.far <= TOPIC_NEAR) {
+                best = t;
+                bestU = U;
                 break;
             }
-            if (!hit) {
-                el.styleQ('display', 'none');
-                continue;
-            }
-            rects.push(hit);
-            drawTopic(c, hit, 1, { x: ax, y: ay });
+            if (!alt) (alt = t), (altU = U);
         }
+        if (!best && alt) (best = alt), (bestU = altU);
+        best = best || place(1, rects);
+        for (const { c, hit, pin } of best.out) {
+            if (!hit) d3.select(c.el).styleQ('display', 'none');
+            else drawTopic(c, hit, bestU, pin);
+        }
+        rects.push(...best.used.slice(rects.length));
     }
     // 白宮：用幾個簡單的形狀畫（原點在地面正中央，高約 34）
     function drawWhiteHouse(g) {
@@ -2863,7 +2905,7 @@
         // 第二輪：放氣泡，先試完整版，再試迷你版
         const baseRects = rects.slice();
         // 旗幟整體放大倍率：手機螢幕小，指數數字要放大才看得清楚（旗幟內部仍用原本的座標畫，最後再整個 scale）
-        const U = desktopMQ.matches ? 1 : BUBBLE_SCALE_MOBILE;
+        let U = desktopMQ.matches ? 1 : BUBBLE_SCALE_MOBILE;
         // 全球檢視用合併後的指數清單（中國 + 香港）
         const grpOf = (m) => (top10 && m.group10) || m.group;
         // 全球檢視：十大市值國家排兩欄（g10 = L/R + 由上而下的序號），兩欄頂端對齊，地圖留在上方。
@@ -3197,40 +3239,77 @@
             return sc;
         };
         // 先依權重由大到小放；如果有多指數的國家沒能整張列出，就讓它優先再排一次（最多重排幾次，取最好的）
-        let order = arr.slice().sort((a, b) => !!b.pin - !!a.pin || hasRows(b) - hasRows(a));
-        let best = null;
-        // pin 的國家誰先放會影響彼此的位置，所以正序、反序各排一輪，取分數最高的
-        const pins = order.filter((m) => m.pin);
-        const starts = [order];
-        if (pins.length > 1) {
-            const rest = order.filter((m) => !m.pin);
-            starts.push([...pins.slice().reverse(), ...rest]);
-            // 由北到南（畫面上方到下方）依序放，旗幟才會一層一層往下排整齊
-            starts.push([...pins.slice().sort((a, b) => (vis.get(a.s)?.y ?? 0) - (vis.get(b.s)?.y ?? 0)), ...rest]);
-        }
-        for (const start of starts) {
-            order = start;
-            const tried = new Set();
-            for (let it = 0; it < 6; it++) {
-                const sc = place(order);
-                if (!best || sc > best.sc) best = { sc, snap: [...vis.values()].map((o) => [o, o.b]) };
-                // 沒能整張列出的多指數國家，或沒能以完整版（非迷你）列出的 pin 國家，下一輪優先排
-                const missing = (m) =>
-                    (hasRows(m) || m.pin) &&
-                    !(top10 && !m.g10) &&
-                    !(pinCols && pinCols.has(m.s)) &&
-                    !tried.has(m.s) &&
-                    vis.get(m.s) &&
-                    state.quotes[m.s] &&
-                    !(
-                        vis.get(m.s).b &&
-                        (vis.get(m.s).b.mode === 'multi' || (!hasRows(m) && vis.get(m.s).b.mode === 'full'))
-                    );
-                const miss = order.find((m) => m.pin && missing(m)) || order.find(missing);
-                if (!miss) break;
-                tried.add(miss.s);
-                order = [miss, ...order.filter((m) => m !== miss)];
+        const solve = () => {
+            let order = arr.slice().sort((a, b) => !!b.pin - !!a.pin || hasRows(b) - hasRows(a));
+            let best = null;
+            // pin 的國家誰先放會影響彼此的位置，所以正序、反序各排一輪，取分數最高的
+            const pins = order.filter((m) => m.pin);
+            const starts = [order];
+            if (pins.length > 1) {
+                const rest = order.filter((m) => !m.pin);
+                starts.push([...pins.slice().reverse(), ...rest]);
+                // 由北到南（畫面上方到下方）依序放，旗幟才會一層一層往下排整齊
+                starts.push([...pins.slice().sort((a, b) => (vis.get(a.s)?.y ?? 0) - (vis.get(b.s)?.y ?? 0)), ...rest]);
             }
+            for (const start of starts) {
+                order = start;
+                const tried = new Set();
+                for (let it = 0; it < 6; it++) {
+                    const sc = place(order);
+                    if (!best || sc > best.sc) best = { sc, snap: [...vis.values()].map((o) => [o, o.b]) };
+                    // 沒能整張列出的多指數國家，或沒能以完整版（非迷你）列出的 pin 國家，下一輪優先排
+                    const missing = (m) =>
+                        (hasRows(m) || m.pin) &&
+                        !(top10 && !m.g10) &&
+                        !(pinCols && pinCols.has(m.s)) &&
+                        !tried.has(m.s) &&
+                        vis.get(m.s) &&
+                        state.quotes[m.s] &&
+                        !(
+                            vis.get(m.s).b &&
+                            (vis.get(m.s).b.mode === 'multi' || (!hasRows(m) && vis.get(m.s).b.mode === 'full'))
+                        );
+                    const miss = order.find((m) => m.pin && missing(m)) || order.find(missing);
+                    if (!miss) break;
+                    tried.add(miss.s);
+                    order = [miss, ...order.filter((m) => m !== miss)];
+                }
+            }
+            return best;
+        };
+        let best = null;
+        if (!desktopMQ.matches) best = solve();
+        else {
+            // 電腦版空間夠大：旗幟連同字型整體放大。先用原尺寸排一次當基準，再從最大倍率往下試，
+            // 取「沒有任何國家比基準更差（整張列出變輪播、變迷你、消失）」的最大倍率。
+            // 結果依「畫面大小 + 篩選 + 縮放等級 + 已有報價的市場數」記起來，拖曳時不重算
+            const rank = (b) => (b ? { multi: 3, full: 2, mini: 1 }[b.mode] || 0 : 0);
+            const key = `${W}x${H}|${state.activeRegion}|${Math.round(Math.log2(Math.max(k, 0.1)) * 2)}|${state.maps.filter((m) => state.quotes[m.s]).length}`;
+            let pick = deskUCache.get(key);
+            if (pick == null) {
+                U = 1;
+                best = solve();
+                pick = 1;
+                const uMax = Math.max(1, Math.min(DESK_SCALE_MAX, W / 1280, H / 720));
+                if (uMax > 1.03) {
+                    const base = new Map(best.snap.map(([o, b]) => [o.m.s, rank(b)]));
+                    for (const u of [uMax, 1 + (uMax - 1) * 0.66, 1 + (uMax - 1) * 0.33]) {
+                        U = u;
+                        const t = solve();
+                        if (t.snap.every(([o, b]) => rank(b) >= base.get(o.m.s))) {
+                            best = t;
+                            pick = u;
+                            break;
+                        }
+                    }
+                }
+                if (deskUCache.size > 80) deskUCache.clear();
+                deskUCache.set(key, pick);
+            } else {
+                U = pick;
+                best = solve();
+            }
+            U = pick;
         }
         for (const [o, bb] of best.snap) o.b = bb;
 
