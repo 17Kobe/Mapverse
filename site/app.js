@@ -1246,7 +1246,10 @@
         gDecor = svg.append('g').attr('class', 'decor').style('pointer-events', 'none');
         // 台股市值前十大公司的建築（corps.js），在動物和旗幟下面
         gCorp = svg.append('g');
-        if (window.Corps) Corps.build(gCorp.node(), { onPick: openCorp });
+        // 暫時不顯示台股前十大的公司建築：設成 true 就會恢復（corps.js 完整保留；不建立時 Corps.layout() 會回傳空陣列，
+        // 排版、旗幟避讓和小人都不受影響）。市值排行的資料與旗幟上的前十大名單照常運作
+        const SHOW_CORP_BUILDINGS = false;
+        if (window.Corps && SHOW_CORP_BUILDINGS) Corps.build(gCorp.node(), { onPick: openCorp });
         // 原住民小人獨立一層，畫在公司建築上面：台灣縮小時整座島都是建築（小城市比島還大），小人才不會被蓋住看不見
         gFolk = svg.append('g').attr('class', 'folk-layer').style('pointer-events', 'none');
         // 央行、白宮、地緣動畫圖示：不論篩選都留在地圖上，畫在動物下面
