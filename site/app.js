@@ -415,21 +415,35 @@
     const bandColor = (pct) => (isFlat(pct) ? FLAT_BAND : isRed(pct) ? 'hsl(4,62%,38%)' : 'hsl(146,55%,28%)');
     // 休市的色帶仍依漲跌上色，但比開盤中暗、飽和度低，看得出已經收盤
     const closedBandColor = (pct) => (isFlat(pct) ? FLAT_BAND : isRed(pct) ? 'hsl(4,42%,31%)' : 'hsl(146,36%,24%)');
-    // 國土只上一層半透明的漲跌色，讓底下的地形透出來
-    function fillFor(m) {
-        const q = state.quotes[m.s];
-        if (!q) return 'rgba(255,255,255,.08)';
-        const mag = Math.min(Math.abs(q.pct), 3) / 3;
-        const open = marketStatus(m) === 'open';
-        const a = open ? 0.12 + mag * 0.26 : 0.06 + mag * 0.12;
-        return `hsla(${hue(q.pct)},${open ? 85 : 45}%,50%,${a.toFixed(3)})`;
+    // 文明帝國式國界，顏色和漲跌無關：全球十大市值國家（markets.json 的 g10）紅色，其他國家綠色。
+    // 每個國家三層：寬而淡的光暈 + 看得清楚的國土底色（land）→ 亮色主線（line）→ 中央白色細線（edge）
+    const BORDER = {
+        green: { line: 'hsl(142,88%,50%)', fill: 'hsla(142,85%,50%,.26)' },
+        red: { line: 'hsl(4,88%,50%)', fill: 'hsla(4,85%,50%,.26)' },
+    };
+    const borderOf = (id) => {
+        const m = state.byId[id];
+        return m && m.g10 ? BORDER.red : BORDER.green;
+    };
+    // 主題卡片對應的國家（國家的 ISO 數字代碼，三位數）：卡片寫了 countries 就用它（歐元區、地緣衝突雙方…），
+    // 否則用卡片的國旗找同一面國旗的股市國家
+    function cardCountryIds(c) {
+        if (c.countries) return c.countries.map(pad3);
+        const code = flagCode(c.flag),
+            m = code && state.maps.find((x) => flagCode(x.flag) === code);
+        return m ? [pad3(m.id)] : [];
     }
-    // 文明帝國式國界：外圈彩色粗邊 + 內圈白色細線
-    function borderFor(m) {
-        const q = state.quotes[m.s];
-        if (!q) return 'rgba(255,255,255,.7)';
-        const open = marketStatus(m) === 'open';
-        return `hsl(${hue(q.pct)},${open ? 88 : 40}%,${open ? 50 : 62}%)`;
+    // 要畫國界的國家：股票篩選（全球 / 亞太 / 美洲 / 歐洲 / 中東非洲）一律畫所有有股市的國家（電腦版每個篩選都列出所有股市卡片）；
+    // 主題篩選（商品 / 匯率 / 地緣…）只畫該篩選所有卡片對應的國家
+    function borderIds() {
+        const key = state.activeRegion,
+            ids = new Set();
+        if (TOPICS[key]) {
+            for (const c of state.topics) if (c.cat === key) cardCountryIds(c).forEach((i) => ids.add(i));
+        } else {
+            for (const m of state.maps) ids.add(pad3(m.id));
+        }
+        return ids;
     }
     // 數字格式器先建好重複使用（toLocaleString 每次呼叫都會重建一個，拖曳時每幀都要格式化好幾十個數字）
     const NUM_FMT = [0, 2].map((d) => new Intl.NumberFormat('en-US', { minimumFractionDigits: d, maximumFractionDigits: d }));
@@ -1295,7 +1309,7 @@
         // 原住民小人獨立一層，畫在公司建築上面：台灣縮小時整座島都是建築（小城市比島還大），小人才不會被蓋住看不見
         gFolk = svg.append('g').attr('class', 'folk-layer').style('pointer-events', 'none');
         // 央行、白宮、地緣動畫圖示：不論篩選都留在地圖上，畫在動物下面
-        // 地緣動畫場景（油輪、貨櫃船、無人機；geoscenes.js）：只在「地緣」篩選顯示，畫在地標下面
+        // 地緣動畫場景（油輪、貨櫃船、無人機；geoscenes.js）：股市地圖的任何篩選都顯示（旅遊地圖不顯示），畫在地標下面
         gGeo = svg.append('g').attr('class', 'geo-layer').style('pointer-events', 'none');
         gLm = svg.append('g').attr('class', 'landmarks');
         gMk = svg.append('g').attr('class', 'markers');
@@ -1446,7 +1460,7 @@
             worldW: () => S0 * state.t.k,
             size: () => [W, H, dpr],
             zoom: () => state.t.k,
-            enabled: () => state.layer === 'stocks' && state.activeRegion === 'geo',
+            enabled: () => state.layer === 'stocks', // 股市地圖的任何篩選都顯示
             reduce: () => !state.anim || reduceMotion.matches,
             tone: (id) => {
                 const c = state.topics.find((x) => x.id === id),
@@ -1507,9 +1521,8 @@
         ];
 
         gLand.selectAll('path').data(state.countries).join('path');
-        const hot = state.countries.filter((d) => state.byId[pad3(d.id)]);
-        gLine.selectAll('path').data(hot).join('path');
-        gEdge.selectAll('path').data(hot).join('path');
+        gLine.selectAll('path').data(state.countries).join('path');
+        gEdge.selectAll('path').data(state.countries).join('path');
         worldLod.reset();
         folkLand.clear(); // 投影換了，國家輪廓要重建
         folkGen++;
@@ -1752,14 +1765,24 @@
     }
     function paintLand() {
         if (!gLand) return;
+        const show = borderIds();
         gLand.selectAll('path').each(function (d) {
-            const m = state.byId[pad3(d.id)];
+            const id = pad3(d.id),
+                on = show.has(id),
+                b = borderOf(id);
             d3.select(this)
-                .classed('hot', !!m)
-                .attr('fill', m ? fillFor(m) : 'none')
-                .style('stroke', m ? borderFor(m) : null); // 用 style 才能蓋過 CSS 的預設白色國界
+                .classed('on', on)
+                .attr('fill', on ? b.fill : 'none')
+                .style('stroke', on ? b.line : null);
         });
-        gLine.selectAll('path').style('stroke', (d) => borderFor(state.byId[pad3(d.id)]));
+        gLine.selectAll('path').each(function (d) {
+            const id = pad3(d.id),
+                on = show.has(id);
+            d3.select(this)
+                .classed('on', on)
+                .style('stroke', on ? borderOf(id).line : null);
+        });
+        gEdge.selectAll('path').classed('on', (d) => show.has(pad3(d.id)));
     }
 
     // 地圖上被浮動介面蓋住的邊距（篩選列、手機版概況卡）
@@ -1881,6 +1904,7 @@
     }
     function applyRegion(animate) {
         if (!projection) return;
+        if (state.layer !== 'travel') paintLand(); // 國界只顯示目前篩選相關的國家
         const tr = state.layer === 'travel' ? areaTransform(state.tArea) : nearestCopy(regionTransform(state.activeRegion));
         const sel = animate && state.anim ? svg.transition().duration(900).ease(d3.easeCubicInOut) : svg;
         sel.call(zoomB.transform, tr);
@@ -2657,7 +2681,7 @@
 
     function layoutMarkers() {
         if (!projection || !state.maps.length) return;
-        if (window.GeoScenes) GeoScenes.layout(); // 不在「地緣」篩選時會自己收起來
+        if (window.GeoScenes) GeoScenes.layout(); // 不在股市地圖（旅遊）時會自己收起來
         if (state.layer === 'travel') {
             layoutTravel();
             return;

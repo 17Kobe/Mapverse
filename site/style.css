@@ -213,13 +213,12 @@ button{font:inherit;color:inherit;cursor:pointer}
 .dz-it.on{background:linear-gradient(180deg,#43669b 0%,#27436f 100%);border-color:var(--gold-l);color:var(--gold-l)}
 body.travel #dzBtn,body.travel #dzMenu{display:none}
 #map{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block;user-select:none;-webkit-user-select:none}
-/* 一般國界：白色半透明細線 */
-#map .land path{stroke:rgba(255,255,255,.32);stroke-width:.8;stroke-linejoin:round;vector-effect:non-scaling-stroke;transition:fill .8s,stroke .8s}
-/* 有股市的國家：彩色粗邊（漲跌色），上面再疊一條白色細線 */
-/* 有股市的國家：寬而淡的光暈 + 清楚的彩色主線 + 中央白色細線（文明帝國的國界感） */
-#map .land path.hot{stroke-width:9;stroke-opacity:.22}
-#map .line path{fill:none;stroke-width:2.6;stroke-opacity:.95;stroke-linejoin:round;vector-effect:non-scaling-stroke;pointer-events:none;transition:stroke .8s}
-#map .edge path{fill:none;stroke:#fff;stroke-width:.9;stroke-opacity:.85;stroke-linejoin:round;vector-effect:non-scaling-stroke;pointer-events:none}
+/* 國界只畫有股市（或目前主題篩選卡片）的國家：app.js 的 paintLand 加上 .on 並寫入顏色（全球十大市值國家紅色、其他綠色），其餘國家不畫 */
+#map .land path,#map .line path,#map .edge path{display:none}
+/* 文明帝國的國界感：寬而淡的同色光暈 + 淡淡的國土底色（land）→ 清楚的亮色主線（line）→ 中央白色細線（edge） */
+#map .land path.on{display:inline;stroke-width:9;stroke-opacity:.22;stroke-linejoin:round;vector-effect:non-scaling-stroke;transition:fill .8s,stroke .8s}
+#map .line path.on{display:inline;fill:none;stroke-width:2.6;stroke-opacity:.95;stroke-linejoin:round;vector-effect:non-scaling-stroke;pointer-events:none;transition:stroke .8s}
+#map .edge path.on{display:inline;fill:none;stroke:#fff;stroke-width:.9;stroke-opacity:.85;stroke-linejoin:round;vector-effect:non-scaling-stroke;pointer-events:none}
 /* 小角色（海洋生物、船、人物）：陸上用柔和影子，海上用白色水波 */
 .cr .shadow{fill:#0f1a08;opacity:.45;transform-box:fill-box;transform-origin:center}
 .cr .wake{fill:#e8f6ff;transform-box:fill-box;transform-origin:center}
