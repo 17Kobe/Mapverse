@@ -66,7 +66,7 @@
     // 地圖上會動的小角色（海洋生物、船、各地的人物）。和市場動物分開，不能點
     // src：assets/ 底下的圖；face：圖裡面向哪邊（L / R / F 不翻轉）；s：相對市場動物的大小
     // mode：wander 散步 / swim 游泳 / whale 鯨魚噴水 / dolphin 跳出水面 / bob 原地浮沉 / boat 船 /
-    //       surf 衝浪 / ski 滑雪 / chase 繞圈追逐（lag 是落後的角度）/ breach 水下巡游、偶爾躍出水面 / flyfish 飛魚 / still 不動
+    //       surf 衝浪 / ski 滑雪 / chase 繞圈追逐（lag 是落後的角度）/ fin 只露背鰭在海面巡游 / flyfish 飛魚 / still 不動
     // sea：在海上（影子改成水波）
     const CRITTERS = [
         { src: 'critters/whale-spout.png', alt: 'critters/whale.png', lon: -38, lat: 38, mode: 'whale', s: 1.15, sea: true },
@@ -96,8 +96,8 @@
         { src: 'critters/flying-fish.svg', lon: 122.1, lat: 22.0, mode: 'flyfish', s: 0.5, sea: true, ph: 0, deco: true },
         { src: 'critters/flying-fish.svg', lon: 122.1, lat: 22.0, mode: 'flyfish', s: 0.45, sea: true, ph: 1.1, deco: true },
         { src: 'critters/flying-fish.svg', lon: 122.1, lat: 22.0, mode: 'flyfish', s: 0.5, sea: true, ph: 2.3, deco: true },
-        // 美國西海岸外海的大白鯊：在水面下巡游（淡淡的影子），偶爾猛然躍出水面
-        { src: 'critters/shark.png', lon: -124.6, lat: 36.8, mode: 'breach', s: 1.3, sea: true, deco: true },
+        // 美國西海岸外海的大白鯊：只露出背鰭，拖著水痕在海面上慢慢巡游
+        { src: 'critters/shark-fin.svg', lon: -124.6, lat: 36.8, mode: 'fin', s: 1.15, sea: true, deco: true },
     ];
     // 原住民小人（natives.js）：該國主要指數漲就歡呼跳舞、跌就沮喪哭泣，平盤時散步 / 揮手 / 眨眼
     // mode 'folk'；market = 看哪個指數；ox / oy = 相對位置點的偏移（單位：小角色基準大小）；minK = 縮小到這個倍率以下就收起來
@@ -1129,25 +1129,15 @@
                     op = 0;
                     wake = 0.5;
                 }
-            } else if (m === 'breach') {
-                // 大白鯊：在水面下慢慢繞圈（只看得到淡淡的影子），每 8 秒猛然躍出水面一次
+            } else if (m === 'fin') {
+                // 大白鯊：只露出背鰭，在海面上慢慢游一個橫 8 字，鰭微微左右晃、隨波輕輕浮沉（不跳出水面）
                 const T = t + c.ph,
-                    w = T * 0.12,
-                    vx = Math.cos(w);
-                c.x = Math.sin(w) * B * 1.6;
-                c.y = Math.cos(w * 1.3) * B * 0.25;
-                c.dir = faceDir(c, vx);
-                const u = (T % 8) / 8;
-                if (u < 0.22) {
-                    const v = u / 0.22;
-                    hop = -Math.sin(Math.PI * v) * R * 1.0;
-                    rot = (0.5 - v) * 80 * (vx < 0 ? 1 : -1);
-                    op = Math.min(1, 0.28 + v * 8, (1 - v) * 8 + 0.28);
-                    wake = 1 - Math.sin(Math.PI * v);
-                } else {
-                    op = 0.28;
-                    wake = 0.6;
-                }
+                    w = T * 0.16;
+                c.x = Math.sin(w) * B * 2.2;
+                c.y = Math.sin(w * 2) * B * 0.3;
+                c.dir = faceDir(c, Math.cos(w));
+                hop = Math.sin(T * 1.7) * R * 0.015;
+                rot = Math.sin(T * 1.1) * 2.5;
             } else if (m === 'flyfish') {
                 // 飛魚：每一輪從水裡衝出來，貼著海面滑翔一小段再入水，下一輪換個方向和高度
                 const P = 3.4,
@@ -3677,7 +3667,7 @@
             // 原住民小人以位置點為中心，各自往旁邊挪開一點，三個人才不會疊在一起
             const x = x0 + (folk && fs ? ((c.d.ox || 0) * sp + fs[0]) * size : 0),
                 y = y0 + (folk && fs ? ((c.d.oy || 0) * sp + fs[1]) * size : 0);
-            const reach = { chase: 2.4, dolphin: 2.4, breach: 2.2, flyfish: 1.6, surf: 2, ski: 1.6 }[c.d.mode] || 1.1;
+            const reach = { chase: 2.4, dolphin: 2.4, fin: 2.4, flyfish: 1.6, surf: 2, ski: 1.6 }[c.d.mode] || 1.1;
             const r = { x: x - size * reach, y: y - size * 1.1, w: size * reach * 2, h: size * 1.4 };
             const hide =
                 (folk ? k > FOLK_MAX_K : k > 6) ||
