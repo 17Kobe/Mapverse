@@ -2096,8 +2096,8 @@
       "id": "lm-trade",
       "icon": "dove",
       "label": "美中休戰",
-      "lon": 128,
-      "lat": 31,
+      "lon": 124.2,
+      "lat": 33.6,
       "anim": "float",
       "card": "geo-trade"
     },
@@ -2105,8 +2105,8 @@
       "id": "lm-iran",
       "icon": "crossed_swords",
       "label": "美伊衝突",
-      "lon": 56.3,
-      "lat": 26.6,
+      "lon": 55.2,
+      "lat": 30.4,
       "anim": "clash",
       "card": "geo-iran"
     },

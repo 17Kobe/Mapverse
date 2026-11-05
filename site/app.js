@@ -679,6 +679,7 @@
         gMk,
         gBub,
         gLm,
+        gGeo,
         gTopic,
         gTw,
         gRoadTag,
@@ -849,6 +850,7 @@
             );
         }
         stepCritters(dt, t);
+        if (window.GeoScenes) GeoScenes.step(dt, t);
         drawClouds(dt);
         if (!document.hidden) walkRaf = requestAnimationFrame(walkStep);
     }
@@ -1293,6 +1295,8 @@
         // 原住民小人獨立一層，畫在公司建築上面：台灣縮小時整座島都是建築（小城市比島還大），小人才不會被蓋住看不見
         gFolk = svg.append('g').attr('class', 'folk-layer').style('pointer-events', 'none');
         // 央行、白宮、地緣動畫圖示：不論篩選都留在地圖上，畫在動物下面
+        // 地緣動畫場景（油輪、貨櫃船、無人機；geoscenes.js）：只在「地緣」篩選顯示，畫在地標下面
+        gGeo = svg.append('g').attr('class', 'geo-layer').style('pointer-events', 'none');
         gLm = svg.append('g').attr('class', 'landmarks');
         gMk = svg.append('g').attr('class', 'markers');
         // 旗幟獨立一層畫在所有動物上方：不用再重排 DOM 節點（重排會讓 iOS Safari 的國旗圖片閃成空白）
@@ -1432,6 +1436,26 @@
         const t = state.t,
             p = projection.invert([(x - t.x) / t.k, (y - t.y) / t.k]);
         return [(((p[0] % 360) + 540) % 360) - 180, p[1]];
+    }
+    // 地緣動畫場景：局勢（ok / warn / bad）取自 markets.json 地緣卡片裡第一個有 tone 的資料列
+    function initGeoScenes() {
+        if (!window.GeoScenes) return;
+        GeoScenes.init({
+            layer: gGeo.node(),
+            toScreen: screenXY,
+            worldW: () => S0 * state.t.k,
+            size: () => [W, H, dpr],
+            zoom: () => state.t.k,
+            enabled: () => state.layer === 'stocks' && state.activeRegion === 'geo',
+            reduce: () => !state.anim || reduceMotion.matches,
+            tone: (id) => {
+                const c = state.topics.find((x) => x.id === id),
+                    r = c && c.rows.find((x) => x.tone);
+                return r ? r.tone : null;
+            },
+            t: $t,
+        });
+        scheduleLayout();
     }
     function initDisasters() {
         if (!window.Disasters) return;
@@ -1801,7 +1825,11 @@
         // 主題篩選：範圍涵蓋卡片所在的國家，以及和這些卡片相連的地標（例如地緣的衝突圖示）
         const topicCards = topic ? state.topics.filter((c) => c.cat === key) : [];
         const ms = topic
-            ? [...topicCards, ...state.landmarks.filter((l) => topicCards.some((c) => c.id === l.card))]
+            ? [
+                  ...topicCards,
+                  ...state.landmarks.filter((l) => topicCards.some((c) => c.id === l.card)),
+                  ...(key === 'geo' && window.GeoScenes ? GeoScenes.anchors() : []), // 動畫航線的端點（紅海南口、航線東端）
+              ]
             : state.maps.filter((m) => m.r === key).sort((a, b) => b.w - a.w);
         if (!ms.length) return world();
         const ins = overlayInsets();
@@ -2629,6 +2657,7 @@
 
     function layoutMarkers() {
         if (!projection || !state.maps.length) return;
+        if (window.GeoScenes) GeoScenes.layout(); // 不在「地緣」篩選時會自己收起來
         if (state.layer === 'travel') {
             layoutTravel();
             return;
@@ -4522,6 +4551,7 @@
         renderHud();
         scheduleLayout();
         initDisasters();
+        initGeoScenes();
         $('#loading').classList.add('gone');
         startWalk();
 
