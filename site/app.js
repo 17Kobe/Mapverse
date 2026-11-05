@@ -15,14 +15,14 @@
     const GLOBAL_LON = 196; // 手機版全球檢視（和大部分主題篩選）的中心經度：太平洋
     const GLOBAL_LEFT_LON = -155; // 桌機版全球檢視的左邊界經度
     const TOPICS = {
-        // 物件的順序就是篩選列的順序：商品、匯率、經濟數據、地緣、利率、債券
+        // 物件的順序就是篩選列的順序：商品、匯率、經濟數據、債券、利率、地緣
         commodity: { icon: '🛢️', label: $t('商品'), mlon: -35 }, // 大西洋：左邊看到一點美洲、右邊看到一點歐洲
         fx: { icon: '💵', label: $t('匯率'), mlon: GLOBAL_LON },
         // img：篩選按鈕改用 3D 圖片（系統 emoji 的長條圖太陽春）；icon 仍用在文字場合
         econ: { icon: '�', img: 'assets/icons/bar_chart.png', label: $t('經濟數據'), mlon: GLOBAL_LON },
-        geo: { icon: '⚔️', label: $t('地緣'), mlon: 85 },
-        rate: { icon: '🏛️', label: $t('利率'), mlon: GLOBAL_LON },
         bond: { icon: '🏦', label: $t('債券'), mlon: GLOBAL_LON },
+        rate: { icon: '🏛️', label: $t('利率'), mlon: GLOBAL_LON },
+        geo: { icon: '⚔️', label: $t('地緣'), mlon: 85 },
     };
     // 地緣狀態的色帶與文字顏色
     const TONES = { ok: '#79e3a0', warn: '#ffc66b', bad: '#ff8d85' };
