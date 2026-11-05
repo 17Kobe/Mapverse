@@ -66,7 +66,7 @@
     // 地圖上會動的小角色（海洋生物、船、各地的人物）。和市場動物分開，不能點
     // src：assets/ 底下的圖；face：圖裡面向哪邊（L / R / F 不翻轉）；s：相對市場動物的大小
     // mode：wander 散步 / swim 游泳 / whale 鯨魚噴水 / dolphin 跳出水面 / bob 原地浮沉 / boat 船 /
-    //       surf 衝浪 / ski 滑雪 / chase 繞圈追逐（lag 是落後的角度）/ still 不動
+    //       surf 衝浪 / ski 滑雪 / chase 繞圈追逐（lag 是落後的角度）/ breach 水下巡游、偶爾躍出水面 / flyfish 飛魚 / still 不動
     // sea：在海上（影子改成水波）
     const CRITTERS = [
         { src: 'critters/whale-spout.png', alt: 'critters/whale.png', lon: -38, lat: 38, mode: 'whale', s: 1.15, sea: true },
@@ -89,6 +89,15 @@
         { src: 'critters/rower.png', lon: -62, lat: -3.3, mode: 'boat', face: 'F', s: 0.9 }, // 亞馬遜河划船
         { src: 'critters/surfer.png', lon: 155, lat: -30, mode: 'surf', face: 'R', s: 0.9, sea: true }, // 澳洲黃金海岸衝浪
         { src: 'critters/skier.png', lon: 14, lat: 65, mode: 'ski', face: 'R', s: 0.85 }, // 挪威山上滑雪
+        // 各地代表動物
+        { src: 'critters/panda.svg', lon: 101.2, lat: 30.8, mode: 'wander', gait: 'waddle', s: 1.05, deco: true }, // 四川的貓熊
+        { src: 'critters/brown-bear.svg', lon: 100, lat: 54, mode: 'wander', gait: 'heavy', s: 1.15, deco: true }, // 俄羅斯的棕熊
+        // 蘭嶼外海的飛魚：幾隻輪流躍出水面、貼著海面滑翔一段再入水
+        { src: 'critters/flying-fish.svg', lon: 122.1, lat: 22.0, mode: 'flyfish', s: 0.5, sea: true, ph: 0, deco: true },
+        { src: 'critters/flying-fish.svg', lon: 122.1, lat: 22.0, mode: 'flyfish', s: 0.45, sea: true, ph: 1.1, deco: true },
+        { src: 'critters/flying-fish.svg', lon: 122.1, lat: 22.0, mode: 'flyfish', s: 0.5, sea: true, ph: 2.3, deco: true },
+        // 美國西海岸外海的大白鯊：在水面下巡游（淡淡的影子），偶爾猛然躍出水面
+        { src: 'critters/shark.png', lon: -124.6, lat: 36.8, mode: 'breach', s: 1.3, sea: true, deco: true },
     ];
     // 原住民小人（natives.js）：該國主要指數漲就歡呼跳舞、跌就沮喪哭泣，平盤時散步 / 揮手 / 眨眼
     // mode 'folk'；market = 看哪個指數；ox / oy = 相對位置點的偏移（單位：小角色基準大小）；minK = 縮小到這個倍率以下就收起來
@@ -1119,6 +1128,45 @@
                 } else {
                     op = 0;
                     wake = 0.5;
+                }
+            } else if (m === 'breach') {
+                // 大白鯊：在水面下慢慢繞圈（只看得到淡淡的影子），每 8 秒猛然躍出水面一次
+                const T = t + c.ph,
+                    w = T * 0.12,
+                    vx = Math.cos(w);
+                c.x = Math.sin(w) * B * 1.6;
+                c.y = Math.cos(w * 1.3) * B * 0.25;
+                c.dir = faceDir(c, vx);
+                const u = (T % 8) / 8;
+                if (u < 0.22) {
+                    const v = u / 0.22;
+                    hop = -Math.sin(Math.PI * v) * R * 1.0;
+                    rot = (0.5 - v) * 80 * (vx < 0 ? 1 : -1);
+                    op = Math.min(1, 0.28 + v * 8, (1 - v) * 8 + 0.28);
+                    wake = 1 - Math.sin(Math.PI * v);
+                } else {
+                    op = 0.28;
+                    wake = 0.6;
+                }
+            } else if (m === 'flyfish') {
+                // 飛魚：每一輪從水裡衝出來，貼著海面滑翔一小段再入水，下一輪換個方向和高度
+                const P = 3.4,
+                    T = t + c.ph + (c.d.ph || 0),
+                    n = Math.floor(T / P),
+                    u = (T % P) / P,
+                    sg = n % 2 ? -1 : 1;
+                if (u < 0.45) {
+                    const v = u / 0.45;
+                    c.x = (v - 0.5) * B * 2.4 * sg;
+                    c.y = (((n * 37 + Math.round(c.d.ph * 10)) % 5) - 2) * B * 0.11;
+                    c.dir = faceDir(c, sg);
+                    hop = -Math.sin(Math.PI * v) * R * 0.5;
+                    rot = (0.5 - v) * 26 * (sg < 0 ? 1 : -1);
+                    op = Math.min(1, v * 10, (1 - v) * 10);
+                    wake = 1 - Math.sin(Math.PI * v);
+                } else {
+                    op = 0;
+                    wake = 0.4;
                 }
             } else if (m === 'surf') {
                 const w = (t + c.ph) * 0.5;
@@ -3291,18 +3339,20 @@
                 U = 1;
                 best = solve();
                 pick = 1;
-                // 全球檢視國家多、很擠：倍率上限較低，並容許最多 2 個國家從完整版退成迷你版（不能消失、整張列出的不能退）
+                // 全球檢視國家多、很擠：倍率上限較低
                 const isAll = state.activeRegion === 'all';
                 const uMax = Math.max(1, Math.min(isAll ? DESK_SCALE_ALL : DESK_SCALE_MAX, W / 1280, H / 720));
                 if (uMax > 1.03) {
                     const base = new Map(best.snap.map(([o, b]) => [o.m.s, rank(b)]));
+                    // 篩選的那一區自己的國家一個都不能退步；全球檢視，或其他區（例如中東非洲畫面裡的印度、中國）的國家，
+                    // 最多容許 2 個從完整版退成迷你版（不能消失、整張列出的不能退）
                     const okRank = (t) => {
                         let down = 0;
                         for (const [o, b] of t.snap) {
                             const r0 = base.get(o.m.s),
                                 r1 = rank(b);
                             if (r1 >= r0) continue;
-                            if (!isAll || r0 === 3 || r1 < 1 || ++down > 2) return false;
+                            if ((!isAll && o.m.r === state.activeRegion) || r0 === 3 || r1 < 1 || ++down > 2) return false;
                         }
                         return true;
                     };
@@ -3627,7 +3677,7 @@
             // 原住民小人以位置點為中心，各自往旁邊挪開一點，三個人才不會疊在一起
             const x = x0 + (folk && fs ? ((c.d.ox || 0) * sp + fs[0]) * size : 0),
                 y = y0 + (folk && fs ? ((c.d.oy || 0) * sp + fs[1]) * size : 0);
-            const reach = { chase: 2.4, dolphin: 2.4, surf: 2, ski: 1.6 }[c.d.mode] || 1.1;
+            const reach = { chase: 2.4, dolphin: 2.4, breach: 2.2, flyfish: 1.6, surf: 2, ski: 1.6 }[c.d.mode] || 1.1;
             const r = { x: x - size * reach, y: y - size * 1.1, w: size * reach * 2, h: size * 1.4 };
             const hide =
                 (folk ? k > FOLK_MAX_K : k > 6) ||
@@ -3636,7 +3686,8 @@
                 x > W + size * 3 ||
                 y < -size * 2 ||
                 y > H + size * 2 ||
-                (!folk && rects.some((q) => inter(r, q) / (r.w * r.h) > 0.15));
+                // deco：各地代表動物，可以和市場動物重疊（只有旗幟、卡片、介面擋到才收起來）
+                (!folk && rects.some((q) => !(c.d.deco && q.an) && inter(r, q) / (r.w * r.h) > 0.15));
             c.vis = !hide;
             c.size = z;
             c.base = size;
