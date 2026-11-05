@@ -97,7 +97,7 @@
                     folk: true,
                     mode: 'folk',
                     face: 'F',
-                    minK: 1.4,
+                    minK: f.minK != null ? f.minK : 1.4,
                     first: grp[0] === f, // 同一組的第一個成員
                     grpOx: grp.reduce((a, o) => a + (o.ox || 0), 0) / grp.length, // 組中心（相對位置點）
                     grpOy: grp.reduce((a, o) => a + (o.oy || 0), 0) / grp.length,
