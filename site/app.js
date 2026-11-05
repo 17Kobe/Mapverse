@@ -491,14 +491,19 @@
     // 有無小數點的數字視覺上才好比較。切成「一般 / 小字」片段，小字片段包成 <tspan class="nd">（CSS 縮到 NUM_SMALL 倍）
     const NUM_SMALL = 0.72;
     const NUM_TOK = /(\.\d+)|(\d[\d,]*)|(×100M|×10K|bp|[%KBM萬万만億亿억兆])/g;
-    // uo（unit only）：漲跌幅用，只縮小 % 和 bp，小數維持原大小
-    function numParts(s, uo) {
+    // 片段種類 cls：null 一般 / 'nd' 縮小且變灰 / 'nu' 只縮小（字色不變）
+    // mode：不給 = 股價（指數、十大市值公司）：小數與單位都縮小變灰；
+    //       true = 漲跌幅：只縮小 % 和 bp（不變灰），小數維持原大小；
+    //       'dec' = 商品 / 匯率 / 經濟數據等其他數值：小數縮小但字色不變，單位（萬、億、K、%…）縮小變灰
+    function numParts(s, mode) {
+        const uo = mode === true,
+            decSame = mode === 'dec';
         const out = [];
-        const push = (t, small) => {
+        const push = (t, cls) => {
             if (!t) return;
             const p = out[out.length - 1];
-            if (p && p[1] === small) p[0] += t;
-            else out.push([t, small]);
+            if (p && p[1] === cls) p[0] += t;
+            else out.push([t, cls]);
         };
         let last = 0,
             afterNum = false,
@@ -506,39 +511,43 @@
         NUM_TOK.lastIndex = 0;
         while ((m = NUM_TOK.exec(s))) {
             if (m.index > last) {
-                push(s.slice(last, m.index), false);
+                push(s.slice(last, m.index), null);
                 afterNum = false;
             }
             if (m[2]) {
-                push(m[0], false);
+                push(m[0], null);
                 afterNum = true;
             } else if (m[1]) {
-                push(m[0], !uo);
+                push(m[0], uo ? null : decSame ? 'nu' : 'nd');
                 afterNum = true;
-            } else push(m[0], afterNum && (!uo || m[0] === '%' || m[0] === 'bp')); // 單位只在緊接數字之後才縮小（避免誤傷其他文字）
+            } else {
+                // 單位只在緊接數字之後才縮小（避免誤傷其他文字）
+                const isUnit = afterNum && (!uo || m[0] === '%' || m[0] === 'bp');
+                push(m[0], isUnit ? (uo ? 'nu' : 'nd') : null);
+            }
             last = NUM_TOK.lastIndex;
         }
-        push(s.slice(last), false);
+        push(s.slice(last), null);
         return out;
     }
     // 含小字片段的數值寬度（以 .rv 的字級量一般片段，小字片段按比例縮）
-    function numW(s, cls = 'rv', uo) {
+    function numW(s, cls = 'rv', mode) {
         let w = 0;
-        for (const [t, small] of numParts(s == null ? '' : String(s), uo)) w += textWidthOf(t, cls) * (small ? NUM_SMALL : 1);
+        for (const [t, k] of numParts(s == null ? '' : String(s), mode)) w += textWidthOf(t, cls) * (k ? NUM_SMALL : 1);
         return w;
     }
-    d3.selection.prototype.numQ = function (v, uo) {
+    d3.selection.prototype.numQ = function (v, mode) {
         return this.each(function (d, i, g) {
             const x = typeof v === 'function' ? v.call(this, d, i, g) : v,
                 s = x == null ? '' : String(x);
             if (this._nv === s && (s === '' || this.firstChild)) return;
             this._nv = s;
             while (this.firstChild) this.removeChild(this.firstChild);
-            for (const [t, small] of numParts(s, uo)) {
-                if (!small) this.appendChild(document.createTextNode(t));
+            for (const [t, k] of numParts(s, mode)) {
+                if (!k) this.appendChild(document.createTextNode(t));
                 else {
                     const e = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
-                    e.setAttribute('class', uo ? 'nu' : 'nd');
+                    e.setAttribute('class', k);
                     e.textContent = t;
                     this.appendChild(e);
                 }
@@ -2455,12 +2464,12 @@
             const rvx = w - 8 - (x.chg ? numW(x.chg, 'rp', true) + 5 : 0);
             rn.attrQ('x', 9)
                 .attrQ('y', y + 12.5)
-                .styleQ('font-size', fit(x.lab, rvx - numW(x.val) - 13))
+                .styleQ('font-size', fit(x.lab, rvx - numW(x.val, 'rv', 'dec') - 13))
                 .textQ(x.lab);
             rv.attrQ('x', rvx)
                 .attrQ('y', y + 13.5)
                 .styleQ('fill', x.vcol)
-                .numQ(x.val);
+                .numQ(x.val, 'dec');
             // 漲跌幅超過 BIG_MOVE（%）：實心底色 + 白字，和股市旗幟一致
             const big = !!x.pq && !!x.chg && Math.abs(x.cd) >= BIG_MOVE,
                 cw = x.chg ? numW(x.chg, 'rp', true) : 0;
