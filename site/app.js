@@ -117,6 +117,17 @@
     // 小人的腳要站在「自己國家」的陸地上：國家輪廓轉成 Path2D（世界座標）後用 isPointInPath 判斷，比 d3.geoContains 快很多。
     // 國家太小（例如台灣縮小時）放不下就不顯示，不會跑到海上或別的國家。投影換了（視窗大小改變）要清掉重建
     const folkLand = new Map();
+    // 小人的位置快取（見 layoutMarkers 的 placeFolk）：folkGen 加一就全部重找
+    const folkCache = new Map();
+    let folkGen = 0,
+        folkTimer = 0;
+    function folkRefreshSoon() {
+        clearTimeout(folkTimer);
+        folkTimer = setTimeout(() => {
+            folkGen++;
+            scheduleLayout();
+        }, 250);
+    }
     const landCtx = document.createElement('canvas').getContext('2d');
     function landOf(market) {
         if (!folkLand.has(market)) {
@@ -142,6 +153,35 @@
         wx = ((wx % S0) + S0) % S0;
         if (wx < L.x0 || wx > L.x1 || wy < L.y0 || wy > L.y1) return false;
         return landCtx.isPointInPath(L.path, wx, wy);
+    }
+    // 找小人位置時要試幾千個點：先把國家畫到一張半解析度的點陣圖，之後每個點只是查一格像素（比 isPointInPath 快上百倍）。
+    // 回傳 (螢幕 x, y) => 是否在陸地上；畫面外一律當作不是
+    const folkMaskCv = document.createElement('canvas');
+    const folkMaskCtx = folkMaskCv.getContext('2d', { willReadFrequently: true });
+    const FOLK_MASK_SC = 0.5;
+    function landMask(market, W, H) {
+        const L = landOf(market);
+        if (!L) return () => false;
+        const w = Math.max(1, Math.ceil(W * FOLK_MASK_SC)),
+            h = Math.max(1, Math.ceil(H * FOLK_MASK_SC));
+        folkMaskCv.width = w; // 設定尺寸同時清空
+        folkMaskCv.height = h;
+        const t = state.t,
+            f = FOLK_MASK_SC;
+        folkMaskCtx.fillStyle = '#000';
+        // 世界左右各有一份（x 繞回 S0 之內）：把畫面涵蓋到的每一份都畫上去
+        const n0 = Math.floor((-t.x / t.k) / S0) - 1,
+            n1 = Math.floor((W - t.x) / t.k / S0) + 1;
+        for (let n = n0; n <= n1; n++) {
+            folkMaskCtx.setTransform(f * t.k, 0, 0, f * t.k, f * (t.x + n * S0 * t.k), f * t.y);
+            folkMaskCtx.fill(L.path);
+        }
+        const d = folkMaskCtx.getImageData(0, 0, w, h).data;
+        return (sx, sy) => {
+            const ix = (sx * f) | 0,
+                iy = (sy * f) | 0;
+            return sx >= 0 && sy >= 0 && ix < w && iy < h && d[(iy * w + ix) * 4 + 3] > 127;
+        };
     }
     // 雲：固定在地球上（經緯度），隨西風慢慢往東飄，地圖拖曳時跟著地面走
     const CLOUD_N = 13,
@@ -1448,6 +1488,7 @@
         gEdge.selectAll('path').data(hot).join('path');
         worldLod.reset();
         folkLand.clear(); // 投影換了，國家輪廓要重建
+        folkGen++;
         worldLod.update(state.t.k);
         textWCache.clear(); // 換尺寸可能跨過手機 / 桌機的字級設定
         gWorlds.attr('transform', (_, i) => (i ? `translate(${S0},0)` : null)); // 第二份接在世界右邊
@@ -1833,6 +1874,7 @@
     // 所以動畫時改成在同一個更新裡同步重畫；拖曳是使用者事件，本來就在幀與幀之間處理，維持排到下一幀合併重畫。
     function onTransform(sync) {
         gZoom.attr('transform', state.t.toString());
+        folkRefreshSoon();
         if (state.layer === 'travel') {
             // 旅遊地圖不畫世界國界，改畫台灣自己的海岸線與縣市界（內政部資料，放大到街道也對得齊）
             gZoom.style('display', 'none');
@@ -2642,6 +2684,9 @@
         // 電腦版：在旗幟排版之前先找，找到後把這塊地方登記成「動物」的佔位框，旗幟就會避開（和市場動物一樣）。
         // 手機版：旗幟排成左右兩欄、不會避讓別人，所以要等旗幟排好再找空位，找不到就在畫面上找最近的空地（會畫一條虛線連回國家）
         const folkShift = new Map();
+        // 小人的位置只在「換視角 / 縮放或拖曳停下來之後」重找一次（結果存在 folkCache），拖曳 / 縮放途中沿用上一次的結果：
+        // 找位置要對整個畫面的格點做 isPointInPath（國家輪廓有幾千個點），十個國家每一幀都找手機會非常卡
+        const folkKey = `${W}x${H}|${state.activeRegion}|${desktopMQ.matches ? 'd' : 'm'}`;
         const placeFolk = (avoid, wide) => {
             for (const c of critters) {
                 if (c.d.mode !== 'folk' || folkShift.has(c.d.market)) continue;
@@ -2649,67 +2694,97 @@
                 let pick = null;
                 if (k >= (c.d.minK || 0) && !topicMode) {
                     const [bx, by] = screenXY(c.d.lon, c.d.lat);
-                    // 比附近的小範圍更廣：整個畫面裡「在這個國家陸地上」的格點（螢幕座標），由近到遠
-                    let landPts = null;
-                    if (wide) {
-                        const step = Math.max(8, csz * 0.4);
-                        landPts = [];
-                        for (let gx = 0; gx < W; gx += step)
-                            for (let gy = 0; gy < H; gy += step) if (onLand(c.d.market, gx, gy)) landPts.push([gx, gy]);
-                        landPts.sort((p, q) => (p[0] - bx) ** 2 + (p[1] - by) ** 2 - ((q[0] - bx) ** 2 + (q[1] - by) ** 2));
-                    }
-                    // 分三級找位置，越前面越嚴格：① 三個人的腳都在自己國家的陸地上 ② 至少 2/3 在陸地上 ③ 整組的中心在陸地上。
-                    // 每一級先試正常大小的小人，陸地放不下就縮小（最小約 13px）、或把三個人往中間靠攏（像一小群人擠在小島上）；
-                    // 三級都找不到才收起來。這樣國家小（例如台灣）時，三個人也會在島上，不會跑到海上或別的國家
-                    outer: for (const need of [1, 2 / 3, 0]) {
-                        for (const sc of FOLK_SCALES) {
-                            const cz = csz * sc;
-                            if (cz < 13) break;
-                            for (const sp of FOLK_SPREADS) {
-                                const feet = (dx, dy) =>
-                                    grp.map((o) => [bx + ((o.d.ox || 0) * sp + dx) * cz, by + ((o.d.oy || 0) * sp + dy) * cz]);
-                                const rectsAt = (dx, dy) =>
-                                    feet(dx, dy).map(([x, y]) => ({ x: x - cz * 0.9, y: y - cz * 1.9, w: cz * 1.8, h: cz * 2.1, an: true }));
-                                const free = (rs) =>
-                                    rs.every(
-                                        (r) =>
-                                            r.x >= 2 &&
-                                            r.x + r.w <= W - 2 &&
-                                            r.y >= 2 &&
-                                            r.y + r.h <= H - 2 &&
-                                            // 自己國家的動物：小人可以站在旁邊（台灣縮小時動物和小人都在島上）。
-                                            // 公司建築：小人畫在它上面（見 gFolk），所以可以站在建築前面，不會被蓋住
-                                            !avoid.some(
-                                                (q) => inter(r, q) / (r.w * r.h) > (q.corp ? 0.9 : q.mk === c.d.market ? 0.8 : 0.12),
-                                            ),
-                                    );
-                                const landOk = (dx, dy) => {
-                                    const f = feet(dx, dy);
-                                    if (need === 0) {
-                                        const cx = f.reduce((s, p) => s + p[0], 0) / f.length,
-                                            cy = f.reduce((s, p) => s + p[1], 0) / f.length;
-                                        return onLand(c.d.market, cx, cy);
-                                    }
-                                    return f.filter(([x, y]) => onLand(c.d.market, x, y)).length >= Math.ceil(f.length * need - 1e-9);
-                                };
-                                const cand = landPts
-                                    ? FOLK_SPOTS.concat(
-                                          landPts.map(([gx, gy]) => [
-                                              (gx - bx) / cz - (c.d.grpOx || 0) * sp,
-                                              (gy - by) / cz - (c.d.grpOy || 0) * sp,
-                                          ]),
-                                      )
-                                    : FOLK_SPOTS;
-                                for (const [dx, dy] of cand) {
-                                    if (!landOk(dx, dy)) continue;
-                                    const rs = rectsAt(dx, dy);
-                                    if (!free(rs)) continue;
-                                    pick = [dx, dy, sc, sp];
-                                    if (!wide) rects.push(...rs);
-                                    break outer;
+                    // 這個位置（相對偏移 dx, dy，縮放 sc，靠攏 sp）上三個人各自佔的框
+                    const rectsOf = (dx, dy, sc, sp) => {
+                        const cz = csz * sc;
+                        return grp.map((o) => ({
+                            x: bx + ((o.d.ox || 0) * sp + dx) * cz - cz * 0.9,
+                            y: by + ((o.d.oy || 0) * sp + dy) * cz - cz * 1.9,
+                            w: cz * 1.8,
+                            h: cz * 2.1,
+                            an: true,
+                        }));
+                    };
+                    const free = (rs) =>
+                        rs.every(
+                            (r) =>
+                                r.x >= 2 &&
+                                r.x + r.w <= W - 2 &&
+                                r.y >= 2 &&
+                                r.y + r.h <= H - 2 &&
+                                // 自己國家的動物：小人可以站在旁邊（台灣縮小時動物和小人都在島上）。
+                                // 公司建築：小人畫在它上面（見 gFolk），所以可以站在建築前面，不會被蓋住
+                                !avoid.some((q) => inter(r, q) / (r.w * r.h) > (q.corp ? 0.9 : q.mk === c.d.market ? 0.8 : 0.12)),
+                        );
+                    const hit = folkCache.get(c.d.market);
+                    // 拖曳 / 縮放停下來後，上次的位置如果已經是最好的（正常大小、三個人的腳都在陸地上）而且還是有效，就直接沿用，不用重掃
+                    const keep = (h) => {
+                        if (!h || !h.pick || h.pick[2] !== 1 || h.key !== folkKey) return false;
+                        const [dx, dy, , sp] = h.pick;
+                        const rs = rectsOf(...h.pick);
+                        return (
+                            grp.every((o) => onLand(c.d.market, bx + ((o.d.ox || 0) * sp + dx) * csz, by + ((o.d.oy || 0) * sp + dy) * csz)) &&
+                            free(rs)
+                        );
+                    };
+                    if (hit && hit.key === folkKey && hit.gen === folkGen) {
+                        pick = hit.pick;
+                        if (pick && !wide) rects.push(...rectsOf(...pick));
+                    } else if (keep(hit)) {
+                        pick = hit.pick;
+                        if (!wide) rects.push(...rectsOf(...pick));
+                        folkCache.set(c.d.market, { key: folkKey, gen: folkGen, pick });
+                    } else {
+                        // 比附近的小範圍更廣：整個畫面裡「在這個國家陸地上」的格點（螢幕座標），由近到遠。
+                        // 附近的位置都不行才會掃（惰性），多數情況用不到
+                        let mask = null;
+                        const landAt = (x, y) => (mask || (mask = landMask(c.d.market, W, H)))(x, y);
+                        let landPts = null;
+                        const getLandPts = () => {
+                            if (landPts) return landPts;
+                            const step = Math.max(8, csz * 0.4);
+                            landPts = [];
+                            for (let gx = 0; gx < W; gx += step)
+                                for (let gy = 0; gy < H; gy += step) if (landAt(gx, gy)) landPts.push([gx, gy]);
+                            landPts.sort((p, q) => (p[0] - bx) ** 2 + (p[1] - by) ** 2 - ((q[0] - bx) ** 2 + (q[1] - by) ** 2));
+                            return landPts;
+                        };
+                        // 分三級找位置，越前面越嚴格：① 三個人的腳都在自己國家的陸地上 ② 至少 2/3 在陸地上 ③ 整組的中心在陸地上。
+                        // 每一級先試正常大小的小人，陸地放不下就縮小（最小約 13px）、或把三個人往中間靠攏（像一小群人擠在小島上）；
+                        // 三級都找不到才收起來。這樣國家小（例如台灣）時，三個人也會在島上，不會跑到海上或別的國家
+                        outer: for (const need of [1, 2 / 3, 0]) {
+                            for (const sc of FOLK_SCALES) {
+                                const cz = csz * sc;
+                                if (cz < 13) break;
+                                for (const sp of FOLK_SPREADS) {
+                                    const feet = (dx, dy) =>
+                                        grp.map((o) => [bx + ((o.d.ox || 0) * sp + dx) * cz, by + ((o.d.oy || 0) * sp + dy) * cz]);
+                                    const landOk = (dx, dy) => {
+                                        const f = feet(dx, dy);
+                                        if (need === 0) {
+                                            const cx = f.reduce((s, p) => s + p[0], 0) / f.length,
+                                                cy = f.reduce((s, p) => s + p[1], 0) / f.length;
+                                            return landAt(cx, cy);
+                                        }
+                                        return f.filter(([x, y]) => landAt(x, y)).length >= Math.ceil(f.length * need - 1e-9);
+                                    };
+                                    const tryAt = (dx, dy) => {
+                                        if (!landOk(dx, dy)) return false;
+                                        const rs = rectsOf(dx, dy, sc, sp);
+                                        if (!free(rs)) return false;
+                                        pick = [dx, dy, sc, sp];
+                                        if (!wide) rects.push(...rs);
+                                        return true;
+                                    };
+                                    for (const [dx, dy] of FOLK_SPOTS) if (tryAt(dx, dy)) break outer;
+                                    if (wide)
+                                        for (const [gx, gy] of getLandPts())
+                                            if (tryAt((gx - bx) / cz - (c.d.grpOx || 0) * sp, (gy - by) / cz - (c.d.grpOy || 0) * sp))
+                                                break outer;
                                 }
                             }
                         }
+                        folkCache.set(c.d.market, { key: folkKey, gen: folkGen, pick });
                     }
                 }
                 folkShift.set(c.d.market, pick);
