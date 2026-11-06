@@ -2619,7 +2619,7 @@
                 .attrQ('y', y)
                 .attrQ('width', w - 8)
                 .attrQ('height', rowH(c.rows[i]))
-                .classed('odd', rg.n % 2 === 1)
+                .classed('odd', gi < 0 && rg.n % 2 === 1)
                 .classed('sec', false)
                 .attr('class', function () {
                     const k = this.getAttribute('class').replace(/\s*\bg\d\b/g, '');
