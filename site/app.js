@@ -97,7 +97,7 @@
         { src: 'critters/flying-fish.svg', lon: 122.1, lat: 22.0, mode: 'flyfish', s: 0.45, sea: true, ph: 1.1, deco: true },
         { src: 'critters/flying-fish.svg', lon: 122.1, lat: 22.0, mode: 'flyfish', s: 0.5, sea: true, ph: 2.3, deco: true },
         // 美國西海岸外海的大白鯊：只露出背鰭，拖著水痕在海面上慢慢巡游
-        { src: 'critters/shark-fin.svg', lon: -124.6, lat: 36.8, mode: 'fin', s: 1.15, sea: true, deco: true },
+        { src: 'critters/shark-fin.svg', lon: -127.5, lat: 36.8, mode: 'fin', s: 1.15, sea: true, deco: true },
     ];
     // 原住民小人（natives.js）：該國主要指數漲就歡呼跳舞、跌就沮喪哭泣，平盤時散步 / 揮手 / 眨眼
     // mode 'folk'；market = 看哪個指數；ox / oy = 相對位置點的偏移（單位：小角色基準大小）；minK = 縮小到這個倍率以下就收起來
@@ -1131,9 +1131,10 @@
                 }
             } else if (m === 'fin') {
                 // 大白鯊：只露出背鰭，在海面上慢慢游一個橫 8 字，鰭微微左右晃、隨波輕輕浮沉（不跳出水面）
+                // 橫向振幅用 ppd（每度 px）限制在 ±1.6 度以內，防止游到陸地上
                 const T = t + c.ph,
                     w = T * 0.16;
-                c.x = Math.sin(w) * B * 2.2;
+                c.x = Math.sin(w) * Math.min(B * 2.2, (c.ppd || 9999) * 1.6);
                 c.y = Math.sin(w * 2) * B * 0.3;
                 c.dir = faceDir(c, Math.cos(w));
                 hop = Math.sin(T * 1.7) * R * 0.015;
@@ -3681,8 +3682,8 @@
             c.vis = !hide;
             c.size = z;
             c.base = size;
-            // 每度經度在螢幕上有幾 px：追逐的繞圈範圍要用「地理距離」限制，才不會縮小地圖時跑出海岸線
-            if (c.d.mode === 'chase') c.ppd = Math.max(0.5, screenXY(c.d.lon + 1, c.d.lat)[0] - x);
+            // 每度經度在螢幕上有幾 px：追逐 / 背鰭巡游的活動範圍要用「地理距離」限制，才不會縮小地圖時跑出海岸線
+            if (c.d.mode === 'chase' || c.d.mode === 'fin') c.ppd = Math.max(0.5, screenXY(c.d.lon + 1, c.d.lat)[0] - x);
             if (folk && c.d.first) {
                 // 每組只由第一個成員負責畫虛線：組的中心不在國家附近（距離超過 3 個基準大小）才畫
                 const ld = folkLeads.get(c.d.market);
