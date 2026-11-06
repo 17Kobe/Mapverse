@@ -152,6 +152,7 @@
       "id": "156",
       "lon": 108,
       "lat": 34,
+      "sz": 20,
       "r": "asia",
       "tz": "Asia/Shanghai",
       "ses": [
@@ -223,6 +224,7 @@
       "id": "036",
       "lon": 134,
       "lat": -25.5,
+      "sz": 18,
       "r": "asia",
       "tz": "Australia/Sydney",
       "ses": [
@@ -605,6 +607,7 @@
       "id": "840",
       "lon": -98,
       "lat": 39,
+      "sz": 22,
       "r": "americas",
       "tz": "America/New_York",
       "ses": [
@@ -652,6 +655,7 @@
       "id": "124",
       "lon": -100,
       "lat": 57,
+      "sz": 22,
       "r": "americas",
       "tz": "America/Toronto",
       "ses": [
@@ -672,6 +676,7 @@
       "id": "076",
       "lon": -52,
       "lat": -10,
+      "sz": 18,
       "r": "americas",
       "tz": "America/Sao_Paulo",
       "ses": [

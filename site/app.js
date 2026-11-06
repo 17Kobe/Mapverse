@@ -302,6 +302,8 @@
         t: d3.zoomIdentity,
         rot: 0, // 多指數旗幟的輪播序號
         flash: {}, // 剛更新的報價：代碼 → { until, up }，旗幟 / 卡片用它閃一下（見 animateQuotes）
+        highlightId: null,      // 點擊高亮（關閉彈窗時清除）
+        hoverHighlightId: null, // hover 高亮（mouseleave 時清除）
     };
 
     /* ================= 時間 / 開盤狀態 ================= */
@@ -1411,8 +1413,17 @@
             .append('g')
             .attr('class', 'mk')
             .on('click', (e, d) => openCard(d))
-            .on('mouseenter', (e, d) => { d.__hover = true;  scheduleLayout(); })
-            .on('mouseleave', (e, d) => { d.__hover = false; scheduleLayout(); });
+            .on('mouseenter', (e, d) => {
+                d.__hover = true;
+                scheduleLayout();
+                const host = d.type === 'map' ? d : d.type === 'sub' ? state.bySym[d.of] : null;
+                if (host && host.id) { state.hoverHighlightId = pad3(host.id); paintLand(); }
+            })
+            .on('mouseleave', (e, d) => {
+                d.__hover = false;
+                scheduleLayout();
+                state.hoverHighlightId = null; paintLand();
+            });
         g.each(function (d) {
             const s = d3.select(this);
             // 3D 動物：原點就是牠腳踩的地面，會在自己國家附近走動，所以整組放在 walker 裡
@@ -1458,8 +1469,17 @@
                     .append('g')
                     .attr('class', 'mk bk')
                     .on('click', () => openCard(d))
-                    .on('mouseenter', () => { d.__hover = true;  scheduleLayout(); })
-                    .on('mouseleave', () => { d.__hover = false; scheduleLayout(); })
+                    .on('mouseenter', () => {
+                        d.__hover = true;
+                        scheduleLayout();
+                        const host = d.type === 'map' ? d : d.type === 'sub' ? state.bySym[d.of] : null;
+                        if (host && host.id) { state.hoverHighlightId = pad3(host.id); paintLand(); }
+                    })
+                    .on('mouseleave', () => {
+                        d.__hover = false;
+                        scheduleLayout();
+                        state.hoverHighlightId = null; paintLand();
+                    })
                     .each(function () {
                         d.bk = this;
                     }),
@@ -1855,23 +1875,37 @@
     function paintLand() {
         if (!gLand) return;
         const show = borderIds();
+        const hlId = state.highlightId;
+        // hover 優先：有 hover 就用 hover，有 click 就用 click，可同時存在但 hover 蓋掉
+        const hvId = state.hoverHighlightId;
         gLand.selectAll('path').each(function (d) {
             const id = pad3(d.id),
                 on = show.has(id),
+                hl = id === hlId,
+                hv = id === hvId && !hl, // hover（click 時不另外加 hover class）
                 b = borderOf(id);
             d3.select(this)
-                .classed('on', on)
-                .attr('fill', on ? b.fill : 'none')
-                .style('stroke', on ? b.line : null);
+                .classed('on', on || hl || hv)
+                .classed('hl-land', hl)
+                .classed('hv-land', hv)
+                .attr('fill', (hl || hv) ? null : on ? b.fill : 'none')
+                .style('stroke', (hl || hv) ? null : on ? b.line : null);
         });
         gLine.selectAll('path').each(function (d) {
             const id = pad3(d.id),
-                on = show.has(id);
+                on = show.has(id),
+                hl = id === hlId,
+                hv = id === hvId && !hl;
             d3.select(this)
-                .classed('on', on)
-                .style('stroke', on ? borderOf(id).line : null);
+                .classed('on', on || hl || hv)
+                .classed('hl-line', hl)
+                .classed('hv-line', hv)
+                .style('stroke', (hl || hv) ? null : on ? borderOf(id).line : null);
         });
-        gEdge.selectAll('path').classed('on', (d) => show.has(pad3(d.id)));
+        gEdge.selectAll('path')
+            .classed('on', (d) => show.has(pad3(d.id)) || pad3(d.id) === hlId || pad3(d.id) === hvId)
+            .classed('hl-edge', (d) => pad3(d.id) === hlId)
+            .classed('hv-edge', (d) => pad3(d.id) === hvId && pad3(d.id) !== hlId);
     }
 
     // 地圖上被浮動介面蓋住的邊距（篩選列、手機版概況卡）
@@ -4745,6 +4779,11 @@
     <div class="meta">${c.p != null ? `<div><b>${$t('收盤')}</b>　${fmtN(c.p)}${pctTag(c.pct)}</div>` : ''}<div><b>${$t('主要產業')}</b>　${$t(c.ind)}</div><div><b>${$t('總部')}</b>　${c.addr}</div>${mood ? `<div>${mood}</div>` : ''}</div>
     ${note}`);
     }
+    function clearHighlight() {
+        if (!state.highlightId) return;
+        state.highlightId = null;
+        paintLand();
+    }
     function openCard(m) {
         const q = state.quotes[m.s];
         const isMap = m.type === 'map';
@@ -4813,6 +4852,14 @@
     <div class="chg" style="color:${col}">${q ? pctSpan(q.pct, chg) : chg}</div>
     ${q ? spark(q.spark, col) : ''}
     <div class="meta">${meta}</div>${topHtml}`);
+        // 高亮該國國界並飛到該國位置
+        if (host && host.id) {
+            state.highlightId = pad3(host.id);
+            paintLand();
+            // sz：粗估國家半徑（度），無欄位時依經驗值（中小型國 8°，大型國 18°）
+            const sz = host.sz ?? (host.big ? 18 : 8);
+            flyTo(fitBox([host.lon - sz, host.lat - sz * 0.6, host.lon + sz, host.lat + sz * 0.6], maxK * 0.35));
+        }
     }
     function openSettings() {
         const pref = I18n.pref();
@@ -4838,6 +4885,7 @@
         const s = $('#sheet');
         if (e.target.closest('.x') || e.target.classList.contains('back')) {
             s.hidden = true;
+            clearHighlight();
             return;
         }
         const tab = e.target.closest('.gtab');
@@ -4849,6 +4897,7 @@
         if (!a) return;
         if (a.dataset.act === 'zoom-spot') {
             s.hidden = true;
+            clearHighlight();
             const sp = state.travel && state.travel.spots.find((x) => x.id === a.dataset.id);
             if (sp) zoomToSpots([sp]);
             return;
@@ -4943,7 +4992,7 @@
         $('#btnSet').addEventListener('click', openSettings);
         // Esc：關掉詳情卡
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') $('#sheet').hidden = true;
+            if (e.key === 'Escape') { $('#sheet').hidden = true; clearHighlight(); }
         });
 
         let rt = 0;
