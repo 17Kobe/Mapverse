@@ -365,10 +365,10 @@ body.noanim .corps .bk,body.noanim .corps .flame{animation:none}
 .bubble .rbg{fill:transparent}
 .bubble .rbg.odd{fill:rgba(255,255,255,.05)}
 /* 經濟數據卡：成長 / 物價 / 就業 不再有標題列，每個區塊一種底色（藍 / 琥珀 / 紫 / 青；避開紅綠，免得和漲跌色混在一起），區塊內不分單雙列 */
-.bubble .rbg.g0{fill:rgba(56,124,226,.46)}
-.bubble .rbg.g1{fill:rgba(196,132,36,.46)}
-.bubble .rbg.g2{fill:rgba(128,88,205,.48)}
-.bubble .rbg.g3{fill:rgba(28,150,176,.46)}
+.bubble .rbg.g0{fill:rgba(22,52,108,.86)}
+.bubble .rbg.g1{fill:rgba(88,60,18,.86)}
+.bubble .rbg.g2{fill:rgba(56,40,104,.88)}
+.bubble .rbg.g3{fill:rgba(14,68,82,.86)}
 
 /* 報價剛更新（lvr = 紅光、lvg = 綠光，顏色是「這次價格漲或跌」，程式依紅漲綠跌設定決定）：
    旗幟 / 卡片外框發光、數字區塊或該列底色淡出。持續約 2 秒後程式會把 class 拿掉 */
