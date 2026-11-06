@@ -2320,11 +2320,14 @@
     const TOPIC_W = 176;
     // 電腦版卡片（連字型）最多放大的倍率
     const TOPIC_SCALE_MAX = 1.7;
+    const TOPIC_SCALE_MAX_ECON = 2.2;
     // 卡片邊緣離自己國家的距離上限（px）：超過就寧可縮小卡片，讓它貼近國家
     const TOPIC_NEAR = 200;
+    const TOPIC_NEAR_ECON = 280; // 經濟數據的卡片很高，放寬一點，字才能放得更大
     // 資料列 16px；卡內的分隔標題（成長 / 物價 / 就業）只要 12px，不佔太多高度
     const SEC_H = 12;
-    const rowH = (r) => (r.sec ? SEC_H : 16);
+    // 卡內的分隔標題（成長 / 物價 / 就業）不再佔高度、也不畫：改用每個區塊不同的底色區分（見 style.css 的 .rbg.g0 ~ g3）
+    const rowH = (r) => (r.sec ? 0 : 16);
     const topicH = (c) => 24 + c.rows.reduce((s, r) => s + rowH(r), 0) + 4;
     const dateStamp = (t) => {
         const d = new Date(t * 1000);
@@ -2581,6 +2584,17 @@
             yAcc += rowH(r);
             return y;
         });
+        // 區塊編號：第幾個分隔標題之後的列屬於第幾個區塊（g0 ~ g3 各有自己的底色）；inG 是區塊內的序號（隔列淡淡加亮）
+        let gi = -1,
+            inG = 0;
+        const rowG = rows.map((x) => {
+            if (x.sec) {
+                gi++;
+                inG = 0;
+                return { g: -1, n: 0 };
+            }
+            return { g: Math.max(gi, 0), n: inG++ };
+        });
         b.selectAll('.row').each(function (_, i) {
             const x = rows[i],
                 g = d3.select(this),
@@ -2589,14 +2603,29 @@
                 rv = g.select('.rv'),
                 rp = g.select('.rp');
             setFlash(g, rowFlash[i]);
+            if (x.sec) {
+                // 分隔標題不顯示
+                g.select('.rbg').styleQ('display', 'none');
+                g.select('.rhl').styleQ('display', 'none');
+                rn.textQ('');
+                rv.textQ('');
+                rp.textQ('');
+                return;
+            }
+            const rg = rowG[i];
             g.select('.rbg')
+                .styleQ('display', null)
                 .attrQ('x', 4)
                 .attrQ('y', y)
                 .attrQ('width', w - 8)
                 .attrQ('height', rowH(c.rows[i]))
-                .classed('odd', i % 2 === 1 && !x.sec)
-                .classed('sec', !!x.sec);
-            rn.classed('sec', !!x.sec);
+                .classed('odd', rg.n % 2 === 1)
+                .classed('sec', false)
+                .attr('class', function () {
+                    const k = this.getAttribute('class').replace(/\s*\bg\d\b/g, '');
+                    return gi >= 0 ? `${k} g${rg.g % 4}` : k;
+                });
+            rn.classed('sec', false);
             // icon 直接前置在名稱文字裡，避免 SVG text baseline 對齊問題
             const hasIcon = !!x.icon && !x.sec && !x.note;
             const labWithIcon = hasIcon ? `${x.icon} ${x.lab}` : x.lab;
@@ -2605,12 +2634,6 @@
                 const lw = textWidthOf(txt, 'rn');
                 return lw > room ? `${Math.max(8, (11 * room) / lw).toFixed(1)}px` : null;
             };
-            if (x.sec) {
-                rn.attrQ('x', 9).attrQ('y', y + 9.2).styleQ('font-size', null).textQ(x.sec);
-                rv.textQ('');
-                rp.textQ('');
-                return;
-            }
             if (x.note) {
                 rn.attrQ('x', 9)
                     .attrQ('y', y + 12.5)
@@ -2621,12 +2644,18 @@
                 return;
             }
             const rvx = w - 8 - (x.chg ? numW(x.chg, 'rp', true) + 5 : 0);
+            // 名稱縮到最小（8px）還是放不下：改縮小數值字級，兩者才不會疊在一起
+            const vw0 = numW(x.val, 'rv', 'dec'),
+                labMin = (textWidthOf(labWithIcon, 'rn') * 8) / 11,
+                vRoom = rvx - 9 - labMin - 11,
+                vs = vw0 > vRoom ? Math.max(0.6, vRoom / vw0) : 1;
             rn.attrQ('x', 9)
                 .attrQ('y', y + 12.5)
-                .styleQ('font-size', fit(labWithIcon, rvx - numW(x.val, 'rv', 'dec') - 13))
+                .styleQ('font-size', fit(labWithIcon, rvx - vw0 * vs - 11))
                 .textQ(labWithIcon);
             rv.attrQ('x', rvx)
                 .attrQ('y', y + 13.5)
+                .styleQ('font-size', vs < 1 ? `${(15 * vs).toFixed(1)}px` : null)
                 .styleQ('fill', x.vcol)
                 .numQ(x.val, 'dec');
             // 漲跌幅超過 BIG_MOVE（%）：實心底色 + 白字，和股市旗幟一致
@@ -2671,7 +2700,8 @@
             // 卡片太高放不下時整體縮小（不低於 0.6 倍），讓每一欄一眼看完，不用往下滑
             // 底部多留 34px：右下角的災難按鈕與地圖來源標示不要壓到卡片
             const room = H - top0 - 34 - GAP * (Math.max(colN[0], colN[1]) - 1);
-            const U = Math.max(0.6, Math.min(BUBBLE_SCALE_MOBILE, room / Math.max(colH[0], colH[1], 1)));
+            // 經濟數據去掉分隔標題後比較矮，畫面夠高時字可以放更大
+            const U = Math.max(0.6, Math.min(state.activeRegion === 'econ' ? 1.4 : BUBBLE_SCALE_MOBILE, room / Math.max(colH[0], colH[1], 1)));
             const w = Math.min(colW, Math.round(Math.min(200, Math.floor(colW / U)) * U));
             const ys = [top0, top0];
             for (const c of order) {
@@ -2744,10 +2774,11 @@
             bestU = 1,
             alt = null,
             altU = 1;
-        for (let U = TOPIC_SCALE_MAX; U > 1.001; U -= 0.1) {
+        // 經濟數據的卡片去掉分隔標題後比較矮，字可以放得更大
+        for (let U = state.activeRegion === 'econ' ? TOPIC_SCALE_MAX_ECON : TOPIC_SCALE_MAX; U > 1.001; U -= 0.1) {
             const t = place(U, rects);
             if (t.miss) continue;
-            if (t.far <= TOPIC_NEAR) {
+            if (t.far <= (state.activeRegion === 'econ' ? TOPIC_NEAR_ECON : TOPIC_NEAR)) {
                 best = t;
                 bestU = U;
                 break;

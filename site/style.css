@@ -364,6 +364,15 @@ body.noanim .corps .bk,body.noanim .corps .flame{animation:none}
 /* 多指數旗幟：每列一個指數 */
 .bubble .rbg{fill:transparent}
 .bubble .rbg.odd{fill:rgba(255,255,255,.05)}
+/* 經濟數據卡：成長 / 物價 / 就業 不再有標題列，改用每個區塊不同的底色（藍 / 琥珀 / 青綠 / 紫），隔列再加亮一點 */
+.bubble .rbg.g0{fill:rgba(70,150,255,.30)}
+.bubble .rbg.g1{fill:rgba(255,170,50,.28)}
+.bubble .rbg.g2{fill:rgba(40,200,150,.28)}
+.bubble .rbg.g3{fill:rgba(180,120,255,.28)}
+.bubble .rbg.g0.odd{fill:rgba(70,150,255,.42)}
+.bubble .rbg.g1.odd{fill:rgba(255,170,50,.40)}
+.bubble .rbg.g2.odd{fill:rgba(40,200,150,.40)}
+.bubble .rbg.g3.odd{fill:rgba(180,120,255,.40)}
 /* 報價剛更新（lvr = 紅光、lvg = 綠光，顏色是「這次價格漲或跌」，程式依紅漲綠跌設定決定）：
    旗幟 / 卡片外框發光、數字區塊或該列底色淡出。持續約 2 秒後程式會把 class 拿掉 */
 .bubble .fl{fill:transparent;opacity:0;pointer-events:none}
