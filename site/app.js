@@ -590,15 +590,15 @@
     };
     const fmtPct = (p, d = 2) => {
         const s = p.toFixed(d);
-        const n = +s; // 四捨五入後的數值（可能是 -0）
-        if (n === 0) return '0.' + '0'.repeat(d) + '%'; // -0.00 / +0.00 → 0.00%
-        return (n > 0 ? '+' : '') + s + '%';
+        const n = +s;
+        if (n === 0) return '0.' + '0'.repeat(d) + '%';
+        return (n > 0 ? '+' : n < 0 ? '' : '') + s + '%';
     };
     // 漲跌幅箭頭 + 數字，自動消除 -0.00 的負號
     const fmtChgPct = (p, d = 2) => {
         const s = Math.abs(p).toFixed(d);
         const n = +s;
-        if (n === 0) return `–${s}%`; // 平盤：破折號，無箭頭
+        if (n === 0) return `0.${`0`.repeat(d)}%`; // 平盤：無符號無箭頭
         return `${arrow(p)}${s}%`;
     };
     const arrow = (p) => (p > 0 ? '▲' : p < 0 ? '▼' : '–');
