@@ -8,6 +8,7 @@ https://ikdx-realtime.pages.dev/data/world/ 讀取（見 site/app.js 的 DATA_BA
 用法：
     python scripts/serve_local.py
     python scripts/serve_local.py --port 9000
+預設從 8000 埠開始；該埠已經被別的程式（例如另一個專案的預覽伺服器）占用時，會自動改用下一個空的埠。
 """
 import argparse
 import functools
@@ -27,6 +28,12 @@ class NoCacheHandler(http.server.SimpleHTTPRequestHandler):
         super().end_headers()
 
 
+class Server(http.server.ThreadingHTTPServer):
+    # Windows 的 SO_REUSEADDR 允許多個程式綁在同一個埠，結果先啟動的舊伺服器會一直接走連線，
+    # 瀏覽器就看到別的專案。關掉它，埠被占用時綁定才會失敗，由 main 改用下一個埠。
+    allow_reuse_address = False
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--port", type=int, default=8000)
@@ -34,8 +41,17 @@ def main():
 
     handler = functools.partial(NoCacheHandler, directory=SITE)
     # 只綁定 127.0.0.1，避免區域網路內其他裝置連入
-    with http.server.ThreadingHTTPServer(("127.0.0.1", args.port), handler) as srv:
-        url = f"http://localhost:{args.port}/"
+    srv = None
+    for port in range(args.port, args.port + 20):
+        try:
+            srv = Server(("127.0.0.1", port), handler)
+            break
+        except OSError:
+            print(f"埠 {port} 已被占用，改用下一個…")
+    if srv is None:
+        raise SystemExit(f"找不到可用的埠（{args.port}～{args.port + 19} 都被占用）")
+    with srv:
+        url = f"http://localhost:{port}/"
         print(f"已啟動：{url}  （按 Ctrl+C 結束）")
         webbrowser.open(url)
         try:

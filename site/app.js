@@ -33,10 +33,10 @@
 
     // 左側圖層列（手機版是底部導覽列）。之後要加新地圖，在這裡加一筆並把 ready 設成 true 即可
     const LAYERS = [
-        { k: 'stocks', icon: '📈', label: $t('股市'), title: $t('股市'), desc: $t('目前的指數地圖'), ready: true },
-        { k: 'travel', icon: '✈️', label: $t('旅遊'), title: $t('旅遊'), desc: $t('美食、慶典、活動、景點、花季'), ready: true },
-        { k: 'living', icon: '🏠', label: $t('民生'), title: $t('民生'), desc: $t('電力供需、水庫蓄水、油價、菜價、空氣品質') },
-        { k: 'weather', icon: '🌦️', label: $t('天氣災防'), title: $t('天氣災防'), desc: $t('颱風路徑、地震、雨量') },
+        { k: 'stocks', icon: '📈', label: $t('總體經濟'), title: $t('總體經濟'), desc: $t('指數、商品、匯率、債券、利率、經濟數據、地緣'), ready: true },
+        { k: 'picks', icon: '📊', label: $t('個股'), title: $t('個股'), desc: $t('個股報價、走勢與公司資訊') },
+        { k: 'holdings', icon: '💼', label: $t('持倉'), title: $t('持倉'), desc: $t('我的持股、成本與損益') },
+        { k: 'balance', icon: '⚖️', label: $t('資產負債'), title: $t('資產負債'), desc: $t('資產、負債與淨值') },
     ];
     const desktopMQ = window.matchMedia('(min-width:900px)');
     // 手機版城市旗幟的放大倍率（數字太小看不清楚）
@@ -50,9 +50,6 @@
         FULL_BASE = 37.5;
     // 手機版區域檢視上方額外預留的高度（px），讓 pin 的國家旗幟放得下
     const PIN_EXTRA_TOP = 95;
-    // 旅遊地圖的道路級別：國道 / 快速公路 / 省道（tw-roads.json 的級別編號 0 / 1 / 2）
-    const ROAD_CLS = ['fwy', 'exp', 'prov'];
-
     // 遊戲風地形的原始資料（都是 Web Mercator 圖磚，且允許跨來源讀取像素）
     // - DEM：AWS Terrain Tiles（Terrarium 編碼），提供陸地高度與海洋深度
     // - 衛星影像：只拿來「判斷地貌」（沙漠 / 草原 / 森林 / 雪地 / 湖泊），不直接顯示
@@ -315,8 +312,6 @@
         layer: 'stocks',
         topics: [], // markets.json 的 topics（商品 / 債券 / 利率 / 匯率 / 地緣 / 經濟數據卡片）
         landmarks: [], // 永遠留在地圖上的圖示（央行、白宮、地緣動畫）
-        travel: null,
-        tArea: 'all', // 旅遊地圖的資料（第一次切過去才載入）與目前選的區域
         redUp: store.get('redUp', true),
         anim: store.get('anim', true),
         t: d3.zoomIdentity,
@@ -605,7 +600,7 @@
 
     /* ================= 資料 ================= */
     async function fetchJSON(url) {
-        // no-cache：每次都向伺服器確認，沒改過就回 304 直接用瀏覽器快取（手機切到旅遊地圖不用重新下載整包資料）
+        // no-cache：每次都向伺服器確認，沒改過就回 304 直接用瀏覽器快取（重新載入時不用重新下載整包資料）
         const r = await fetch(url, { cache: 'no-cache' });
         if (!r.ok) throw new Error(url + ' ' + r.status);
         return r.json();
@@ -749,9 +744,6 @@
         gLm,
         gGeo,
         gTopic,
-        gTw,
-        gRoadTag,
-        gPoi,
         zoomB,
         projection,
         W = 0,
@@ -774,7 +766,6 @@
         terrainRaf = 0;
         if (tctx && W) {
             Terrain.draw(tctx, state.t, S0, W, H, dpr);
-            drawFog();
             drawNight();
         }
     }
@@ -814,14 +805,6 @@
         grad('bannerOff', '#3c4659', '#222a38');
         // 國名：奶油白到琥珀金的漸層，呼應旗幟的金色邊框
         grad('nameGold', '#fffbe8', '#ffc247');
-        // 公路編號牌：省道藍、快速公路紅（上亮下暗的立體感），國道梅花白
-        grad('rtBlue', '#2a64c4', '#0a3479');
-        grad('rtRed', '#ff3d43', '#e0141d'); // 快速公路：亮紅（真的標誌是很正的紅）
-        grad('rtWhite', '#ffffff', '#e4ebe6');
-        const gl = defs.append('linearGradient').attr('id', 'rtGloss').attr('x1', 0).attr('y1', 0).attr('x2', 0).attr('y2', 1);
-        gl.append('stop').attr('offset', '0%').attr('stop-color', '#fff').attr('stop-opacity', 0.42);
-        gl.append('stop').attr('offset', '48%').attr('stop-color', '#fff').attr('stop-opacity', 0.06);
-        gl.append('stop').attr('offset', '52%').attr('stop-color', '#fff').attr('stop-opacity', 0);
         // 夜晚城市燈光發光暈：城市旗幟在夜側時散發溫暖橘黃光
         const glow = defs.append('filter')
             .attr('id', 'cityGlow')
@@ -1352,7 +1335,7 @@
             ww = S0 * k;
         ctx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        const fade = state.layer === 'travel' ? 0 : Math.max(0, Math.min(1, (4.5 - k) / 2.5)); // 旅遊地圖不放雲；放大到 4.5 倍以上就看不到雲
+        const fade = Math.max(0, Math.min(1, (4.5 - k) / 2.5)); // 放大到 4.5 倍以上就看不到雲
         if (!fade) return;
         if (state.anim && !reduceMotion.matches) cloudT += dt;
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -1403,12 +1386,6 @@
         gLand = gZoom.selectAll('g.land');
         gLine = gZoom.selectAll('g.line');
         gEdge = gZoom.selectAll('g.edge');
-        // 旅遊地圖：台灣的海岸線（同樣是光暈 + 主線 + 白芯三層）與縣市界
-        gTw = svg.append('g').attr('class', 'tw').style('display', 'none');
-        // fill 直接寫在屬性上：就算瀏覽器還在用舊的 style.css，台灣也不會被填成一團黑
-        for (const c of ['tw-glow', 'tw-county', 'tw-line', 'tw-edge']) gTw.append('path').attr('class', c).attr('fill', 'none');
-        // 主要道路畫進地形圖磚（terrain.js，拖曳時不用每一幀重畫），SVG 這邊只放路線編號牌
-        gRoadTag = svg.append('g').attr('class', 'rd-tags').style('display', 'none'); // 路線編號牌（螢幕座標，在海岸線上面）
         gDecor = svg.append('g').attr('class', 'decor').style('pointer-events', 'none');
         // 夜空星星層（在 terrain canvas 上、動物下）
         gStars = svg.insert('g', '.decor').attr('class', 'stars').style('pointer-events', 'none');
@@ -1422,7 +1399,7 @@
         // 原住民小人獨立一層，畫在公司建築上面：台灣縮小時整座島都是建築（小城市比島還大），小人才不會被蓋住看不見
         gFolk = svg.append('g').attr('class', 'folk-layer').style('pointer-events', 'none');
         // 央行、白宮、地緣動畫圖示：不論篩選都留在地圖上，畫在動物下面
-        // 地緣動畫場景（油輪、貨櫃船、無人機；geoscenes.js）：股市地圖的任何篩選都顯示（旅遊地圖不顯示），畫在地標下面
+        // 地緣動畫場景（油輪、貨櫃船、無人機；geoscenes.js）：任何篩選都顯示，畫在地標下面
         gGeo = svg.append('g').attr('class', 'geo-layer').style('pointer-events', 'none');
         gLm = svg.append('g').attr('class', 'landmarks');
         gMk = svg.append('g').attr('class', 'markers');
@@ -1430,7 +1407,6 @@
         gBub = svg.append('g').attr('class', 'bubbles');
         // 商品 / 債券 / 利率 / 匯率 / 地緣 / 經濟數據的卡片
         gTopic = svg.append('g').attr('class', 'topics').style('display', 'none');
-        gPoi = svg.append('g').attr('class', 'pois').style('display', 'none');
 
         buildCritters();
         buildClouds();
@@ -1566,7 +1542,7 @@
                 state.t = wrapT(e.transform);
                 onTransform(!e.sourceEvent);
             });
-        // 股市地圖的雙擊不放大：左鍵是用來降下災難的，連點時地圖才不會一直縮放（旅遊地圖照舊）
+        // 股市地圖的雙擊不放大：左鍵是用來降下災難的，連點時地圖才不會一直縮放
         zoomB.filter(
             (e) => (!e.ctrlKey || e.type === 'wheel') && !e.button && !(e.type === 'dblclick' && state.layer === 'stocks'),
         );
@@ -1674,10 +1650,9 @@
             [W, H],
         ]);
         setZoomLimits();
-        drawTw();
         paintLand();
     }
-    /* ---------- 邊界線的細緻度分級（LOD，股市的國界、旅遊的海岸線與縣市界共用） ----------
+    /* ---------- 邊界線的細緻度分級（LOD，世界國界用） ----------
      * 邊界線有大量折點，拖曳 / 縮放時瀏覽器每一幀都要重畫全部，是最主要的卡頓來源。
      * 依縮放倍率（每 2 倍一級）用 Douglas–Peucker 拿掉「螢幕上偏差小於 LOD_TOL 像素」的折點：
      * 畫出來的形狀肉眼看不出差別，但每幀要畫的頂點少很多。各級的路徑字串算一次就快取起來。 */
@@ -1842,45 +1817,9 @@
             gEdge.selectAll('path').each(set);
         },
     });
-    // 旅遊：台灣海岸線與縣市界（內政部資料很細，可以一路放大到街道等級）
-    // 線寬自己除以縮放倍率：放大到街道等級時 iOS Safari 的 non-scaling-stroke 會失效，
-    // 小島周圍就變成一大圈黃色（金色光暈被放大了上百倍）
-    const TW_STROKE = { 'tw-glow': 9, 'tw-line': 2.4, 'tw-edge': 0.9, 'tw-county': 1 };
-    function sizeTwStroke(k) {
-        for (const [c, w] of Object.entries(TW_STROKE)) gTw.select('.' + c).style('stroke-width', `${w / k}px`);
-        gTw.select('.tw-county').style('stroke-dasharray', `${4 / k}px ${3 / k}px`);
-    }
-    const twLod = makeLod({
-        items: () => (gTw && state.travel ? [state.travel.coast, state.travel.county] : null),
-        maxLv: () => Math.max(0, Math.ceil(Math.log2(maxK))),
-        digits: 6,
-        apply([coast, county]) {
-            gTw.selectAll('.tw-glow,.tw-line,.tw-edge').attr('d', coast);
-            gTw.select('.tw-county').attr('d', county);
-        },
-    });
-
-    // 縮放 / 拖曳範圍：股市是整個世界（東西向無限循環）；旅遊只在台灣附近
+    // 縮放 / 拖曳範圍：整個世界（東西向無限循環）
     function setZoomLimits() {
-        if (state.layer === 'travel' && state.travel) {
-            const home = fitBox(state.travel.areas[0].box);
-            const minK = home.k * 0.8;
-            const a = projection([TW_PAN[0], TW_PAN[3]]),
-                b = projection([TW_PAN[2], TW_PAN[1]]);
-            const cx = (a[0] + b[0]) / 2,
-                cy = (a[1] + b[1]) / 2;
-            // 縮到最小時畫面也要在範圍內，寬螢幕就把範圍往外擴
-            const hw = Math.max((b[0] - a[0]) / 2, W / minK / 2),
-                hh = Math.max((b[1] - a[1]) / 2, H / minK / 2);
-            zoomB
-                .translateExtent([
-                    [cx - hw, cy - hh],
-                    [cx + hw, cy + hh],
-                ])
-                .scaleExtent([minK, maxK]);
-        } else {
-            zoomB.translateExtent(panExtent()).scaleExtent([1, maxK]);
-        }
+        zoomB.translateExtent(panExtent()).scaleExtent([1, maxK]);
     }
     // 東西向不限制（無限循環），南北仍限制在可視緯度內
     const panExtent = () => [
@@ -2057,8 +1996,8 @@
     }
     function applyRegion(animate) {
         if (!projection) return;
-        if (state.layer !== 'travel') paintLand(); // 國界只顯示目前篩選相關的國家
-        const tr = state.layer === 'travel' ? areaTransform(state.tArea) : nearestCopy(regionTransform(state.activeRegion));
+        paintLand(); // 國界只顯示目前篩選相關的國家
+        const tr = nearestCopy(regionTransform(state.activeRegion));
         const sel = animate && state.anim ? svg.transition().duration(900).ease(d3.easeCubicInOut) : svg;
         sel.call(zoomB.transform, tr);
         prefetchChips();
@@ -2067,10 +2006,7 @@
     // 之後切換篩選就是直接讀磁碟快取，不會先出現方塊
     function prefetchChips() {
         if (!Terrain.prefetch || !W) return;
-        const views =
-            state.layer === 'travel' && state.travel
-                ? state.travel.areas.map((a) => areaTransform(a.k))
-                : ['all', 'asia', 'europe', 'americas', 'mea', ...Object.keys(TOPICS)].map((k) => regionTransform(k));
+        const views = ['all', 'asia', 'europe', 'americas', 'mea', ...Object.keys(TOPICS)].map((k) => regionTransform(k));
         Terrain.prefetch(views, S0, W, H, dpr);
     }
 
@@ -2080,18 +2016,10 @@
     function onTransform(sync) {
         gZoom.attr('transform', state.t.toString());
         folkRefreshSoon();
-        if (state.layer === 'travel') {
-            // 旅遊地圖不畫世界國界，改畫台灣自己的海岸線與縣市界（內政部資料，放大到街道也對得齊）
-            gZoom.style('display', 'none');
-            gTw.attr('transform', state.t.toString());
-            sizeTwStroke(state.t.k);
-            twLod.update(state.t.k);
-        } else {
-            // 放大到城市 / 街道等級時，國界（50m 精度）會和真實海岸線對不齊，逐漸淡出
-            const op = Math.max(0, Math.min(1, 1 - (Math.log2(state.t.k) - 5) / 2));
-            gZoom.style('opacity', op).style('display', op > 0 ? null : 'none');
-            if (op > 0) worldLod.update(state.t.k);
-        }
+        // 放大到城市 / 街道等級時，國界（50m 精度）會和真實海岸線對不齊，逐漸淡出
+        const op = Math.max(0, Math.min(1, 1 - (Math.log2(state.t.k) - 5) / 2));
+        gZoom.style('opacity', op).style('display', op > 0 ? null : 'none');
+        if (op > 0) worldLod.update(state.t.k);
         if (sync) {
             cancelAnimationFrame(terrainRaf);
             terrainRaf = 0;
@@ -2120,7 +2048,7 @@
         return w > 0 && h > 0 ? w * h : 0;
     };
 
-    /* ---------- 地圖標記的共用元件（股市的城市旗幟、旅遊的地點旗幟都用這一套） ----------
+    /* ---------- 地圖標記的共用元件（股市的城市旗幟用這一套） ----------
      * 畫的時候一律用 attrQ / styleQ / textQ：拖曳時每幀都會重排，只有真的改變的值才寫進 DOM。 */
     // 文明帝國式旗幟的外框：深色底板 + 名稱色帶 + 淡金分隔線 + 金色細邊，下方可加指向圖示的尖角
     function buildBanner(parent) {
@@ -2913,11 +2841,7 @@
 
     function layoutMarkers() {
         if (!projection || !state.maps.length) return;
-        if (window.GeoScenes) GeoScenes.layout(); // 不在股市地圖（旅遊）時會自己收起來
-        if (state.layer === 'travel') {
-            layoutTravel();
-            return;
-        }
+        if (window.GeoScenes) GeoScenes.layout();
         const t = state.t,
             k = t.k;
         // 手機版全球檢視：只列十大市值國家（markets.json 的 g10），旗幟排成左右兩欄
@@ -3865,386 +3789,6 @@
         }
     }
 
-    /* ================= 旅遊地圖（台灣、澎湖、金門、馬祖與各離島） ================= */
-    // 地點分類：旗幟色帶的顏色與狀態列的圖示
-    const TRAVEL_CATS = {
-        // 色帶要亮：地圖上是深綠山林，太暗的底色會和地形混在一起
-        sight: { label: $t('景點'), emoji: '📸', band: 'hsl(172,78%,37%)' },
-        food: { label: $t('餐廳'), emoji: '🍽️', band: 'hsl(24,92%,49%)' },
-        hotel: { label: $t('飯店'), emoji: '🏨', band: 'hsl(268,62%,56%)' },
-        event: { label: $t('活動'), emoji: '🎉', band: 'hsl(338,80%,55%)' },
-    };
-    // 地點的顯示等級（travel.json 的 tier）：第 1 級一直顯示，第 2、3 級要放大到這個圖磚層級才出現
-    const TIER_Z = [0, 9.3, 10.5];
-    // 放大到這個層級（街道等級）還疊在一起的地點，往旁邊挪開一個圖示寬；依序試右、左、右下、左下、右上、左上、下、上
-    const SPREAD_Z = 13;
-    const SPREAD_DIRS = [
-        [1, 0],
-        [-1, 0],
-        [0.75, 0.75],
-        [-0.75, 0.75],
-        [0.75, -0.75],
-        [-0.75, -0.75],
-        [0, 1],
-        [0, -1],
-    ];
-    const TW_PAN = [116.8, 20.9, 123.6, 27.3]; // 可拖曳的基本範圍（西、南、東、北），寬螢幕會再往外擴
-
-    async function loadTravel() {
-        if (state.travel) return state.travel;
-        const [cfg, topo, fog, roads] = await Promise.all([
-            fetchJSON('travel.json'),
-            fetchJSON('assets/geo/tw-counties.json'),
-            fetchJSON('assets/geo/tw-fog.json'),
-            // 道路只是裝飾：載入失敗照樣能用旅遊地圖
-            fetchJSON('assets/geo/tw-roads.json').catch((e) => {
-                console.warn('道路資料載入失敗', e);
-                return null;
-            }),
-        ]);
-        // 迷霧多邊形：整數差分 → 單位 Mercator 座標（0~1），順便記下外框，畫的時候跳過畫面外的
-        const unpack = (rings, q) =>
-            rings.map((r) => {
-                const p = new Float64Array(r.length);
-                let x = 0,
-                    y = 0,
-                    x0 = Infinity,
-                    y0 = Infinity,
-                    x1 = -Infinity,
-                    y1 = -Infinity;
-                for (let i = 0; i < r.length; i += 2) {
-                    x += r[i];
-                    y += r[i + 1];
-                    p[i] = x / q;
-                    p[i + 1] = y / q;
-                    if (p[i] < x0) x0 = p[i];
-                    if (p[i] > x1) x1 = p[i];
-                    if (p[i + 1] < y0) y0 = p[i + 1];
-                    if (p[i + 1] > y1) y1 = p[i + 1];
-                }
-                return { p, bb: [x0, y0, x1, y1] };
-            });
-        const tv = {
-            areas: cfg.areas,
-            spots: cfg.spots,
-            coast: topojson.mesh(topo, topo.objects.nation),
-            county: topojson.mesh(topo, topo.objects.counties, (a, b) => a !== b), // 只要縣市之間的界線，不重複畫海岸
-            fog: unpack(fog.fog, fog.q.fog),
-            tw: unpack(fog.tw, fog.q.tw),
-            box: fog.box,
-            roads: roads ? unpackRoads(roads) : null,
-        };
-        state.travel = tv;
-        drawTw();
-        // 地形的海岸改用這些多邊形判斷（原本靠衛星影像，金門、廈門一帶的混濁淺海會被畫成陸地）。
-        // 版本字串用資料 + 繪製程式的雜湊：內容不變時，畫好的地形圖磚可以直接從磁碟快取讀回來
-        if (tv.roads && Terrain.setRoads) {
-            Terrain.setRoads({
-                box: tv.roads.box,
-                lines: tv.roads.lines,
-                styles: ROAD_STYLE,
-                ver: hash(JSON.stringify([roads, ROAD_STYLE])).toString(36),
-            });
-        }
-        if (Terrain.setLandMask) Terrain.setLandMask(landMaskFor, fog.box, hash(JSON.stringify(fog) + landMaskFor).toString(36));
-        else console.warn('terrain.js 是舊版（瀏覽器快取），請按 Ctrl+F5 重新整理');
-        return tv;
-    }
-    // 把一張圖磚範圍內的陸地多邊形畫成 256×256 的遮罩：0 海、1 陸、2 不在資料範圍內（照舊用影像判斷）、
-    // 3 台灣本身的陸地（地形會在山區森林種樹，海拔越高松樹越多）
-    let maskCtx = null;
-    function landMaskFor(z, x, y) {
-        const tv = state.travel,
-            bx = tv && tv.box;
-        if (!bx) return null;
-        const n = 1 << z,
-            u0 = x / n,
-            v0 = y / n,
-            s = 1 / n,
-            S = 256 * n;
-        if (u0 > bx[2] || u0 + s < bx[0] || v0 > bx[3] || v0 + s < bx[1]) return null;
-        if (!maskCtx) {
-            const c = document.createElement('canvas');
-            c.width = c.height = 256;
-            maskCtx = c.getContext('2d', { willReadFrequently: true });
-        }
-        const g = maskCtx;
-        g.fillStyle = '#0000ff';
-        g.fillRect(0, 0, 256, 256); // 範圍外
-        g.fillStyle = '#000000';
-        g.fillRect((bx[0] - u0) * S, (bx[1] - v0) * S, (bx[2] - bx[0]) * S, (bx[3] - bx[1]) * S); // 範圍內先當海
-        // 周邊陸地紅色、台灣洋紅色（紅 + 藍）
-        for (const [rings, c] of [
-            [tv.fog, '#ff0000'],
-            [tv.tw, '#ff00ff'],
-        ]) {
-            g.fillStyle = c;
-            g.beginPath();
-            for (const { p, bb } of rings) {
-                if (bb[2] < u0 || bb[0] > u0 + s || bb[3] < v0 || bb[1] > v0 + s) continue;
-                for (let i = 0; i < p.length; i += 2) {
-                    const px = (p[i] - u0) * S,
-                        py = (p[i + 1] - v0) * S;
-                    if (i) g.lineTo(px, py);
-                    else g.moveTo(px, py);
-                }
-                g.closePath();
-            }
-            g.fill();
-        }
-        const d = g.getImageData(0, 0, 256, 256).data,
-            M = new Uint8Array(65536);
-        for (let i = 0; i < 65536; i++) {
-            const r = d[i * 4] > 127,
-                b = d[i * 4 + 2] > 127;
-            M[i] = r ? (b ? 3 : 1) : b ? 2 : 0;
-        }
-        return M;
-    }
-    /* ---------- 主要道路（遊戲風：深色外框 + 亮色路面，國道加白色分隔虛線，路線編號牌） ----------
-     * 道路本身畫進地形圖磚（Terrain.setRoads，在 Worker 裡畫一次就快取），拖曳 / 縮放時不用每一幀重畫；
-     * 圖磚會依縮放換層級，線寬也跟著層級變粗。路線編號牌是 SVG（數量少，要保持文字清楚）。 */
-    // 各級別的樣式（寬度單位是圖磚像素：[層級0, 寬0, 層級1, 寬1] 線性內插；minZ 以下的層級不畫）
-    const ROAD_STYLE = [
-        {
-            minZ: 6,
-            w: [7, 2.2, 13, 8.5],
-            rim: [7, 1.1, 13, 2.4],
-            rimColor: '#5a3412',
-            fill: '#ffa62b',
-            dash: { minZ: 11, color: '#fffbea', w: 0.16, seg: [7, 7] },
-        }, // 國道：橘金色 + 白色分隔虛線
-        { minZ: 7, w: [7, 1.8, 13, 7.2], rim: [7, 1, 13, 2.2], rimColor: '#5e4214', fill: '#ffd84d' }, // 快速公路：黃色
-        { minZ: 8, w: [8, 1.6, 13, 6], rim: [8, 0.9, 13, 2], rimColor: '#6b5232', fill: '#fff3d9' }, // 省道：奶油白
-    ];
-    // tw-roads.json（scripts/build_tw_roads.py 產生）：lines 是 [級別, x0, y0, dx, dy, ...]（經緯度 × q 的整數差分），
-    // tags 是路線編號牌的候選位置 [級別, 編號, x, y]
-    function unpackRoads(rd) {
-        const q = rd.q,
-            R = Math.PI / 180;
-        // 經緯度 → 單位 Mercator（0~1），和地形圖磚同一套座標
-        const mu = (lon) => lon / 360 + 0.5,
-            mv = (lat) => 0.5 - Math.log(Math.tan(Math.PI / 4 + (lat * R) / 2)) / (2 * Math.PI);
-        const box = [Infinity, Infinity, -Infinity, -Infinity];
-        const lines = rd.lines.map((l) => {
-            const p = new Float64Array(l.length - 1),
-                bb = [Infinity, Infinity, -Infinity, -Infinity];
-            let x = 0,
-                y = 0;
-            for (let i = 1; i < l.length; i += 2) {
-                x += l[i];
-                y += l[i + 1];
-                const u = mu(x / q),
-                    v = mv(y / q);
-                p[i - 1] = u;
-                p[i] = v;
-                if (u < bb[0]) bb[0] = u;
-                if (u > bb[2]) bb[2] = u;
-                if (v < bb[1]) bb[1] = v;
-                if (v > bb[3]) bb[3] = v;
-            }
-            for (let k = 0; k < 2; k++) {
-                box[k] = Math.min(box[k], bb[k]);
-                box[k + 2] = Math.max(box[k + 2], bb[k + 2]);
-            }
-            return { c: l[0], p, bb };
-        });
-        const tags = rd.tags
-            .map(([c, t, x, y], id) => {
-                const u = mu(x / q),
-                    v = mv(y / q);
-                // 跟真的標誌一樣：數字大字置中，「甲、乙、丙…」小字放在數字下面
-                const m = /^(\d+)(\D*)$/.exec(t) || [t, t, ''],
-                    num = m[1],
-                    suf = m[2];
-                let w, h;
-                if (c === 0) {
-                    w = h = suf ? 29 : num.length > 1 ? 27 : 25;
-                } // 國道梅花（圓形，寬 = 高）
-                else {
-                    w = Math.max(suf ? 25 : 22, num.length * 6.4 + 11);
-                    h = suf ? 29 : num.length > 1 ? 25 : 23;
-                } // 省道 / 快速公路盾牌（接近正方，跟真的一樣）
-                return { id, c, t, num, suf, u, v, w, h, key: c + ':' + t };
-            })
-            .sort((a, b) => a.c - b.c || a.id - b.id); // 國道優先
-        return { box, lines, tags };
-    }
-    const ROAD_TAG_Z = [7.8, 8.4, 8.9]; // 各級別開始顯示編號牌的層級（相當於圖磚層級）
-    // 目前的縮放相當於第幾層圖磚（台灣全圖約 7~8，街道約 14）
-    const tileZoom = () => Math.log2((S0 * state.t.k) / 256);
-    const lerpC = (z, z0, a, z1, b) => a + (b - a) * Math.max(0, Math.min(1, (z - z0) / (z1 - z0)));
-    // 編號牌照真的台灣公路標誌畫（交通部標誌規則）：
-    //   國道 = 白色梅花 + 綠色內框 + 黑字；省道 = 藍色盾牌 + 白色內框 + 白字；快速公路（台61~88）= 同樣的盾牌但是紅色。
-    // 遊戲感只加在外面：深色描邊、立體漸層、底下的影子，形狀和配色不改。
-    // 梅花外形：五片花瓣（圓）的聯集外框，取樣成一條封閉折線，這樣內框才能只描外緣、不會畫出花瓣重疊的線
-    const PLUM_UNIT = (() => {
-        const d = 0.55,
-            p = 0.47,
-            n = 90,
-            pts = []; // 花瓣中心距、花瓣半徑（外緣半徑 = d + p ≈ 1）
-        for (let i = 0; i < n; i++) {
-            const th = (i / n) * 2 * Math.PI;
-            let best = 0;
-            for (let k = 0; k < 5; k++) {
-                const dl = th - (-Math.PI / 2 + (k * 2 * Math.PI) / 5),
-                    s = d * Math.sin(dl);
-                if (Math.abs(s) < p && Math.cos(dl) > 0) best = Math.max(best, d * Math.cos(dl) + Math.sqrt(p * p - s * s)); // 射線碰得到這片花瓣才算
-            }
-            pts.push([(Math.cos(th) * best) / (d + p), (Math.sin(th) * best) / (d + p)]);
-        }
-        return pts;
-    })();
-    function plumPath(r) {
-        return 'M' + PLUM_UNIT.map(([x, y]) => (x * r).toFixed(2) + ',' + (y * r).toFixed(2)).join('L') + 'Z';
-    }
-    // 盾牌外形（a、b 是半寬、半高）：上緣微微拱起、上角圓、兩側往下收成圓尖底
-    function shieldPath(a, b) {
-        const P = (x, y) => (x * a).toFixed(2) + ',' + (y * b).toFixed(2);
-        return (
-            `M${P(-0.84, -0.9)}Q${P(0, -1.04)} ${P(0.84, -0.9)}Q${P(1, -0.86)} ${P(1, -0.58)}` +
-            `C${P(1, 0.08)} ${P(0.46, 0.72)} ${P(0.13, 0.96)}Q${P(0, 1.05)} ${P(-0.13, 0.96)}` +
-            `C${P(-0.46, 0.72)} ${P(-1, 0.08)} ${P(-1, -0.58)}Q${P(-1, -0.86)} ${P(-0.84, -0.9)}Z`
-        );
-    }
-    // 編號牌：沿路線預先算好的候選位置，依序挑不和介面、地點旗幟、其他編號牌重疊的；
-    // 同一條路的編號牌之間至少隔 gap 像素（縮小時隔更開，全島圖才不會滿滿都是牌子）
-    function layoutRoadTags(rs) {
-        const rd = state.travel && state.travel.roads;
-        if (!rd || !gRoadTag) return;
-        const t = state.t,
-            ww = S0 * t.k,
-            z = tileZoom(),
-            out = [],
-            placed = new Map();
-        const gap = lerpC(z, 8, 340, 10, 230);
-        for (const g of rd.tags) {
-            if (z < ROAD_TAG_Z[g.c]) continue;
-            const x = t.x + g.u * ww,
-                y = t.y + g.v * ww;
-            if (x < 14 || x > W - 14 || y < 14 || y > H - 14) continue;
-            const h = g.h,
-                r = { x: x - g.w / 2 - 4, y: y - h / 2 - 4, w: g.w + 8, h: h + 8 };
-            const same = placed.get(g.key);
-            if (same && same.some((p) => Math.hypot(p[0] - x, p[1] - y) < gap)) continue;
-            if (rs.some((q) => inter(r, q) > 0)) continue;
-            rs.push(r);
-            if (same) same.push([x, y]);
-            else placed.set(g.key, [[x, y]]);
-            out.push({ g, x, y, h });
-            if (out.length >= 48) break;
-        }
-        const sel = gRoadTag.selectAll('g.rtag').data(out, (d) => d.g.id);
-        sel.exit().remove();
-        const en = sel
-            .enter()
-            .append('g')
-            .attr('class', (d) => 'rtag rtag-' + ROAD_CLS[d.g.c]);
-        en.each(function (d) {
-            const s = d3.select(this),
-                g = d.g,
-                a = g.w / 2,
-                b = g.h / 2;
-            const shape = g.c ? shieldPath(a, b) : plumPath(a);
-            // 內框：國道離外緣約 2.2px 的綠色細框；盾牌離外緣約 2px 的白色細框（和真的標誌一樣有一圈留白）
-            const inner = g.c ? shieldPath(a - 2.1, b - 2.1) : plumPath(a - 2.4);
-            s.append('path').attr('class', 'sd').attr('d', shape).attr('transform', 'translate(0,1.8)'); // 底下的影子
-            s.append('path').attr('class', 'sh').attr('d', shape);
-            s.append('path').attr('class', 'in').attr('d', inner);
-            s.append('path').attr('class', 'gl').attr('d', inner); // 上半部的反光
-            // 數字（盾牌的視覺重心偏上，字也往上放一點；有甲乙丙時數字再往上、小字放下面）
-            const ny = g.suf ? (g.c ? -4.4 : -3.4) : g.c ? -1.4 : 0.4;
-            s.append('text')
-                .attr('class', 'n' + (g.num.length > 1 ? ' n2' : ''))
-                .attr('y', ny)
-                .text(g.num);
-            if (g.suf)
-                s.append('text')
-                    .attr('class', 'sf')
-                    .attr('y', g.c ? 5.2 : 6.4)
-                    .text(g.suf);
-        });
-        en.merge(sel).each(function (d) {
-            d3.select(this).attrQ('transform', `translate(${d.x.toFixed(1)},${d.y.toFixed(1)})`);
-        });
-    }
-
-    // 台灣海岸線與縣市界（投影座標，跟著 gTw 的 transform 縮放）
-    function drawTw() {
-        // 和股市的國界共用分級簡化：依縮放倍率挑一級，螢幕上看不出差別的折點不畫
-        twLod.reset();
-        sizeTwStroke(state.t.k);
-        twLod.update(state.t.k);
-    }
-
-    // 戰爭迷霧：台灣以外的陸地（大陸沿海、琉球、菲律賓）褪色並蓋上一層霧，地圖只突顯台灣
-    let fogCv = null;
-    function drawFog() {
-        const tv = state.travel;
-        if (state.layer !== 'travel' || !tv) return;
-        const t = state.t,
-            ww = S0 * t.k,
-            cw = tctx.canvas.width,
-            ch = tctx.canvas.height;
-        if (!fogCv) fogCv = document.createElement('canvas');
-        if (fogCv.width !== cw || fogCv.height !== ch) {
-            fogCv.width = cw;
-            fogCv.height = ch;
-        }
-        const f = fogCv.getContext('2d');
-        f.setTransform(1, 0, 0, 1, 0, 0);
-        f.globalCompositeOperation = 'source-over';
-        f.filter = 'none';
-        f.clearRect(0, 0, cw, ch);
-        f.setTransform(dpr, 0, 0, dpr, 0, 0);
-        // 周邊陸地的資料精度約 400 公尺：迷霧往外多蓋約 0.8 公里，大陸海岸才不會從霧邊露出來
-        const pxKm = ww / (2 * Math.PI * 6371) / Math.cos((24 * Math.PI) / 180);
-        const grow = Math.max(5, Math.min(140, pxKm * 0.8));
-        const trace = (rings, m) => {
-            f.beginPath();
-            for (const { p, bb } of rings) {
-                if (t.x + bb[2] * ww < -m || t.x + bb[0] * ww > W + m || t.y + bb[3] * ww < -m || t.y + bb[1] * ww > H + m)
-                    continue;
-                for (let i = 0; i < p.length; i += 2) {
-                    const x = t.x + p[i] * ww,
-                        y = t.y + p[i + 1] * ww;
-                    if (i) f.lineTo(x, y);
-                    else f.moveTo(x, y);
-                }
-                f.closePath();
-            }
-        };
-        f.lineJoin = 'round';
-        f.fillStyle = f.strokeStyle = '#000';
-        f.filter = `blur(${(grow * 0.5).toFixed(1)}px)`;
-        f.lineWidth = grow * 2;
-        trace(tv.fog, grow * 3);
-        f.fill();
-        f.stroke();
-        // 台灣本身（含金門、馬祖）從霧裡挖掉
-        f.globalCompositeOperation = 'destination-out';
-        f.filter = `blur(${Math.max(1, grow * 0.15).toFixed(1)}px)`;
-        f.lineWidth = Math.max(2, grow * 0.4);
-        trace(tv.tw, grow * 3);
-        f.fill();
-        f.stroke();
-        f.filter = 'none';
-        f.setTransform(1, 0, 0, 1, 0, 0);
-        f.globalCompositeOperation = 'source-in';
-        // 先用灰色以 saturation 混合 → 底下的地形褪成灰階；再蓋一層半透明的深藍霧
-        f.fillStyle = '#808080';
-        f.fillRect(0, 0, cw, ch);
-        tctx.setTransform(1, 0, 0, 1, 0, 0);
-        tctx.globalCompositeOperation = 'saturation';
-        tctx.drawImage(fogCv, 0, 0);
-        f.fillStyle = '#18294a';
-        f.fillRect(0, 0, cw, ch);
-        tctx.globalCompositeOperation = 'source-over';
-        tctx.globalAlpha = 0.6;
-        tctx.drawImage(fogCv, 0, 0);
-        tctx.globalAlpha = 1;
-    }
-
     /* ---------- 日夜晨昏線 ---------- */
     let nightCv = null;
     // 快取當前太陽參數（每分鐘只算一次）
@@ -4392,222 +3936,9 @@
             ],
             zoomB.translateExtent(),
         );
-    function areaTransform(key) {
-        const areas = state.travel.areas,
-            a = areas.find((x) => x.k === key) || areas[0];
-        return constrainT(fitBox(a.box));
-    }
     function flyTo(tr) {
         (state.anim ? svg.transition().duration(900).ease(d3.easeCubicInOut) : svg).call(zoomB.transform, constrainT(tr));
     }
-    // 放大到這幾個地點（詳情卡的「放大到這裡」）
-    function zoomToSpots(list) {
-        const lons = list.map((s) => s.lon),
-            lats = list.map((s) => s.lat);
-        const cx = (Math.min(...lons) + Math.max(...lons)) / 2,
-            cy = (Math.min(...lats) + Math.max(...lats)) / 2;
-        const r = Math.max(0.006, (Math.max(...lons) - Math.min(...lons)) * 1.2, (Math.max(...lats) - Math.min(...lats)) * 1.2);
-        const tr = fitBox([cx - r, cy - r, cx + r, cy + r]);
-        // 至少放大一倍，點了才有感覺
-        if (tr.k < state.t.k * 2 && state.t.k * 2 <= maxK * 0.5) {
-            const k = state.t.k * 2,
-                c = projection([cx, cy]),
-                ins = overlayInsets();
-            flyTo(d3.zoomIdentity.translate((W + ins.l - ins.r) / 2 - k * c[0], (H + ins.t - ins.b) / 2 - k * c[1]).scale(k));
-        } else flyTo(tr);
-    }
-
-    // 活動的名稱前面加上通常月份（例如「7–8月 宜蘭童玩節」），其它分類只顯示名稱
-    function spotLabel(s) {
-        return s.cat === 'event' && s.months ? `${s.months} ${s.name}` : s.name;
-    }
-
-    function openSpot(s) {
-        const cat = TRAVEL_CATS[s.cat] || TRAVEL_CATS.sight;
-        const q = encodeURIComponent(`${s.full || s.name} ${s.addr || ''}`.trim());
-        showSheet(`
-    <div class="hd"><span class="big"><img class="beast3d" src="assets/travel/${esc(s.icon)}.png" alt=""></span>
-      <div><div class="nm">${esc(spotLabel(s))}</div><div class="sym">${cat.emoji} ${cat.label} · ${esc(s.county)}${esc(s.town)}</div></div></div>
-    <p class="desc">${esc(s.desc)}</p>
-    <div class="meta">${s.full ? `<div><b>${$t('名稱')}</b>　${esc(s.full)}</div>` : ''}${s.months ? `<div><b>${$t('通常月份')}</b>　${esc(s.months)}</div>` : ''}${s.note ? `<div><b>${$t('備註')}</b>　${esc(s.note)}</div>` : ''}${s.addr ? `<div><b>${$t('地址')}</b>　${esc(s.addr)}</div>` : ''}</div>
-    <a class="big-btn gbtn" href="https://www.google.com/maps/search/?api=1&amp;query=${q}" target="_blank" rel="noopener noreferrer">🗺️ ${$t('在 Google 地圖開啟')}</a>
-    <button class="big-btn gbtn" data-act="zoom-spot" data-id="${esc(s.id)}">🔍 ${$t('放大到這裡')}</button>`);
-    }
-
-    // 地點標記：一顆小水滴圖釘（顏色依分類，不會動）+ 文明帝國式旗幟（和股市的城市旗幟同款）
-    function buildPoi(g) {
-        const pin = g.append('g').attr('class', 'pin');
-        pin.append('circle').attr('class', 'tap').attr('fill', 'transparent');
-        pin.append('ellipse').attr('class', 'shadow').attr('filter', 'url(#soft)');
-        const dot = pin.append('g').attr('class', 'dot');
-        dot.append('path')
-            .attr('class', 'drop')
-            .attr('d', 'M0,0C-0.12,-0.26 -0.4,-0.42 -0.4,-0.66A0.4,0.4 0 1 1 0.4,-0.66C0.4,-0.42 0.12,-0.26 0,0Z');
-        dot.append('circle').attr('class', 'eye').attr('cy', -0.66).attr('r', 0.15);
-        const b = buildBanner(g);
-        b.append('text').attr('class', 't1');
-    }
-    function sizePin(g, z, color) {
-        g.select('.shadow')
-            .attrQ('rx', z * 0.26)
-            .attrQ('ry', z * 0.08)
-            .attrQ('cy', -z * 0.01);
-        g.select('.tap')
-            .attrQ('r', Math.max(z * 0.6, 14))
-            .attrQ('cy', -z * 0.5);
-        g.select('.dot').attrQ('transform', `scale(${z.toFixed(2)})`);
-        g.select('.drop').attrQ('fill', color);
-    }
-    function layoutTravel() {
-        const tv = state.travel;
-        if (!tv) return;
-        // 圖示大小，放大時略大（地點圖示是一顆小水滴，不佔空間）
-        const z = 18 + (Math.max(28, Math.min(42, 14 + Math.log2(state.t.k) * 2.4)) - 28) * 0.57;
-        // 介面蓋住的地方不放旗幟
-        const rs = uiRects(['#chips', '#hud']);
-        // 顯示等級：縮小時只出現第 1 級（必去），放大到 TIER_Z 才陸續出現第 2、3 級（像遊戲地圖的地標分級）。
-        // 先放等級高的（同級照 travel.json 的順序），圖示和已放的地點疊在一起就先不畫，放大後自然會分開。
-        const tz = tileZoom(),
-            list = [];
-        for (const s of tv.spots) {
-            const t = s.tier || 3;
-            if (tz < TIER_Z[t - 1]) continue;
-            const [x, y] = screenXY(s.lon, s.lat);
-            if (x < -60 || x > W + 60 || y < -60 || y > H + 60) continue;
-            list.push({ s, t, x, y });
-        }
-        list.sort((a, b) => a.t - b.t);
-        // 1) 照優先順序放圖示：和已放的圖示疊在一起就先不畫（放大後自然會分開）。
-        //    但放大到街道等級（SPREAD_Z）還疊在一起，代表兩個地點本來就在同一處（例如傳藝中心和園區裡的飯店），
-        //    再放大也分不開，這時把後面那個往旁邊挪一個圖示寬（約百公尺），兩個都顯示。
-        //    第 1 級（必去）不管縮放多小都一定要出現，所以任何層級疊到都直接挪開。
-        const cand = [],
-            icoR = (x, y) => ({ x: x - z * 0.48, y: y - z * 0.95, w: z * 0.96, h: z * 1.05 });
-        const hitIco = (r) => cand.some((q) => inter(r, q.ri) > 0);
-        for (const d of list) {
-            d.ri = icoR(d.x, d.y);
-            if (hitIco(d.ri)) {
-                if (tz < SPREAD_Z && d.t > 1) continue;
-                // 第 1 級一定要出現：一圈挪不開就繼續往外找（最多 3 圈）
-                let spot = null;
-                for (let ring = 1; ring <= (d.t === 1 ? 3 : 1) && !spot; ring++) {
-                    spot = SPREAD_DIRS.map(([dx, dy]) => [d.x + dx * z * 1.05 * ring, d.y + dy * z * 1.05 * ring]).find(
-                        ([x, y]) => !hitIco(icoR(x, y)),
-                    );
-                }
-                if (!spot) continue;
-                [d.x, d.y] = spot;
-                d.ri = icoR(d.x, d.y);
-            }
-            cand.push(d);
-        }
-        // 2) 照優先順序找旗幟位置：不能壓到介面、別的旗幟、比自己優先的圖示；
-        //    優先挑不會蓋到低等級圖示的那一邊，真的沒有才蓋上去（被蓋到的低等級地點這次就不畫）。
-        //    所以等級高的旗幟一定先拿到位置，等級低的地點只要旁邊有空位就會留著。
-        const tags = [],
-            drop = new Set();
-        cand.forEach((d, i) => {
-            if (drop.has(d)) return;
-            d.w = Math.ceil(Math.max(56, textWidthOf(spotLabel(d.s)) + 22));
-            d.h = 26;
-            const cands = [
-                { x: d.x - d.w / 2, y: d.y - z * 1.05 - d.h - 6, pos: 'up' },
-                { x: d.x + z * 0.6 + 4, y: d.y - z * 0.5 - d.h / 2, pos: 'right' },
-                { x: d.x - z * 0.6 - 4 - d.w, y: d.y - z * 0.5 - d.h / 2, pos: 'left' },
-                { x: d.x - d.w / 2, y: d.y + z * 0.25 + 4, pos: 'down' },
-                // 擠在一起時再往斜上、斜下、更上方找位置（沒有尾巴指向，但旗幟貼著圖示）
-                { x: d.x - d.w + z * 0.3, y: d.y - z * 1.05 - d.h - 6, pos: 'upL' },
-                { x: d.x - z * 0.3, y: d.y - z * 1.05 - d.h - 6, pos: 'upR' },
-                { x: d.x - d.w / 2, y: d.y - z * 1.05 - d.h * 2 - 10, pos: 'up2' },
-                { x: d.x + z * 0.6 + 4, y: d.y - z * 0.5 - d.h * 1.5 - 2, pos: 'right2' },
-                { x: d.x - z * 0.6 - 4 - d.w, y: d.y - z * 0.5 - d.h * 1.5 - 2, pos: 'left2' },
-                { x: d.x + z * 0.6 + 4, y: d.y - z * 0.5 + d.h * 0.5 + 2, pos: 'right3' },
-                { x: d.x - z * 0.6 - 4 - d.w, y: d.y - z * 0.5 + d.h * 0.5 + 2, pos: 'left3' },
-            ];
-            let best = null,
-                bestHit = null;
-            for (const c of cands) {
-                const r = { x: c.x, y: c.y, w: d.w, h: d.h };
-                if (r.x < 2 || r.y < 2 || r.x + d.w > W - 2 || r.y + d.h > H - 2) continue;
-                if (rs.some((q) => inter(r, q) > 0) || tags.some((q) => inter(r, q) > 0)) continue;
-                if (cand.some((q, j) => j <= i && !drop.has(q) && inter(r, q.ri) > 0)) continue;
-                const hit = cand.filter((q, j) => j > i && !drop.has(q) && inter(r, q.ri) > 0);
-                if (!hit.length) {
-                    best = c;
-                    bestHit = [];
-                    break;
-                }
-                // 第 1 級的圖示不能被別人的旗幟蓋掉
-                if (!best && !hit.some((q) => q.t === 1)) {
-                    best = c;
-                    bestHit = hit;
-                }
-            }
-            d.c = best;
-            if (!best) return;
-            tags.push({ x: best.x, y: best.y, w: d.w, h: d.h });
-            for (const q of bestHit) drop.add(q);
-        });
-        const shown = cand.filter((d) => !drop.has(d));
-        rs.push(...shown.map((d) => d.ri), ...tags);
-
-        const sel = gPoi.selectAll('g.poi').data(shown, (d) => d.s.id);
-        sel.exit().remove();
-        const en = sel
-            .enter()
-            .append('g')
-            .attr('class', 'poi mk')
-            .attr('role', 'button')
-            .attr('tabindex', 0)
-            .on('click', (e, d) => openSpot(d.s))
-            .on('keydown', (e, d) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    openSpot(d.s);
-                }
-            });
-        en.each(function () {
-            buildPoi(d3.select(this));
-        });
-        // 旗幟照優先順序（shown 的順序）搶位置，不照 DOM 順序（DOM 為了疊放順序是反過來排的）
-        const node = new Map();
-        en.merge(sel).each(function (d) {
-            node.set(d.s.id, this);
-        });
-        for (const d of shown) {
-            const s = d3.select(node.get(d.s.id)),
-                sp = d.s,
-                cat = TRAVEL_CATS[sp.cat] || TRAVEL_CATS.sight;
-            // 旗幟只寫名稱，分類用色帶顏色分（景點青綠、餐廳橘、飯店紫）
-            s.attrQ('transform', `translate(${d.x.toFixed(1)},${d.y.toFixed(1)})`).attrQ(
-                'aria-label',
-                `${spotLabel(sp)}（${cat.label}）`,
-            );
-            sizePin(s, z, cat.band);
-
-            // 旗幟（位置上面已經算好；找不到空位就只畫圖示）
-            const b = s.select('.bubble'),
-                t1 = b.select('.t1').textQ(spotLabel(sp)),
-                c = d.c,
-                w = d.w,
-                h = d.h;
-            if (!c) {
-                b.styleQ('display', 'none');
-                continue;
-            }
-            const bx = Math.round(c.x),
-                by = Math.round(c.y);
-            b.styleQ('display', null).attrQ('transform', `translate(${bx - d.x},${by - d.y})`);
-            drawBanner(b, w, h, { bg: 'url(#bannerBg)', band: cat.band, tail: c.pos === 'up', bandH: h - 6 });
-            t1.attrQ('x', w / 2).attrQ('y', h / 2 + 4.5);
-        }
-        // 等級高的畫在最上面（後畫的蓋前面）；順序沒變就不動 DOM（拖曳時每幀都會跑到這裡）
-        const want = shown.map((d) => node.get(d.s.id)).reverse(),
-            cur = gPoi.node().children;
-        if (want.some((n, i) => cur[i] !== n)) for (const n of want) gPoi.node().appendChild(n);
-        layoutRoadTags(rs); // 道路編號牌最後放，讓位給地點旗幟
-    }
-
     /* ================= 圖層列 / 篩選列 / 其它指數面板 ================= */
     function buildRail() {
         $('#layers').innerHTML = LAYERS.map(
@@ -4620,69 +3951,8 @@
             const b = e.target.closest('.rl');
             if (!b) return;
             const l = LAYERS.find((x) => x.k === b.dataset.k);
-            if (!l.ready) {
-                toast(`🚧 ${l.icon} ${$t('{title}（{desc}）即將推出', { title: l.title, desc: l.desc })}`);
-                return;
-            }
-            setLayer(l.k);
+            if (!l.ready) toast(`🚧 ${l.icon} ${$t('{title}（{desc}）即將推出', { title: l.title, desc: l.desc })}`);
         };
-    }
-    // 切換圖層：股市（世界地圖）⇄ 旅遊（台灣地圖）
-    async function setLayer(k) {
-        if (k === state.layer) return;
-        if (k === 'travel') {
-            try {
-                await loadTravel();
-            } catch (e) {
-                console.error(e);
-                toast('😵 ' + $t('旅遊地圖載入失敗，請檢查網路後再試'));
-                return;
-            }
-        }
-        state.layer = k;
-        const travel = k === 'travel';
-        document.querySelectorAll('#layers .rl').forEach((x) => {
-            x.classList.toggle('on', x.dataset.k === k);
-            x.setAttribute('aria-pressed', x.dataset.k === k);
-        });
-        document.body.classList.toggle('travel', travel);
-        if (travel && window.Disasters) Disasters.clear(); // 災難目前只在股市地圖
-        $('#sheet').hidden = true;
-        gMk.style('display', travel ? 'none' : null);
-        gBub.style('display', travel ? 'none' : null);
-        gLm.style('display', travel ? 'none' : null);
-        if (travel) gTopic.style('display', 'none');
-        gDecor.style('display', travel ? 'none' : null);
-        gCorp.style('display', travel ? 'none' : null);
-        gFolk.style('display', travel ? 'none' : null);
-        gTw.style('display', travel ? null : 'none');
-        gRoadTag.style('display', travel ? null : 'none');
-        gPoi.style('display', travel ? null : 'none');
-        if (travel) {
-            walkers.forEach((w) => (w.vis = false));
-            critters.forEach((c) => (c.vis = false));
-        }
-        $('#map').setAttribute('aria-label', travel ? $t('台灣旅遊地圖') : $t('世界股市地圖'));
-        $('#attrib').textContent = attribText(travel);
-        buildChips();
-        updateChips();
-        setZoomLimits();
-        // 先換成畫面上看到的那一份世界（世界左右循環），飛過去時才不會繞地球
-        svg.interrupt().call(zoomB.transform, state.t);
-        applyRegion(true);
-        renderHud();
-        scheduleTerrain();
-    }
-    // 地圖左下角的圖資來源（旅遊地圖多了行政界與道路）
-    function attribText(travel) {
-        return (
-            $t('地形資料') +
-            ' © Mapzen/AWS Terrain Tiles · Esri, Maxar, Earthstar Geographics' +
-            (travel
-                ? ` · ${$t('行政界')} © ${$t('內政部國土測繪中心')} · Natural Earth` +
-                  (state.travel.roads ? ` · ${$t('道路')} © OpenStreetMap ${$t('貢獻者')}` : '')
-                : '')
-        );
     }
     let toastT = 0;
     function toast(msg) {
@@ -4704,18 +3974,6 @@
         const chip = (k, i, t) =>
             `<button class="chip gbtn" data-k="${k}" aria-pressed="false"><span class="ci">${i}</span>${t}</button>`;
         const nav = $('#chips');
-        // 旅遊地圖：本島與各離島（設定在 travel.json 的 areas）
-        if (state.layer === 'travel') {
-            nav.innerHTML = `<div class="crow">${state.travel.areas.map((a) => chip(a.k, a.icon, a.label)).join('')}</div>`;
-            nav.onclick = (e) => {
-                const b = e.target.closest('.chip');
-                if (!b) return;
-                state.tArea = b.dataset.k;
-                updateChips();
-                applyRegion(true);
-            };
-            return;
-        }
         // 左邊是股票的區域，右邊（分隔線之後）是商品 / 債券 / 利率 / 匯率 / 地緣 / 經濟數據；都是單選
         // 手機版分兩列（股票一列、主題一列），桌機版仍是同一列（見 style.css 的 .crow）
         nav.innerHTML =
@@ -4737,24 +3995,13 @@
     function updateChips() {
         document.querySelectorAll('.chip').forEach((b) => {
             const k = b.dataset.k;
-            const on = state.layer === 'travel' ? k === state.tArea : k === state.activeRegion;
+            const on = k === state.activeRegion;
             b.classList.toggle('on', on);
             b.setAttribute('aria-pressed', on);
         });
     }
 
     function renderHud() {
-        if (state.layer === 'travel' && state.travel) {
-            // 旅遊地圖沒有情緒條（CSS 隱藏），狀態列改成各分類的地點數
-            const n = (c) => state.travel.spots.filter((s) => s.cat === c).length;
-            // 旗幟不寫分類了，狀態列附上色塊當圖例
-            $('#statusLine').innerHTML =
-                '✈️ ' +
-                Object.entries(TRAVEL_CATS)
-                    .map(([c, v]) => `<i class="cat-sw" style="background:${v.band}" aria-hidden="true"></i>${v.label} ${n(c)}`)
-                    .join(' · ');
-            return;
-        }
         const open = state.maps.filter((m) => marketStatus(m) === 'open');
         const pool = (open.length ? open : state.maps).map((m) => state.quotes[m.s]).filter(Boolean);
         const avg = pool.length ? pool.reduce((a, q) => a + q.pct, 0) / pool.length : 0;
@@ -4928,7 +4175,7 @@
     <p class="small">${$t('目前顯示：{name}。「自動」會跟著瀏覽器的語言；如果偵測錯了，直接點選要用的語言，之後會記住你的選擇。', { name: cur.name })}${I18n.source === 'url' ? ' ' + $t('（這次由網址的 lang 參數指定）') : ''}</p>
     <p class="small">${$t('時間以你所在的時區顯示：{tz}。', { tz })}</p>
     <p class="small">${$t('資料來自 Yahoo Finance，由 GitHub Actions 定時抓取，通常延遲 15 分鐘以上，僅供娛樂參考，不構成投資建議。開盤狀態按各交易所常規時段推算，遇到假日會在資料停止更新後自動變為休市。')}</p>
-    <p class="small">${$t('遊戲風地形由程式即時繪製：高度資料來自 AWS Terrain Tiles（Mapzen / SRTM 等），地貌判斷參考 Esri World Imagery（Esri、Maxar、Earthstar Geographics）。3D 動物與旅遊圖示來自 Microsoft Fluent Emoji（MIT 授權），國旗圖來自 flagcdn.com。旅遊地圖的縣市界來自內政部國土測繪中心（政府資料開放授權，經 taiwan-atlas 轉檔），周邊陸地來自 Natural Earth，主要道路來自 OpenStreetMap（© OpenStreetMap 貢獻者，ODbL 授權）。')}</p>`);
+    <p class="small">${$t('遊戲風地形由程式即時繪製：高度資料來自 AWS Terrain Tiles（Mapzen / SRTM 等），地貌判斷參考 Esri World Imagery（Esri、Maxar、Earthstar Geographics）。3D 動物與小角色圖示來自 Microsoft Fluent Emoji（MIT 授權），國旗圖來自 flagcdn.com。')}</p>`);
     }
     function onSheetClick(e) {
         const s = $('#sheet');
@@ -4944,13 +4191,6 @@
         }
         const a = e.target.closest('[data-act]');
         if (!a) return;
-        if (a.dataset.act === 'zoom-spot') {
-            s.hidden = true;
-            clearHighlight();
-            const sp = state.travel && state.travel.spots.find((x) => x.id === a.dataset.id);
-            if (sp) zoomToSpots([sp]);
-            return;
-        }
         if (a.dataset.act === 'lang') {
             // 換語言：存起來再重新載入（旗幟、卡片的文字都是載入時建好的）。網址上的 ?lang= 要拿掉，不然會蓋過剛選的語言
             I18n.setPref(a.dataset.lang);
@@ -5000,7 +4240,6 @@
     async function init() {
         document.body.classList.toggle('noanim', !state.anim);
         I18n.applyDom();
-        $('#attrib').textContent = attribText(false);
         const [cfg, topo] = await Promise.all([fetchJSON('markets.json'), d3.json(TOPO_URL)]);
         localizeCfg(cfg);
         state.cfg = cfg;

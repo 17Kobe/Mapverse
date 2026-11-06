@@ -5,8 +5,7 @@
  *   2. 衛星影像（先柔化）→ 只用來判斷地貌：沙漠 / 平原 / 草原 / 森林 / 凍原 / 雪地 / 湖泊
  *   3. 依地貌套用遊戲調色盤，海岸加白色浪花、沙灘
  *   4. 山脈直接畫在地表上（岩石色 + 雪線 + 加強稜線光影），不另外貼山的圖示
- *   5. 有道路資料（setRoads）的地方把道路畫在地表上
- *   6. 程序化擺放手繪精靈：針葉林、闊葉林、雨林、沙丘（路上不種）
+ *   5. 程序化擺放手繪精靈：針葉林、闊葉林、雨林、沙丘
  * 精靈另外畫在一張四周留邊的透明圖層，跨圖磚邊界也不會被切掉。
  *
  * 效能：圖磚的像素運算和種樹很花時間，瀏覽器支援時交給背景的 Web Worker 處理（同一支檔案在
@@ -14,8 +13,7 @@
  * 不支援 Worker + OffscreenCanvas 的瀏覽器照舊在主執行緒處理，畫出來的內容完全一樣。
  *
  * 磁碟快取：畫好的圖磚（地表 JPEG + 精靈 PNG）存進 IndexedDB，下次開網頁直接解碼貼上，
- * 不用重新下載、運算、種樹。鍵值含本檔原始碼的雜湊，改了這支檔案舊圖磚就自動作廢；
- * 陸地遮罩 / 道路有自己的版本字串（setLandMask / setRoads 傳進來）。
+ * 不用重新下載、運算、種樹。鍵值含本檔原始碼的雜湊，改了這支檔案舊圖磚就自動作廢。
  * 下載排隊：同時只下載幾張，畫面上最新需要的先下載，飛越途中已經離開畫面的直接取消。
  */
 (function terrainModule() {
@@ -35,8 +33,8 @@ const OCEAN_BG = '#2378b8';
 const cache = new Map();
 const pending = [];
 const dlq = [];
-let opt = null, procRaf = 0, frame = 0, landMask = null, maskInfo = null, roads = null, roadsMinZ = 99;
-let wctx = null, sctx64 = null, sctx128 = null, rctx = null;
+let opt = null, procRaf = 0, frame = 0;
+let wctx = null, sctx64 = null, sctx128 = null;
 let pool = null, jobId = 0, dlActive = 0, pfq = [], pfBusy = 0;
 const jobs = new Map();
 
@@ -229,25 +227,11 @@ function buildSprites() {
 }
 
 /* ================= 圖磚載入 / 快取 ================= */
-const inBox = (z, x, y, b) => {
-  const n = 1 << z;
-  return !((x + 1) / n < b[0] || x / n > b[2] || (y + 1) / n < b[1] || y / n > b[3]);
-};
-// 這張圖磚會用到哪些額外資料（陸地遮罩 / 道路）；資料一換，標籤不同的圖磚就要重畫。
-// 沒有版本字串的資料畫出來的圖磚不存磁碟（'?'）
-function tagFor(z, x, y) {
-  let t = '';
-  if (landMask && z >= 3 && inBox(z, x, y, maskInfo.box)) t += 'm' + (maskInfo.ver == null ? '?' : maskInfo.ver);
-  if (roads && z >= roadsMinZ && inBox(z, x, y, roads.box)) t += 'r' + (roads.ver == null ? '?' : roads.ver);
-  return t;
-}
 let diskOK = false;
 function newEntry(z, x, y, extra) {
-  const tag = tagFor(z, x, y);
   return Object.assign({
-    z, x, y, tag, ready: false, seen: frame, left: 2,
-    useMask: tag.includes('m'), useRoads: tag.includes('r'),
-    key: diskOK && !tag.includes('?') ? SRC_VER + '/' + z + '/' + x + '/' + y + '/' + tag : null
+    z, x, y, ready: false, seen: frame, left: 2,
+    key: diskOK ? SRC_VER + '/' + z + '/' + x + '/' + y : null
   }, extra);
 }
 // 先查磁碟快取，沒有才排隊下載、重畫
@@ -338,14 +322,6 @@ function get(z, x, y, request) {
   if (e) {
     cache.delete(key); cache.set(key, e); // LRU
     if (!request) return e;
-    if (e.stale) {
-      // 遮罩 / 道路換了要重畫：畫好之前先顯示舊的，不會閃成方塊
-      e.dead = true;
-      const n = newEntry(z, x, y, { prev: e.ready ? { base: e.base, spr: e.spr } : e.prev, pin: e.pin });
-      cache.set(key, n);
-      startEntry(n);
-      return n;
-    }
     if (e.parked) { e.parked = false; e.seen = frame; queueDl(e); }
     return e;
   }
@@ -420,13 +396,10 @@ function pump() {
       while (w.busy < PER_WORKER && pending.length) {
         const e = pending.shift();
         if (e.dead) continue;
-        let mask = null;
-        if (e.useMask) try { mask = landMask(e.z, e.x, e.y); } catch (err) { mask = null; }
         const id = ++jobId;
         jobs.set(id, e);
         w.busy++;
-        w.postMessage({ id, z: e.z, x: e.x, y: e.y, dem: e.demB, img: e.imgB, mask, useRoads: e.useRoads, key: e.key, keep: !e.pf },
-          mask ? [mask.buffer] : []);
+        w.postMessage({ id, z: e.z, x: e.x, y: e.y, dem: e.demB, img: e.imgB, key: e.key, keep: !e.pf });
         e.demB = e.imgB = null;
       }
     }
@@ -438,12 +411,11 @@ function pump() {
     const e = pending.shift();
     if (e.dead) continue;
     try {
-      e.mask = e.useMask && landMask ? landMask(e.z, e.x, e.y) : null;
       render(e);
       e.ready = true; e.prev = null;
       if (e.key && !e.dem.bad && !e.img.bad) diskSave(e.key, e.base, e.spr);
     } catch (err) { console.warn('地形圖磚處理失敗', e.z, e.x, e.y, err); e.failed = true; }
-    e.dem = e.img = e.mask = null;
+    e.dem = e.img = null;
     did = true;
   }
   if (pending.length) kick();
@@ -461,7 +433,7 @@ function pfPump() {
   while (pfBusy < PF_MAX && pfq.length) {
     const [z, x, y] = pfq.shift();
     const c = cache.get(z + '/' + x + '/' + y);
-    if (c && !c.stale && !c.dead) continue; // 已經在記憶體裡（或正在處理）
+    if (c && !c.dead) continue; // 已經在記憶體裡（或正在處理）
     const e = newEntry(z, x, y, { pf: true, seen: -1 });
     if (!e.key) continue;
     pfBusy++;
@@ -469,62 +441,6 @@ function pfPump() {
   }
 }
 function pfDone() { pfBusy--; pfKick(50); }
-
-/* ================= 道路（畫進圖磚，拖曳時不用每一幀重畫） ================= */
-// roads（setRoads 傳進來）：
-//   box    涵蓋範圍（單位 Mercator [u0, v0, u1, v1]）
-//   styles 各級別的樣式 { minZ, w: [z0, 寬0, z1, 寬1], rim: [z0, 框0, z1, 框1], rimColor, fill, dash?: { minZ, color, w, seg } }
-//          寬度單位是圖磚像素，在兩個層級之間線性內插；minZ 以下不畫
-//   lines  [{ c: 級別, p: Float64Array [u0, v0, u1, v1, ...], bb: [u0, v0, u1, v1] }]
-// 回傳 256×256 的道路遮罩（1 = 路面或外框），這張圖磚沒有路時回傳 null
-const lerpZ = (z, a) => a[1] + (a[3] - a[1]) * clamp((z - a[0]) / (a[2] - a[0]), 0, 1);
-function drawRoads(z, x, y) {
-  if (!roads) return null;
-  const n = Math.pow(2, z), u0 = x / n, v0 = y / n, s = 1 / n, bx = roads.box;
-  if (u0 > bx[2] || u0 + s < bx[0] || v0 > bx[3] || v0 + s < bx[1]) return null;
-  const S = TS * n, m = 16 / S; // 圖磚外多抓 16 像素：線寬的一半以上，跨邊界的路才接得起來
-  const st = roads.styles, vis = [];
-  for (const l of roads.lines) {
-    const b = l.bb;
-    if (z < st[l.c].minZ || b[2] < u0 - m || b[0] > u0 + s + m || b[3] < v0 - m || b[1] > v0 + s + m) continue;
-    vis.push(l);
-  }
-  if (!vis.length) return null;
-  if (!rctx) rctx = newCanvas(TS, TS).getContext('2d', { willReadFrequently: true });
-  const g = rctx;
-  g.clearRect(0, 0, TS, TS);
-  g.lineJoin = 'round'; g.lineCap = 'round';
-  g.setLineDash([]);
-  const trace = (c) => {
-    g.beginPath();
-    for (const l of vis) {
-      if (l.c !== c) continue;
-      const p = l.p;
-      let lx = (p[0] - u0) * S, ly = (p[1] - v0) * S;
-      g.moveTo(lx, ly);
-      for (let i = 2; i < p.length; i += 2) {
-        const px = (p[i] - u0) * S, py = (p[i + 1] - v0) * S;
-        // 同一個像素內的折點跳過（縮小時一條路可能有上百個點擠在幾個像素裡）
-        if (i < p.length - 2 && (px - lx) * (px - lx) + (py - ly) * (py - ly) < 0.36) continue;
-        g.lineTo(px, py); lx = px; ly = py;
-      }
-    }
-  };
-  // 先畫所有級別的深色外框、再畫路面（低級別在下），交流道接起來才不會被外框切斷
-  const order = st.map((_, i) => i).reverse().filter((c) => z >= st[c].minZ);
-  for (const c of order) { trace(c); g.strokeStyle = st[c].rimColor; g.lineWidth = lerpZ(z, st[c].w) + 2 * lerpZ(z, st[c].rim); g.stroke(); }
-  for (const c of order) { trace(c); g.strokeStyle = st[c].fill; g.lineWidth = lerpZ(z, st[c].w); g.stroke(); }
-  for (const c of order) {
-    const d = st[c].dash;
-    if (!d || z < d.minZ) continue;
-    trace(c);
-    g.strokeStyle = d.color; g.lineWidth = Math.max(1, lerpZ(z, st[c].w) * d.w); g.lineCap = 'butt';
-    g.setLineDash(d.seg); g.stroke(); g.setLineDash([]); g.lineCap = 'round';
-  }
-  const a = g.getImageData(0, 0, TS, TS).data, M = new Uint8Array(TS * TS);
-  for (let i = 0; i < M.length; i++) M[i] = a[i * 4 + 3] > 40 ? 1 : 0;
-  return M;
-}
 
 /* ================= 單張圖磚的繪製 ================= */
 function render(e) {
@@ -561,9 +477,6 @@ function render(e) {
   const gradX = (i, c) => (c === 0 ? Hh[i + 1] - Hh[i] : c === TS - 1 ? Hh[i] - Hh[i - 1] : (Hh[i + 1] - Hh[i - 1]) / 2);
   const gradY = (i, r) => (r === 0 ? Hh[i + TS] - Hh[i] : r === TS - 1 ? Hh[i] - Hh[i - TS] : (Hh[i + TS] - Hh[i - TS]) / 2);
 
-  // 陸地遮罩由主執行緒先算好放進來（只有標籤含遮罩的圖磚才有）
-  const M = e.mask || null;
-
   // 光影誇張倍率（低縮放時誇張更多，否則看不出起伏）
   const ex = clamp(1.3 * Math.pow(2, (12 - z) * 0.38), 1.3, 18);
 
@@ -583,16 +496,12 @@ function render(e) {
         L = (ir + ig + ib) / 3;
         sat = Math.max(ir, ig, ib) - Math.min(ir, ig, ib);
       }
-      // 有陸地遮罩時（0 海 / 1 陸 / 2 不在範圍內），海岸以遮罩為準：
-      // 混濁的淺海（例如金門、廈門一帶）影像不偏藍、高度又接近 0，只靠影像會被誤判成陸地
-      const mk = M ? M[i] : 2;
       let w;
-      if (mk === 0) w = true;
-      else if (!I) w = mk === 1 || mk === 3 ? false : h <= 0;
+      if (!I) w = h <= 0;
       else {
         const blue = ib > ir + 8 && ib + 6 >= ig;
-        if (mk === 2 && h <= -120) w = true;
-        else if (mk === 2 && h <= 3) w = blue || L < 26;
+        if (h <= -120) w = true;
+        else if (h <= 3) w = blue || L < 26;
         else {
           // 內陸湖泊：影像偏藍且地面平坦
           const sl = (Math.abs(gradX(i, c)) + Math.abs(gradY(i, r))) / m;
@@ -601,7 +510,7 @@ function render(e) {
       }
       if (w) {
         water[i] = 1;
-        if (h < 0 || mk === 0) waterColor(Math.min(h, 0), col); else { col[0] = P.lake[0]; col[1] = P.lake[1]; col[2] = P.lake[2]; }
+        if (h < 0) waterColor(Math.min(h, 0), col); else { col[0] = P.lake[0]; col[1] = P.lake[1]; col[2] = P.lake[2]; }
       } else {
         // t：0 = 乾燥（沙漠）→ 1 = 茂盛（綠地）
         const t = clamp((ig - ir + 38) / 70, 0, 1);
@@ -702,16 +611,6 @@ function render(e) {
   const base = newCanvas(TS, TS);
   base.getContext('2d').putImageData(out, 0, 0);
   e.base = base;
-  // 道路畫在地表上（樹的下面），順便得到道路遮罩：路上不種樹
-  const RM = e.useRoads ? drawRoads(z, x, y) : null;
-  if (RM) base.getContext('2d').drawImage(rctx.canvas, 0, 0);
-  // 精靈的錨點在底部，往上長約 10 像素：錨點和上方幾個像素都不能壓到路
-  const onRoad = (px, py) => {
-    if (!RM) return false;
-    const c = clamp(px | 0, 0, TS - 1);
-    for (let d = 0; d <= 8; d += 4) if (RM[clamp((py - d) | 0, 0, TS - 1) * TS + c]) return true;
-    return false;
-  };
 
   // ---- 6. 精靈擺放 ----
   const list = [];
@@ -722,24 +621,13 @@ function render(e) {
       const gx = x * 22 + cx, gy = y * 22 + cy;
       const px = cx * TC + rnd(gx, gy, z + 1) * TC, py = cy * TC + rnd(gx, gy, z + 2) * TC;
       const ci = clamp(py | 0, 0, TS - 1), cj = clamp(px | 0, 0, TS - 1), i = ci * TS + cj;
-      if (water[i] || lb[i] < 0.9 || onRoad(px, py)) continue;
+      if (water[i] || lb[i] < 0.9) continue;
       const b = bio[i], p = rnd(gx, gy, z + 3), q = rnd(gx, gy, z + 4);
-      let type;
-      if (M && M[i] === 3) {
-        // 重點區域（例如台灣）：山高林密，陡坡也照種，只有雪地、樹線（約 3400 公尺）以上不種；
-        // 衛星影像看不出森林的高山（岩石色）也稀疏地種松樹。
-        // 海拔越高針葉林越多（約 700 公尺以下多是闊葉樹，2200 公尺以上幾乎都是松樹）
-        const h = Hh[i];
-        if (h > 3400 || b === 3) continue;
-        const pr = b === 1 ? 0.85 : b === 5 ? 0.4 : h > 1200 ? 0.3 : b === 0 ? 0.04 : 0;
-        if (p >= pr) continue;
-        type = q < 0.15 + clamp((h - 700) / 1500, 0, 1) * 0.85 ? 'pine' : b === 5 ? 'treeY' : 'tree';
-      } else {
-        if (rock[i] > 0.35) continue; // 陡峭山地不種樹
-        if (!(b === 1 ? p < 0.92 : b === 5 ? p < 0.35 : b === 0 ? p < 0.04 : false)) continue;
-        const al = Math.abs(lat[ci]);
-        type = al < 20 ? (q < 0.8 ? 'jungle' : 'tree') : al > 50 ? 'pine' : q < 0.45 ? 'pine' : b === 5 ? 'treeY' : 'tree';
-      }
+      if (rock[i] > 0.35) continue; // 陡峭山地不種樹
+      if (!(b === 1 ? p < 0.92 : b === 5 ? p < 0.35 : b === 0 ? p < 0.04 : false)) continue;
+      const al = Math.abs(lat[ci]);
+      const type = al < 20 ? (q < 0.8 ? 'jungle' : 'tree') : al > 50 ? 'pine' : q < 0.45 ? 'pine' : b === 5 ? 'treeY' : 'tree';
+    
       const size = (type === 'jungle' ? 13 : type === 'pine' ? 9 : 10.5) * (0.85 + q * 0.3);
       list.push([px, py, type, size]);
     }
@@ -752,7 +640,7 @@ function render(e) {
       if (rnd(gx, gy, z + 11) > 0.5) continue;
       const px = cx * DC + rnd(gx, gy, z + 12) * DC, py = cy * DC + rnd(gx, gy, z + 13) * DC;
       const ci = clamp(py | 0, 0, TS - 1), cj = clamp(px | 0, 0, TS - 1), i = ci * TS + cj;
-      if (water[i] || bio[i] !== 2 || Hh[i] > 1300 || onRoad(px, py)) continue;
+      if (water[i] || bio[i] !== 2 || Hh[i] > 1300) continue;
       if (rock[i] > 0.2) continue;
       list.push([px, py, 'dune', 22]);
     }
@@ -872,29 +760,6 @@ function prefetch(views, S0, W, H, dpr) {
   pfKick(1500);
 }
 
-// 資料換了：標籤不同的圖磚標記成過期，下次出現在畫面上時重畫（畫好之前照樣顯示舊的）
-function markStale() {
-  for (const v of cache.values()) if (!v.dead && tagFor(v.z, v.x, v.y) !== v.tag) v.stale = true;
-}
-// 陸地遮罩：fn(z, x, y) 回傳 256×256 的 Uint8Array（0 海 / 1 陸 / 2 不在範圍內 / 3 重點區域的陸地，
-// 例如台灣：山區森林也種樹、依海拔換松樹）或 null。
-// box 是遮罩涵蓋的範圍（單位 Mercator [u0, v0, u1, v1]），範圍內的圖磚會重畫。
-// ver 是遮罩內容的版本字串（資料或 fn 改了就要換），用來區分磁碟快取；不給就不存磁碟
-function setLandMask(fn, box, ver) {
-  landMask = fn;
-  maskInfo = { box, ver };
-  markStale();
-  if (opt) opt.onUpdate();
-}
-// 道路（格式見 drawRoads；r.ver 是版本字串，用途同 setLandMask）。範圍內的圖磚會重畫
-function setRoads(r) {
-  roads = r;
-  roadsMinZ = Math.min(...r.styles.map((s) => s.minZ));
-  if (pool) for (const w of pool) w.postMessage({ setRoads: r });
-  markStale();
-  if (opt) opt.onUpdate();
-}
-
 /* ================= Worker 端 ================= */
 if (IS_WORKER) {
   let ok = true;
@@ -905,10 +770,9 @@ if (IS_WORKER) {
   };
   self.onmessage = async (ev) => {
     const d = ev.data;
-    if (d.setRoads !== undefined) { roads = d.setRoads; return; } // 道路資料（之後標記要畫路的圖磚都會畫上）
     // 這個瀏覽器的 OffscreenCanvas 不能用：請主執行緒改回自己畫
     if (ok !== true) { self.postMessage({ id: d.id, unsupported: true, err: ok }); return; }
-    const e = { z: d.z, x: d.x, y: d.y, mask: d.mask || null, useRoads: !!d.useRoads };
+    const e = { z: d.z, x: d.x, y: d.y };
     e.dem = await decode(d.dem);
     e.img = await decode(d.img);
     try {
@@ -928,5 +792,5 @@ if (IS_WORKER) {
   return;
 }
 
-window.Terrain = { init, draw, prefetch, setLandMask, setRoads };
+window.Terrain = { init, draw, prefetch };
 })();

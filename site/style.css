@@ -211,7 +211,6 @@ button{font:inherit;color:inherit;cursor:pointer}
 .dz-it:hover{background:rgba(255,231,163,.1)}
 .dz-it:focus-visible{outline:2px solid var(--gold-l);outline-offset:-2px}
 .dz-it.on{background:linear-gradient(180deg,#43669b 0%,#27436f 100%);border-color:var(--gold-l);color:var(--gold-l)}
-body.travel #dzBtn,body.travel #dzMenu{display:none}
 #map{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block;user-select:none;-webkit-user-select:none}
 /* 國界只畫有股市（或目前主題篩選卡片）的國家：app.js 的 paintLand 加上 .on 並寫入顏色（全球十大市值國家紅色、其他綠色），其餘國家不畫 */
 #map .land path,#map .line path,#map .edge path{display:none}
@@ -412,42 +411,7 @@ body.noanim .corps .bk,body.noanim .corps .flame{animation:none}
 /* 漲跌幅的 % 與 bp：只縮小，不變色 */
 .bubble .nu{font-size:.72em;letter-spacing:0}
 .bubble .flag-b{fill:none;stroke:var(--gold-l);stroke-width:1;stroke-opacity:.85}
-/* ---------- 旅遊地圖（台灣） ---------- */
-body.travel #hud .hp{display:none}
-/* 台灣的海岸線：和股市國界同樣三層（金色光暈 → 金色主線 → 白芯），縣市界用淡色虛線 */
-#map .tw path{fill:none;stroke-linejoin:round;stroke-linecap:round;pointer-events:none}
-#map .tw .tw-glow{stroke:#ffd76a;stroke-opacity:.24}
-#map .tw .tw-line{stroke:#f2c14e;stroke-opacity:.95}
-#map .tw .tw-edge{stroke:#fff;stroke-opacity:.85}
-#map .tw .tw-county{stroke:#fff;stroke-opacity:.5}
-/* 路線編號牌：國道梅花、快速公路與省道盾牌（道路本身畫在地形圖磚裡，顏色見 app.js 的 ROAD_STYLE） */
-#map .rd-tags{pointer-events:none}
-/* 形狀、配色照真的標誌：國道白梅花綠框黑字、省道藍盾白框白字、快速公路紅盾白框白字；遊戲感是深色描邊 + 漸層 + 反光 + 影子 */
-.rtag .sd{fill:rgba(12,18,10,.42)}
-.rtag .sh{stroke-width:1.5;stroke-linejoin:round}
-.rtag .in{fill:none;stroke:#fff;stroke-width:1.25;stroke-linejoin:round}
-.rtag .gl{fill:url(#rtGloss)}
-.rtag-fwy .sh{fill:url(#rtWhite);stroke:#16301f}
-.rtag-fwy .in{stroke:#00894a;stroke-width:1.7}
-.rtag-fwy .gl{display:none}
-.rtag-exp .sh{fill:url(#rtRed);stroke:#5e0a0f}
-.rtag-prov .sh{fill:url(#rtBlue);stroke:#071a3d}
-.rtag text{font-family:var(--font);font-weight:800;text-anchor:middle;dominant-baseline:central;fill:#fff}
-.rtag .n{font-size:12.5px}
-.rtag .n2{font-size:11.5px;letter-spacing:-.4px}
-.rtag .sf{font-size:7.5px;font-weight:700}
-.rtag-fwy text{fill:#141414}
-.rtag-exp text,.rtag-prov text{paint-order:stroke;stroke:rgba(0,0,0,.25);stroke-width:1.2px}
-/* 地點：小水滴圖釘，顏色依分類 */
-.poi:focus{outline:none}
-.poi:focus-visible .bg{stroke:var(--gold-l)}
-.poi .shadow{fill:#0f1a08;opacity:.5}
-.poi .drop{stroke:#fff;stroke-width:.09;stroke-linejoin:round}
-.poi .eye{fill:#fff}
-/* 狀態列的分類圖例：和地點旗幟同色的小色塊 */
-.cat-sw{display:inline-block;width:.8em;height:.8em;border-radius:3px;margin:0 .3em 0 .1em;vertical-align:-.05em;box-shadow:0 0 0 1px rgba(255,231,163,.75)}
 #sheet p.desc{font-size:14px;line-height:1.6;margin:12px 0 8px}
-a.big-btn{text-align:center;text-decoration:none}
 
 /* HTML 裡的國旗圖（詳情卡標題、其它指數面板） */
 .flg{display:inline-block;height:.9em;width:auto;vertical-align:-.08em;border-radius:2px;box-shadow:0 0 0 1px rgba(255,231,163,.7),0 1px 2px rgba(0,0,0,.5)}
