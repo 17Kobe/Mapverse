@@ -72,7 +72,6 @@
         { src: 'critters/whale-spout.png', alt: 'critters/whale.png', lon: -38, lat: 38, mode: 'whale', s: 1.15, sea: true },
         { src: 'critters/dolphin.png', lon: 72, lat: -12, mode: 'dolphin', s: 0.85, sea: true },
         { src: 'critters/shark.png', lon: 62, lat: -36, mode: 'dolphin', s: 0.9, sea: true },
-        { src: 'critters/fish.png', lon: -74, lat: 16, mode: 'swim', s: 0.6, sea: true },
         { src: 'critters/seal.png', lon: -27, lat: 66, mode: 'bob', s: 0.75, sea: true },
         { src: 'critters/sailboat.png', lon: -140, lat: 22, mode: 'boat', face: 'F', s: 1, sea: true },
         { src: 'critters/sailboat.png', lon: 162, lat: 12, mode: 'boat', face: 'F', s: 1, sea: true },
