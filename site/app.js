@@ -1199,8 +1199,9 @@
             {
                 const nb = nightBrightAt(c.d.lon, c.d.lat);
                 if (nb < 1) {
-                    const br = (0.38 + nb * 0.62).toFixed(2);
-                    c.body.style.filter = `brightness(${br})`;
+                    // 動物在夜晚最暗到 0.5（比旗幟更暗沒關係，它們不是文字資訊）
+                    const br = (0.50 + nb * 0.50).toFixed(2);
+                    c.body.style.filter = `brightness(${br}) hue-rotate(${Math.round((1 - nb) * -15)}deg)`;
                 } else {
                     c.body.style.filter = '';
                 }
@@ -3450,18 +3451,18 @@
             const bx = Math.round(o.b.r.x),
                 by = Math.round(o.b.r.y);
             b.styleQ('display', null).attrQ('transform', `translate(${bx - o.x},${by - o.y}) scale(${Uc})`);
-            // 夜間：依晨昏線亮度暗化旗幟；白天：夜晚城市加星光發光暈
+            // 夜間：旗幟加藍冷色調 + 微微壓暗，但 brightness 最低 0.78 保持文字可讀
             {
                 const nb = nightBrightAt(m.lon, m.lat);
                 if (nb < 1) {
-                    // 夜側：壓暗（brightness）+ 稍微降低飽和度（夜晚顏色不那麼鮮豔）
-                    const br = (0.45 + nb * 0.55).toFixed(2);
-                    const sat = (0.6 + nb * 0.4).toFixed(2);
-                    // 深夜（nb < 0.2）：加城市燈光發光暈，橘黃光暈 + 壓暗
+                    // 夜側：輕微壓暗（最暗 0.78）+ 冷藍色調（hue-rotate）讓旗幟有夜感但不失可讀性
+                    const br = (0.78 + nb * 0.22).toFixed(2);
+                    const hue = Math.round((1 - nb) * -18); // 最深夜偏藍 -18°
+                    // 深夜（nb < 0.2）：加城市燈光發光暈
                     if (nb < 0.2) {
-                        b.styleQ('filter', `url(#cityGlow) brightness(${br}) saturate(${sat}) sepia(0.25)`);
+                        b.styleQ('filter', `url(#cityGlow) brightness(${br}) hue-rotate(${hue}deg)`);
                     } else {
-                        b.styleQ('filter', `brightness(${br}) saturate(${sat})`);
+                        b.styleQ('filter', `brightness(${br}) hue-rotate(${hue}deg)`);
                     }
                 } else {
                     b.styleQ('filter', null);
