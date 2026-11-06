@@ -1410,7 +1410,9 @@
             .enter()
             .append('g')
             .attr('class', 'mk')
-            .on('click', (e, d) => openCard(d));
+            .on('click', (e, d) => openCard(d))
+            .on('mouseenter', (e, d) => { d.__hover = true;  scheduleLayout(); })
+            .on('mouseleave', (e, d) => { d.__hover = false; scheduleLayout(); });
         g.each(function (d) {
             const s = d3.select(this);
             // 3D 動物：原點就是牠腳踩的地面，會在自己國家附近走動，所以整組放在 walker 裡
@@ -1456,6 +1458,8 @@
                     .append('g')
                     .attr('class', 'mk bk')
                     .on('click', () => openCard(d))
+                    .on('mouseenter', () => { d.__hover = true;  scheduleLayout(); })
+                    .on('mouseleave', () => { d.__hover = false; scheduleLayout(); })
                     .each(function () {
                         d.bk = this;
                     }),
@@ -3455,20 +3459,20 @@
                 by = Math.round(o.b.r.y);
             b.styleQ('display', null).attrQ('transform', `translate(${bx - o.x},${by - o.y}) scale(${Uc})`);
             // 夜間：旗幟加藍冷色調 + 微微壓暗，但 brightness 最低 0.78 保持文字可讀
+            // hover 時額外提亮 1.3 倍（乘在夜間亮度上，白天夜晚都一致）
             {
                 const nb = nightBrightAt(m.lon, m.lat);
+                const hoverBoost = m.__hover ? 1.3 : 1;
                 if (nb < 1) {
-                    // 夜側：輕微壓暗（最暗 0.78）+ 冷藍色調（hue-rotate）讓旗幟有夜感但不失可讀性
-                    const br = (0.78 + nb * 0.22).toFixed(2);
-                    const hue = Math.round((1 - nb) * -18); // 最深夜偏藍 -18°
-                    // 深夜（nb < 0.2）：加城市燈光發光暈
+                    const br = ((0.78 + nb * 0.22) * hoverBoost).toFixed(2);
+                    const hue = Math.round((1 - nb) * -18);
                     if (nb < 0.2) {
                         b.styleQ('filter', `url(#cityGlow) brightness(${br}) hue-rotate(${hue}deg)`);
                     } else {
                         b.styleQ('filter', `brightness(${br}) hue-rotate(${hue}deg)`);
                     }
                 } else {
-                    b.styleQ('filter', null);
+                    b.styleQ('filter', hoverBoost > 1 ? `brightness(${hoverBoost})` : null);
                 }
             }
             // 旗幟上半部的名稱色帶（漲跌色；休市時變灰），迷你版不畫色帶

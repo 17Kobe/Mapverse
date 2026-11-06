@@ -300,14 +300,6 @@ body.noanim .corps .bk,body.noanim .corps .flame{animation:none}
 
 /* 城市旗幟（股價框） */
 .mk .bubble{filter:drop-shadow(0 2px 2px rgba(0,0,0,.55))}
-/* Hover：只加強陰影與金色光暈，不動 transform（SVG attribute transform 和 CSS transform 疊加會抖動） */
-@media (hover:hover){
-  .mk:hover .bubble{
-    filter:drop-shadow(0 4px 10px rgba(0,0,0,.75)) drop-shadow(0 0 7px rgba(212,172,87,.5));
-    transition:filter .15s ease-out;
-  }
-  .mk .bubble{transition:filter .15s ease-out}
-}
 .bubble .bg{stroke:var(--outline);stroke-width:3}
 .bubble .rim{fill:none;stroke:var(--rim);stroke-width:1.1}
 .bubble .inner{fill:none;stroke:rgba(255,231,163,.16);stroke-width:1}
