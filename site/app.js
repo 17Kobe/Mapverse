@@ -728,9 +728,7 @@
             const base = [3000, 8000, 15000, 25000, 500, 60][h % 6] + (h % 997);
             const pct = ((h % 700) - 330) / 100;
             const prev = base / (1 + pct / 100);
-            const spark = [0, 1, 2, 3, 4].map((j) => +(prev * (1 + (((h >> j) % 7) - 3) / 300)).toFixed(2));
-            spark.push(base);
-            q[i.s] = { p: base, pct, c: base - prev, prev, t: Math.floor(Date.now() / 1000), spark };
+            q[i.s] = { p: base, pct, c: base - prev, prev, t: Math.floor(Date.now() / 1000) };
         }
         return q;
     }
@@ -4792,18 +4790,6 @@
         s.innerHTML = `<div class="back"></div><div class="box${still ? ' still' : ''}"><button class="x gbtn" aria-label="${$t('關閉')}">✕</button>${html}</div>`;
         s.hidden = false;
     }
-    function spark(arr, col) {
-        if (!arr || arr.length < 2) return '';
-        const w = 280,
-            h = 64,
-            p = 8;
-        const mn = Math.min(...arr),
-            mx = Math.max(...arr),
-            rg = mx - mn || 1;
-        const pts = arr.map((v, i) => [p + (i * (w - 2 * p)) / (arr.length - 1), h - p - ((v - mn) / rg) * (h - 2 * p)]);
-        const last = pts[pts.length - 1];
-        return `<svg class="spark" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><polyline fill="none" stroke="${col}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" points="${pts.map((q) => q.join(',')).join(' ')}"/><circle cx="${last[0]}" cy="${last[1]}" r="4.5" fill="${col}"/></svg>`;
-    }
     // 台股前十大公司的詳情卡；c 是 null 時（縮小時的小城市）列出全部十家
     function openCorp(c) {
         const tq = state.quotes['^TWII'];
@@ -4914,7 +4900,6 @@
     ${tabs}
     <div class="px">${q ? fmtN(q.p) : '--'}</div>
     <div class="chg" style="color:${col}">${q ? pctSpan(q.pct, chg) : chg}</div>
-    ${q ? spark(q.spark, col) : ''}
     <div class="meta">${meta}</div>${topHtml}`);
         // 高亮該國國界並飛到該國位置
         if (host && host.id) {
