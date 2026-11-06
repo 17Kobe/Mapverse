@@ -135,11 +135,12 @@ button{font:inherit;color:inherit;cursor:pointer}
 .csep{flex:none;width:2px;height:26px;margin:0 2px;background:linear-gradient(transparent,var(--gold),transparent);pointer-events:none!important}
 /* 手機畫面窄，篩選列可以左右滑 */
 @media (max-width:899px){
-  /* 手機版由上到下：概況卡（開盤中…）→ 篩選列；概況卡高度約 45px */
+  /* 手機版由上到下：概況卡（開盤中…）→ 篩選列 */
   #hud{top:calc(env(safe-area-inset-top) + 6px)}
   /* 手機版分兩列：第一列是股票區域（全球 / 亞太…），第二列是主題（商品 / 匯率…），各自可左右滑 */
   #chips{
-    top:calc(env(safe-area-inset-top) + 56px);
+    /* 概況卡的實際高度由 app.js 量出來寫進 --hud-h（不同瀏覽器的字高不同，固定數字會讓兩者疊在一起） */
+    top:calc(env(safe-area-inset-top) + 11px + var(--hud-h,45px));
     flex-direction:column;align-items:stretch;gap:0;overflow:visible;padding:0 0 2px;
   }
   .crow{
@@ -151,7 +152,6 @@ button{font:inherit;color:inherit;cursor:pointer}
   }
   .crow::-webkit-scrollbar{display:none}
   .csep{display:none}
-  body.travel #chips{top:calc(env(safe-area-inset-top) + 40px)}
   .chip{scroll-snap-align:start}
   /* 有些瀏覽器會吃掉捲動容器右側的 padding，補一個空元素讓最右邊的按鈕能完整滑出來 */
   .crow::after{content:'';flex:none;width:2px}

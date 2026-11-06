@@ -5058,6 +5058,20 @@
             }).observe($('#stage'));
         }
 
+        // 手機版：篩選列緊貼在概況卡下面，概況卡實際多高就留多高（見 style.css 的 --hud-h）
+        if (window.ResizeObserver) {
+            let hudH = 0;
+            new ResizeObserver(() => {
+                const hh = Math.ceil($('#hud').getBoundingClientRect().height);
+                if (!hh || hh === hudH) return;
+                hudH = hh;
+                document.documentElement.style.setProperty('--hud-h', `${hh}px`);
+                layoutGeometry();
+                applyRegion(false);
+                scheduleLayout();
+            }).observe($('#hud'), { box: 'border-box' });
+        }
+
         setInterval(async () => {
             const old = state.quotes;
             await Promise.all([loadQuotes(), loadTwTop(), loadTops(), loadEcon()]);
