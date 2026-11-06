@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <!-- 山脊：3個起伏綠丘，在畫面下半 -->
+  <ellipse cx="12" cy="62" rx="16" ry="10" fill="#6a9040" stroke="white" stroke-width="1.2"/>
+  <ellipse cx="38" cy="55" rx="20" ry="11" fill="#5a8030" stroke="white" stroke-width="1.2"/>
+  <ellipse cx="66" cy="48" rx="18" ry="10" fill="#6a9040" stroke="white" stroke-width="1.2"/>
+
+  <!-- 城牆主體：從左下 (4,58) 斜到右上 (76,18) -->
+  <polygon points="4,58 76,18 76,27 4,67"
+    fill="#c8b080" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+
+  <!-- 城牆暗面下緣 -->
+  <polygon points="4,64 76,24 76,27 4,67"
+    fill="#9a8050" stroke="none"/>
+
+  <!-- 城垛（左段，垂直小矩形沿斜線排列） -->
+  <rect x="5"  y="49" width="5" height="7" rx="1" fill="#a09060" stroke="white" stroke-width="1.2"/>
+  <rect x="14" y="45" width="5" height="7" rx="1" fill="#a09060" stroke="white" stroke-width="1.2"/>
+  <rect x="23" y="41" width="5" height="6" rx="1" fill="#a09060" stroke="white" stroke-width="1.2"/>
+
+  <!-- 烽火台 1（左中） -->
+  <rect x="31" y="28" width="12" height="18" rx="1.5"
+    fill="#c8b080" stroke="white" stroke-width="2"/>
+  <!-- 烽火台1 城垛 -->
+  <rect x="31" y="23" width="3" height="6" rx="0.5" fill="#a09060" stroke="white" stroke-width="1.2"/>
+  <rect x="36" y="23" width="3" height="6" rx="0.5" fill="#a09060" stroke="white" stroke-width="1.2"/>
+  <rect x="41" y="23" width="3" height="6" rx="0.5" fill="#a09060" stroke="white" stroke-width="1.2"/>
+  <!-- 烽火台1 窗洞 -->
+  <rect x="35" y="34" width="4" height="5" rx="0.5" fill="#5a3a18" stroke="white" stroke-width="0.8"/>
+
+  <!-- 城垛（中段） -->
+  <rect x="47" y="30" width="4" height="6" rx="1" fill="#a09060" stroke="white" stroke-width="1.2"/>
+  <rect x="54" y="27" width="4" height="6" rx="1" fill="#a09060" stroke="white" stroke-width="1.2"/>
+
+  <!-- 烽火台 2（右中） -->
+  <rect x="60" y="13" width="11" height="16" rx="1.5"
+    fill="#c8b080" stroke="white" stroke-width="2"/>
+  <!-- 烽火台2 城垛 -->
+  <rect x="60" y="8"  width="3" height="6" rx="0.5" fill="#a09060" stroke="white" stroke-width="1.2"/>
+  <rect x="65" y="8"  width="3" height="6" rx="0.5" fill="#a09060" stroke="white" stroke-width="1.2"/>
+  <rect x="70" y="8"  width="3" height="6" rx="0.5" fill="#a09060" stroke="white" stroke-width="1.2"/>
+  <!-- 烽火台2 窗洞 -->
+  <rect x="64" y="19" width="4" height="5" rx="0.5" fill="#5a3a18" stroke="white" stroke-width="0.8"/>
+</svg>

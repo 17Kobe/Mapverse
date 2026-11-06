@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+
+  <!-- 帕德嫩神廟 SVG 圖示 - 遊戲風世界地圖 -->
+  <!-- 無背景矩形；所有形狀加白色描邊，可融入綠色/棕色地形 -->
+
+  <defs>
+    <linearGradient id="pStoneH" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#ccc4a8"/>
+      <stop offset="40%"  stop-color="#e4dcc4"/>
+      <stop offset="100%" stop-color="#c0b898"/>
+    </linearGradient>
+    <linearGradient id="pPillar" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#ccc0a4"/>
+      <stop offset="50%"  stop-color="#e8e0cc"/>
+      <stop offset="100%" stop-color="#bcb49c"/>
+    </linearGradient>
+    <linearGradient id="pPediment" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#dfd8c2"/>
+      <stop offset="100%" stop-color="#c8c0a8"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 三層基座（從底到頂，每層漸窄） -->
+  <rect x="5"  y="65" width="70" height="6" rx="1"
+        fill="#c4bc9c" stroke="white" stroke-width="1.2"/>
+  <rect x="9"  y="59" width="62" height="6" rx="1"
+        fill="#ccc4a8" stroke="white" stroke-width="1.2"/>
+  <rect x="13" y="54" width="54" height="5" rx="1"
+        fill="#d4cdb2" stroke="white" stroke-width="1.2"/>
+
+  <!-- 8根多利克柱（上窄下寬梯形，均勻分佈） -->
+  <polygon points="12.8,43 15.2,43 15.6,54 12.4,54"
+           fill="url(#pPillar)" stroke="white" stroke-width="0.9"/>
+  <polygon points="20.5,43 22.9,43 23.3,54 20.1,54"
+           fill="url(#pPillar)" stroke="white" stroke-width="0.9"/>
+  <polygon points="28.2,43 30.6,43 31.0,54 27.8,54"
+           fill="url(#pPillar)" stroke="white" stroke-width="0.9"/>
+  <polygon points="35.9,43 38.3,43 38.7,54 35.5,54"
+           fill="url(#pPillar)" stroke="white" stroke-width="0.9"/>
+  <polygon points="41.7,43 44.1,43 44.5,54 41.3,54"
+           fill="url(#pPillar)" stroke="white" stroke-width="0.9"/>
+  <polygon points="49.4,43 51.8,43 52.2,54 49.0,54"
+           fill="url(#pPillar)" stroke="white" stroke-width="0.9"/>
+  <polygon points="57.1,43 59.5,43 59.9,54 56.7,54"
+           fill="url(#pPillar)" stroke="white" stroke-width="0.9"/>
+  <polygon points="64.8,43 67.2,43 67.6,54 64.4,54"
+           fill="url(#pPillar)" stroke="white" stroke-width="0.9"/>
+
+  <!-- 柱間暗影（半透明深色） -->
+  <rect x="15.6" y="43.5" width="4.9" height="10.5" fill="#8a7a58" opacity="0.25"/>
+  <rect x="23.3" y="43.5" width="4.9" height="10.5" fill="#8a7a58" opacity="0.25"/>
+  <rect x="31.0" y="43.5" width="4.9" height="10.5" fill="#8a7a58" opacity="0.25"/>
+  <rect x="38.7" y="43.5" width="2.6" height="10.5" fill="#8a7a58" opacity="0.25"/>
+  <rect x="44.5" y="43.5" width="4.9" height="10.5" fill="#8a7a58" opacity="0.25"/>
+  <rect x="52.2" y="43.5" width="4.9" height="10.5" fill="#8a7a58" opacity="0.25"/>
+  <rect x="59.9" y="43.5" width="4.9" height="10.5" fill="#8a7a58" opacity="0.25"/>
+
+  <!-- 額枋（楣部） -->
+  <rect x="11" y="36" width="58" height="7" rx="0.5"
+        fill="url(#pStoneH)" stroke="white" stroke-width="1.2"/>
+  <rect x="11" y="36" width="58" height="1.5" rx="0"
+        fill="#f0e8d4" opacity="0.7"/>
+  <rect x="11" y="42" width="58" height="1.2" rx="0"
+        fill="#b8b098" opacity="0.8"/>
+
+  <!-- 山牆三角形 -->
+  <polygon points="11,36 40,14 69,36"
+           fill="url(#pPediment)"
+           stroke="white" stroke-width="1.4" stroke-linejoin="round"/>
+  <rect x="11" y="35" width="58" height="2" fill="#ccc4a8"/>
+  <polygon points="30,33 40,19 50,33" fill="#c0b090" opacity="0.35"/>
+
+  <!-- 屋脊兩端及頂部裝飾 -->
+  <circle cx="11" cy="35.5" r="2.2" fill="#c8c0a8" stroke="white" stroke-width="1"/>
+  <circle cx="69" cy="35.5" r="2.2" fill="#c8c0a8" stroke="white" stroke-width="1"/>
+  <circle cx="40" cy="14"   r="2.5" fill="#c8c0a8" stroke="white" stroke-width="1"/>
+
+</svg>

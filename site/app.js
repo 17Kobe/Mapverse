@@ -97,6 +97,26 @@
         { src: 'critters/flying-fish.svg', lon: 122.1, lat: 22.0, mode: 'flyfish', s: 0.5, sea: true, ph: 2.3, deco: true },
         // 美國西海岸外海的大白鯊：只露出背鰭，拖著水痕在海面上慢慢巡游
         { src: 'critters/shark-fin.svg', lon: -127.5, lat: 36.8, mode: 'fin', s: 1.15, sea: true, deco: true },
+        // ── 世界地標 ──────────────────────────────────────────────────
+        { src: 'critters/jellyfish.svg', lon: 134.5, lat: 7.5, mode: 'bob', s: 0.9, sea: true, deco: true, landmark: true },     // 帛琉水母
+        { src: 'critters/fuji.svg', lon: 138.3, lat: 34.4, mode: 'still', face: 'F', s: 1.2, deco: true, landmark: true },       // 富士山
+        { src: 'critters/great-wall.svg', lon: 117.2, lat: 40.7, mode: 'still', face: 'F', s: 1.2, deco: true, landmark: true }, // 萬里長城
+        { src: 'critters/opera-house.svg', lon: 152.5, lat: -34.8, mode: 'still', face: 'F', s: 1.0, deco: true, landmark: true }, // 雪梨歌劇院
+        { src: 'critters/statue-liberty.svg', lon: -73.2, lat: 40.8, mode: 'still', face: 'F', s: 1.0, deco: true, landmark: true }, // 自由女神像
+        { src: 'critters/christ-redeemer.svg', lon: -43.2, lat: -22.95, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 基督像
+        { src: 'critters/machu-picchu.svg', lon: -72.5, lat: -13.2, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 馬丘比丘
+        { src: 'critters/eiffel-tower.svg', lon: 2.3, lat: 48.3, mode: 'still', face: 'F', s: 1.0, deco: true, landmark: true }, // 艾菲爾鐵塔
+        { src: 'critters/big-ben.svg', lon: 0.8, lat: 51.0, mode: 'still', face: 'F', s: 1.0, deco: true, landmark: true },      // 大笨鐘
+        { src: 'critters/leaning-tower.svg', lon: 10.4, lat: 42.8, mode: 'still', face: 'F', s: 1.0, deco: true, landmark: true }, // 比薩斜塔
+        { src: 'critters/colosseum.svg', lon: 12.5, lat: 41.9, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },   // 羅馬競技場
+        { src: 'critters/greek-house.svg', lon: 25.4, lat: 36.4, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 希臘聖托里尼
+        { src: 'critters/pyramid.svg', lon: 31.1, lat: 29.97, mode: 'still', face: 'F', s: 1.2, deco: true, landmark: true },    // 吉薩金字塔
+        { src: 'critters/hot-balloon.svg', lon: 34.85, lat: 37.8, mode: 'bob', s: 1.0, deco: true, landmark: true },             // 卡帕多奇亞熱氣球
+        { src: 'critters/aurora.svg', lon: 18.0, lat: 69.5, mode: 'still', face: 'F', s: 1.4, deco: true, landmark: true },      // 北歐極光
+        { src: 'critters/taj-mahal.svg', lon: 78.04, lat: 27.17, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 泰姬瑪哈陵
+        { src: 'critters/petra.svg', lon: 35.44, lat: 30.33, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },     // 佩特拉古城
+        { src: 'critters/polar-bear.svg', lon: -40.0, lat: 72.0, mode: 'wander', gait: 'heavy', s: 1.0, deco: true, landmark: true }, // 格陵蘭北極熊
+        { src: 'critters/moai.svg', lon: -109.4, lat: -27.1, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },     // 復活島摩艾
     ];
     // 原住民小人（natives.js）：該國主要指數漲就歡呼跳舞、跌就沮喪哭泣，平盤時散步 / 揮手 / 眨眼
     // mode 'folk'；market = 看哪個指數；ox / oy = 相對位置點的偏移（單位：小角色基準大小）；minK = 縮小到這個倍率以下就收起來
@@ -3765,7 +3785,8 @@
                 y < -size * 2 ||
                 y > H + size * 2 ||
                 // deco：各地代表動物，可以和市場動物重疊（只有旗幟、卡片、介面擋到才收起來）
-                (!folk && rects.some((q) => !(c.d.deco && q.an) && inter(r, q) / (r.w * r.h) > 0.15));
+                // landmark：世界地標，完全免疫所有碰撞遮擋，永遠顯示
+                (!folk && !c.d.landmark && rects.some((q) => !(c.d.deco && q.an) && inter(r, q) / (r.w * r.h) > 0.15));
             c.vis = !hide;
             c.size = z;
             c.base = size;

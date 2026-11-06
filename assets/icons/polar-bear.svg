@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <!-- Polar Bear - side view walking right, animated bob -->
+  <g>
+    <animateTransform attributeName="transform" type="translate" values="0,0; 0,-1.5; 0,0; 0,1.5; 0,0" dur="1s" repeatCount="indefinite"/>
+
+    <!-- Snow ground -->
+    <ellipse cx="38" cy="68" rx="22" ry="5" fill="white" stroke="white" stroke-width="1.5" opacity="0.85"/>
+
+    <!-- Legs (back pair) -->
+    <ellipse cx="22" cy="60" rx="4" ry="6" fill="#e8e8e8" stroke="#cccccc" stroke-width="1.5" transform="rotate(-15 22 60)"/>
+    <ellipse cx="30" cy="62" rx="4" ry="6" fill="#e8e8e8" stroke="#cccccc" stroke-width="1.5" transform="rotate(10 30 62)"/>
+
+    <!-- Body torso -->
+    <ellipse cx="36" cy="46" rx="18" ry="12" fill="#f5f5f5" stroke="white" stroke-width="1.5"/>
+
+    <!-- Legs (front pair) -->
+    <ellipse cx="42" cy="61" rx="4" ry="6" fill="#e8e8e8" stroke="#cccccc" stroke-width="1.5" transform="rotate(-8 42 61)"/>
+    <ellipse cx="50" cy="59" rx="4" ry="6" fill="#e8e8e8" stroke="#cccccc" stroke-width="1.5" transform="rotate(18 50 59)"/>
+
+    <!-- Tail (small, left side) -->
+    <ellipse cx="18" cy="46" rx="4" ry="2.5" fill="#f5f5f5" stroke="white" stroke-width="1.5"/>
+
+    <!-- Neck connector -->
+    <ellipse cx="48" cy="43" rx="8" ry="7" fill="#f5f5f5" stroke="white" stroke-width="1.5"/>
+
+    <!-- Head -->
+    <circle cx="54" cy="38" r="11" fill="#f5f5f5" stroke="white" stroke-width="1.5"/>
+
+    <!-- Ear left -->
+    <circle cx="48" cy="28" r="4" fill="#f5f5f5" stroke="#cccccc" stroke-width="1.5"/>
+    <circle cx="48" cy="28" r="2" fill="#e0d8d0"/>
+
+    <!-- Ear right -->
+    <circle cx="58" cy="27" r="3.5" fill="#f5f5f5" stroke="#cccccc" stroke-width="1.5"/>
+    <circle cx="58" cy="27" r="1.8" fill="#e0d8d0"/>
+
+    <!-- Muzzle -->
+    <ellipse cx="62" cy="41" rx="7" ry="5" fill="#f0ece8" stroke="white" stroke-width="1.5"/>
+
+    <!-- Nose -->
+    <ellipse cx="67" cy="39" rx="2.5" ry="1.8" fill="#1a1a1a" stroke="white" stroke-width="0.8"/>
+
+    <!-- Mouth line -->
+    <path d="M64,42 Q66,44 68,42" fill="none" stroke="#aaaaaa" stroke-width="1" stroke-linecap="round"/>
+
+    <!-- Eye -->
+    <circle cx="56" cy="33" r="2.5" fill="#1a1a1a"/>
+    <!-- Eye highlight -->
+    <circle cx="57" cy="32" r="1" fill="white"/>
+  </g>
+</svg>

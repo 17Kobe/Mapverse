@@ -1,0 +1,227 @@
+<title>Landmark Icons</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+  :root {
+    --bg: #f0ede8;
+    --fg: #2a2016;
+    --card: #ffffff;
+    --border: #d4c9b8;
+    --label: #7a6e60;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1a1812;
+      --fg: #e8e0d0;
+      --card: #252218;
+      --border: #3a3528;
+      --label: #a09580;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1a1812;
+    --fg: #e8e0d0;
+    --card: #252218;
+    --border: #3a3528;
+    --label: #a09580;
+    color-scheme: dark;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    margin: 0;
+    padding-block: 2rem;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+
+  h1 {
+    font-size: 1.1rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--label);
+    margin: 0 0 1.5rem;
+  }
+
+  .grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    align-items: flex-start;
+  }
+
+  .tile {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .75rem;
+    min-width: 160px;
+  }
+
+  .tile span {
+    font-size: .8rem;
+    color: var(--label);
+    letter-spacing: .04em;
+  }
+
+  /* preview backgrounds to show transparency */
+  .bg-green  { background: #5a8c3a; border-radius: 10px; padding: 8px; }
+  .bg-beige  { background: #c8b887; border-radius: 10px; padding: 8px; }
+  .bg-blue   { background: #4a7aaa; border-radius: 10px; padding: 8px; }
+</style>
+
+<h1>地標圖示 — 透明背景</h1>
+<div class="grid">
+
+  <!-- 馬丘比丘 -->
+  <div class="tile">
+    <div class="bg-green">
+      <svg viewBox="0 0 80 80" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+        <!-- 背後山峰（深藍灰，尖錐） -->
+        <polygon points="20,62 38,18 56,62" fill="#4a5a6a" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+        <!-- 第二座小尖峰 -->
+        <polygon points="44,62 57,28 68,62" fill="#3d4d5d" stroke="white" stroke-width="1.2" stroke-linejoin="round"/>
+
+        <!-- 梯田層（從底部往上，左寬右窄） -->
+        <!-- 第1層（最底） -->
+        <rect x="14" y="56" width="44" height="6" rx="1" fill="#5a8840" stroke="white" stroke-width="1.2"/>
+        <!-- 第2層 -->
+        <rect x="18" y="50" width="38" height="6" rx="1" fill="#4e7a36" stroke="white" stroke-width="1.2"/>
+        <!-- 第3層 -->
+        <rect x="22" y="44" width="32" height="6" rx="1" fill="#447030" stroke="white" stroke-width="1.2"/>
+        <!-- 第4層（最高梯田平台） -->
+        <rect x="26" y="38" width="26" height="6" rx="1" fill="#3a6228" stroke="white" stroke-width="1.2"/>
+
+        <!-- 石屋群（建在第4層梯田上） -->
+        <!-- 屋子1（左） -->
+        <rect x="27" y="29" width="8" height="9" rx="1" fill="#9a8468" stroke="white" stroke-width="1.2"/>
+        <rect x="29" y="32" width="3" height="3" fill="#2a1a0a"/>
+        <!-- 屋子2 -->
+        <rect x="36" y="27" width="7" height="11" rx="1" fill="#a89070" stroke="white" stroke-width="1.2"/>
+        <rect x="38" y="30" width="2.5" height="3" fill="#2a1a0a"/>
+        <!-- 屋子3（最高） -->
+        <rect x="44" y="25" width="6" height="13" rx="1" fill="#9a8468" stroke="white" stroke-width="1.2"/>
+        <rect x="45.5" y="28" width="2" height="3" fill="#2a1a0a"/>
+
+        <!-- 屋頂（簡單三角） -->
+        <polygon points="27,29 31,24 35,29" fill="#c4a880" stroke="white" stroke-width="1"/>
+        <polygon points="36,27 39.5,22 43,27" fill="#c4a880" stroke="white" stroke-width="1"/>
+        <polygon points="44,25 47,19.5 50,25" fill="#c4a880" stroke="white" stroke-width="1"/>
+      </svg>
+    </div>
+    <span>馬丘比丘</span>
+  </div>
+
+  <!-- 富士山 -->
+  <div class="tile">
+    <div class="bg-blue">
+      <svg viewBox="0 0 80 80" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+        <!-- 山體主體（深藍灰） -->
+        <polygon points="40,10 12,65 68,65" fill="#3d5a7a" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+        <!-- 山體陰影側（左側較深） -->
+        <polygon points="40,10 12,65 40,65" fill="#2d4a6a" stroke="none"/>
+
+        <!-- 雪頂（分三層，帶輪廓感） -->
+        <!-- 雪頂底部邊緣（不規則波浪） -->
+        <path d="M29,38 Q31,35 33,37 Q35,34 37,36 Q39,33 40,34 Q41,33 43,36 Q45,34 47,37 Q49,35 51,38 Z" fill="white" stroke="none"/>
+        <!-- 雪頂主體 -->
+        <polygon points="40,10 28,38 52,38" fill="white" stroke="none"/>
+        <!-- 雪頂陰影（右側冰藍） -->
+        <polygon points="40,10 40,34 52,38" fill="#d0e8f4" stroke="none"/>
+        <!-- 雪頂輪廓描邊 -->
+        <polyline points="40,10 28,38" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+        <polyline points="40,10 52,38" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+
+        <!-- 山腰雲帶 -->
+        <path d="M17,55 Q22,51 27,54 Q32,50 37,53 Q42,50 47,53 Q52,50 57,53 Q62,51 66,55"
+              fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2.5" stroke-linecap="round"/>
+
+        <!-- 底部地面小橢圓 -->
+        <ellipse cx="40" cy="66" rx="26" ry="4" fill="#2d4520" stroke="white" stroke-width="1"/>
+      </svg>
+    </div>
+    <span>富士山</span>
+  </div>
+
+  <!-- 萬里長城 -->
+  <div class="tile">
+    <div class="bg-beige">
+      <svg viewBox="0 0 80 80" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+        <!-- 起伏山丘背景（綠色） -->
+        <path d="M0,60 Q15,48 25,52 Q35,44 45,50 Q55,42 65,48 Q72,44 80,46 L80,80 L0,80 Z"
+              fill="#5a8840" stroke="none"/>
+        <path d="M0,60 Q15,48 25,52 Q35,44 45,50 Q55,42 65,48 Q72,44 80,46"
+              fill="none" stroke="white" stroke-width="1"/>
+
+        <!-- 長城主牆體（沿山丘起伏） -->
+        <!-- 牆體路徑（厚實磚牆感） -->
+        <path d="M5,56 Q12,46 20,50 Q28,42 36,47 Q44,40 52,46 Q60,39 68,45 Q74,41 78,43
+                 L78,52 Q74,50 68,54 Q60,48 52,55 Q44,49 36,56 Q28,51 20,59 Q12,55 5,65 Z"
+              fill="#b8a48c" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+
+        <!-- 牆頂垛口（城垛，均勻分布） -->
+        <!-- 垛口1 -->
+        <rect x="6" y="48" width="5" height="8" rx="0.5" fill="#a09070" stroke="white" stroke-width="1"/>
+        <!-- 垛口2 -->
+        <rect x="15" y="44" width="5" height="8" rx="0.5" fill="#a09070" stroke="white" stroke-width="1"/>
+        <!-- 垛口3 -->
+        <rect x="24" y="41" width="5" height="8" rx="0.5" fill="#a09070" stroke="white" stroke-width="1"/>
+        <!-- 垛口4 -->
+        <rect x="33" y="38" width="5" height="8" rx="0.5" fill="#a09070" stroke="white" stroke-width="1"/>
+        <!-- 垛口5 -->
+        <rect x="42" y="36" width="5" height="8" rx="0.5" fill="#a09070" stroke="white" stroke-width="1"/>
+        <!-- 垛口6 -->
+        <rect x="51" y="38" width="5" height="8" rx="0.5" fill="#a09070" stroke="white" stroke-width="1"/>
+        <!-- 垛口7 -->
+        <rect x="60" y="36" width="5" height="8" rx="0.5" fill="#a09070" stroke="white" stroke-width="1"/>
+        <!-- 垛口8 -->
+        <rect x="69" y="37" width="5" height="8" rx="0.5" fill="#a09070" stroke="white" stroke-width="1"/>
+
+        <!-- 中央敵樓（烽火台） -->
+        <rect x="33" y="28" width="14" height="18" rx="1" fill="#c8b08a" stroke="white" stroke-width="1.5"/>
+        <!-- 敵樓門洞 -->
+        <rect x="37" y="38" width="6" height="8" rx="1" fill="#5a4030"/>
+        <!-- 敵樓窗 -->
+        <rect x="36" y="31" width="4" height="4" rx="0.5" fill="#5a4030"/>
+        <rect x="44" y="31" width="4" height="4" rx="0.5" fill="#5a4030"/>
+        <!-- 敵樓屋頂 -->
+        <polygon points="31,28 40,20 49,28" fill="#8a6848" stroke="white" stroke-width="1.2"/>
+        <!-- 屋頂脊獸 -->
+        <line x1="40" y1="20" x2="40" y2="17" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="40" cy="17" r="1.5" fill="#e8c870" stroke="white" stroke-width="1"/>
+      </svg>
+    </div>
+    <span>萬里長城</span>
+  </div>
+
+  <!-- 馬丘比丘（綠色地形預覽） -->
+  <div class="tile">
+    <div class="bg-beige">
+      <svg viewBox="0 0 80 80" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="20,62 38,18 56,62" fill="#4a5a6a" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+        <polygon points="44,62 57,28 68,62" fill="#3d4d5d" stroke="white" stroke-width="1.2" stroke-linejoin="round"/>
+        <rect x="14" y="56" width="44" height="6" rx="1" fill="#5a8840" stroke="white" stroke-width="1.2"/>
+        <rect x="18" y="50" width="38" height="6" rx="1" fill="#4e7a36" stroke="white" stroke-width="1.2"/>
+        <rect x="22" y="44" width="32" height="6" rx="1" fill="#447030" stroke="white" stroke-width="1.2"/>
+        <rect x="26" y="38" width="26" height="6" rx="1" fill="#3a6228" stroke="white" stroke-width="1.2"/>
+        <rect x="27" y="29" width="8" height="9" rx="1" fill="#9a8468" stroke="white" stroke-width="1.2"/>
+        <rect x="29" y="32" width="3" height="3" fill="#2a1a0a"/>
+        <rect x="36" y="27" width="7" height="11" rx="1" fill="#a89070" stroke="white" stroke-width="1.2"/>
+        <rect x="38" y="30" width="2.5" height="3" fill="#2a1a0a"/>
+        <rect x="44" y="25" width="6" height="13" rx="1" fill="#9a8468" stroke="white" stroke-width="1.2"/>
+        <rect x="45.5" y="28" width="2" height="3" fill="#2a1a0a"/>
+        <polygon points="27,29 31,24 35,29" fill="#c4a880" stroke="white" stroke-width="1"/>
+        <polygon points="36,27 39.5,22 43,27" fill="#c4a880" stroke="white" stroke-width="1"/>
+        <polygon points="44,25 47,19.5 50,25" fill="#c4a880" stroke="white" stroke-width="1"/>
+      </svg>
+    </div>
+    <span>馬丘比丘（沙地）</span>
+  </div>
+
+</div>

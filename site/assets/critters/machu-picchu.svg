@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+
+<!-- 背後山峰（深藍灰，尖錐） -->
+<polygon points="20,62 38,18 56,62" fill="#4a5a6a" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+<!-- 第二座小尖峰 -->
+<polygon points="44,62 57,28 68,62" fill="#3d4d5d" stroke="white" stroke-width="1.2" stroke-linejoin="round"/>
+
+<!-- 梯田層（從底部往上，左寬右窄） -->
+<!-- 第1層（最底） -->
+<rect x="14" y="56" width="44" height="6" rx="1" fill="#5a8840" stroke="white" stroke-width="1.2"/>
+<!-- 第2層 -->
+<rect x="18" y="50" width="38" height="6" rx="1" fill="#4e7a36" stroke="white" stroke-width="1.2"/>
+<!-- 第3層 -->
+<rect x="22" y="44" width="32" height="6" rx="1" fill="#447030" stroke="white" stroke-width="1.2"/>
+<!-- 第4層（最高梯田平台） -->
+<rect x="26" y="38" width="26" height="6" rx="1" fill="#3a6228" stroke="white" stroke-width="1.2"/>
+
+<!-- 石屋群（建在第4層梯田上） -->
+<!-- 屋子1（左） -->
+<rect x="27" y="29" width="8" height="9" rx="1" fill="#9a8468" stroke="white" stroke-width="1.2"/>
+<rect x="29" y="32" width="3" height="3" fill="#2a1a0a"/>
+<!-- 屋子2 -->
+<rect x="36" y="27" width="7" height="11" rx="1" fill="#a89070" stroke="white" stroke-width="1.2"/>
+<rect x="38" y="30" width="2.5" height="3" fill="#2a1a0a"/>
+<!-- 屋子3（最高） -->
+<rect x="44" y="25" width="6" height="13" rx="1" fill="#9a8468" stroke="white" stroke-width="1.2"/>
+<rect x="45.5" y="28" width="2" height="3" fill="#2a1a0a"/>
+
+<!-- 屋頂（簡單三角） -->
+<polygon points="27,29 31,24 35,29" fill="#c4a880" stroke="white" stroke-width="1"/>
+<polygon points="36,27 39.5,22 43,27" fill="#c4a880" stroke="white" stroke-width="1"/>
+<polygon points="44,25 47,19.5 50,25" fill="#c4a880" stroke="white" stroke-width="1"/>
+
+</svg>

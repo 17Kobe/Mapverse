@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <!-- 底部白色建築群（大） -->
+  <rect x="4" y="52" width="22" height="20" fill="#ffffff" stroke="white" stroke-width="2" rx="1"/>
+  <rect x="8" y="57" width="5" height="6" fill="#2a3a5a" rx="0.5"/>
+  <rect x="17" y="57" width="5" height="6" fill="#2a3a5a" rx="0.5"/>
+  <rect x="11" y="64" width="5" height="8" fill="#2a3a5a" rx="0.5"/>
+  <circle cx="6"  cy="62" r="1.5" fill="#e85070"/>
+  <circle cx="25" cy="60" r="1.5" fill="#f07030"/>
+
+  <!-- 中層白色建築 -->
+  <rect x="8" y="40" width="18" height="14" fill="#f8f8f0" stroke="white" stroke-width="2" rx="1"/>
+  <rect x="11" y="44" width="4" height="5" fill="#2a3a5a" rx="0.5"/>
+  <rect x="19" y="44" width="4" height="5" fill="#2a3a5a" rx="0.5"/>
+  <circle cx="10" cy="50" r="1.3" fill="#e85070"/>
+  <circle cx="24" cy="48" r="1.3" fill="#f07030"/>
+
+  <!-- 上層白色建築 -->
+  <rect x="22" y="32" width="16" height="13" fill="#ffffff" stroke="white" stroke-width="2" rx="1"/>
+  <rect x="25" y="36" width="4" height="5" fill="#2a3a5a" rx="0.5"/>
+  <rect x="31" y="36" width="4" height="5" fill="#2a3a5a" rx="0.5"/>
+  <circle cx="24" cy="42" r="1.3" fill="#f07030"/>
+
+  <!-- 藍圓頂教堂（最高最顯眼） -->
+  <!-- 教堂主體 -->
+  <rect x="31" y="26" width="22" height="16" fill="#ffffff" stroke="white" stroke-width="2" rx="1"/>
+  <!-- 圓頂鼓座 -->
+  <rect x="34" y="21" width="16" height="6" fill="#ffffff" stroke="white" stroke-width="1.5" rx="0.5"/>
+  <!-- 藍色圓頂 -->
+  <path d="M32,25 Q42,9 52,25 Z" fill="#1a6ac8" stroke="#0a4a9a" stroke-width="1.8"/>
+  <!-- 圓頂高光 -->
+  <path d="M34,23 Q41,13 48,21" fill="none" stroke="white" stroke-width="1.5" opacity="0.7"/>
+  <!-- 十字架 -->
+  <line x1="42" y1="9"  x2="42" y2="17" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="38" y1="13" x2="46" y2="13" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- 教堂窗戶 -->
+  <rect x="33" y="30" width="4" height="6" fill="#2a3a5a" rx="1"/>
+  <rect x="47" y="30" width="4" height="6" fill="#2a3a5a" rx="1"/>
+  <!-- 教堂拱門 -->
+  <rect x="39" y="32" width="6" height="10" fill="#2a3a5a" rx="1"/>
+  <path d="M39,32 Q42,28 45,32" fill="#2a3a5a"/>
+  <!-- 鐘塔 -->
+  <rect x="52" y="20" width="5" height="14" fill="#ffffff" stroke="white" stroke-width="1.5" rx="0.5"/>
+  <path d="M52,24 Q54.5,20 57,24" fill="none" stroke="#cccccc" stroke-width="1.2"/>
+  <circle cx="54" cy="26" r="1.5" fill="#c8a830" stroke="#a08020" stroke-width="0.8"/>
+
+  <!-- 花圃 -->
+  <circle cx="32" cy="36" r="1.5" fill="#e85070"/>
+  <circle cx="52" cy="34" r="1.5" fill="#f07030"/>
+</svg>

@@ -1,0 +1,162 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+<defs>
+  <!-- 水母傘部主體：半透明藍紫漸層 -->
+  <radialGradient id="jellyGrad" cx="42%" cy="35%" r="58%" fx="42%" fy="30%">
+    <stop offset="0%"   stop-color="#c084fc" stop-opacity="0.95"/>
+    <stop offset="35%"  stop-color="#a855f7" stop-opacity="0.88"/>
+    <stop offset="70%"  stop-color="#7c3aed" stop-opacity="0.82"/>
+    <stop offset="100%" stop-color="#4c1d95" stop-opacity="0.50"/>
+  </radialGradient>
+  <!-- 傘部光澤高光 -->
+  <radialGradient id="jellyShine" cx="38%" cy="28%" r="38%">
+    <stop offset="0%"   stop-color="white" stop-opacity="0.55"/>
+    <stop offset="60%"  stop-color="white" stop-opacity="0.10"/>
+    <stop offset="100%" stop-color="white" stop-opacity="0"/>
+  </radialGradient>
+  <!-- 觸鬚漸層 A -->
+  <linearGradient id="tentA" x1="0%" y1="0%" x2="0%" y2="100%">
+    <stop offset="0%"   stop-color="#c084fc" stop-opacity="0.85"/>
+    <stop offset="100%" stop-color="#7c3aed" stop-opacity="0.20"/>
+  </linearGradient>
+  <!-- 觸鬚漸層 B -->
+  <linearGradient id="tentB" x1="0%" y1="0%" x2="0%" y2="100%">
+    <stop offset="0%"   stop-color="#a78bfa" stop-opacity="0.80"/>
+    <stop offset="100%" stop-color="#6d28d9" stop-opacity="0.15"/>
+  </linearGradient>
+  <!-- 觸鬚漸層 C -->
+  <linearGradient id="tentC" x1="0%" y1="0%" x2="0%" y2="100%">
+    <stop offset="0%"   stop-color="#ddd6fe" stop-opacity="0.75"/>
+    <stop offset="100%" stop-color="#7c3aed" stop-opacity="0.10"/>
+  </linearGradient>
+  <!-- 波浪裙邊 -->
+  <linearGradient id="frillGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+    <stop offset="0%"   stop-color="#c084fc" stop-opacity="0.70"/>
+    <stop offset="100%" stop-color="#7c3aed" stop-opacity="0.30"/>
+  </linearGradient>
+</defs>
+
+<!-- 整體上下浮動動畫群組 -->
+<g>
+  <animateTransform
+    attributeName="transform"
+    type="translate"
+    values="0,0; 0,-3; 0,0; 0,2; 0,0"
+    dur="3.2s"
+    repeatCount="indefinite"
+    calcMode="spline"
+    keySplines="0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1"/>
+
+  <!-- ===== 7條觸鬚（先畫，在傘下方） ===== -->
+
+  <!-- 觸鬚 1（最左） -->
+  <path d="M28,46 Q22,56 26,66 Q28,72 24,78"
+        fill="none" stroke="url(#tentA)" stroke-width="2" stroke-linecap="round">
+    <animateTransform attributeName="transform" type="rotate"
+      values="0 28 46; -5 28 46; 0 28 46; 4 28 46; 0 28 46"
+      dur="2.8s" repeatCount="indefinite" calcMode="spline"
+      keySplines="0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1"/>
+  </path>
+
+  <!-- 觸鬚 2 -->
+  <path d="M32,48 Q27,58 30,68 Q32,74 29,80"
+        fill="none" stroke="url(#tentB)" stroke-width="1.8" stroke-linecap="round">
+    <animateTransform attributeName="transform" type="rotate"
+      values="0 32 48; 4 32 48; 0 32 48; -3 32 48; 0 32 48"
+      dur="2.4s" repeatCount="indefinite" calcMode="spline"
+      keySplines="0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1"/>
+  </path>
+
+  <!-- 觸鬚 3 -->
+  <path d="M36,49 Q33,60 36,69 Q38,75 35,80"
+        fill="none" stroke="url(#tentC)" stroke-width="1.5" stroke-linecap="round">
+    <animateTransform attributeName="transform" type="rotate"
+      values="0 36 49; -4 36 49; 0 36 49; 5 36 49; 0 36 49"
+      dur="3.5s" repeatCount="indefinite" calcMode="spline"
+      keySplines="0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1"/>
+  </path>
+
+  <!-- 觸鬚 4（中間，最長） -->
+  <path d="M40,50 Q36,62 40,71 Q43,76 40,80"
+        fill="none" stroke="url(#tentA)" stroke-width="2" stroke-linecap="round">
+    <animateTransform attributeName="transform" type="rotate"
+      values="0 40 50; 3 40 50; 0 40 50; -4 40 50; 0 40 50"
+      dur="2.1s" repeatCount="indefinite" calcMode="spline"
+      keySplines="0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1"/>
+  </path>
+
+  <!-- 觸鬚 5 -->
+  <path d="M44,49 Q48,60 45,69 Q43,75 46,80"
+        fill="none" stroke="url(#tentB)" stroke-width="1.5" stroke-linecap="round">
+    <animateTransform attributeName="transform" type="rotate"
+      values="0 44 49; -5 44 49; 0 44 49; 3 44 49; 0 44 49"
+      dur="3.1s" repeatCount="indefinite" calcMode="spline"
+      keySplines="0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1"/>
+  </path>
+
+  <!-- 觸鬚 6 -->
+  <path d="M48,48 Q52,58 49,67 Q47,73 50,79"
+        fill="none" stroke="url(#tentC)" stroke-width="1.8" stroke-linecap="round">
+    <animateTransform attributeName="transform" type="rotate"
+      values="0 48 48; 4 48 48; 0 48 48; -3 48 48; 0 48 48"
+      dur="2.6s" repeatCount="indefinite" calcMode="spline"
+      keySplines="0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1"/>
+  </path>
+
+  <!-- 觸鬚 7（最右） -->
+  <path d="M52,46 Q57,56 53,65 Q51,71 55,77"
+        fill="none" stroke="url(#tentA)" stroke-width="2" stroke-linecap="round">
+    <animateTransform attributeName="transform" type="rotate"
+      values="0 52 46; -4 52 46; 0 52 46; 5 52 46; 0 52 46"
+      dur="3.8s" repeatCount="indefinite" calcMode="spline"
+      keySplines="0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1"/>
+  </path>
+
+  <!-- ===== 波浪裙邊（傘下緣裝飾） ===== -->
+  <path d="M22,42
+           Q24,46 27,44 Q29,48 32,46 Q34,50 37,48
+           Q39,52 40,50 Q41,52 43,48 Q46,50 48,46
+           Q51,48 53,44 Q56,46 58,42"
+        fill="url(#frillGrad)"
+        stroke="white" stroke-width="1"
+        stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- ===== 水母傘主體（半球形橢圓） ===== -->
+  <ellipse cx="40" cy="28" rx="20" ry="18"
+           fill="url(#jellyGrad)"
+           stroke="white" stroke-width="1.8"/>
+
+  <!-- 傘下半部連接至裙邊的填充區 -->
+  <path d="M20,28 Q20,44 22,44 Q31,50 40,50 Q49,50 58,44 Q60,44 60,28"
+        fill="url(#jellyGrad)" stroke="none"/>
+
+  <!-- 傘部光澤高光 -->
+  <ellipse cx="37" cy="22" rx="12" ry="9"
+           fill="url(#jellyShine)"/>
+
+  <!-- 傘部放射紋路（半透明，增加質感） -->
+  <line x1="40" y1="12" x2="40" y2="46" stroke="white" stroke-width="0.8" stroke-opacity="0.25"/>
+  <line x1="26" y1="18" x2="34" y2="46" stroke="white" stroke-width="0.6" stroke-opacity="0.20"/>
+  <line x1="54" y1="18" x2="46" y2="46" stroke="white" stroke-width="0.6" stroke-opacity="0.20"/>
+  <line x1="22" y1="28" x2="30" y2="48" stroke="white" stroke-width="0.5" stroke-opacity="0.15"/>
+  <line x1="58" y1="28" x2="50" y2="48" stroke="white" stroke-width="0.5" stroke-opacity="0.15"/>
+
+  <!-- ===== 左眼 ===== -->
+  <circle cx="33" cy="30" r="4" fill="white" stroke="white" stroke-width="1"/>
+  <circle cx="33.8" cy="30.5" r="2.2" fill="#1a0a2e"/>
+  <circle cx="34.6" cy="29.5" r="0.8" fill="white"/>
+
+  <!-- ===== 右眼 ===== -->
+  <circle cx="47" cy="30" r="4" fill="white" stroke="white" stroke-width="1"/>
+  <circle cx="47.8" cy="30.5" r="2.2" fill="#1a0a2e"/>
+  <circle cx="48.6" cy="29.5" r="0.8" fill="white"/>
+
+  <!-- ===== 腮紅 ===== -->
+  <ellipse cx="30" cy="35" rx="3.5" ry="2.2" fill="#ff8fab" fill-opacity="0.65"/>
+  <ellipse cx="50" cy="35" rx="3.5" ry="2.2" fill="#ff8fab" fill-opacity="0.65"/>
+
+  <!-- ===== 嘴巴（微笑弧線） ===== -->
+  <path d="M37,37 Q40,40 43,37"
+        fill="none" stroke="#6d28d9" stroke-width="1.5"
+        stroke-linecap="round" stroke-opacity="0.8"/>
+</g>
+</svg>

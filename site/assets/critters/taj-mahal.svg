@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+<defs>
+    <linearGradient id="tj-dome" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fdf9f4"/>
+      <stop offset="100%" stop-color="#e8ddd0"/>
+    </linearGradient>
+    <linearGradient id="tj-arch" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3a2a1a"/>
+      <stop offset="100%" stop-color="#1e150a"/>
+    </linearGradient>
+  </defs>
+
+  <!-- ── 四角獨立尖塔 ─────────────────────────── -->
+  <!-- 左後尖塔 -->
+  <rect x="5" y="30" width="5" height="28" rx="1.5" fill="#f0e8dc" stroke="white" stroke-width="1.5"/>
+  <ellipse cx="7.5" cy="30" rx="3.5" ry="4" fill="#e8ddd0" stroke="white" stroke-width="1.5"/>
+  <polygon points="7.5,23 5,30 10,30" fill="#d4b896" stroke="white" stroke-width="1.2"/>
+  <circle cx="7.5" cy="22" r="1.2" fill="#c9a86c"/>
+
+  <!-- 右後尖塔 -->
+  <rect x="70" y="30" width="5" height="28" rx="1.5" fill="#f0e8dc" stroke="white" stroke-width="1.5"/>
+  <ellipse cx="72.5" cy="30" rx="3.5" ry="4" fill="#e8ddd0" stroke="white" stroke-width="1.5"/>
+  <polygon points="72.5,23 70,30 75,30" fill="#d4b896" stroke="white" stroke-width="1.2"/>
+  <circle cx="72.5" cy="22" r="1.2" fill="#c9a86c"/>
+
+  <!-- 左前尖塔 -->
+  <rect x="14" y="34" width="4" height="24" rx="1.5" fill="#f0e8dc" stroke="white" stroke-width="1.5"/>
+  <ellipse cx="16" cy="34" rx="3" ry="3.5" fill="#e8ddd0" stroke="white" stroke-width="1.5"/>
+  <polygon points="16,28 14,34 18,34" fill="#d4b896" stroke="white" stroke-width="1.2"/>
+  <circle cx="16" cy="27" r="1" fill="#c9a86c"/>
+
+  <!-- 右前尖塔 -->
+  <rect x="62" y="34" width="4" height="24" rx="1.5" fill="#f0e8dc" stroke="white" stroke-width="1.5"/>
+  <ellipse cx="64" cy="34" rx="3" ry="3.5" fill="#e8ddd0" stroke="white" stroke-width="1.5"/>
+  <polygon points="64,28 62,34 66,34" fill="#d4b896" stroke="white" stroke-width="1.2"/>
+  <circle cx="64" cy="27" r="1" fill="#c9a86c"/>
+
+  <!-- ── 兩側翼廊 ──────────────────────────────── -->
+  <!-- 左翼 -->
+  <rect x="18" y="48" width="13" height="10" rx="1" fill="#ede5d8" stroke="white" stroke-width="1.5"/>
+  <!-- 左翼拱門 -->
+  <rect x="21" y="51" width="5" height="7" rx="0" fill="url(#tj-arch)"/>
+  <ellipse cx="23.5" cy="51" rx="2.5" ry="2" fill="url(#tj-arch)"/>
+
+  <!-- 右翼 -->
+  <rect x="49" y="48" width="13" height="10" rx="1" fill="#ede5d8" stroke="white" stroke-width="1.5"/>
+  <!-- 右翼拱門 -->
+  <rect x="54" y="51" width="5" height="7" rx="0" fill="url(#tj-arch)"/>
+  <ellipse cx="56.5" cy="51" rx="2.5" ry="2" fill="url(#tj-arch)"/>
+
+  <!-- ── 主殿平台 ─────────────────────────────── -->
+  <rect x="22" y="44" width="36" height="14" rx="2" fill="url(#tj-dome)" stroke="white" stroke-width="1.5"/>
+
+  <!-- 左小圓頂 -->
+  <ellipse cx="31" cy="44" rx="5" ry="6" fill="#f0e8dc" stroke="white" stroke-width="1.5"/>
+  <ellipse cx="31" cy="41" rx="3" ry="4" fill="#ede5d8" stroke="white" stroke-width="1.2"/>
+  <line x1="31" y1="35" x2="31" y2="37" stroke="#c9a86c" stroke-width="1"/>
+  <circle cx="31" cy="34.5" r="1.2" fill="#c9a86c"/>
+
+  <!-- 右小圓頂 -->
+  <ellipse cx="49" cy="44" rx="5" ry="6" fill="#f0e8dc" stroke="white" stroke-width="1.5"/>
+  <ellipse cx="49" cy="41" rx="3" ry="4" fill="#ede5d8" stroke="white" stroke-width="1.2"/>
+  <line x1="49" y1="35" x2="49" y2="37" stroke="#c9a86c" stroke-width="1"/>
+  <circle cx="49" cy="34.5" r="1.2" fill="#c9a86c"/>
+
+  <!-- ── 中央主圓頂（洋蔥形 path） ─────────────── -->
+  <path d="M40,16
+    C47,16 52,20 52,27
+    C52,33 48,36 46,38
+    C48,38 51,39 51,41
+    C51,43 46,44 40,44
+    C34,44 29,43 29,41
+    C29,39 32,38 34,38
+    C32,36 28,33 28,27
+    C28,20 33,16 40,16 Z"
+    fill="url(#tj-dome)" stroke="white" stroke-width="1.8"/>
+  <!-- 圓頂分段高光 -->
+  <path d="M40,18 C45,18 49,22 49,28 C49,32 47,35 45,37" fill="none" stroke="#d4b896" stroke-width="0.8" opacity="0.7"/>
+
+  <!-- 頂部尖塔 -->
+  <line x1="40" y1="8" x2="40" y2="16" stroke="#d4b896" stroke-width="1.5" stroke-linecap="round"/>
+  <circle cx="40" cy="8" r="1.8" fill="#c9a86c" stroke="white" stroke-width="1.2"/>
+  <ellipse cx="40" cy="13" rx="2" ry="1.2" fill="#d4b896" stroke="white" stroke-width="1"/>
+
+  <!-- ── 主殿正面拱形大門 ───────────────────────── -->
+  <rect x="34.5" y="49" width="11" height="9" rx="0" fill="url(#tj-arch)" stroke="white" stroke-width="1.2"/>
+  <ellipse cx="40" cy="49" rx="5.5" ry="4.5" fill="url(#tj-arch)" stroke="white" stroke-width="1.2"/>
+
+  <!-- 側面小拱門裝飾 -->
+  <rect x="25" y="51" width="5" height="7" rx="0" fill="#c9a86c" opacity="0.5"/>
+  <ellipse cx="27.5" cy="51" rx="2.5" ry="2" fill="#c9a86c" opacity="0.5"/>
+  <rect x="50" y="51" width="5" height="7" rx="0" fill="#c9a86c" opacity="0.5"/>
+  <ellipse cx="52.5" cy="51" rx="2.5" ry="2" fill="#c9a86c" opacity="0.5"/>
+
+  <!-- ── 倒映池：細藍線 ────────────────────────── -->
+  <line x1="24" y1="62" x2="56" y2="62" stroke="#7ab8d8" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="28" y1="64" x2="52" y2="64" stroke="#7ab8d8" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
+</svg>

@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+<!-- 金色光環（細圓圈，不填色） -->
+<circle cx="40" cy="16" r="7.5"
+  fill="none" stroke="#ffd700" stroke-width="2.5"/>
+
+<!-- 頭部 -->
+<ellipse cx="40" cy="16" rx="4.5" ry="5"
+  fill="#ffffff" stroke="#cccccc" stroke-width="1"/>
+
+<!-- 身體袍子 -->
+<path d="M34 22 Q32 32 30 44 Q33 46 40 47 Q47 46 50 44 Q48 32 46 22 Z"
+  fill="#ffffff" stroke="white" stroke-width="1.5"/>
+
+<!-- 左臂（粗白描邊 → 細白內層，做立體感） -->
+<path d="M34 25 Q26 27 15 28"
+  fill="none" stroke="#ffffff" stroke-width="5.5" stroke-linecap="round"/>
+<path d="M34 25 Q26 27 15 28"
+  fill="none" stroke="#dddddd" stroke-width="3" stroke-linecap="round"/>
+
+<!-- 右臂 -->
+<path d="M46 25 Q54 27 65 28"
+  fill="none" stroke="#ffffff" stroke-width="5.5" stroke-linecap="round"/>
+<path d="M46 25 Q54 27 65 28"
+  fill="none" stroke="#dddddd" stroke-width="3" stroke-linecap="round"/>
+
+<!-- 左手 -->
+<ellipse cx="14.5" cy="28.5" rx="2.5" ry="2"
+  fill="#ffffff" stroke="white" stroke-width="1"/>
+
+<!-- 右手 -->
+<ellipse cx="65.5" cy="28.5" rx="2.5" ry="2"
+  fill="#ffffff" stroke="white" stroke-width="1"/>
+
+<!-- 袍子下擺 -->
+<path d="M30 44 Q28 52 30 58 Q35 60 40 60 Q45 60 50 58 Q52 52 50 44 Z"
+  fill="#eeeeee" stroke="white" stroke-width="1.5"/>
+
+<!-- 台階（3 層，由小至大） -->
+<rect x="32" y="57" width="16" height="3" rx="1"
+  fill="#c8c8c8" stroke="white" stroke-width="1"/>
+<rect x="29" y="60" width="22" height="3" rx="1"
+  fill="#b8b8b8" stroke="white" stroke-width="1"/>
+<rect x="26" y="63" width="28" height="3" rx="1"
+  fill="#a8a8a8" stroke="white" stroke-width="1"/>
+
+<!-- 山丘（底部半橢圓，不是矩形） -->
+<ellipse cx="40" cy="70" rx="23" ry="8"
+  fill="#4a9040" stroke="white" stroke-width="1.5"/>
+</svg>
