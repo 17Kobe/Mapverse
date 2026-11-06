@@ -2348,7 +2348,7 @@
         // bp（基點）：殖利率變動的單位，1bp = 0.01 個百分點。四捨五入到 0.1bp 是 0 就當平盤，顯示「0bp」（灰色）
         const flatBp = (d) => (Math.abs(d) < 0.05 ? 0 : d);
         const bp = (d) => (d === 0 ? '0bp' : `${arrow(d)}${Math.abs(d).toFixed(1)}bp`);
-        const v = { lab: r.l, val: '--', chg: '', col: null, vcol: null };
+        const v = { lab: r.l, icon: r.icon || null, val: '--', chg: '', col: null, vcol: null };
         if (r.calc) {
             const a = state.quotes[r.calc[0]],
                 b = state.quotes[r.calc[1]];
@@ -2454,6 +2454,7 @@
                 const r = rows.append('g').attr('class', 'row');
                 r.append('rect').attr('class', 'rbg');
                 r.append('rect').attr('class', 'rhl').attr('rx', 3).style('display', 'none');
+                r.append('text').attr('class', 'ri').attr('dominant-baseline', 'middle'); // 列圖示（emoji）
                 r.append('text').attr('class', 'rn');
                 r.append('text').attr('class', 'rv');
                 r.append('text').attr('class', 'rp');
@@ -2515,6 +2516,7 @@
             const x = rows[i],
                 g = d3.select(this),
                 y = rowY[i],
+                ri = g.select('.ri'),
                 rn = g.select('.rn'),
                 rv = g.select('.rv'),
                 rp = g.select('.rp');
@@ -2527,19 +2529,29 @@
                 .classed('odd', i % 2 === 1 && !x.sec)
                 .classed('sec', !!x.sec);
             rn.classed('sec', !!x.sec);
+            // icon 在名稱左側：有 icon 時名稱 x 往後移 14px
+            const ICO_W = 14;
+            const hasIcon = !!x.icon && !x.sec && !x.note;
+            ri.attrQ('x', 8)
+              .attrQ('y', y + 11)
+              .styleQ('font-size', '10px')
+              .styleQ('display', hasIcon ? null : 'none')
+              .textQ(hasIcon ? x.icon : '');
+            const rnX = hasIcon ? 9 + ICO_W : 9;
             // 名稱放不下時才縮小字級，數字維持原本大小
             const fit = (txt, room) => {
                 const lw = textWidthOf(txt, 'rn');
                 return lw > room ? `${Math.max(8, (11 * room) / lw).toFixed(1)}px` : null;
             };
             if (x.sec) {
+                ri.styleQ('display', 'none');
                 rn.attrQ('x', 9).attrQ('y', y + 9.2).styleQ('font-size', null).textQ(x.sec);
                 rv.textQ('');
                 rp.textQ('');
                 return;
             }
             if (x.note) {
-                rn.attrQ('x', 9)
+                rn.attrQ('x', rnX)
                     .attrQ('y', y + 12.5)
                     .styleQ('font-size', fit(x.note, w - 18))
                     .textQ(x.note);
@@ -2548,9 +2560,9 @@
                 return;
             }
             const rvx = w - 8 - (x.chg ? numW(x.chg, 'rp', true) + 5 : 0);
-            rn.attrQ('x', 9)
+            rn.attrQ('x', rnX)
                 .attrQ('y', y + 12.5)
-                .styleQ('font-size', fit(x.lab, rvx - numW(x.val, 'rv', 'dec') - 13))
+                .styleQ('font-size', fit(x.lab, rvx - numW(x.val, 'rv', 'dec') - 13 - (hasIcon ? ICO_W : 0)))
                 .textQ(x.lab);
             rv.attrQ('x', rvx)
                 .attrQ('y', y + 13.5)
