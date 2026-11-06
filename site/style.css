@@ -396,8 +396,8 @@ body.noanim .corps .bk,body.noanim .corps .flame{animation:none}
 .bubble .t1{font-size:14px;dominant-baseline:alphabetic}
 /* 國名：金色漸層字 + 深色描邊（金色呼應旗幟的金邊，在紅 / 綠 / 灰色帶上都清楚），和下方白色的數字分出層次 */
 .bubble .t1 .a{fill:url(#nameGold);stroke:rgba(5,10,22,.78);stroke-width:3px;stroke-linejoin:round}
-.bubble .tsb{fill:rgba(8,14,28,.62);stroke:rgba(169,216,255,.35);stroke-width:.6}
-.bubble .ts{font-size:9.5px;font-weight:700;text-anchor:end;fill:#a9d8ff;stroke:none;dominant-baseline:alphabetic}
+.bubble .tsb{fill:rgba(8,14,28,.55);stroke:rgba(169,216,255,.3);stroke-width:.6}
+.bubble .ts{font-size:10px;font-weight:500;text-anchor:end;fill:#b0d4f0;stroke:none;dominant-baseline:alphabetic;letter-spacing:.2px}
 .bubble .t2{font-size:15px;fill:#fff;dominant-baseline:alphabetic;font-family:var(--num);font-variant-numeric:tabular-nums;letter-spacing:.2px}
 .bubble .t2 .lb{font-size:11.5px;letter-spacing:0}
 .bubble .t2 .pc{font-size:13.5px}
