@@ -709,6 +709,7 @@
         gLine,
         gEdge,
         gDecor,
+        gStars,
         gCorp,
         gFolk,
         gMk,
@@ -742,6 +743,7 @@
         if (tctx && W) {
             Terrain.draw(tctx, state.t, S0, W, H, dpr);
             drawFog();
+            drawNight();
         }
     }
 
@@ -788,6 +790,15 @@
         gl.append('stop').attr('offset', '0%').attr('stop-color', '#fff').attr('stop-opacity', 0.42);
         gl.append('stop').attr('offset', '48%').attr('stop-color', '#fff').attr('stop-opacity', 0.06);
         gl.append('stop').attr('offset', '52%').attr('stop-color', '#fff').attr('stop-opacity', 0);
+        // 夜晚城市燈光發光暈：城市旗幟在夜側時散發溫暖橘黃光
+        const glow = defs.append('filter')
+            .attr('id', 'cityGlow')
+            .attr('x', '-40%').attr('y', '-40%')
+            .attr('width', '180%').attr('height', '180%');
+        glow.append('feGaussianBlur').attr('stdDeviation', 4).attr('result', 'blur');
+        const glowMerge = glow.append('feMerge');
+        glowMerge.append('feMergeNode').attr('in', 'blur');
+        glowMerge.append('feMergeNode').attr('in', 'SourceGraphic');
     }
 
     /* ---------- 動物自然走動 ---------- */
@@ -815,6 +826,11 @@
         const dt = Math.min(0.1, (now - walkLast) / 1000);
         walkLast = now;
         const t = now / 1000;
+        // 每 60 秒更新一次晨昏線（地球自轉 1°/4min，60 秒移動 0.25° 肉眼不察）
+        if (Math.floor(t / 60) !== walkStep._nightMin) {
+            walkStep._nightMin = Math.floor(t / 60);
+            scheduleTerrain();
+        }
         for (const m of state.maps) {
             const w = walkers.get(m.s);
             if (!w || !w.vis) continue;
@@ -1179,6 +1195,16 @@
             c.shadow.setAttribute('transform', `scale(${(1 - lift * 0.4).toFixed(3)})`);
             c.shadow.style.opacity = (c.d.sea ? 0.42 * wake : 0.45 * (1 - lift * 0.5) * op).toFixed(2);
             c.body.style.opacity = op.toFixed(2);
+            // 夜間暗化：依晨昏線壓低亮度（海上生物依浮沉位置估算當前經緯）
+            {
+                const nb = nightBrightAt(c.d.lon, c.d.lat);
+                if (nb < 1) {
+                    const br = (0.38 + nb * 0.62).toFixed(2);
+                    c.body.style.filter = `brightness(${br})`;
+                } else {
+                    c.body.style.filter = '';
+                }
+            }
             c.wk.setAttribute('transform', `translate(${c.x.toFixed(2)},${c.y.toFixed(2)})`);
             c.body.setAttribute(
                 'transform',
@@ -1351,6 +1377,9 @@
         // 主要道路畫進地形圖磚（terrain.js，拖曳時不用每一幀重畫），SVG 這邊只放路線編號牌
         gRoadTag = svg.append('g').attr('class', 'rd-tags').style('display', 'none'); // 路線編號牌（螢幕座標，在海岸線上面）
         gDecor = svg.append('g').attr('class', 'decor').style('pointer-events', 'none');
+        // 夜空星星層（在 terrain canvas 上、動物下）
+        gStars = svg.insert('g', '.decor').attr('class', 'stars').style('pointer-events', 'none');
+        buildStars();
         // 台股市值前十大公司的建築（corps.js），在動物和旗幟下面
         gCorp = svg.append('g');
         // 暫時不顯示台股前十大的公司建築：設成 true 就會恢復（corps.js 完整保留；不建立時 Corps.layout() 會回傳空陣列，
@@ -3421,6 +3450,23 @@
             const bx = Math.round(o.b.r.x),
                 by = Math.round(o.b.r.y);
             b.styleQ('display', null).attrQ('transform', `translate(${bx - o.x},${by - o.y}) scale(${Uc})`);
+            // 夜間：依晨昏線亮度暗化旗幟；白天：夜晚城市加星光發光暈
+            {
+                const nb = nightBrightAt(m.lon, m.lat);
+                if (nb < 1) {
+                    // 夜側：壓暗（brightness）+ 稍微降低飽和度（夜晚顏色不那麼鮮豔）
+                    const br = (0.45 + nb * 0.55).toFixed(2);
+                    const sat = (0.6 + nb * 0.4).toFixed(2);
+                    // 深夜（nb < 0.2）：加城市燈光發光暈，橘黃光暈 + 壓暗
+                    if (nb < 0.2) {
+                        b.styleQ('filter', `url(#cityGlow) brightness(${br}) saturate(${sat}) sepia(0.25)`);
+                    } else {
+                        b.styleQ('filter', `brightness(${br}) saturate(${sat})`);
+                    }
+                } else {
+                    b.styleQ('filter', null);
+                }
+            }
             // 旗幟上半部的名稱色帶（漲跌色；休市時變灰），迷你版不畫色帶
             drawBanner(b, w, h, {
                 bg: st === 'closed' ? 'url(#bannerOff)' : 'url(#bannerBg)',
@@ -4093,6 +4139,127 @@
         tctx.globalAlpha = 0.6;
         tctx.drawImage(fogCv, 0, 0);
         tctx.globalAlpha = 1;
+    }
+
+    /* ---------- 日夜晨昏線 ---------- */
+    let nightCv = null;
+    // 快取當前太陽參數（每分鐘只算一次）
+    let _sunCache = null, _sunCacheMin = -1;
+    function sunParams() {
+        const now = new Date();
+        const min = now.getUTCHours() * 60 + now.getUTCMinutes();
+        if (_sunCache && min === _sunCacheMin) return _sunCache;
+        const utcH = now.getUTCHours() + now.getUTCMinutes() / 60 + now.getUTCSeconds() / 3600;
+        const sunLon = (utcH / 24 - 0.5) * -360;
+        const dayOfYear = Math.floor((now - new Date(now.getUTCFullYear(), 0, 0)) / 864e5);
+        const decl = (-23.45 * Math.PI) / 180 * Math.cos((2 * Math.PI * (dayOfYear + 10)) / 365);
+        _sunCache = { sunLon, decl };
+        _sunCacheMin = min;
+        return _sunCache;
+    }
+    // 給定經緯度，回傳「日照強度」0（夜）~ 1（晝），晨昏帶 ±6° 過渡
+    function nightBrightAt(lon, lat) {
+        const { sunLon, decl } = sunParams();
+        const latR = (lat * Math.PI) / 180;
+        const ha = ((lon - sunLon) * Math.PI) / 180; // 時角
+        const sinAlt = Math.sin(latR) * Math.sin(decl) + Math.cos(latR) * Math.cos(decl) * Math.cos(ha);
+        // 晨昏帶 ±6°（sin ≈ ±0.1045），柔化邊緣
+        return Math.max(0, Math.min(1, (sinAlt + 0.1045) / 0.209));
+    }
+    function drawNight() {
+        if (!tctx || !W) return;
+        const t = state.t,
+            cw = tctx.canvas.width,
+            ch = tctx.canvas.height;
+        if (!nightCv) nightCv = document.createElement('canvas');
+        if (nightCv.width !== cw || nightCv.height !== ch) {
+            nightCv.width = cw;
+            nightCv.height = ch;
+        }
+        const nc = nightCv.getContext('2d');
+        nc.setTransform(1, 0, 0, 1, 0, 0);
+        nc.clearRect(0, 0, cw, ch);
+        // 在 CSS 像素解析度畫（和 fog 一樣）
+        nc.setTransform(dpr, 0, 0, dpr, 0, 0);
+        // 預先算好太陽參數（sunParams 有快取，這裡只是確保一幀只算一次）
+        sunParams();
+        // 逐列（每 3px 一條）計算晨昏梯度，畫垂直色條
+        const step = 3;
+        for (let px = 0; px < W; px += step) {
+            // 把螢幕 x 換算回世界座標，再取得對應經度
+            const wx = (px - t.x) / t.k;
+            // 只用 x 方向取得該列的經度（y 位置不影響經度）
+            const geoX = projection.invert([wx, (H / 2 - t.y) / t.k]);
+            if (!geoX) continue;
+            const lon = geoX[0];
+            // 垂直掃一遍：每 step px 取一個緯度樣本
+            for (let py = 0; py < H; py += step) {
+                const wyRow = (py - t.y) / t.k;
+                const geoRow = projection.invert([wx, wyRow]);
+                if (!geoRow) continue;
+                const bright = nightBrightAt(lon, geoRow[1]);
+                if (bright >= 1) continue; // 完全白天：不畫
+                nc.fillStyle = `rgba(0,8,30,${((1 - bright) * 0.62).toFixed(3)})`;
+                nc.fillRect(px, py, step, step);
+            }
+        }
+        // 以 saturation 先讓夜側褪色，再蓋深藍遮罩
+        tctx.setTransform(1, 0, 0, 1, 0, 0);
+        tctx.globalCompositeOperation = 'saturation';
+        tctx.globalAlpha = 1;
+        tctx.drawImage(nightCv, 0, 0);
+        // 重新畫一次當深藍遮罩（source-over）
+        tctx.globalCompositeOperation = 'source-over';
+        tctx.drawImage(nightCv, 0, 0);
+        tctx.globalCompositeOperation = 'source-over';
+        // 同步更新 SVG 星星位置與亮度
+        layoutStars();
+    }
+
+    /* ---------- 夜空星星（SVG，固定在地理座標上） ---------- */
+    // 預先固定的星星經緯：分散在全球各大洋 / 高緯度上方，不壓住陸地標記
+    const STARS_DATA = (() => {
+        // 簡單 LCG 產生穩定的假隨機數
+        let s = 0xdeadbeef;
+        const rand = () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296);
+        const pts = [];
+        for (let i = 0; i < 120; i++) {
+            const lon = -180 + rand() * 360;
+            const lat = -75 + rand() * 150;
+            const r = 0.8 + rand() * 1.4; // 半徑 px（邏輯）
+            pts.push({ lon, lat, r });
+        }
+        return pts;
+    })();
+    function buildStars() {
+        if (!gStars) return;
+        gStars.selectAll('circle').data(STARS_DATA).enter()
+            .append('circle')
+            .attr('r', d => d.r)
+            .attr('fill', '#e8f0ff')
+            .style('opacity', 0)
+            .style('pointer-events', 'none');
+    }
+    function layoutStars() {
+        if (!gStars || !projection) return;
+        gStars.selectAll('circle').each(function (d) {
+            const nb = nightBrightAt(d.lon, d.lat);
+            // 只在深夜（nb < 0.35）才顯示，晨昏帶漸入
+            const op = Math.max(0, Math.min(0.9, (0.35 - nb) / 0.35 * 0.9));
+            if (op <= 0) {
+                this.style.opacity = 0;
+                return;
+            }
+            const [x, y] = screenXY(d.lon, d.lat);
+            // 在畫面外就跳過
+            if (x < -10 || x > W + 10 || y < -10 || y > H + 10) {
+                this.style.opacity = 0;
+                return;
+            }
+            this.setAttribute('cx', x.toFixed(1));
+            this.setAttribute('cy', y.toFixed(1));
+            this.style.opacity = op.toFixed(3);
+        });
     }
 
     // 把經緯度框放進可用區域（扣掉被介面蓋住的地方，上方多留給地點旗幟）
