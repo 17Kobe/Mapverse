@@ -43,7 +43,7 @@
     const BUBBLE_SCALE_MOBILE = 1.25;
     // 電腦版股市旗幟（連字型）最多放大的倍率，實際倍率依畫面大小與擁擠程度決定（見 layoutMarkers）
     const DESK_SCALE_MAX = 1.5;
-    const DESK_SCALE_ALL = 1.2; // 全球檢視比較擠，上限低一些
+    const DESK_SCALE_ALL = 1.45; // 全球檢視調大，讓卡片與文字更清楚
     const deskUCache = new Map();
     // 單一指數旗幟的高度：色帶（含邊框）下方留 22px 放指數，數字的基線固定在 FULL_BASE，各瀏覽器位置才會一致
     const FULL_H = 44,
@@ -588,7 +588,19 @@
             }
         });
     };
-    const fmtPct = (p, d = 2) => (p >= 0 ? '+' : '') + p.toFixed(d) + '%';
+    const fmtPct = (p, d = 2) => {
+        const s = p.toFixed(d);
+        const n = +s; // 四捨五入後的數值（可能是 -0）
+        if (n === 0) return '0.' + '0'.repeat(d) + '%'; // -0.00 / +0.00 → 0.00%
+        return (n > 0 ? '+' : '') + s + '%';
+    };
+    // 漲跌幅箭頭 + 數字，自動消除 -0.00 的負號
+    const fmtChgPct = (p, d = 2) => {
+        const s = Math.abs(p).toFixed(d);
+        const n = +s;
+        if (n === 0) return `–${s}%`; // 平盤：破折號，無箭頭
+        return `${arrow(p)}${s}%`;
+    };
     const arrow = (p) => (p > 0 ? '▲' : p < 0 ? '▼' : '–');
 
     /* ================= 資料 ================= */
@@ -2442,7 +2454,7 @@
                 const p = r.dp != null ? q.p.toFixed(r.dp) : fmtN(q.p, 'short');
                 Object.assign(v, {
                     val: (r.u || '') + p,
-                    chg: isFlat(q.pct) ? '0.00%' : `${arrow(q.pct)}${Math.abs(q.pct).toFixed(2)}%`,
+                    chg: isFlat(q.pct) ? '0.00%' : fmtChgPct(q.pct),
                     col: pctColor(q.pct),
                     cd: q.pct,
                     pq: true, // 漲跌幅是百分比（商品、匯率…）：超過 BIG_MOVE 要用醒目的底色
@@ -3621,7 +3633,7 @@
             if (mode === 'full') {
                 const lb = n > 1 ? (cur.abbr || cur.zh) + ' ' : '',
                     vs = cq ? fmtN(cq.p, 'short') : '--',
-                    ps = cq ? `${arrow(cp)}${Math.abs(cp).toFixed(2)}%` : '';
+                    ps = cq ? fmtChgPct(cp) : '';
                 t2.select('.lb').textQ(lb);
                 t2.select('.va').numQ(vs);
                 const big = !!cq && Math.abs(cp) >= BIG_MOVE;
@@ -3682,7 +3694,7 @@
                     // 公司股價超過 10 萬（韓股常見，例如 1,318,000）改用「萬」，不然數字太寬會擠到名稱
                     const vs =
                         rq && rq.p != null ? (k2 === 'corp' && rq.p >= 1e5 ? fmtWan(rq.p) : fmtN(rq.p, 'short')) : '--',
-                        ps = rq ? `${arrow(rq.pct)}${Math.abs(rq.pct).toFixed(2)}%` : '';
+                        ps = rq ? fmtChgPct(rq.pct) : '';
                     // 公司列：名稱放大、數字略縮（CORP_FS）；指數列維持原本字級。寬度要乘上字級比例
                     const isCorp = k2 === 'corp',
                         fs = isCorp ? CORP_FS : null,
@@ -4776,14 +4788,14 @@
                     ? '🌫️ ' + $t('台股下跌，城市一片低迷')
                     : '';
         const twii = tq
-            ? `<div class="chg">${$t('台股加權')} ${fmtN(tq.p)}　${pctSpan(tq.pct, `${arrow(tq.pct)} ${Math.abs(tq.pct).toFixed(2)}%`)}</div>`
+            ? `<div class="chg">${$t('台股加權')} ${fmtN(tq.p)}　${pctSpan(tq.pct, fmtChgPct(tq.pct))}</div>`
             : '';
         const note = Corps.LIVE
             ? `<p class="small">${$t('市值 = {when} × 已發行普通股數（新台幣），價格與漲跌幅對前一個交易日收盤；資料取自證交所與即時報價，每 10 分鐘自動更新；總部地址取自證交所上市公司基本資料。', { when: Corps.LIVE_AT ? $t('{t} 盤中價', { t: liveAtLocal(Corps.LIVE_AT) }) : $t('{d} 收盤價', { d: Corps.DATA_DATE }) })}</p>`
             : `<p class="small">${$t('市值為 {d} 收盤附近的約略數字（新台幣），不同網站的統計口徑可能略有差異；總部地址取自證交所上市公司基本資料。', { d: Corps.DATA_DATE })}</p>`;
         // 漲跌幅四捨五入到 2 位後是 0 就當平盤：灰色「0.00%」，不帶箭頭
         const pctTag = (p) =>
-            p == null ? '' : isFlat(p) ? `　<span style="color:${FLAT_TEXT}">0.00%</span>` : `　${pctSpan(p, `${arrow(p)} ${Math.abs(p).toFixed(2)}%`)}`;
+            p == null ? '' : isFlat(p) ? `　<span style="color:${FLAT_TEXT}">0.00%</span>` : `　${pctSpan(p, fmtChgPct(p))}`;
         if (!c) {
             showSheet(`<h3>🏙️ ${$t('台股市值前十大')}</h3>${twii}${mood ? `<p class="desc">${mood}</p>` : ''}
       <div class="meta">${Corps.topList()
@@ -4843,7 +4855,7 @@
                   .map((x) => {
                       const xq = state.quotes[x.s];
                       const xp = xq
-                          ? pctSpan(xq.pct, `${arrow(xq.pct)}${Math.abs(xq.pct).toFixed(2)}%`)
+                          ? pctSpan(xq.pct, fmtChgPct(xq.pct))
                           : '<span>--</span>';
                       return `<button class="gtab gbtn${x === m ? ' on' : ''}" role="tab" aria-selected="${x === m}" data-s="${x.s}"><b>${x.abbr || x.zh}</b>${xp}</button>`;
                   })
@@ -4859,7 +4871,7 @@
         .map(
             (x) =>
                 `<div><b>${x.rk}. ${esc($t(x.name))}</b>（${esc(x.s)}）　${capTxt(x.cap)}　${
-                    isFlat(x.pct) ? `<span style="color:${FLAT_TEXT}">0.00%</span>` : pctSpan(x.pct, `${arrow(x.pct)} ${Math.abs(x.pct).toFixed(2)}%`)
+                    isFlat(x.pct) ? `<span style="color:${FLAT_TEXT}">0.00%</span>` : pctSpan(x.pct, fmtChgPct(x.pct))
                 }</div>`,
         )
         .join('')}</div>
