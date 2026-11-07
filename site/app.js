@@ -1446,17 +1446,8 @@
             .append('g')
             .attr('class', 'mk')
             .on('click', (e, d) => openCard(d))
-            .on('mouseenter', (e, d) => {
-                d.__hover = true;
-                scheduleLayout();
-                const host = d.type === 'map' ? d : d.type === 'sub' ? state.bySym[d.of] : null;
-                if (host && host.id) { state.hoverHighlightId = pad3(host.id); paintLand(); }
-            })
-            .on('mouseleave', (e, d) => {
-                d.__hover = false;
-                scheduleLayout();
-                state.hoverHighlightId = null; paintLand();
-            });
+            .on('mouseenter', (e, d) => setHover(d, true))
+            .on('mouseleave', (e, d) => setHover(d, false));
         g.each(function (d) {
             const s = d3.select(this);
             // 3D 動物：原點就是牠腳踩的地面，會在自己國家附近走動，所以整組放在 walker 裡
@@ -1502,17 +1493,8 @@
                     .append('g')
                     .attr('class', 'mk bk')
                     .on('click', () => openCard(d))
-                    .on('mouseenter', () => {
-                        d.__hover = true;
-                        scheduleLayout();
-                        const host = d.type === 'map' ? d : d.type === 'sub' ? state.bySym[d.of] : null;
-                        if (host && host.id) { state.hoverHighlightId = pad3(host.id); paintLand(); }
-                    })
-                    .on('mouseleave', () => {
-                        d.__hover = false;
-                        scheduleLayout();
-                        state.hoverHighlightId = null; paintLand();
-                    })
+                    .on('mouseenter', () => setHover(d, true))
+                    .on('mouseleave', () => setHover(d, false))
                     .each(function () {
                         d.bk = this;
                     }),
@@ -1868,15 +1850,17 @@
         if (x < -40) x += S0 * t.k;
         return [x, t.applyY(p[1])];
     }
-    function paintLand() {
+    // only：只重畫這幾個國家（hover 進出時只有前後兩個國家會變，不必把全部 177 個國家的屬性重寫一遍）
+    function paintLand(only) {
         if (!gLand) return;
         const show = borderIds();
         const hlId = state.highlightId;
         // hover 優先：有 hover 就用 hover，有 click 就用 click，可同時存在但 hover 蓋掉
         const hvId = state.hoverHighlightId;
         gLand.selectAll('path').each(function (d) {
-            const id = pad3(d.id),
-                on = show.has(id),
+            const id = pad3(d.id);
+            if (only && !only.has(id)) return;
+            const on = show.has(id),
                 hl = id === hlId,
                 hv = id === hvId && !hl, // hover（click 時不另外加 hover class）
                 b = borderOf(id);
@@ -1888,8 +1872,9 @@
                 .style('stroke', (hl || hv) ? null : on ? b.line : null);
         });
         gLine.selectAll('path').each(function (d) {
-            const id = pad3(d.id),
-                on = show.has(id),
+            const id = pad3(d.id);
+            if (only && !only.has(id)) return;
+            const on = show.has(id),
                 hl = id === hlId,
                 hv = id === hvId && !hl;
             d3.select(this)
@@ -1898,10 +1883,14 @@
                 .classed('hv-line', hv)
                 .style('stroke', (hl || hv) ? null : on ? borderOf(id).line : null);
         });
-        gEdge.selectAll('path')
-            .classed('on', (d) => show.has(pad3(d.id)) || pad3(d.id) === hlId || pad3(d.id) === hvId)
-            .classed('hl-edge', (d) => pad3(d.id) === hlId)
-            .classed('hv-edge', (d) => pad3(d.id) === hvId && pad3(d.id) !== hlId);
+        gEdge.selectAll('path').each(function (d) {
+            const id = pad3(d.id);
+            if (only && !only.has(id)) return;
+            d3.select(this)
+                .classed('on', show.has(id) || id === hlId || id === hvId)
+                .classed('hl-edge', id === hlId)
+                .classed('hv-edge', id === hvId && id !== hlId);
+        });
     }
 
     // 地圖上被浮動介面蓋住的邊距（篩選列、手機版概況卡）
@@ -2917,6 +2906,26 @@
     <p class="small">${esc(src)}</p>`);
     }
 
+    // 旗幟的濾鏡：夜間加藍冷色調 + 微微壓暗（brightness 最低 0.78 保持文字可讀）；
+    // hover 時額外提亮 1.3 倍（乘在夜間亮度上，白天夜晚都一致）
+    function bubbleFilter(m) {
+        const nb = nightBrightAt(m.lon, m.lat);
+        const hoverBoost = m.__hover ? 1.3 : 1;
+        if (nb >= 1) return hoverBoost > 1 ? `brightness(${hoverBoost})` : null;
+        const br = ((0.78 + nb * 0.22) * hoverBoost).toFixed(2);
+        const hue = Math.round((1 - nb) * -18);
+        return `${nb < 0.2 ? 'url(#cityGlow) ' : ''}brightness(${br}) hue-rotate(${hue}deg)`;
+    }
+    // hover 進出：只更新這張旗幟的亮度與國土高亮，不重排整張地圖（重排要重跑一次旗幟排版，會讓高亮晚好幾十毫秒才出現）
+    function setHover(d, on) {
+        d.__hover = on;
+        if (d.bk) d3.select(d.bk).select('.bubble').styleQ('filter', bubbleFilter(d));
+        const host = d.type === 'map' ? d : d.type === 'sub' ? state.bySym[d.of] : null;
+        const prev = state.hoverHighlightId;
+        state.hoverHighlightId = on && host && host.id ? pad3(host.id) : null;
+        if (prev !== state.hoverHighlightId) paintLand(new Set([prev, state.hoverHighlightId].filter(Boolean)));
+    }
+
     function layoutMarkers() {
         if (!projection || !state.maps.length || state.flying) return;
         if (window.GeoScenes) GeoScenes.layout();
@@ -3565,23 +3574,8 @@
             const bx = Math.round(o.b.r.x),
                 by = Math.round(o.b.r.y);
             b.styleQ('display', null).attrQ('transform', `translate(${bx - o.x},${by - o.y}) scale(${Uc})`);
-            // 夜間：旗幟加藍冷色調 + 微微壓暗，但 brightness 最低 0.78 保持文字可讀
-            // hover 時額外提亮 1.3 倍（乘在夜間亮度上，白天夜晚都一致）
-            {
-                const nb = nightBrightAt(m.lon, m.lat);
-                const hoverBoost = m.__hover ? 1.3 : 1;
-                if (nb < 1) {
-                    const br = ((0.78 + nb * 0.22) * hoverBoost).toFixed(2);
-                    const hue = Math.round((1 - nb) * -18);
-                    if (nb < 0.2) {
-                        b.styleQ('filter', `url(#cityGlow) brightness(${br}) hue-rotate(${hue}deg)`);
-                    } else {
-                        b.styleQ('filter', `brightness(${br}) hue-rotate(${hue}deg)`);
-                    }
-                } else {
-                    b.styleQ('filter', hoverBoost > 1 ? `brightness(${hoverBoost})` : null);
-                }
-            }
+            // 夜間：旗幟加藍冷色調 + 微微壓暗，但 brightness 最低 0.78 保持文字可讀；hover 時再提亮（見 bubbleFilter）
+            b.styleQ('filter', bubbleFilter(m));
             // 旗幟上半部的名稱色帶（漲跌色；休市時變灰），迷你版不畫色帶
             drawBanner(b, w, h, {
                 bg: st === 'closed' ? 'url(#bannerOff)' : 'url(#bannerBg)',
