@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="tw" x1="0" x2="1"><stop offset="0" stop-color="#e9b9a8"/><stop offset=".5" stop-color="#9a8a8c"/><stop offset="1" stop-color="#4a4650"/></linearGradient>
+    <linearGradient id="bk" x1="0" x2="1"><stop offset="0" stop-color="#b0a8a4"/><stop offset="1" stop-color="#5a5660"/></linearGradient>
+    <linearGradient id="lk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5ed8dc"/><stop offset="1" stop-color="#2a8aa8"/></linearGradient>
+  </defs>
+  <!-- 智利百內國家公園（巴塔哥尼亞）：三座花崗岩尖塔（百內塔）、冰河與湛藍湖泊 -->
+  <path d="M0 70 L16 54 L30 62 L36 40 L46 60 L58 50 L72 62 L88 44 L104 58 L128 66 V90 H0Z" fill="url(#bk)"/>
+  <path d="M36 40 L40 52 L36 50 L32 54Z M88 44 L93 54 L88 52 L84 56Z" fill="#fff"/>
+  <!-- 三座尖塔 -->
+  <path d="M34 92 L38 38 L42 14 L46 38 L48 92Z" fill="url(#tw)" stroke="#5a4a50" stroke-width="1"/>
+  <path d="M52 92 L55 30 L60 6 L65 30 L68 92Z" fill="url(#tw)" stroke="#5a4a50" stroke-width="1"/>
+  <path d="M72 92 L75 44 L79 24 L83 44 L86 92Z" fill="url(#tw)" stroke="#5a4a50" stroke-width="1"/>
+  <g stroke="#3a3238" stroke-width="1.2" opacity=".6" fill="none"><path d="M42 20 L44 90 M58 14 L62 90 M78 30 L80 90"/></g>
+  <path d="M38 38 L42 14 L44 38Z M55 30 L60 6 L62 30Z M75 44 L79 24 L81 44Z" fill="#fff" opacity=".3"/>
+  <!-- 冰河 -->
+  <path d="M0 90 L0 76 L20 82 L30 92Z" fill="#e4f4fc" stroke="#b4d8ea" stroke-width="1"/>
+  <path d="M98 92 L108 76 L128 80 V92Z" fill="#e4f4fc" stroke="#b4d8ea" stroke-width="1"/>
+  <!-- 湖與倒影 -->
+  <path d="M0 92 H128 V126 H0Z" fill="url(#lk)"/>
+  <g opacity=".3"><path d="M38 96 L42 116 L46 96Z M55 96 L60 120 L65 96Z M75 96 L79 112 L83 96Z" fill="#fff"/></g>
+  <path d="M0 100 Q16 98 32 100 T64 100 T96 100 T128 100 M0 112 Q16 110 32 112 T64 112 T96 112 T128 112" stroke="#d7f8ff" stroke-width="1.3" fill="none" opacity=".7"/>
+  <!-- 前景的草叢 -->
+  <path d="M0 122 Q10 112 22 124 Q30 118 40 126 H0Z M88 126 Q100 116 112 124 Q120 118 128 124 V128 H88Z" fill="#8a7a3a"/>
+</svg>

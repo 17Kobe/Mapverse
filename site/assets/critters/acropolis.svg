@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="rk" x1="0" x2="1"><stop offset="0" stop-color="#d8c49c"/><stop offset=".6" stop-color="#b8a07a"/><stop offset="1" stop-color="#8a7452"/></linearGradient>
+    <linearGradient id="mb" x1="0" x2="1"><stop offset="0" stop-color="#f8f1e0"/><stop offset="1" stop-color="#d8cbaa"/></linearGradient>
+  </defs>
+  <!-- 希臘雅典衛城：岩石高地上的帕德嫩神廟、伊瑞克提翁神廟與山門，山腳下有橄欖樹 -->
+  <path d="M0 126 L8 96 Q14 84 30 82 L98 82 Q114 84 120 96 L128 126Z" fill="url(#rk)"/>
+  <path d="M12 96 Q16 88 30 86 M30 100 L36 118 M50 90 L56 118 M72 92 L76 118 M96 92 L104 118" stroke="#6a5638" stroke-width="1.6" fill="none" opacity=".55"/>
+  <rect x="14" y="80" width="100" height="5" fill="#cdb98e" stroke="#8a7452" stroke-width="1"/>
+  <!-- 帕德嫩神廟 -->
+  <g>
+    <path d="M34 50 L64 30 L94 50Z" fill="url(#mb)" stroke="#a8956a" stroke-width="1.2"/>
+    <path d="M44 48 L64 36 L84 48Z" fill="#e4d6b2"/>
+    <rect x="32" y="50" width="64" height="5" fill="url(#mb)" stroke="#a8956a" stroke-width="1"/>
+    <g fill="url(#mb)" stroke="#a8956a" stroke-width=".9"><rect x="35" y="55" width="5" height="24"/><rect x="45" y="55" width="5" height="24"/><rect x="55" y="55" width="5" height="24"/><rect x="65" y="55" width="5" height="24"/><rect x="75" y="55" width="5" height="24"/><rect x="85" y="55" width="5" height="24"/></g>
+    <g stroke="#bda97c" stroke-width=".8"><path d="M37.5 55 V79 M47.5 55 V79 M57.5 55 V79 M67.5 55 V79 M77.5 55 V79 M87.5 55 V79"/></g>
+    <rect x="30" y="79" width="68" height="4" fill="#e4d6b2" stroke="#a8956a" stroke-width="1"/>
+  </g>
+  <!-- 山門（左）與伊瑞克提翁（右，女像柱） -->
+  <g>
+    <path d="M8 64 L22 56 L36 64Z" fill="url(#mb)" stroke="#a8956a" stroke-width="1"/>
+    <rect x="9" y="64" width="26" height="4" fill="url(#mb)" stroke="#a8956a" stroke-width=".9"/>
+    <g fill="url(#mb)" stroke="#a8956a" stroke-width=".8"><rect x="11" y="68" width="3.4" height="12"/><rect x="18" y="68" width="3.4" height="12"/><rect x="25" y="68" width="3.4" height="12"/><rect x="31" y="68" width="3.4" height="12"/></g>
+    <rect x="98" y="62" width="22" height="18" fill="url(#mb)" stroke="#a8956a" stroke-width="1"/>
+    <path d="M96 62 L109 54 L122 62Z" fill="#e4d6b2" stroke="#a8956a" stroke-width="1"/>
+    <g fill="#a8956a"><rect x="101" y="66" width="2.6" height="14"/><rect x="107" y="66" width="2.6" height="14"/><rect x="113" y="66" width="2.6" height="14"/></g>
+  </g>
+  <!-- 橄欖樹 -->
+  <g><rect x="12" y="108" width="3" height="10" fill="#6a5030"/><circle cx="13.5" cy="104" r="9" fill="#7d9a5a"/><circle cx="18" cy="108" r="6" fill="#6f8a4e"/>
+  <rect x="108" y="110" width="3" height="10" fill="#6a5030"/><circle cx="109.5" cy="106" r="9" fill="#7d9a5a"/><circle cx="104" cy="110" r="6" fill="#6f8a4e"/></g>
+  <rect x="0" y="124" width="128" height="4" fill="#9a8860"/>
+</svg>

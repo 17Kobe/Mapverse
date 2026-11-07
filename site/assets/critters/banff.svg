@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="pk" x1="0" x2="1"><stop offset="0" stop-color="#9aa8bc"/><stop offset="1" stop-color="#5a6a82"/></linearGradient>
+    <linearGradient id="lk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4fd0d8"/><stop offset="1" stop-color="#1f8fb0"/></linearGradient>
+  </defs>
+  <!-- 班夫國家公園：洛磯山脈的雪峰倒映在碧綠色的冰川湖（夢蓮湖）裡，岸邊是松林與一艘紅色獨木舟 -->
+  <path d="M0 76 L14 48 L26 60 L40 22 L54 54 L66 36 L82 62 L96 30 L112 58 L128 70 V84 H0Z" fill="url(#pk)"/>
+  <path d="M40 22 L47 38 L40 34 L34 40Z M96 30 L103 44 L96 40 L90 46Z M66 36 L71 46 L66 44 L61 48Z M14 48 L19 57 L14 55 L10 58Z" fill="#fff"/>
+  <path d="M0 84 H128 V126 H0Z" fill="url(#lk)"/>
+  <!-- 倒影 -->
+  <g opacity=".35"><path d="M40 90 L47 106 L40 102 L34 108Z M96 90 L103 104 L96 100 L90 106Z" fill="#fff"/></g>
+  <path d="M0 92 Q16 90 32 92 T64 92 T96 92 T128 92 M0 104 Q16 102 32 104 T64 104 T96 104 T128 104" stroke="#d7f8ff" stroke-width="1.4" fill="none" opacity=".7"/>
+  <!-- 松林 -->
+  <g fill="#2a6a3a"><path d="M0 100 L6 72 L12 100Z M10 104 L17 76 L24 104Z M104 102 L111 72 L118 102Z M116 106 L122 78 L128 106Z M0 84 L5 60 L10 84Z M118 88 L123 62 L128 88Z"/></g>
+  <g fill="#1f4f2a"><path d="M4 100 L8 86 L12 100Z M108 102 L112 88 L116 102Z"/></g>
+  <!-- 紅色獨木舟 -->
+  <g><animateTransform attributeName="transform" type="translate" values="0 0;4 1;0 0;-4 -1;0 0" dur="5s" repeatCount="indefinite"/>
+  <path d="M50 108 Q64 114 80 108 Q70 104 60 104Z" fill="#e0342f" stroke="#7a1410" stroke-width="1"/><circle cx="64" cy="100" r="3" fill="#f2c9a0"/><rect x="61" y="102" width="6" height="5" fill="#2f6fd1"/><path d="M52 100 L74 110" stroke="#6a4a2a" stroke-width="1.6"/></g>
+</svg>

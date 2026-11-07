@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="wf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#bfe4f4"/></linearGradient>
+  </defs>
+  <!-- 伊瓜蘇國家公園（阿根廷／巴西邊界）：馬蹄形的瀑布群，數百道瀑布傾瀉而下，水霧中浮現彩虹 -->
+  <!-- 後方的雨林 -->
+  <path d="M0 60 Q16 34 36 44 Q50 28 66 40 Q84 26 100 42 Q118 34 128 56 V80 H0Z" fill="#2f7a3a"/>
+  <!-- 彩虹 -->
+  <g fill="none" stroke-width="3" opacity=".6"><path d="M16 82 Q64 4 112 82" stroke="#ff5a5a"/><path d="M20 82 Q64 10 108 82" stroke="#ffb23a"/><path d="M24 82 Q64 16 104 82" stroke="#ffe14d"/><path d="M28 82 Q64 22 100 82" stroke="#5ed87a"/><path d="M32 82 Q64 28 96 82" stroke="#4aa8e0"/><animate attributeName="opacity" values=".6;.3;.6" dur="3.4s" repeatCount="indefinite"/></g>
+  <!-- 懸崖與瀑布 -->
+  <path d="M0 66 H128 V112 H0Z" fill="#8a6a46"/>
+  <g fill="url(#wf)">
+    <path d="M6 66 H20 V108 H6Z"/><path d="M24 66 H40 V104 H24Z"/><path d="M44 66 H64 V110 H44Z"/><path d="M68 66 H84 V106 H68Z"/><path d="M88 66 H104 V110 H88Z"/><path d="M108 66 H122 V104 H108Z"/>
+  </g>
+  <g stroke="#9fd8ee" stroke-width="1.6" fill="none" stroke-dasharray="6 5">
+    <path d="M10 66 V108 M16 66 V108 M28 66 V104 M34 66 V104 M50 66 V110 M58 66 V110 M74 66 V106 M80 66 V106 M94 66 V110 M100 66 V110 M112 66 V104 M118 66 V104"><animate attributeName="stroke-dashoffset" values="0;-22" dur=".7s" repeatCount="indefinite"/></path>
+  </g>
+  <path d="M0 66 H128" stroke="#4a3a28" stroke-width="3"/>
+  <!-- 水霧 -->
+  <g fill="#fff" opacity=".8">
+    <ellipse cx="14" cy="112" rx="16" ry="8"><animate attributeName="ry" values="7;11;7" dur="2.4s" repeatCount="indefinite"/></ellipse>
+    <ellipse cx="52" cy="114" rx="20" ry="9"><animate attributeName="ry" values="8;12;8" dur="2.8s" repeatCount="indefinite"/></ellipse>
+    <ellipse cx="96" cy="114" rx="20" ry="9"><animate attributeName="ry" values="9;12;9" dur="2.2s" repeatCount="indefinite"/></ellipse>
+  </g>
+  <path d="M0 116 H128 V128 H0Z" fill="#6aa8c8"/>
+</svg>

@@ -325,9 +325,57 @@
         }, // 大峽谷
         { src: 'critters/yellowstone.svg', lon: -110.6, lat: 44.5, mode: 'still', face: 'F', s: 1.2, deco: true, landmark: true }, // 黃石公園
         { src: 'critters/rushmore.svg', lon: -103.5, lat: 43.85, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 拉什莫爾山
-        { src: 'critters/parthenon.svg', lon: 23.73, lat: 37.97, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 帕德嫩神廟
-        { src: 'critters/louvre.svg', lon: 3.2, lat: 49.2, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 羅浮宮
-        { src: 'critters/stonehenge.svg', lon: -2.2, lat: 51.3, mode: 'still', face: 'F', s: 1.0, deco: true, landmark: true }, // 巨石陣
+        { src: 'critters/acropolis.svg', lon: 22.4, lat: 38.6, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 雅典衛城
+        {
+            src: 'critters/milan-cathedral.svg',
+            lon: 9.19,
+            lat: 45.46,
+            mode: 'still',
+            face: 'F',
+            s: 1.1,
+            deco: true,
+            landmark: true,
+        }, // 米蘭大教堂
+        { src: 'critters/yosemite.svg', lon: -119.55, lat: 37.75, mode: 'still', face: 'F', s: 1.2, deco: true, landmark: true }, // 優勝美地
+        { src: 'critters/banff.svg', lon: -115.57, lat: 51.18, mode: 'still', face: 'F', s: 1.2, deco: true, landmark: true }, // 班夫
+        {
+            src: 'critters/serengeti.svg',
+            lon: 34.85,
+            lat: -2.35,
+            mode: 'still',
+            face: 'F',
+            s: 2.0,
+            deco: true,
+            landmark: true,
+            noShadow: true,
+        }, // 塞倫蓋提
+        {
+            src: 'critters/torres-del-paine.svg',
+            lon: -72.95,
+            lat: -50.95,
+            mode: 'still',
+            face: 'F',
+            s: 1.2,
+            deco: true,
+            landmark: true,
+        }, // 百內
+        { src: 'critters/iguazu.svg', lon: -54.44, lat: -25.69, mode: 'still', face: 'F', s: 1.2, deco: true, landmark: true }, // 伊瓜蘇
+        { src: 'critters/fiordland.svg', lon: 167.9, lat: -44.8, mode: 'still', face: 'F', s: 1.2, deco: true, landmark: true }, // 峡灣
+        {
+            src: 'critters/kruger.svg',
+            lon: 31.5,
+            lat: -23.9,
+            mode: 'still',
+            face: 'F',
+            s: 2.0,
+            deco: true,
+            landmark: true,
+            noShadow: true,
+        }, // 克留格爾
+        { src: 'critters/galapagos.svg', lon: -90.5, lat: -0.6, mode: 'still', face: 'F', s: 1.2, deco: true, landmark: true }, // 加拉巴哥
+        { src: 'critters/noah-ark.svg', lon: 44.3, lat: 39.7, mode: 'still', face: 'F', s: 1.2, deco: true, landmark: true }, // 諾亞方舟（亞拉臘山）
+        { src: 'critters/louvre.svg', lon: 4.6, lat: 48.7, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 羅浮宮
+        { src: 'critters/stonehenge.svg', lon: -3.0, lat: 51.3, mode: 'still', face: 'F', s: 1.0, deco: true, landmark: true }, // 巨石陣
         { src: 'critters/minoan-bull.svg', lon: 25.2, lat: 35.2, mode: 'still', face: 'F', s: 1.0, deco: true, landmark: true }, // 米諾斯躍牛壁畫
         { src: 'critters/shanghai.svg', lon: 121.6, lat: 31.2, mode: 'still', face: 'F', s: 1.2, deco: true, landmark: true }, // 上海外灘、陸家嘴
         { src: 'critters/burj-khalifa.svg', lon: 55.27, lat: 25.2, mode: 'still', face: 'F', s: 1.3, deco: true, landmark: true }, // 杜拜哈里發塔
@@ -355,7 +403,7 @@
         }, // 火箭發射
         { src: 'critters/ufo-aliens.svg', lon: -116.5, lat: 35, mode: 'ufo', face: 'F', s: 1.4, deco: true, noShadow: true }, // 加州沙漠的 UFO 和外星人
         { src: 'critters/troy-horse.svg', lon: 26.24, lat: 39.96, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 特洛伊木馬
-        { src: 'critters/pompeii.svg', lon: 14.45, lat: 40.8, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 龐貝古城
+        { src: 'critters/pompeii.svg', lon: 15.6, lat: 40.4, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 龐貝古城
         {
             src: 'critters/western-wall.svg',
             lon: 35.23,
@@ -432,7 +480,7 @@
     const FOLK_SCALES = [1, 0.8, 0.64, 0.5, 0.4];
     // 三個人之間的間距倍率：陸地很小時往中間靠攏（1 = 原本的間距）
     const FOLK_SPREADS = [1, 0.7, 0.5, 0.35];
-    const FOLK_MAX_K = 40; // 小人放大到這個倍率以上才收起來（其他小角色放大超過 6 倍就收起來）
+    const FOLK_MAX_K = 40; // 小人與地標放大到這倍率以上才收起來（其他小角色放大超過 20 倍就收起來）
     // 小人的腳要站在「自己國家」的陸地上：國家輪廓轉成 Path2D（世界座標）後用 isPointInPath 判斷，比 d3.geoContains 快很多。
     // 國家太小（例如台灣縮小時）放不下就不顯示，不會跑到海上或別的國家。投影換了（視窗大小改變）要清掉重建
     const folkLand = new Map();
@@ -4480,6 +4528,7 @@
         // 小角色：活動範圍不壓住市場標記才顯示；放大到街道等級就收起來
         // 小角色比市場動物大一點，世界視角也看得出在做什麼
         if (!desktopMQ.matches) placeFolk(rects.concat([...vis.values()].filter((o) => o.b).map((o) => o.b.r)), true);
+        const lmPlaced = []; // 已顯示的地標框：擠在一起時前面的優先，後面的等放大再出現，避免互相蓋住
         for (const c of critters) {
             const folk = c.d.mode === 'folk';
             const fs = folk ? folkShift.get(c.d.market) : null;
@@ -4493,8 +4542,9 @@
                 y = y0 + (folk && fs ? ((c.d.oy || 0) * sp + fs[1]) * size : 0);
             const reach = { chase: 2.4, dolphin: 2.4, fin: 2.4, flyfish: 1.6, surf: 2, ski: 1.6 }[c.d.mode] || 1.1;
             const r = { x: x - size * reach, y: y - size * 1.1, w: size * reach * 2, h: size * 1.4 };
+            const lr = { x: x - z * 0.5, y: y - z, w: z, h: z };
             const hide =
-                (folk ? k > FOLK_MAX_K : k > 6) ||
+                (folk || c.d.landmark ? k > FOLK_MAX_K : k > 20) ||
                 (folk && !fs) || // 找不到空位（或國家縮得只剩一個點）就先收起來
                 x < -size * 3 ||
                 x > W + size * 3 ||
@@ -4502,7 +4552,9 @@
                 y > H + size * 2 ||
                 // deco：各地代表動物，可以和市場動物重疊（只有旗幟、卡片、介面擋到才收起來）
                 // landmark：世界地標，完全免疫所有碰撞遮擋，永遠顯示
-                (!folk && !c.d.landmark && rects.some((q) => !(c.d.deco && q.an) && inter(r, q) / (r.w * r.h) > 0.15));
+                (!folk && !c.d.landmark && rects.some((q) => !(c.d.deco && q.an) && inter(r, q) / (r.w * r.h) > 0.15)) ||
+                (c.d.landmark && lmPlaced.some((q) => inter(lr, q) / (lr.w * lr.h) > 0.55));
+            if (!hide && c.d.landmark) lmPlaced.push(lr);
             c.vis = !hide;
             c.size = z;
             c.sx = x;

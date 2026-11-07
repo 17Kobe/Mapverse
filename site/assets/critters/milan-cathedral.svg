@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="mw" x1="0" x2="1"><stop offset="0" stop-color="#fbf3ee"/><stop offset=".6" stop-color="#eadfd6"/><stop offset="1" stop-color="#c9bcb2"/></linearGradient>
+    <linearGradient id="gd" x1="0" x2="1"><stop offset="0" stop-color="#ffe28a"/><stop offset="1" stop-color="#c8902a"/></linearGradient>
+  </defs>
+  <!-- 義大利米蘭大教堂（Duomo）：白色大理石哥德式，滿滿的尖塔，最高處是金色聖母像 -->
+  <!-- 後方尖塔群 -->
+  <g fill="url(#mw)" stroke="#b8a898" stroke-width=".9">
+    <path d="M10 70 V44 L13 30 L16 44 V70Z"/><path d="M22 70 V40 L25 24 L28 40 V70Z"/><path d="M34 70 V36 L37 18 L40 36 V70Z"/>
+    <path d="M88 70 V36 L91 18 L94 36 V70Z"/><path d="M100 70 V40 L103 24 L106 40 V70Z"/><path d="M112 70 V44 L115 30 L118 44 V70Z"/>
+  </g>
+  <!-- 中央高塔與金色聖母像 -->
+  <path d="M60 70 V30 L64 -2 L68 30 V70Z" fill="url(#mw)" stroke="#b8a898" stroke-width=".9"/>
+  <path d="M64 -2 V14" stroke="#c8902a" stroke-width="1"/>
+  <ellipse cx="64" cy="6" rx="3" ry="5" fill="url(#gd)"/>
+  <!-- 正面山牆 -->
+  <path d="M20 112 V72 L64 28 L108 72 V112Z" fill="url(#mw)" stroke="#a89888" stroke-width="1.4"/>
+  <path d="M44 72 L64 50 L84 72" fill="none" stroke="#cdbfb2" stroke-width="1.6"/>
+  <!-- 門柱上的小尖塔 -->
+  <g fill="url(#mw)" stroke="#b8a898" stroke-width=".9">
+    <path d="M18 112 V70 L22 54 L26 70 V112Z"/><path d="M40 112 V64 L44 46 L48 64 V112Z"/><path d="M80 112 V64 L84 46 L88 64 V112Z"/><path d="M102 112 V70 L106 54 L110 70 V112Z"/>
+    <path d="M60 112 V66 L64 40 L68 66 V112Z"/>
+  </g>
+  <!-- 尖拱門與窗 -->
+  <g fill="#5a4a42"><path d="M26 112 V96 Q33 86 40 96 V112Z M48 112 V92 Q56 80 60 92 V112Z M68 112 V92 Q72 80 80 92 V112Z M88 112 V96 Q95 86 102 96 V112Z"/></g>
+  <g fill="#8aa0b8" stroke="#6a7a8a" stroke-width=".8"><path d="M29 84 V74 Q33 68 37 74 V84Z"/><path d="M91 84 V74 Q95 68 99 74 V84Z"/><path d="M60 70 V60 Q64 52 68 60 V70Z"/></g>
+  <g stroke="#a89888" stroke-width=".8" opacity=".8"><path d="M30 100 V70 M36 100 V70 M92 100 V70 M98 100 V70"/></g>
+  <rect x="14" y="112" width="100" height="6" fill="#d8ccbc" stroke="#a89888" stroke-width="1"/>
+  <path d="M8 118 H120 V124 H8Z" fill="#c4b8a6"/>
+</svg>

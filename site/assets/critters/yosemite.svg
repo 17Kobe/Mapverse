@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="gr" x1="0" x2="1"><stop offset="0" stop-color="#d6d2c8"/><stop offset=".5" stop-color="#a8a498"/><stop offset="1" stop-color="#6f6c62"/></linearGradient>
+    <linearGradient id="bk" x1="0" x2="1"><stop offset="0" stop-color="#c8c2b4"/><stop offset="1" stop-color="#7a766a"/></linearGradient>
+    <linearGradient id="wf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#cfeefa" stop-opacity=".7"/></linearGradient>
+  </defs>
+  <!-- 優勝美地國家公園：酋長岩與半圓頂花崗岩峭壁、優勝美地瀑布，前方是巨大的紅杉 -->
+  <path d="M0 40 L30 36 L34 84 H0Z" fill="url(#gr)"/>
+  <path d="M60 84 L64 40 Q88 18 112 42 L112 84Z" fill="url(#bk)"/>
+  <path d="M64 40 Q88 18 112 42 L100 40 Q88 30 70 42Z" fill="#fff" opacity=".25"/>
+  <path d="M96 42 Q106 62 100 84" stroke="#5a574c" stroke-width="2" fill="none" opacity=".6"/>
+  <!-- 瀑布 -->
+  <path d="M44 34 L50 34 L50 60 L52 62 L52 84 L44 84 L44 62 L46 60Z" fill="url(#wf)"><animate attributeName="opacity" values="1;.75;1" dur="2s" repeatCount="indefinite"/></path>
+  <g fill="#fff" opacity=".8"><ellipse cx="48" cy="86" rx="8" ry="3"><animate attributeName="ry" values="3;5;3" dur="2s" repeatCount="indefinite"/></ellipse></g>
+  <!-- 山谷 -->
+  <path d="M0 84 H128 V126 H0Z" fill="#6f9a4a"/>
+  <path d="M0 98 Q32 92 64 98 T128 98" stroke="#4a8ab8" stroke-width="5" fill="none" opacity=".85"/>
+  <!-- 紅杉 -->
+  <g>
+    <rect x="12" y="52" width="9" height="72" fill="#9a4a2a"/><path d="M12 52 H21 L19 124 H14Z" fill="#b25a32"/>
+    <path d="M4 60 L16 20 L28 60Z M2 78 L16 40 L30 78Z" fill="#2f6a3a"/>
+    <rect x="104" y="60" width="8" height="64" fill="#9a4a2a"/>
+    <path d="M96 66 L108 30 L120 66Z M94 84 L108 46 L122 84Z" fill="#2f6a3a"/>
+  </g>
+  <g fill="#2f6a3a"><path d="M70 100 L74 82 L78 100Z M80 104 L85 84 L90 104Z M60 104 L64 88 L68 104Z"/></g>
+</svg>

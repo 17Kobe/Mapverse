@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="mt" x1="0" x2="1"><stop offset="0" stop-color="#c8c4be"/><stop offset=".6" stop-color="#8a8a92"/><stop offset="1" stop-color="#5a5a66"/></linearGradient>
+    <linearGradient id="hl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b8844a"/><stop offset="1" stop-color="#6a4322"/></linearGradient>
+  </defs>
+  <!-- 亞拉臘山上的諾亞方舟：大洪水退去後，方舟停在山頂，鴿子銜著橄欖枝飛回，天上出現彩虹 -->
+  <!-- 彩虹 -->
+  <g fill="none" stroke-width="3.2" opacity=".75">
+    <path d="M6 70 Q64 -10 122 70" stroke="#ff5a5a"/><path d="M10 70 Q64 -4 118 70" stroke="#ffb23a"/><path d="M14 70 Q64 2 114 70" stroke="#ffe14d"/><path d="M18 70 Q64 8 110 70" stroke="#5ed87a"/><path d="M22 70 Q64 14 106 70" stroke="#4aa8e0"/><path d="M26 70 Q64 20 102 70" stroke="#8a6ae0"/>
+    <animate attributeName="opacity" values=".75;.45;.75" dur="3.6s" repeatCount="indefinite"/>
+  </g>
+  <!-- 雙峰的亞拉臘山 -->
+  <path d="M0 126 L30 66 L44 80 L64 36 L100 126Z" fill="url(#mt)"/>
+  <path d="M64 36 L72 52 L64 48 L58 56 L52 50Z M30 66 L36 76 L30 74 L26 78Z" fill="#fff"/>
+  <path d="M64 126 L98 82 L124 126Z" fill="#6f7a82"/>
+  <path d="M98 82 L104 94 L98 92 L94 96Z" fill="#fff"/>
+  <!-- 水位退去的水面 -->
+  <path d="M0 108 Q20 104 40 108 T80 108 T128 108 V128 H0Z" fill="#4a9ac8" opacity=".9"/>
+  <path d="M0 114 Q20 110 40 114 T80 114 T128 114" stroke="#d7f4ff" stroke-width="1.4" fill="none" opacity=".7"/>
+  <!-- 方舟 -->
+  <g>
+    <animateTransform attributeName="transform" type="rotate" values="-1.5 64 44;1.5 64 44;-1.5 64 44" dur="4s" repeatCount="indefinite"/>
+    <path d="M38 48 L90 48 L84 62 Q64 68 44 62Z" fill="url(#hl)" stroke="#3a2210" stroke-width="1.4"/>
+    <rect x="48" y="30" width="32" height="18" fill="#c8964e" stroke="#3a2210" stroke-width="1.4"/>
+    <path d="M44 30 L64 18 L84 30Z" fill="#8a5a2c" stroke="#3a2210" stroke-width="1.4"/>
+    <g fill="#3a2210"><rect x="54" y="35" width="6" height="8"/><rect x="68" y="35" width="6" height="8"/></g>
+    <path d="M42 54 H86" stroke="#e2b04a" stroke-width="1.6"/>
+    <circle cx="40" cy="44" r="3" fill="#f2c9a0"/><path d="M36 44 Q40 38 44 44" fill="#2a1a10"/>
+  </g>
+  <!-- 銜橄欖枝的鴿子 -->
+  <g>
+    <animateMotion dur="7s" repeatCount="indefinite" path="M4 30 Q30 8 60 20 T100 12"/>
+    <path d="M-5 0 Q0 -5 6 -1 L9 1 L5 2 Q0 6 -5 3Z" fill="#fff" stroke="#9aa8b8" stroke-width=".8"/>
+    <path d="M-1 -2 Q-4 -9 1 -10 Q3 -6 2 -1Z" fill="#f4f6fa" stroke="#9aa8b8" stroke-width=".8"><animateTransform attributeName="transform" type="rotate" values="0 0 0;-30 0 0;0 0 0" dur=".5s" repeatCount="indefinite"/></path>
+    <path d="M9 1 Q14 -1 16 3" stroke="#4f9a2d" stroke-width="1.4" fill="none"/><ellipse cx="14" cy="1" rx="2.4" ry="1.2" fill="#4f9a2d"/>
+  </g>
+</svg>

@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <radialGradient id="sh" cx="40%" cy="25%" r="85%"><stop offset="0" stop-color="#b09a6a"/><stop offset=".6" stop-color="#7a6a48"/><stop offset="1" stop-color="#4a3e2a"/></radialGradient>
+    <linearGradient id="sk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4fb8d8"/><stop offset="1" stop-color="#2a7aa8"/></linearGradient>
+  </defs>
+  <!-- 厄瓜多加拉巴哥群島：火山島、巨型象龜與海鬣蜥，啟發達爾文的演化論 -->
+  <!-- 遠方的火山島 -->
+  <path d="M0 74 L24 54 Q36 40 48 54 L70 74Z" fill="#6a5a4a"/>
+  <path d="M30 48 Q36 42 42 48" stroke="#8a7a68" stroke-width="2" fill="none"/>
+  <g fill="#cfd5de" opacity=".7"><circle cx="38" cy="38" r="5"><animate attributeName="cy" values="42;28" dur="3s" repeatCount="indefinite"/><animate attributeName="opacity" values=".7;0" dur="3s" repeatCount="indefinite"/></circle></g>
+  <rect x="0" y="74" width="128" height="22" fill="url(#sk)"/>
+  <path d="M0 80 Q16 78 32 80 T64 80 T96 80 T128 80" stroke="#d7f4ff" stroke-width="1.2" fill="none" opacity=".7"/>
+  <!-- 黑色熔岩岸與海鬣蜥 -->
+  <path d="M0 96 Q20 90 44 94 Q60 92 70 96 L80 128 H0Z" fill="#2e2a2e"/>
+  <g>
+    <path d="M10 106 Q20 100 36 104 Q44 102 48 106 L46 110 Q30 108 14 112Z" fill="#4a5a48"/>
+    <path d="M10 106 L4 108 L10 110Z" fill="#4a5a48"/><circle cx="8" cy="107" r="1.2" fill="#d8c850"/>
+    <path d="M16 102 L18 98 L21 102 M24 101 L26 97 L29 101 M32 102 L34 98 L37 102" stroke="#6a7a58" stroke-width="1.4" fill="none"/>
+    <path d="M48 106 Q56 108 62 104" stroke="#4a5a48" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+  <!-- 巨型象龜 -->
+  <g>
+    <path d="M70 114 Q70 80 100 80 Q126 82 126 114Z" fill="url(#sh)" stroke="#3a2e1c" stroke-width="1.4"/>
+    <g stroke="#3a2e1c" stroke-width="1.4" fill="none" opacity=".7"><path d="M84 82 L88 112 M100 80 L100 112 M116 84 L112 112 M72 100 H124 M76 90 H122"/></g>
+    <path d="M70 108 Q56 104 54 96 Q56 88 64 90 Q70 92 72 100Z" fill="#8a7a58"/>
+    <circle cx="58" cy="94" r="1.8" fill="#111"/>
+    <path d="M52 98 Q57 100 62 98" stroke="#4a3e2a" stroke-width="1.2" fill="none"/>
+    <rect x="74" y="112" width="12" height="10" rx="4" fill="#8a7a58"/><rect x="108" y="112" width="12" height="10" rx="4" fill="#8a7a58"/>
+  </g>
+  <!-- 仙人掌 -->
+  <g fill="#5a8a3a"><rect x="112" y="60" width="6" height="22" rx="3"/><rect x="106" y="66" width="4" height="10" rx="2"/><rect x="120" y="68" width="4" height="9" rx="2"/></g>
+</svg>
