@@ -138,14 +138,24 @@
         }, // 長白山天池水怪
         { src: 'critters/yeti.svg', lon: 86.5, lat: 28.2, mode: 'wander', gait: 'heavy', s: 1.1, deco: true, maxDeg: 0.8 }, // 喜馬拉雅雪人
         { src: 'critters/capybara-onsen.svg', lon: 139.4, lat: 36.6, mode: 'bob', face: 'F', s: 0.9, deco: true }, // 日本水豚泡溫泉
-        { src: 'critters/camel-caravan.svg', lon: 5, lat: 24, mode: 'trek', face: 'L', s: 1.9, deco: true, maxDeg: 4 }, // 北非駝駝商隊
+        {
+            src: 'critters/camel-caravan.svg',
+            lon: 5,
+            lat: 24,
+            mode: 'trek',
+            face: 'L',
+            s: 1.9,
+            deco: true,
+            noShadow: true,
+            maxDeg: 4,
+        }, // 北非駝駝商隊
         // 北海小英雄：維京長船在北海巡航
         { src: 'people/viking.svg', lon: 3.5, lat: 59.5, mode: 'boat', face: 'R', s: 1.35, sea: true },
         // 非洲莽原：獵人追斑馬，旁邊有長頸鹿散步
         { src: 'critters/zebra.png', lon: 33.5, lat: -6, mode: 'chase', lag: 0, s: 0.95 },
         { src: 'critters/hunter.png', lon: 33.5, lat: -6, mode: 'chase', lag: 1.05, s: 0.85 },
         { src: 'critters/giraffe.png', lon: 29, lat: -10, mode: 'wander', s: 1.2 },
-        { src: 'critters/lion.svg', lon: 36.5, lat: -2, mode: 'wander', gait: 'heavy', s: 1.05, deco: true, maxDeg: 2 }, // 非洲獅
+        { src: 'critters/lion.svg', lon: 38.5, lat: -3.5, mode: 'wander', gait: 'heavy', s: 1.05, deco: true, maxDeg: 2 }, // 非洲獅
         { src: 'animals/leopard.png', lon: 26, lat: 3, mode: 'wander', s: 0.95, deco: true, maxDeg: 2 }, // 非洲豹
         { src: 'animals/rhinoceros.png', lon: 22, lat: -19, mode: 'wander', gait: 'heavy', s: 1.15, deco: true, maxDeg: 2 }, // 犀牛
         // 北極：因紐特（愛斯基摩）人在冰屋旁走來走去
@@ -208,8 +218,176 @@
         { src: 'critters/colosseum.svg', lon: 12.5, lat: 41.9, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 羅馬競技場
         { src: 'critters/greek-house.svg', lon: 25.4, lat: 36.4, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 希臘聖托里尼
         { src: 'critters/pyramid.svg', lon: 31.1, lat: 29.97, mode: 'still', face: 'F', s: 1.2, deco: true, landmark: true }, // 吉薩金字塔
-        { src: 'critters/hot-balloon.svg', lon: 34.85, lat: 37.8, mode: 'bob', s: 1.0, deco: true, landmark: true }, // 卡帕多奇亞熱氣球
-        { src: 'critters/kremlin.svg', lon: 37.6, lat: 55.75, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 克里姆林宮
+        { src: 'critters/hot-balloon.svg', lon: 36.6, lat: 38.2, mode: 'bob', s: 1.0, deco: true, landmark: true }, // 卡帕多奇亞熱氣球
+        {
+            src: 'critters/kremlin-moscow.svg',
+            lon: 36.4,
+            lat: 56.1,
+            mode: 'still',
+            face: 'F',
+            s: 1.2,
+            deco: true,
+            landmark: true,
+        }, // 克里姆林宮
+        { src: 'critters/st-basil.svg', lon: 39.2, lat: 55.3, mode: 'still', face: 'F', s: 1.2, deco: true, landmark: true }, // 聖瓦西里主教座堂
+        { src: 'critters/moose.svg', lon: -88, lat: 51.5, mode: 'wander', gait: 'heavy', s: 1.2, deco: true, maxDeg: 2 }, // 加拿大駝鹿
+        {
+            src: 'critters/siberian-train.svg',
+            lon: 90,
+            lat: 57,
+            mode: 'trek',
+            face: 'L',
+            s: 2.4,
+            deco: true,
+            noShadow: true,
+            maxDeg: 8,
+            amp: 3.5,
+            rock: 0.3,
+            bounce: 0.004,
+        }, // 西伯利亞小火車
+        {
+            src: 'critters/santa-sleigh.svg',
+            lon: 26,
+            lat: 66.8,
+            mode: 'trek',
+            face: 'L',
+            s: 2.2,
+            deco: true,
+            noShadow: true,
+            maxDeg: 3,
+            amp: 2,
+            rock: 3,
+            bounce: 0.06,
+        }, // 芬蘭聖誕老人
+        { src: 'critters/sloth.svg', lon: -70, lat: -3, mode: 'still', face: 'F', s: 0.9, deco: true, noShadow: true }, // 南美樹懶
+        { src: 'critters/amazon-boat.svg', lon: -57.5, lat: -2.3, mode: 'boat', face: 'F', s: 1.2, sea: true, maxDeg: 0.8 }, // 亞馬遜河探險船
+        {
+            src: 'critters/footballer-brazil.svg',
+            lon: -48,
+            lat: -15.5,
+            mode: 'still',
+            face: 'F',
+            s: 1.0,
+            deco: true,
+            noShadow: true,
+        }, // 巴西足球員
+        { src: 'critters/cactus-mexico.svg', lon: -102, lat: 24.5, mode: 'still', face: 'F', s: 1.0, deco: true, landmark: true }, // 墨西哥仙人掌
+        { src: 'critters/baobab.svg', lon: 37.5, lat: -9.5, mode: 'still', face: 'F', s: 1.2, deco: true, landmark: true }, // 非洲猴麵包樹
+        { src: 'critters/uluru.svg', lon: 131, lat: -25.3, mode: 'still', face: 'F', s: 1.2, deco: true, landmark: true }, // 烏魯魯巨岩
+        { src: 'critters/danxia.svg', lon: 100, lat: 38.9, mode: 'still', face: 'F', s: 1.2, deco: true, landmark: true }, // 七彩丹霞
+        {
+            src: 'critters/bermuda.svg',
+            lon: -70,
+            lat: 26,
+            mode: 'still',
+            face: 'F',
+            s: 1.9,
+            sea: true,
+            deco: true,
+            noShadow: true,
+        }, // 百慕達三角
+        {
+            src: 'critters/mariana-sub.svg',
+            lon: 142.2,
+            lat: 11.4,
+            mode: 'bob',
+            face: 'F',
+            s: 1.1,
+            sea: true,
+            deco: true,
+            noShadow: true,
+        }, // 馬里亞納海溝潛水器
+        {
+            src: 'critters/anglerfish.svg',
+            lon: 140.6,
+            lat: 9.6,
+            mode: 'ghost',
+            face: 'L',
+            s: 0.9,
+            sea: true,
+            noShadow: true,
+            maxDeg: 1.5,
+        }, // 深海鮟鱇魚
+        { src: 'critters/arctic-fox.svg', lon: 88, lat: 72.5, mode: 'wander', s: 0.9, deco: true, maxDeg: 2 }, // 俄國北極狐
+        { src: 'critters/mammoth.svg', lon: 120, lat: 66.5, mode: 'wander', gait: 'heavy', s: 1.3, deco: true, maxDeg: 2 }, // 西伯利亞長毛象
+        { src: 'critters/golden-gate.svg', lon: -122.5, lat: 37.8, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 金門大橋
+        {
+            src: 'critters/grand-canyon.svg',
+            lon: -112.1,
+            lat: 36.2,
+            mode: 'still',
+            face: 'F',
+            s: 1.1,
+            deco: true,
+            landmark: true,
+        }, // 大峽谷
+        { src: 'critters/yellowstone.svg', lon: -110.6, lat: 44.5, mode: 'still', face: 'F', s: 1.2, deco: true, landmark: true }, // 黃石公園
+        { src: 'critters/rushmore.svg', lon: -103.5, lat: 43.85, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 拉什莫爾山
+        { src: 'critters/parthenon.svg', lon: 23.73, lat: 37.97, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 帕德嫩神廟
+        { src: 'critters/louvre.svg', lon: 3.2, lat: 49.2, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 羅浮宮
+        { src: 'critters/stonehenge.svg', lon: -2.2, lat: 51.3, mode: 'still', face: 'F', s: 1.0, deco: true, landmark: true }, // 巨石陣
+        { src: 'critters/minoan-bull.svg', lon: 25.2, lat: 35.2, mode: 'still', face: 'F', s: 1.0, deco: true, landmark: true }, // 米諾斯躍牛壁畫
+        { src: 'critters/shanghai.svg', lon: 121.6, lat: 31.2, mode: 'still', face: 'F', s: 1.2, deco: true, landmark: true }, // 上海外灘、陸家嘴
+        { src: 'critters/burj-khalifa.svg', lon: 55.27, lat: 25.2, mode: 'still', face: 'F', s: 1.3, deco: true, landmark: true }, // 杜拜哈里發塔
+        { src: 'critters/tokyo-tower.svg', lon: 139.9, lat: 35.5, mode: 'still', face: 'F', s: 1.2, deco: true, landmark: true }, // 東京鐵塔
+        {
+            src: 'critters/houston-space.svg',
+            lon: -95.1,
+            lat: 29.5,
+            mode: 'still',
+            face: 'F',
+            s: 1.1,
+            deco: true,
+            landmark: true,
+        }, // 休士頓太空中心
+        {
+            src: 'critters/rocket-pad.svg',
+            alt: 'critters/rocket-launch.svg',
+            lon: -94.2,
+            lat: 30.3,
+            mode: 'launch',
+            face: 'F',
+            s: 1.3,
+            deco: true,
+            noShadow: true,
+        }, // 火箭發射
+        { src: 'critters/ufo-aliens.svg', lon: -116.5, lat: 35, mode: 'ufo', face: 'F', s: 1.4, deco: true, noShadow: true }, // 加州沙漠的 UFO 和外星人
+        { src: 'critters/troy-horse.svg', lon: 26.24, lat: 39.96, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 特洛伊木馬
+        { src: 'critters/pompeii.svg', lon: 14.45, lat: 40.8, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 龐貝古城
+        {
+            src: 'critters/western-wall.svg',
+            lon: 35.23,
+            lat: 31.78,
+            mode: 'still',
+            face: 'F',
+            s: 1.0,
+            deco: true,
+            landmark: true,
+        }, // 以色列西牆
+        { src: 'critters/taipei101.svg', lon: 121.56, lat: 25.03, mode: 'still', face: 'F', s: 1.0, deco: true, landmark: true }, // 台北 101
+        {
+            src: 'critters/chichen-itza.svg',
+            lon: -88.57,
+            lat: 20.68,
+            mode: 'still',
+            face: 'F',
+            s: 1.1,
+            deco: true,
+            landmark: true,
+        }, // 奇琴伊茲
+        { src: 'critters/kicc.svg', lon: 36.82, lat: -1.29, mode: 'still', face: 'F', s: 1.0, deco: true, landmark: true }, // 肯雅塔國際會議中心
+        { src: 'critters/oslo-opera.svg', lon: 10.75, lat: 59.91, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 奧斯陸歌劇院
+        { src: 'critters/cn-tower.svg', lon: -79.39, lat: 43.64, mode: 'still', face: 'F', s: 1.2, deco: true, landmark: true }, // 多倫多西恩塔
+        {
+            src: 'critters/hanging-gardens.svg',
+            lon: 44.42,
+            lat: 32.54,
+            mode: 'still',
+            face: 'F',
+            s: 1.1,
+            deco: true,
+            landmark: true,
+        }, // 巴比倫空中花園
         { src: 'critters/taj-mahal.svg', lon: 78.04, lat: 27.17, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 泰姬瑪哈陵
         { src: 'critters/petra.svg', lon: 35.44, lat: 30.33, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 佩特拉古城
         {
@@ -1335,6 +1513,30 @@
                     op = 0;
                     wake = 0.4;
                 }
+            } else if (m === 'launch') {
+                // 火箭：待命 6 秒 → 點火升空 5 秒（帶火焰和濃煙）→ 消失 → 回到發射架
+                const T = (t + c.ph) % 14;
+                let flame = false;
+                if (T < 6) op = Math.min(1, T * 2);
+                else if (T < 11) {
+                    const u = (T - 6) / 5;
+                    c.y = -u * u * B * 3.2;
+                    op = Math.min(1, (1 - u) * 4);
+                    flame = true;
+                    rot = Math.sin(T * 40) * 0.6;
+                } else op = 0;
+                if (T < 6 || T >= 11) c.y = 0;
+                if (flame !== !!c.fl) {
+                    c.fl = flame;
+                    c.img.setAttribute('href', 'assets/' + (flame ? c.d.alt : c.d.src));
+                }
+            } else if (m === 'ufo') {
+                // UFO：在沙漠上空緩緩飄移、上下浮動、微微傘斜
+                const T = t + c.ph;
+                c.x = Math.sin(T * 0.25) * B * 0.9;
+                c.y = Math.sin(T * 0.4) * B * 0.15;
+                hop = Math.sin(T * 1.7) * R * 0.05;
+                rot = Math.sin(T * 0.9) * 4;
             } else if (m === 'emerge') {
                 // 水怪：週期性從水裡浮出（從下往上長出來）、停一下再沉下去
                 const P = c.d.cyc || 12,
@@ -1368,11 +1570,11 @@
                 // 駝駝商隊：沿著一條線慢慢走到盡頭再回頭，步伐帶點搖晃
                 const T = t + c.ph,
                     w = T * 0.14;
-                c.x = Math.sin(w) * Math.min(B * 2.2, (c.ppd || 9999) * (c.d.maxDeg || 3));
+                c.x = Math.sin(w) * Math.min(B * (c.d.amp || 2.2), (c.ppd || 9999) * (c.d.maxDeg || 3));
                 c.y = 0;
                 c.dir = faceDir(c, Math.cos(w));
-                hop = -Math.abs(Math.sin(T * 3)) * R * 0.025;
-                rot = Math.sin(T * 3) * 1.5;
+                hop = -Math.abs(Math.sin(T * 3)) * R * (c.d.bounce ?? 0.025);
+                rot = Math.sin(T * 3) * (c.d.rock ?? 1.5);
             } else if (m === 'race') {
                 // 賽艇在南大洋來回疊式航行，轉向時調頭，船頭略抬、船身傾斜
                 const T = t + c.ph,

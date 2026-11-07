@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <radialGradient id="m" cx="40%" cy="30%" r="85%"><stop offset="0" stop-color="#8a5f3c"/><stop offset=".7" stop-color="#5f3f26"/><stop offset="1" stop-color="#3b2616"/></radialGradient>
+  </defs>
+  <!-- 加拿大駝鹿：肩部隆起、鼻子長又下垂，頭上有掌狀大角（朝左） -->
+  <!-- 遠側的腿 -->
+  <rect x="48" y="78" width="7" height="46" rx="3" fill="#3b2616"/>
+  <rect x="92" y="78" width="7" height="46" rx="3" fill="#3b2616"/>
+  <!-- 身體 -->
+  <path d="M30 60 Q36 40 56 42 Q72 38 90 46 Q108 52 108 70 Q106 88 94 90 L46 90 Q30 86 30 60Z" fill="url(#m)"/>
+  <!-- 近側的腿 -->
+  <rect x="38" y="80" width="8" height="45" rx="3.5" fill="#5f3f26"/><rect x="36" y="120" width="12" height="5" rx="2" fill="#2a1a0e"/>
+  <rect x="84" y="80" width="8" height="45" rx="3.5" fill="#5f3f26"/><rect x="82" y="120" width="12" height="5" rx="2" fill="#2a1a0e"/>
+  <path d="M38 96 H46 M84 96 H92" stroke="#c9b79a" stroke-width="3"/>
+  <path d="M104 60 Q110 62 108 70" stroke="#3b2616" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <!-- 脖子與頭 -->
+  <path d="M34 50 Q28 62 22 68 L30 78 Q40 70 50 52Z" fill="#5f3f26"/>
+  <path d="M26 48 Q14 56 8 78 Q8 88 16 88 L24 84 Q22 72 32 64 Q36 52 34 46Z" fill="url(#m)"/>
+  <ellipse cx="14" cy="82" rx="9" ry="6" transform="rotate(30 14 82)" fill="#4a3220"/>
+  <ellipse cx="10" cy="86" rx="3.4" ry="2" fill="#1a0f08"/>
+  <circle cx="24" cy="58" r="2.2" fill="#fff"/><circle cx="24" cy="58.4" r="1.1" fill="#111"/>
+  <path d="M18 88 Q16 100 22 104 Q26 98 24 90Z" fill="#3b2616"/>
+  <!-- 耳朵 -->
+  <ellipse cx="38" cy="44" rx="4" ry="8" transform="rotate(-30 38 44)" fill="#5f3f26"/>
+  <!-- 掌狀大角 -->
+  <g fill="#c7a875" stroke="#8d7348" stroke-width="1.2">
+    <path d="M30 44 Q22 30 12 28 L8 18 L16 20 L18 10 L24 20 L28 8 L32 22 L40 24 L38 36 Q38 44 34 48Z"/>
+    <path d="M40 40 Q50 24 64 22 L68 12 L74 22 L82 16 L82 28 L90 30 L84 38 Q70 46 56 50Z"/>
+  </g>
+</svg>

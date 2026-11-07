@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="c1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0d8b0"/><stop offset=".2" stop-color="#e8a868"/><stop offset=".45" stop-color="#d0643a"/><stop offset=".7" stop-color="#a8402a"/><stop offset="1" stop-color="#6a2a22"/></linearGradient>
+    <linearGradient id="c2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4e2c0"/><stop offset=".25" stop-color="#ec9a58"/><stop offset=".5" stop-color="#c8583a"/><stop offset=".8" stop-color="#8a3426"/><stop offset="1" stop-color="#4f1f1a"/></linearGradient>
+  </defs>
+  <!-- 美國大峽谷：層層紅橙岩壁，谷底有科羅拉多河 -->
+  <path d="M0 32 L24 30 L30 46 L36 60 L46 76 L52 96 L58 120 H0Z" fill="url(#c1)"/>
+  <path d="M128 38 L104 34 L98 50 L92 64 L84 80 L76 100 L70 120 H128Z" fill="url(#c2)"/>
+  <path d="M30 46 L40 44 L44 58 L36 60Z M36 60 L50 58 L56 76 L46 76Z M92 64 L82 62 L76 78 L84 80Z" fill="#fff" opacity=".12"/>
+  <g stroke="#5a2018" stroke-width="1.4" opacity=".55" fill="none">
+    <path d="M2 48 L28 52 M6 64 L40 68 M10 82 L48 86 M14 100 L54 104 M128 54 L96 58 M124 72 L88 76 M120 90 L80 94 M116 106 L74 110"/>
+  </g>
+  <path d="M58 120 L70 120 L66 110 Q62 108 60 110Z" fill="#3f9a8a"/>
+  <path d="M52 96 Q64 100 76 100 L70 120 H58Z" fill="#7a2f22"/>
+  <path d="M56 112 Q64 108 72 112" stroke="#8fe0d0" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <!-- 平頂山丘 -->
+  <path d="M30 46 L48 40 L58 44 L54 56Z" fill="#d89050" opacity=".9"/>
+  <path d="M0 126 H128" stroke="#8a3a2a" stroke-width="3"/>
+  <g fill="#6a8a3a"><circle cx="8" cy="30" r="3"/><circle cx="16" cy="29" r="2.6"/><circle cx="116" cy="36" r="3"/><circle cx="108" cy="34" r="2.6"/></g>
+</svg>

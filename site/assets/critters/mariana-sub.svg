@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="hl" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#e8554a"/><stop offset="1" stop-color="#a42b22"/></linearGradient>
+    <radialGradient id="lt" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#fff8b0" stop-opacity=".95"/><stop offset="1" stop-color="#fff8b0" stop-opacity="0"/></radialGradient>
+  </defs>
+  <!-- 馬里亞納海溝的深海潛水器：紅色船身、透明球艙，探照燈照向海底 -->
+  <path d="M64 70 L26 128 H102Z" fill="url(#lt)" opacity=".55"><animate attributeName="opacity" values=".6;.3;.6" dur="2.4s" repeatCount="indefinite"/></path>
+  <rect x="62" y="4" width="4" height="22" fill="#59636f"/><circle cx="64" cy="4" r="3" fill="#ff5a4a"><animate attributeName="opacity" values="1;.2;1" dur="1.4s" repeatCount="indefinite"/></circle>
+  <path d="M30 40 Q30 26 64 26 Q98 26 98 40 L98 52 Q98 60 88 60 L40 60 Q30 60 30 52Z" fill="url(#hl)" stroke="#5a1410" stroke-width="1.4"/>
+  <rect x="34" y="32" width="60" height="5" rx="2" fill="#f7c948"/>
+  <circle cx="64" cy="76" r="18" fill="#bfe8f5" opacity=".75" stroke="#e8f8ff" stroke-width="2.4"/>
+  <circle cx="64" cy="76" r="18" fill="none" stroke="#5a7a8a" stroke-width="1"/>
+  <circle cx="64" cy="78" r="6" fill="#f2c9a0"/><path d="M58 76 Q64 68 70 76" fill="#17171d"/><rect x="59" y="84" width="10" height="8" rx="3" fill="#2f6fd1"/>
+  <path d="M52 66 Q56 62 62 62" stroke="#fff" stroke-width="2" fill="none" opacity=".8" stroke-linecap="round"/>
+  <path d="M46 60 L40 78 L52 66Z M82 60 L88 78 L76 66Z" fill="#8a1f18"/>
+  <circle cx="44" cy="52" r="4" fill="#fff6a8"/><circle cx="84" cy="52" r="4" fill="#fff6a8"/>
+  <g fill="none" stroke="#9fe8ff" stroke-width="1.2" opacity=".6"><circle cx="24" cy="30" r="2.4"/><circle cx="20" cy="18" r="1.8"/><circle cx="106" cy="24" r="2.2"/></g>
+</svg>

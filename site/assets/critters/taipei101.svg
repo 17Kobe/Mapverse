@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#7fe0c0"/><stop offset=".5" stop-color="#3aa889"/><stop offset="1" stop-color="#1f6e5c"/></linearGradient>
+  </defs>
+  <!-- 台北 101：八節如竹節向上張開的塔身，頂端尖塔 -->
+  <path d="M64 2 V16" stroke="#9aa8b6" stroke-width="2"/>
+  <g fill="url(#g)" stroke="#1a5a4a" stroke-width="1">
+    <path d="M51 16 H77 L74 27.5 H54Z"/>
+    <path d="M50.7 27.5 H77.3 L74.3 39 H53.7Z"/>
+    <path d="M50.4 39 H77.6 L74.6 50.5 H53.4Z"/>
+    <path d="M50.1 50.5 H77.9 L74.9 62 H53.1Z"/>
+    <path d="M49.8 62 H78.2 L75.2 73.5 H52.8Z"/>
+    <path d="M49.5 73.5 H78.5 L75.5 85 H52.5Z"/>
+    <path d="M49.2 85 H78.8 L75.8 96.5 H52.2Z"/>
+    <path d="M48.9 96.5 H79.1 L76.1 108 H51.9Z"/>
+  </g>
+  <g stroke="#cdf5e8" stroke-width=".9" opacity=".7"><path d="M58 18 V108 M64 18 V108 M70 18 V108"/></g>
+  <g fill="#f2c14e"><rect x="50.4" y="26.9" width="27.2" height="1.8"/><rect x="50.1" y="38.4" width="27.8" height="1.8"/><rect x="49.8" y="49.9" width="28.4" height="1.8"/><rect x="49.5" y="61.4" width="29" height="1.8"/><rect x="49.2" y="72.9" width="29.6" height="1.8"/><rect x="48.9" y="84.4" width="30.2" height="1.8"/></g>
+  <!-- 裙樓 -->
+  <path d="M30 108 H98 V120 H30Z" fill="#cfd9e4" stroke="#8c9db4" stroke-width="1"/>
+  <g stroke="#8c9db4" stroke-width=".9"><path d="M40 108 V120 M52 108 V120 M64 108 V120 M76 108 V120 M88 108 V120"/></g>
+</svg>

@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 96">
+  <defs>
+    <linearGradient id="sl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0342f"/><stop offset="1" stop-color="#8f1a16"/></linearGradient>
+    <symbol id="rd" viewBox="0 0 60 56">
+      <path d="M12 38 Q26 30 46 34 L50 44 L46 56 H40 L40 46 H26 L26 56 H20 L18 46Z" fill="#8a5a36"/>
+      <path d="M44 34 Q50 24 54 14 Q58 10 60 16 L56 28 L48 40Z" fill="#8a5a36"/>
+      <ellipse cx="55" cy="14" rx="5" ry="4" fill="#7a4a28"/>
+      <path d="M52 10 Q50 0 44 2 M52 8 Q56 -2 62 0 M46 2 Q40 4 38 -2" stroke="#d8c28a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      <circle cx="53" cy="12" r="1.2" fill="#111"/>
+    </symbol>
+  </defs>
+  <!-- 芬蘭羅瓦涅米：聖誕老人駕著紅色雪橇，馴鹿領頭（朝左） -->
+  <!-- 雪橇與聖誕老人 -->
+  <path d="M130 70 Q130 52 150 52 L206 52 Q216 52 212 64 L206 76 H140 Q130 76 130 70Z" fill="url(#sl)" stroke="#6a1410" stroke-width="1.4"/>
+  <path d="M128 82 H214 Q222 82 224 72 M128 82 Q120 82 120 74" stroke="#c9a02a" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M140 76 V82 M200 76 V82" stroke="#c9a02a" stroke-width="2.4"/>
+  <!-- 禮物袋 -->
+  <path d="M190 52 Q186 28 206 24 Q222 30 214 52Z" fill="#b88a4c" stroke="#6a4a22" stroke-width="1.2"/>
+  <path d="M200 26 Q206 20 212 26" stroke="#6a4a22" stroke-width="2" fill="none"/>
+  <g><rect x="196" y="34" width="8" height="8" fill="#2f9a5e"/><path d="M200 34 V42 M196 38 H204" stroke="#ffd24d" stroke-width="1.2"/></g>
+  <!-- 聖誕老人 -->
+  <circle cx="162" cy="38" r="9" fill="#f6c9a0"/>
+  <path d="M153 36 Q162 52 171 36 Q168 48 162 54 Q156 48 153 36Z" fill="#fff"/>
+  <path d="M152 34 Q162 18 172 34 Q168 28 162 28 Q156 28 152 34Z" fill="#e0342f"/>
+  <path d="M152 34 Q150 40 154 40" stroke="#fff" stroke-width="3" fill="none"/>
+  <circle cx="172" cy="28" r="3.4" fill="#fff"/>
+  <path d="M152 52 Q150 44 162 44 Q176 44 176 54 V58 H152Z" fill="#e0342f"/>
+  <circle cx="159" cy="37" r="1.1" fill="#222"/><circle cx="165" cy="37" r="1.1" fill="#222"/><circle cx="162" cy="40.5" r="1.8" fill="#e58a7a"/>
+  <path d="M170 50 Q180 46 184 40" stroke="#e0342f" stroke-width="5" fill="none" stroke-linecap="round"/><circle cx="185" cy="39" r="3" fill="#fff"/>
+  <!-- 韁繩與馴鹿 -->
+  <path d="M130 62 Q100 60 84 50 M130 66 Q80 70 44 54" stroke="#8a6a3a" stroke-width="1.6" fill="none"/>
+  <use href="#rd" transform="translate(124 38) scale(-1 1)" width="60" height="56"/>
+  <use href="#rd" transform="translate(82 26) scale(-1 1)" width="60" height="56"/>
+  <circle cx="56" cy="46" r="2.6" fill="#e0342f"/>
+  <!-- 雪地 -->
+  <path d="M0 86 Q40 80 80 86 T160 86 T240 86 V96 H0Z" fill="#f4f8fc"/>
+  <path d="M0 92 Q50 88 100 92 T200 92 T240 90" stroke="#cfdbe8" stroke-width="1.4" fill="none"/>
+</svg>

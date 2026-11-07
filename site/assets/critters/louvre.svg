@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="mn" x1="0" x2="1"><stop offset="0" stop-color="#e8dcc0"/><stop offset="1" stop-color="#b5a47c"/></linearGradient>
+    <linearGradient id="gl" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d4f1fa" stop-opacity=".9"/><stop offset="1" stop-color="#6fb2d0" stop-opacity=".85"/></linearGradient>
+    <linearGradient id="rf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a9db0"/><stop offset="1" stop-color="#5f7488"/></linearGradient>
+  </defs>
+  <!-- 法國巴黎羅浮宮：U 形宮殿與前方的玻璃金字塔 -->
+  <rect x="4" y="52" width="26" height="62" fill="url(#mn)" stroke="#a8966c" stroke-width="1"/>
+  <rect x="98" y="52" width="26" height="62" fill="url(#mn)" stroke="#a8966c" stroke-width="1"/>
+  <rect x="30" y="64" width="68" height="50" fill="url(#mn)" stroke="#a8966c" stroke-width="1"/>
+  <!-- 屋頂 -->
+  <path d="M2 52 L10 38 H24 L32 52Z M96 52 L104 38 H118 L126 52Z" fill="url(#rf)" stroke="#4a5a6c" stroke-width="1"/>
+  <path d="M30 64 L38 54 H90 L98 64Z" fill="url(#rf)" stroke="#4a5a6c" stroke-width="1"/>
+  <path d="M52 54 L60 40 H68 L76 54Z" fill="url(#rf)" stroke="#4a5a6c" stroke-width="1"/>
+  <path d="M60 40 L64 30 L68 40Z" fill="#6f8296"/><path d="M64 30 V24" stroke="#c9a02a" stroke-width="2"/>
+  <!-- 窗 -->
+  <g fill="#6a7a8a">
+    <rect x="8" y="60" width="4" height="9" rx="2"/><rect x="16" y="60" width="4" height="9" rx="2"/><rect x="24" y="60" width="4" height="9" rx="2"/><rect x="8" y="78" width="4" height="9" rx="2"/><rect x="16" y="78" width="4" height="9" rx="2"/><rect x="24" y="78" width="4" height="9" rx="2"/>
+    <rect x="102" y="60" width="4" height="9" rx="2"/><rect x="110" y="60" width="4" height="9" rx="2"/><rect x="118" y="60" width="4" height="9" rx="2"/><rect x="102" y="78" width="4" height="9" rx="2"/><rect x="110" y="78" width="4" height="9" rx="2"/><rect x="118" y="78" width="4" height="9" rx="2"/>
+    <rect x="36" y="70" width="4" height="9" rx="2"/><rect x="46" y="70" width="4" height="9" rx="2"/><rect x="56" y="70" width="4" height="9" rx="2"/><rect x="68" y="70" width="4" height="9" rx="2"/><rect x="78" y="70" width="4" height="9" rx="2"/><rect x="88" y="70" width="4" height="9" rx="2"/>
+  </g>
+  <!-- 玻璃金字塔 -->
+  <path d="M38 118 L64 74 L90 118Z" fill="url(#gl)" stroke="#e9f9ff" stroke-width="1.6"/>
+  <path d="M64 74 V118 M50 118 L64 74 M78 118 L64 74" stroke="#e9f9ff" stroke-width="1" opacity=".8"/>
+  <path d="M44 106 H84 M50 96 H78 M56 86 H72" stroke="#e9f9ff" stroke-width=".9" opacity=".75"/>
+  <path d="M60 86 L64 80 L68 86" fill="none" stroke="#fff" stroke-width="1.6" opacity=".9"><animate attributeName="opacity" values=".9;.2;.9" dur="2.2s" repeatCount="indefinite"/></path>
+  <path d="M0 116 H128 V126 H0Z" fill="#d8ccaa"/>
+</svg>

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a87444"/><stop offset="1" stop-color="#5a3a1e"/></linearGradient>
+  </defs>
+  <!-- 亞馬遜河探險船：木造河船、頂篷、煙囪，船上的探險家戴著遮陽帽 -->
+  <rect x="44" y="26" width="3" height="30" fill="#4a3220"/>
+  <path d="M47 28 L68 33 L47 38Z" fill="#2f9a5e"/>
+  <rect x="82" y="30" width="9" height="30" fill="#2a2a33"/><rect x="80" y="27" width="13" height="5" rx="1" fill="#2a2a33"/>
+  <g fill="#cfd5de" opacity=".75"><circle cx="90" cy="20" r="5"/><circle cx="98" cy="12" r="6"/><circle cx="108" cy="6" r="6"/></g>
+  <!-- 頂篷 -->
+  <path d="M14 56 L24 40 H76 L88 56Z" fill="#f2e6c4" stroke="#b9a273" stroke-width="1.2"/>
+  <path d="M30 40 L28 56 M44 40 L43 56 M58 40 L58 56 M70 40 L72 56" stroke="#c9b27a" stroke-width="1.2"/>
+  <g fill="#6a4a2a"><rect x="18" y="56" width="3" height="22"/><rect x="82" y="56" width="3" height="22"/></g>
+  <!-- 探險家 -->
+  <g>
+    <circle cx="36" cy="62" r="5" fill="#f2c9a0"/><path d="M29 60 Q36 50 43 60Z" fill="#d8c28a" stroke="#a89464" stroke-width=".8"/><rect x="31" y="67" width="10" height="14" rx="3" fill="#6a8a4a"/>
+    <circle cx="56" cy="62" r="5" fill="#c58e60"/><path d="M49 60 Q56 50 63 60Z" fill="#d8c28a" stroke="#a89464" stroke-width=".8"/><rect x="51" y="67" width="10" height="14" rx="3" fill="#b8623a"/>
+    <path d="M62 72 L72 66" stroke="#4a3220" stroke-width="2.4" stroke-linecap="round"/>
+  </g>
+  <!-- 船身與欄杆 -->
+  <path d="M6 78 L8 74 H96 L112 70 L108 90 Q100 104 86 106 H26 Q12 100 6 78Z" fill="url(#h)"/>
+  <path d="M10 82 H104" stroke="#e2c27a" stroke-width="2.4"/>
+  <rect x="8" y="72" width="94" height="3" fill="#e8d8b0"/>
+  <g stroke="#e8d8b0" stroke-width="1.6"><path d="M16 72 V78 M30 72 V78 M44 72 V78 M58 72 V78 M72 72 V78 M86 72 V78"/></g>
+  <circle cx="56" cy="92" r="4" fill="#f2e6c4" stroke="#6a4a2a" stroke-width="1.4"/><circle cx="76" cy="92" r="4" fill="#f2e6c4" stroke="#6a4a2a" stroke-width="1.4"/><circle cx="36" cy="92" r="4" fill="#f2e6c4" stroke="#6a4a2a" stroke-width="1.4"/>
+  <!-- 河水 -->
+  <path d="M0 108 Q16 102 32 108 T64 108 T96 108 T128 108 V124 H0Z" fill="#8a6a3a" opacity=".9"/>
+  <path d="M0 108 Q16 102 32 108 T64 108 T96 108 T128 108" stroke="#d7c08a" stroke-width="2" fill="none"/>
+</svg>

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="cl" x1="0" x2="1"><stop offset="0" stop-color="#e9e5da"/><stop offset=".5" stop-color="#cfc9b8"/><stop offset="1" stop-color="#9e9884"/></linearGradient>
+  </defs>
+  <!-- 肯亞奈洛比：肯雅塔國際會議中心（KICC），圓柱形高塔、頂端圓錐屋頂 -->
+  <!-- 旁邊的會議廳 -->
+  <rect x="62" y="84" width="60" height="32" fill="#e6dfce" stroke="#aaa38e" stroke-width="1"/>
+  <path d="M62 84 H122 L112 72 H72Z" fill="#c9c1ab" stroke="#aaa38e" stroke-width="1"/>
+  <g fill="#6d86a0"><rect x="70" y="92" width="8" height="12"/><rect x="84" y="92" width="8" height="12"/><rect x="98" y="92" width="8" height="12"/></g>
+  <!-- 圓柱塔 -->
+  <rect x="26" y="34" width="32" height="82" fill="url(#cl)" stroke="#8d8772" stroke-width="1.2"/>
+  <g stroke="#a39d88" stroke-width="1.2"><path d="M32 36 V116 M38 36 V116 M44 36 V116 M50 36 V116"/></g>
+  <g fill="#6d86a0"><rect x="29" y="46" width="26" height="4"/><rect x="29" y="60" width="26" height="4"/><rect x="29" y="74" width="26" height="4"/><rect x="29" y="88" width="26" height="4"/><rect x="29" y="102" width="26" height="4"/></g>
+  <!-- 頂端 -->
+  <path d="M22 34 H62 L56 26 H28Z" fill="#b6ae98" stroke="#8d8772" stroke-width="1.2"/>
+  <path d="M30 26 L42 6 L54 26Z" fill="#d86a3a" stroke="#8a3a1a" stroke-width="1.2"/>
+  <path d="M42 6 V0" stroke="#59636f" stroke-width="2"/>
+  <rect x="0" y="116" width="128" height="8" fill="#8fb36a"/>
+</svg>

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <radialGradient id="pd" cx="40%" cy="30%" r="85%"><stop offset="0" stop-color="#7ec26a"/><stop offset="1" stop-color="#2f7a3a"/></radialGradient>
+    <linearGradient id="sg" x1="0" x2="1"><stop offset="0" stop-color="#8fcc7a"/><stop offset="1" stop-color="#3a8a45"/></linearGradient>
+  </defs>
+  <!-- 墨西哥仙人掌：高大的柱狀仙人掌，前面是長滿紅色果實的扇形仙人掌（國旗上的那種） -->
+  <ellipse cx="64" cy="122" rx="52" ry="5" fill="#d8b878"/>
+  <!-- 高柱仙人掌 -->
+  <path d="M48 120 V40 Q48 16 62 16 Q76 16 76 40 V120Z" fill="url(#sg)" stroke="#2f7a3a" stroke-width="1.2"/>
+  <path d="M48 76 H34 Q26 76 26 66 V50 Q26 44 32 44 Q38 44 38 50 V64 H48Z" fill="url(#sg)" stroke="#2f7a3a" stroke-width="1.2"/>
+  <path d="M76 90 H90 Q98 90 98 80 V64 Q98 58 92 58 Q86 58 86 64 V78 H76Z" fill="url(#sg)" stroke="#2f7a3a" stroke-width="1.2"/>
+  <g stroke="#2f7a3a" stroke-width="1" opacity=".7"><path d="M56 22 V118 M62 18 V118 M68 22 V118"/></g>
+  <!-- 紅花 -->
+  <g fill="#ff5a7a"><circle cx="62" cy="14" r="4"/><circle cx="56" cy="18" r="3"/><circle cx="68" cy="18" r="3"/></g><circle cx="62" cy="14" r="1.6" fill="#ffd24d"/>
+  <!-- 扇形仙人掌（Nopal） -->
+  <g>
+    <ellipse cx="22" cy="102" rx="11" ry="15" transform="rotate(-8 22 102)" fill="url(#pd)" stroke="#2f7a3a" stroke-width="1.2"/>
+    <ellipse cx="14" cy="80" rx="10" ry="13" transform="rotate(-24 14 80)" fill="url(#pd)" stroke="#2f7a3a" stroke-width="1.2"/>
+    <ellipse cx="32" cy="82" rx="10" ry="13" transform="rotate(18 32 82)" fill="url(#pd)" stroke="#2f7a3a" stroke-width="1.2"/>
+    <ellipse cx="104" cy="106" rx="11" ry="14" transform="rotate(10 104 106)" fill="url(#pd)" stroke="#2f7a3a" stroke-width="1.2"/>
+    <ellipse cx="112" cy="86" rx="10" ry="13" transform="rotate(22 112 86)" fill="url(#pd)" stroke="#2f7a3a" stroke-width="1.2"/>
+    <ellipse cx="94" cy="86" rx="9" ry="12" transform="rotate(-18 94 86)" fill="url(#pd)" stroke="#2f7a3a" stroke-width="1.2"/>
+  </g>
+  <g fill="#e8d8a0"><circle cx="18" cy="98" r="1"/><circle cx="26" cy="106" r="1"/><circle cx="12" cy="78" r="1"/><circle cx="34" cy="80" r="1"/><circle cx="100" cy="104" r="1"/><circle cx="108" cy="110" r="1"/><circle cx="110" cy="84" r="1"/><circle cx="92" cy="84" r="1"/></g>
+  <g fill="#d8264a"><ellipse cx="14" cy="68" rx="3.4" ry="4.6"/><ellipse cx="32" cy="70" rx="3.4" ry="4.6"/><ellipse cx="112" cy="74" rx="3.4" ry="4.6"/><ellipse cx="94" cy="74" rx="3.4" ry="4.6"/></g>
+</svg>

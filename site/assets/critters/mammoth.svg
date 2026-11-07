@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <radialGradient id="mf" cx="40%" cy="30%" r="90%"><stop offset="0" stop-color="#9a6a42"/><stop offset=".7" stop-color="#6a4326"/><stop offset="1" stop-color="#3f2814"/></radialGradient>
+  </defs>
+  <!-- 西伯利亞長毛象：高聳的圓頭、長長彎曲的象牙、披著一身長毛（朝左） -->
+  <ellipse cx="66" cy="124" rx="44" ry="3.5" fill="#000" opacity=".25"/>
+  <!-- 遠側腿 -->
+  <rect x="44" y="86" width="14" height="36" rx="6" fill="#3f2814"/><rect x="88" y="86" width="14" height="36" rx="6" fill="#3f2814"/>
+  <!-- 身體 -->
+  <path d="M28 66 Q26 38 52 32 Q80 28 100 44 Q116 62 110 88 Q104 100 92 100 L50 100 Q32 96 28 66Z" fill="url(#mf)"/>
+  <path d="M40 98 Q38 108 42 114 M54 100 Q54 110 58 116 M72 100 Q72 108 76 114 M90 100 Q92 110 96 114" stroke="#5a3a20" stroke-width="3.6" fill="none" stroke-linecap="round"/>
+  <path d="M50 44 Q70 38 90 50 M44 60 Q70 52 100 62" stroke="#5a3a20" stroke-width="2" fill="none" opacity=".7"/>
+  <!-- 近側腿 -->
+  <rect x="34" y="88" width="16" height="34" rx="7" fill="#7a5030"/><path d="M34 116 Q42 122 50 116 V122 H34Z" fill="#5a3a20"/>
+  <rect x="80" y="88" width="16" height="34" rx="7" fill="#7a5030"/><path d="M80 116 Q88 122 96 116 V122 H80Z" fill="#5a3a20"/>
+  <path d="M110 70 Q118 74 114 88" stroke="#3f2814" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <!-- 頭與長鼻 -->
+  <path d="M26 56 Q18 34 38 22 Q56 14 62 36 Q64 56 50 74 Q40 84 36 100 L26 100 Q28 82 32 72Z" fill="url(#mf)"/>
+  <path d="M22 50 Q24 34 38 26" stroke="#5a3a20" stroke-width="3" fill="none"/>
+  <path d="M30 100 Q22 96 24 84 Q26 74 32 72" fill="#7a5030"/>
+  <circle cx="42" cy="46" r="2.4" fill="#17171d"/>
+  <ellipse cx="52" cy="50" rx="6" ry="9" transform="rotate(-10 52 50)" fill="#5a3a20"/>
+  <!-- 象牙 -->
+  <path d="M34 68 Q10 80 12 106 Q16 118 30 108 Q22 104 24 92 Q28 82 40 72Z" fill="#f0e4c2" stroke="#b9a878" stroke-width="1.4"/>
+  <path d="M30 106 Q26 112 30 118" stroke="#f0e4c2" stroke-width="4" fill="none" stroke-linecap="round"/>
+</svg>

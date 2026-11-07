@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <radialGradient id="dm" cx="40%" cy="30%" r="80%"><stop offset="0" stop-color="#e9fff7"/><stop offset="1" stop-color="#7fd9c4"/></radialGradient>
+    <linearGradient id="sc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dfe5ee"/><stop offset="1" stop-color="#7d8aa0"/></linearGradient>
+    <linearGradient id="bm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b9ffd9" stop-opacity=".75"/><stop offset="1" stop-color="#b9ffd9" stop-opacity=".12"/></linearGradient>
+    <radialGradient id="al" cx="40%" cy="30%" r="80%"><stop offset="0" stop-color="#a6f08a"/><stop offset="1" stop-color="#3f9a3a"/></radialGradient>
+  </defs>
+  <!-- 加州沙漠：UFO 與外星人（光束會閃動） -->
+  <path d="M46 40 L24 122 H104 L82 40Z" fill="url(#bm)"><animate attributeName="opacity" values=".95;.5;.95" dur="1.4s" repeatCount="indefinite"/></path>
+  <!-- 外星人 -->
+  <g>
+    <path d="M52 120 L52 100 M58 120 L58 100" stroke="#3f9a3a" stroke-width="3" stroke-linecap="round"/>
+    <ellipse cx="55" cy="94" rx="8" ry="9" fill="url(#al)"/>
+    <path d="M47 92 Q39 98 40 104 M63 92 Q71 98 70 104" stroke="#3f9a3a" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+    <ellipse cx="55" cy="76" rx="12" ry="14" fill="url(#al)"/>
+    <ellipse cx="49" cy="76" rx="4.4" ry="6.4" transform="rotate(20 49 76)" fill="#0c140c"/><ellipse cx="61" cy="76" rx="4.4" ry="6.4" transform="rotate(-20 61 76)" fill="#0c140c"/>
+    <circle cx="48" cy="73" r="1" fill="#fff"/><circle cx="60" cy="73" r="1" fill="#fff"/>
+    <path d="M52 86 Q55 88 58 86" stroke="#1f5a1c" stroke-width="1.2" fill="none"/>
+    <path d="M50 64 Q46 54 40 54 M60 64 Q64 54 70 54" stroke="#3f9a3a" stroke-width="2" fill="none"/><circle cx="40" cy="54" r="2" fill="#ffe14d"/><circle cx="70" cy="54" r="2" fill="#ffe14d"/>
+  </g>
+  <!-- 小一點的外星人 -->
+  <g transform="translate(34 14) scale(.7)">
+    <ellipse cx="82" cy="108" rx="7" ry="8" fill="url(#al)"/><ellipse cx="82" cy="94" rx="10" ry="11" fill="url(#al)"/>
+    <ellipse cx="77.5" cy="94" rx="3.4" ry="5" transform="rotate(20 77.5 94)" fill="#0c140c"/><ellipse cx="86.5" cy="94" rx="3.4" ry="5" transform="rotate(-20 86.5 94)" fill="#0c140c"/>
+    <path d="M78 116 V122 M86 116 V122" stroke="#3f9a3a" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  <!-- 飛碟 -->
+  <ellipse cx="64" cy="34" rx="44" ry="12" fill="url(#sc)" stroke="#5f6c82" stroke-width="1.4"/>
+  <path d="M42 32 Q44 10 64 8 Q84 10 86 32Z" fill="url(#dm)" stroke="#5aa894" stroke-width="1.2" opacity=".95"/>
+  <path d="M52 20 Q58 12 66 12" stroke="#fff" stroke-width="2" fill="none" opacity=".8" stroke-linecap="round"/>
+  <g><circle cx="30" cy="36" r="2.8" fill="#ff5a4a"><animate attributeName="fill" values="#ff5a4a;#ffe14d;#4af0b0;#ff5a4a" dur="1.2s" repeatCount="indefinite"/></circle>
+  <circle cx="48" cy="41" r="2.8" fill="#ffe14d"><animate attributeName="fill" values="#ffe14d;#4af0b0;#ff5a4a;#ffe14d" dur="1.2s" repeatCount="indefinite"/></circle>
+  <circle cx="64" cy="43" r="2.8" fill="#4af0b0"><animate attributeName="fill" values="#4af0b0;#ff5a4a;#ffe14d;#4af0b0" dur="1.2s" repeatCount="indefinite"/></circle>
+  <circle cx="80" cy="41" r="2.8" fill="#ff5a4a"><animate attributeName="fill" values="#ff5a4a;#ffe14d;#4af0b0;#ff5a4a" dur="1.2s" repeatCount="indefinite"/></circle>
+  <circle cx="98" cy="36" r="2.8" fill="#ffe14d"><animate attributeName="fill" values="#ffe14d;#4af0b0;#ff5a4a;#ffe14d" dur="1.2s" repeatCount="indefinite"/></circle></g>
+</svg>

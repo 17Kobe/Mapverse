@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <radialGradient id="vx" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#0a0f2a" stop-opacity=".95"/><stop offset=".6" stop-color="#2a1a6a" stop-opacity=".7"/><stop offset="1" stop-color="#2a1a6a" stop-opacity="0"/></radialGradient>
+  </defs>
+  <!-- 百慕達三角：旋轉的漩渦與閃電，飛機和船被吸進去後消失，再從別處重新出現 -->
+  <circle cx="64" cy="70" r="58" fill="url(#vx)"/>
+  <g>
+    <animateTransform attributeName="transform" type="rotate" values="0 64 70;360 64 70" dur="7s" repeatCount="indefinite"/>
+    <path d="M64 70 Q78 58 90 70 Q96 92 64 96 Q30 92 30 64 Q32 36 64 32 Q100 34 104 68" stroke="#7fe8ff" stroke-width="3" fill="none" stroke-linecap="round" opacity=".85"/>
+    <path d="M64 70 Q50 82 38 70 Q32 48 64 44 Q96 46 98 72 Q94 100 60 104" stroke="#b58cff" stroke-width="2.4" fill="none" stroke-linecap="round" opacity=".8"/>
+    <path d="M64 70 Q70 64 76 70 Q74 80 64 80 Q54 78 54 68" stroke="#fff" stroke-width="2" fill="none" opacity=".8"/>
+  </g>
+  <!-- 發光的三角形邊界 -->
+  <path d="M64 14 L116 110 L12 110Z" fill="none" stroke="#5dffb0" stroke-width="2.2" stroke-dasharray="6 4" opacity=".9"><animate attributeName="stroke-dashoffset" values="0;20" dur="1.6s" repeatCount="indefinite"/></path>
+  <!-- 閃電 -->
+  <g fill="#fff6a8" stroke="#ffd24d" stroke-width=".8">
+    <path d="M30 16 L24 34 L31 33 L26 50 L40 28 L32 29 L38 16Z"><animate attributeName="opacity" values="0;0;1;0;1;0;0;0" dur="3.2s" repeatCount="indefinite"/></path>
+    <path d="M100 20 L94 36 L101 35 L96 52 L110 30 L102 31 L108 20Z"><animate attributeName="opacity" values="0;0;0;0;1;0;1;0" dur="3.2s" repeatCount="indefinite"/></path>
+  </g>
+  <!-- 被吸進去的飛機（繞圈、縮小、消失） -->
+  <g>
+    <animateMotion dur="6s" repeatCount="indefinite" path="M104 40 C112 80 80 108 50 96 C24 84 34 52 56 56 C72 60 66 72 64 70"/>
+    <g><animate attributeName="opacity" values="1;1;1;0;0" keyTimes="0;.5;.8;.92;1" dur="6s" repeatCount="indefinite"/>
+      <animateTransform attributeName="transform" type="scale" values="1;1;.8;.3;.1" keyTimes="0;.4;.6;.85;1" dur="6s" repeatCount="indefinite"/>
+      <path d="M-8 0 L6 -1.6 L9 0 L6 1.6Z M-1 0 L-5 -7 L-2 -7 L3 0 L-2 7 L-5 7Z M-8 0 L-9 -3 L-7 -3 L-5 0 L-7 3 L-9 3Z" fill="#f4f6fa" stroke="#7a8496" stroke-width=".8"/>
+    </g>
+  </g>
+  <!-- 被吸進去的小船 -->
+  <g>
+    <animateMotion dur="6s" begin="3s" repeatCount="indefinite" path="M22 96 C30 120 78 118 96 92 C108 66 80 44 60 52 C48 58 56 70 64 70"/>
+    <g><animate attributeName="opacity" values="1;1;1;0;0" keyTimes="0;.5;.8;.92;1" dur="6s" begin="3s" repeatCount="indefinite"/>
+      <animateTransform attributeName="transform" type="scale" values="1;1;.8;.3;.1" keyTimes="0;.4;.6;.85;1" dur="6s" begin="3s" repeatCount="indefinite"/>
+      <path d="M-8 2 L8 2 L5 7 L-5 7Z" fill="#8a5a2c"/><path d="M0 2 V-8 L6 0Z" fill="#fff"/>
+    </g>
+  </g>
+</svg>

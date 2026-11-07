@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="bk" x1="0" x2="1"><stop offset="0" stop-color="#e0b97a"/><stop offset="1" stop-color="#a97f48"/></linearGradient>
+    <radialGradient id="tr" cx="40%" cy="30%" r="80%"><stop offset="0" stop-color="#8fd16a"/><stop offset="1" stop-color="#2f7a3a"/></radialGradient>
+  </defs>
+  <!-- 巴比倫空中花園：層層退縮的梯田平台，種滿樹木與花，水從頂端流下 -->
+  <path d="M4 118 L22 98 H106 L124 118Z" fill="url(#bk)" stroke="#7a5a30" stroke-width="1.2"/>
+  <path d="M22 98 L32 80 H96 L106 98Z" fill="#cfa66a" stroke="#7a5a30" stroke-width="1.2"/>
+  <path d="M32 80 L42 62 H86 L96 80Z" fill="url(#bk)" stroke="#7a5a30" stroke-width="1.2"/>
+  <path d="M42 62 L52 46 H76 L86 62Z" fill="#cfa66a" stroke="#7a5a30" stroke-width="1.2"/>
+  <!-- 拱形柱廊 -->
+  <g fill="#6a4a26"><path d="M30 118 V108 Q34 102 38 108 V118Z M48 118 V108 Q52 102 56 108 V118Z M72 118 V108 Q76 102 80 108 V118Z M90 118 V108 Q94 102 98 108 V118Z"/></g>
+  <!-- 瀑布 -->
+  <path d="M60 46 Q58 70 60 98 L68 98 Q70 70 68 46Z" fill="#9fdcf0" opacity=".85"/>
+  <path d="M60 98 Q64 104 68 98" fill="#cfeefa"/>
+  <!-- 各層的樹與花 -->
+  <g>
+    <circle cx="30" cy="94" r="7" fill="url(#tr)"/><circle cx="44" cy="92" r="6" fill="url(#tr)"/><circle cx="84" cy="92" r="6" fill="url(#tr)"/><circle cx="100" cy="94" r="7" fill="url(#tr)"/>
+    <circle cx="42" cy="76" r="6" fill="url(#tr)"/><circle cx="52" cy="74" r="5" fill="url(#tr)"/><circle cx="78" cy="74" r="5" fill="url(#tr)"/><circle cx="88" cy="76" r="6" fill="url(#tr)"/>
+    <circle cx="50" cy="58" r="5" fill="url(#tr)"/><circle cx="78" cy="58" r="5" fill="url(#tr)"/>
+    <circle cx="56" cy="42" r="6" fill="url(#tr)"/><circle cx="64" cy="38" r="7" fill="url(#tr)"/><circle cx="72" cy="42" r="6" fill="url(#tr)"/>
+  </g>
+  <g fill="#ff7a9a"><circle cx="26" cy="96" r="1.6"/><circle cx="34" cy="92" r="1.6"/><circle cx="98" cy="96" r="1.6"/><circle cx="104" cy="92" r="1.6"/><circle cx="40" cy="78" r="1.5"/><circle cx="90" cy="78" r="1.5"/><circle cx="64" cy="34" r="1.6"/></g>
+  <g fill="#ffd24d"><circle cx="48" cy="94" r="1.4"/><circle cx="80" cy="94" r="1.4"/><circle cx="46" cy="60" r="1.4"/><circle cx="82" cy="60" r="1.4"/></g>
+  <rect x="0" y="118" width="128" height="8" fill="#d8c08c"/>
+</svg>

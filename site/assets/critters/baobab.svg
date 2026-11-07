@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="tk" x1="0" x2="1"><stop offset="0" stop-color="#b79a78"/><stop offset=".5" stop-color="#8c7152"/><stop offset="1" stop-color="#5f4a32"/></linearGradient>
+    <radialGradient id="lf" cx="40%" cy="30%" r="80%"><stop offset="0" stop-color="#9ccf62"/><stop offset="1" stop-color="#4f8f34"/></radialGradient>
+  </defs>
+  <!-- 非洲猴麵包樹：粗得像瓶子的樹幹，枝條像樹根般朝天伸展，稀疏的綠葉 -->
+  <ellipse cx="64" cy="122" rx="48" ry="5" fill="#d8b878"/>
+  <path d="M42 122 Q50 112 52 92 Q50 70 54 54 Q56 44 50 36 M78 36 Q74 44 76 54 Q80 70 76 92 Q78 112 86 122Z" fill="url(#tk)" stroke="#5f4a32" stroke-width="1.2"/>
+  <path d="M42 122 Q50 112 52 92 Q50 70 54 54 L76 54 Q80 70 76 92 Q78 112 86 122Z" fill="url(#tk)"/>
+  <path d="M54 54 Q40 44 28 28 M60 52 Q56 36 50 18 M68 52 Q72 36 80 16 M76 54 Q90 44 102 26 M64 50 L64 30" stroke="#6f5a40" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <g stroke="#5f4a32" stroke-width="1.2" opacity=".6" fill="none"><path d="M56 60 Q58 92 52 116 M64 56 Q66 90 64 118 M72 60 Q70 92 76 116"/></g>
+  <g fill="url(#lf)">
+    <ellipse cx="26" cy="26" rx="9" ry="6"/><ellipse cx="36" cy="18" rx="8" ry="5.5"/><ellipse cx="48" cy="14" rx="8" ry="5.5"/><ellipse cx="60" cy="10" rx="8" ry="5.5"/>
+    <ellipse cx="76" cy="12" rx="8" ry="5.5"/><ellipse cx="88" cy="16" rx="8" ry="5.5"/><ellipse cx="100" cy="22" rx="9" ry="6"/><ellipse cx="64" cy="26" rx="8" ry="5"/><ellipse cx="46" cy="30" rx="7" ry="4.6"/><ellipse cx="84" cy="30" rx="7" ry="4.6"/>
+  </g>
+  <!-- 懸掛的果實 -->
+  <g fill="#8a6a3a"><ellipse cx="30" cy="38" rx="2.4" ry="4"/><ellipse cx="96" cy="36" rx="2.4" ry="4"/></g>
+</svg>

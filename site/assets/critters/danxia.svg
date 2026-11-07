@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <pattern id="dx" width="40" height="30" patternUnits="userSpaceOnUse" patternTransform="rotate(-14)">
+      <rect width="40" height="5" y="0" fill="#c8462a"/><rect width="40" height="4" y="5" fill="#f08a3a"/><rect width="40" height="5" y="9" fill="#f2c648"/><rect width="40" height="3" y="14" fill="#f4e6b0"/><rect width="40" height="5" y="17" fill="#6fae62"/><rect width="40" height="4" y="22" fill="#d8643a"/><rect width="40" height="4" y="26" fill="#8a3a68"/>
+    </pattern>
+    <linearGradient id="sh" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".35"/></linearGradient>
+  </defs>
+  <!-- 中國張掖七彩丹霞：丘陵被紅、橙、黃、白、綠等色岩層一條條染出彩虹條紋 -->
+  <path d="M0 116 L16 86 L28 70 L42 52 L54 40 L60 36 L70 52 L84 66 L100 54 L112 70 L128 96 V116Z" fill="url(#dx)"/>
+  <path d="M0 116 L16 86 L28 70 L42 52 L54 40 L60 36 L70 52 L84 66 L100 54 L112 70 L128 96 V116Z" fill="url(#sh)"/>
+  <path d="M26 116 L40 92 L54 80 L68 92 L84 116Z" fill="url(#dx)" stroke="#8a3a28" stroke-width="1"/>
+  <path d="M26 116 L40 92 L54 80 L68 92 L84 116Z" fill="url(#sh)"/>
+  <path d="M60 36 L62 56 L58 76 M54 40 L50 60 M16 86 L22 104 M100 54 L96 74 L104 96 M112 70 L116 90" stroke="#7a2a20" stroke-width="1.4" opacity=".55" fill="none" stroke-linecap="round"/>
+  <rect x="0" y="116" width="128" height="10" fill="#d8b070"/>
+  <g fill="#7a8a4a"><circle cx="10" cy="118" r="3"/><circle cx="116" cy="120" r="3.4"/><circle cx="92" cy="119" r="2.6"/></g>
+</svg>

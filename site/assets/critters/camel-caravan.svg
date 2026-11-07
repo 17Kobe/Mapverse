@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 6 200 86">
   <defs>
     <g id="cm">
       <rect x="9" y="38" width="5" height="26" rx="2" fill="#a9763a"/><rect x="40" y="38" width="5" height="26" rx="2" fill="#a9763a"/>
@@ -13,6 +13,7 @@
     </g>
   </defs>
   <!-- 撒哈拉駱駝商隊：三隻駱駝用繩子連成一列，領頭的駱駝上坐著商人（朝左走） -->
+  <g fill="#4a3a20" opacity=".35"><ellipse cx="38" cy="85" rx="26" ry="3"/><ellipse cx="100" cy="89" rx="26" ry="3"/><ellipse cx="162" cy="87" rx="26" ry="3"/></g>
   <path d="M34 36 Q56 40 70 38 M92 36 Q112 40 128 38" stroke="#6a4020" stroke-width="1.4" fill="none"/>
   <use xlink:href="#cm" xmlns:xlink="http://www.w3.org/1999/xlink" transform="translate(130 22)"/>
   <use xlink:href="#cm" xmlns:xlink="http://www.w3.org/1999/xlink" transform="translate(68 24)"/>

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="gg" x1="0" x2="1"><stop offset="0" stop-color="#e2553a"/><stop offset="1" stop-color="#a8301c"/></linearGradient>
+  </defs>
+  <!-- 舊金山金門大橋：國際橘色的雙塔懸索橋，海面飄著霧 -->
+  <path d="M0 78 Q20 62 40 70 L40 100 H0Z" fill="#7a9a5a"/><path d="M128 74 Q112 60 92 70 L92 100 H128Z" fill="#7a9a5a"/>
+  <rect x="0" y="96" width="128" height="32" fill="#3f78a8"/>
+  <path d="M0 102 Q16 99 32 102 T64 102 T96 102 T128 102" stroke="#cfe8f8" stroke-width="1.2" fill="none"/>
+  <!-- 橋塔 -->
+  <g fill="url(#gg)" stroke="#7a1a10" stroke-width=".8">
+    <rect x="34" y="22" width="7" height="82"/><rect x="48" y="22" width="7" height="82"/>
+    <rect x="34" y="34" width="21" height="5"/><rect x="34" y="52" width="21" height="5"/><rect x="34" y="70" width="21" height="5"/>
+    <rect x="76" y="22" width="7" height="82"/><rect x="90" y="22" width="7" height="82"/>
+    <rect x="76" y="34" width="21" height="5"/><rect x="76" y="52" width="21" height="5"/><rect x="76" y="70" width="21" height="5"/>
+  </g>
+  <!-- 橋面 -->
+  <rect x="0" y="82" width="128" height="5" fill="#b33a24"/><rect x="0" y="81" width="128" height="1.4" fill="#e9a08a"/>
+  <!-- 主纜與吊索 -->
+  <path d="M0 74 Q16 80 38 24 Q65 80 90 24 Q110 80 128 74" stroke="#d24a30" stroke-width="2.2" fill="none"/>
+  <path d="M38 24 Q65 80 90 24" stroke="#d24a30" stroke-width="2.2" fill="none"/>
+  <g stroke="#d24a30" stroke-width=".9"><path d="M44 42 V82 M52 52 V82 M60 56 V82 M68 56 V82 M76 52 V82 M84 42 V82 M10 76 V82 M20 70 V82 M28 52 V82 M102 52 V82 M110 70 V82 M118 76 V82"/></g>
+  <!-- 霧 -->
+  <g fill="#fff" opacity=".7">
+    <ellipse cx="30" cy="92" rx="30" ry="6"><animate attributeName="cx" values="20;50;20" dur="9s" repeatCount="indefinite"/></ellipse>
+    <ellipse cx="100" cy="86" rx="28" ry="5"><animate attributeName="cx" values="110;80;110" dur="11s" repeatCount="indefinite"/></ellipse>
+  </g>
+</svg>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <radialGradient id="sp" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#4fd8d0"/><stop offset=".45" stop-color="#4aa8e0"/><stop offset=".6" stop-color="#f2c648"/><stop offset=".78" stop-color="#e8743a"/><stop offset="1" stop-color="#b03a22"/></radialGradient>
+    <linearGradient id="pl" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#cfeefa" stop-opacity=".25"/></linearGradient>
+  </defs>
+  <!-- 黃石公園：老忠實泉定時噴發，前方是七彩的大稜鏡溫泉，背後有松林與山 -->
+  <path d="M0 74 L22 44 L40 62 L56 36 L78 64 L96 46 L128 78 V90 H0Z" fill="#7d8aa0"/>
+  <path d="M56 36 L62 46 L52 46Z M22 44 L27 52 L17 52Z M96 46 L101 54 L91 54Z" fill="#fff"/>
+  <path d="M0 86 H128 V128 H0Z" fill="#7aa05a"/>
+  <g fill="#2f6a3a"><path d="M6 96 L12 76 L18 96Z M16 100 L23 78 L30 100Z M98 98 L105 78 L112 98Z M110 100 L117 80 L124 100Z M88 96 L94 80 L100 96Z"/></g>
+  <!-- 彩虹溫泉 -->
+  <ellipse cx="64" cy="112" rx="50" ry="12" fill="url(#sp)"/>
+  <ellipse cx="64" cy="112" rx="50" ry="12" fill="none" stroke="#fff" stroke-width="1" opacity=".4"/>
+  <!-- 噴發的間歇泉 -->
+  <path d="M60 106 Q64 112 68 106 L66 98 L62 98Z" fill="#ddd6c4"/>
+  <g transform="translate(64 100)">
+    <g>
+      <animateTransform attributeName="transform" type="scale" values="1 .1;1 1;1 1;1 .1" keyTimes="0;.25;.7;1" dur="5s" repeatCount="indefinite"/>
+      <path d="M-4 0 Q-6 -30 -10 -50 Q-4 -62 0 -66 Q4 -62 10 -50 Q6 -30 4 0Z" fill="url(#pl)"/>
+      <circle cx="-9" cy="-54" r="7" fill="#fff" opacity=".85"/><circle cx="9" cy="-52" r="8" fill="#fff" opacity=".85"/><circle cx="0" cy="-66" r="9" fill="#fff" opacity=".9"/>
+    </g>
+  </g>
+  <g fill="#fff" opacity=".6"><circle cx="40" cy="104" r="3"><animate attributeName="cy" values="106;96;106" dur="3s" repeatCount="indefinite"/><animate attributeName="opacity" values=".6;0;.6" dur="3s" repeatCount="indefinite"/></circle><circle cx="92" cy="106" r="2.6"><animate attributeName="cy" values="108;98;108" dur="3.6s" repeatCount="indefinite"/><animate attributeName="opacity" values=".6;0;.6" dur="3.6s" repeatCount="indefinite"/></circle></g>
+</svg>

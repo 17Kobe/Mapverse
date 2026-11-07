@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="sn" x1="0" x2="1"><stop offset="0" stop-color="#efe1bc"/><stop offset="1" stop-color="#bda877"/></linearGradient>
+  </defs>
+  <!-- 墨西哥奇琴伊察：庫庫爾坎金字塔，九層階梯、四面樓梯，頂上有神廟 -->
+  <path d="M6 118 L24 92 H104 L122 118Z" fill="url(#sn)" stroke="#8c7a50" stroke-width="1.2"/>
+  <path d="M24 92 L34 74 H94 L104 92Z" fill="#e4d4a8" stroke="#8c7a50" stroke-width="1.2"/>
+  <path d="M34 74 L42 58 H86 L94 74Z" fill="url(#sn)" stroke="#8c7a50" stroke-width="1.2"/>
+  <path d="M42 58 L48 46 H80 L86 58Z" fill="#e4d4a8" stroke="#8c7a50" stroke-width="1.2"/>
+  <!-- 神廟 -->
+  <rect x="52" y="30" width="24" height="16" fill="#d5c18f" stroke="#8c7a50" stroke-width="1.2"/>
+  <rect x="48" y="26" width="32" height="5" fill="#bda877" stroke="#8c7a50" stroke-width="1"/>
+  <rect x="60" y="36" width="8" height="10" fill="#3a2a18"/>
+  <!-- 中央階梯 -->
+  <path d="M56 118 L60 46 H68 L72 118Z" fill="#f3e8c8" stroke="#8c7a50" stroke-width="1"/>
+  <g stroke="#b5a173" stroke-width="1"><path d="M58 108 H70 M59 98 H69 M59 88 H69 M60 78 H68 M60 68 H68 M61 58 H67"/></g>
+  <!-- 羽蛇頭（基座） -->
+  <ellipse cx="52" cy="114" rx="6" ry="4" fill="#6f9a52" stroke="#3f6a2a" stroke-width="1"/><ellipse cx="76" cy="114" rx="6" ry="4" fill="#6f9a52" stroke="#3f6a2a" stroke-width="1"/>
+  <g stroke="#a8946a" stroke-width="1" opacity=".8"><path d="M14 106 H114 M28 84 H100 M38 66 H90 M45 52 H83"/></g>
+  <rect x="0" y="118" width="128" height="8" fill="#7da35a"/>
+</svg>

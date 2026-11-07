@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="ur" x1="0" x2="1"><stop offset="0" stop-color="#e0703a"/><stop offset=".5" stop-color="#c2492a"/><stop offset="1" stop-color="#7f2a1a"/></linearGradient>
+  </defs>
+  <!-- 烏魯魯（艾爾斯岩）：澳洲中部荒漠上孤立的紅色巨岩，岩面有垂直的溝紋 -->
+  <path d="M2 112 Q8 84 22 74 Q38 64 52 62 Q72 58 92 66 Q110 72 120 92 L126 112Z" fill="url(#ur)"/>
+  <path d="M22 74 Q38 64 52 62 Q72 58 92 66 Q110 72 120 92 Q100 80 80 78 Q56 76 38 84 Q26 90 20 104Z" fill="#f08a4a" opacity=".6"/>
+  <g stroke="#7f2a1a" stroke-width="1.6" opacity=".65" fill="none" stroke-linecap="round">
+    <path d="M30 86 Q32 98 30 110 M42 78 Q46 94 42 110 M56 76 Q60 94 56 112 M70 76 Q74 94 70 112 M84 80 Q88 96 84 112 M98 86 Q100 98 98 110 M110 94 Q112 102 110 110"/>
+  </g>
+  <path d="M60 64 Q70 70 66 82 Q62 76 60 64Z" fill="#8a2a1a" opacity=".55"/>
+  <!-- 荒漠灌木與沙地 -->
+  <path d="M0 110 H128 V126 H0Z" fill="#d89a52"/>
+  <g fill="#6f8a3a"><circle cx="14" cy="112" r="5"/><circle cx="24" cy="114" r="4"/><circle cx="104" cy="112" r="5"/><circle cx="116" cy="114" r="4"/><circle cx="66" cy="116" r="3.6"/></g>
+  <path d="M6 120 H122" stroke="#b97d3a" stroke-width="1.6" opacity=".7"/>
+</svg>

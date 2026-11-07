@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="bk" x1="0" x2="1"><stop offset="0" stop-color="#e6edf6"/><stop offset=".5" stop-color="#a9bbd2"/><stop offset="1" stop-color="#6d83a0"/></linearGradient>
+    <linearGradient id="sd" x1="0" x2="1"><stop offset="0" stop-color="#dfe7f0"/><stop offset="1" stop-color="#8c9db4"/></linearGradient>
+  </defs>
+  <!-- 杜拜：哈里發塔（世界最高樓，三葉狀收窄的階梯）與旁邊的摩天樓、沙漠 -->
+  <g fill="url(#sd)" stroke="#6d83a0" stroke-width=".8">
+    <rect x="16" y="64" width="12" height="52"/><rect x="30" y="52" width="10" height="64"/><rect x="88" y="58" width="12" height="58"/><rect x="102" y="70" width="14" height="46"/>
+  </g>
+  <g stroke="#f4f8fc" stroke-width=".8" opacity=".6"><path d="M18 74 H26 M18 84 H26 M18 94 H26 M32 62 H38 M32 72 H38 M32 82 H38 M90 68 H98 M90 78 H98 M90 88 H98 M104 80 H114 M104 90 H114"/></g>
+  <!-- 哈里發塔 -->
+  <path d="M52 116 L53 90 L56 90 L56 72 L59 72 L59 56 L61.5 56 L61.5 40 L63 40 L63 24 L63.8 24 L64 4 L64.2 24 L65 24 L65 40 L66.5 40 L66.5 56 L69 56 L69 72 L72 72 L72 90 L75 90 L76 116Z" fill="url(#bk)" stroke="#5f7494" stroke-width=".9"/>
+  <path d="M64 6 V116" stroke="#ffffff" stroke-width="1" opacity=".6"/>
+  <g stroke="#7b8fab" stroke-width=".8" opacity=".8"><path d="M56 90 H72 M59 72 H69 M61.5 56 H66.5 M63 40 H65"/></g>
+  <circle cx="64" cy="3" r="1.4" fill="#ff5a4a"><animate attributeName="opacity" values="1;.2;1" dur="1.6s" repeatCount="indefinite"/></circle>
+  <!-- 沙漠地面 -->
+  <path d="M0 114 Q32 108 64 114 T128 112 V124 H0Z" fill="#e8c98a"/>
+  <path d="M4 118 Q24 114 44 118 M70 120 Q92 116 118 120" stroke="#c9a561" stroke-width="1.4" fill="none"/>
+</svg>

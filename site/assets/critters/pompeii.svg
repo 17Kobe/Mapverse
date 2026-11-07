@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="vc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a6a52"/><stop offset="1" stop-color="#5a4030"/></linearGradient>
+  </defs>
+  <!-- 義大利龐貝古城：維蘇威火山冒煙，前方是殘存的石柱與牆垣 -->
+  <g fill="#8d939f" opacity=".85"><circle cx="76" cy="14" r="10"/><circle cx="64" cy="8" r="9"/><circle cx="88" cy="6" r="8"/><circle cx="54" cy="16" r="7"/></g>
+  <path d="M0 98 L52 34 L62 28 L70 36 L74 30 L82 36 L128 98Z" fill="url(#vc)"/>
+  <path d="M52 34 L62 28 L70 36 L66 40 L58 38Z" fill="#c9563a"/>
+  <path d="M62 30 Q64 38 60 52 M70 36 Q72 46 74 60" stroke="#f08a3a" stroke-width="2.4" fill="none" stroke-linecap="round" opacity=".9"/>
+  <path d="M20 90 L48 52 M96 90 L78 56" stroke="#6e5240" stroke-width="2" opacity=".6"/>
+  <!-- 古城遺跡 -->
+  <rect x="0" y="100" width="128" height="22" fill="#cdbb94"/>
+  <g fill="#e7dcc0" stroke="#b09c72" stroke-width="1">
+    <rect x="12" y="74" width="8" height="30"/><rect x="10" y="70" width="12" height="5"/>
+    <rect x="30" y="82" width="8" height="22"/><rect x="28" y="78" width="12" height="5"/>
+    <rect x="48" y="78" width="8" height="26"/><rect x="46" y="74" width="12" height="5"/>
+    <rect x="66" y="92" width="8" height="12"/>
+    <rect x="86" y="84" width="8" height="20"/><rect x="84" y="80" width="12" height="5"/>
+    <rect x="106" y="90" width="12" height="14"/>
+  </g>
+  <path d="M10 104 H122" stroke="#b09c72" stroke-width="2"/>
+  <path d="M6 112 H122 M14 118 H110" stroke="#b09c72" stroke-width="1.2" opacity=".7"/>
+</svg>

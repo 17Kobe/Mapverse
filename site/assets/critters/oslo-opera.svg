@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="rf" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#cdd8e6"/></linearGradient>
+    <linearGradient id="gl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9fc4de"/><stop offset="1" stop-color="#3f6f94"/></linearGradient>
+  </defs>
+  <!-- 挪威奧斯陸歌劇院：像冰山一樣從水邊斜斜升起的白色屋頂，旁邊是玻璃立面 -->
+  <rect x="0" y="108" width="128" height="20" fill="#3f78a8"/>
+  <path d="M0 112 Q16 109 32 112 T64 112 T96 112 T128 112" stroke="#cfe8f8" stroke-width="1.2" fill="none"/>
+  <path d="M10 108 V78 H54 V108Z" fill="url(#gl)" stroke="#3a5f7c" stroke-width="1"/>
+  <g stroke="#d7eaf6" stroke-width=".9" opacity=".75"><path d="M20 78 V108 M30 78 V108 M40 78 V108 M10 92 H54"/></g>
+  <path d="M6 108 L40 70 L66 54 L88 28 L96 24 L104 28 L120 108Z" fill="url(#rf)" stroke="#a9b8cb" stroke-width="1.2"/>
+  <path d="M40 70 L120 108 M66 54 L104 108 M88 28 L96 108" stroke="#b9c7d9" stroke-width="1.2" fill="none"/>
+  <path d="M6 108 L40 70 L66 54" stroke="#e9eff7" stroke-width="2" fill="none"/>
+  <path d="M0 108 H128" stroke="#e9eff7" stroke-width="2.4"/>
+  <!-- 舞台塔 -->
+  <rect x="84" y="14" width="22" height="14" fill="#e9eff7" stroke="#a9b8cb" stroke-width="1"/>
+  <rect x="88" y="18" width="14" height="6" fill="#6d98b8"/>
+</svg>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="gr" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#b9bcc2"/><stop offset=".5" stop-color="#8d9199"/><stop offset="1" stop-color="#5f636b"/></linearGradient>
+    <radialGradient id="fc" cx="40%" cy="35%" r="80%"><stop offset="0" stop-color="#d0d3d8"/><stop offset="1" stop-color="#8a8e96"/></radialGradient>
+  </defs>
+  <!-- 拉什莫爾山（總統山）：山壁上刻著華盛頓、傑佛遜、羅斯福、林肯四位總統 -->
+  <path d="M0 126 L0 70 L18 48 L36 40 L60 30 L90 34 L114 46 L128 66 V126Z" fill="url(#gr)"/>
+  <path d="M0 70 L18 48 L36 40 L28 80 L10 100Z" fill="#fff" opacity=".12"/>
+  <g stroke="#4a4e56" stroke-width="1.2" opacity=".55" fill="none"><path d="M14 90 L26 126 M40 100 L46 126 M92 98 L100 126 M112 86 L120 126"/></g>
+  <!-- 四張臉 -->
+  <g>
+    <ellipse cx="30" cy="62" rx="13" ry="17" fill="url(#fc)" stroke="#6a6e76" stroke-width="1"/>
+    <path d="M18 52 Q30 42 42 52 L40 56 Q30 50 20 56Z" fill="#a4a8b0"/><path d="M22 60 Q24 58 27 60 M33 60 Q36 58 39 60" stroke="#4a4e56" stroke-width="1.6" fill="none"/><path d="M30 60 V70 M28 72 H33" stroke="#6a6e76" stroke-width="1.6" fill="none"/><path d="M24 78 Q30 82 36 78" stroke="#4a4e56" stroke-width="1.4" fill="none"/>
+    <ellipse cx="54" cy="58" rx="12" ry="16" fill="url(#fc)" stroke="#6a6e76" stroke-width="1"/>
+    <path d="M43 48 Q54 38 65 48 L63 52 Q54 46 45 52Z" fill="#a4a8b0"/><path d="M47 56 Q49 54 52 56 M57 56 Q60 54 62 56" stroke="#4a4e56" stroke-width="1.6" fill="none"/><path d="M54 56 V66 M52 68 H57" stroke="#6a6e76" stroke-width="1.6" fill="none"/><path d="M48 74 Q54 77 60 74" stroke="#4a4e56" stroke-width="1.4" fill="none"/>
+    <ellipse cx="78" cy="60" rx="12" ry="16" fill="url(#fc)" stroke="#6a6e76" stroke-width="1"/>
+    <path d="M67 50 Q78 40 89 50 L87 54 Q78 48 69 54Z" fill="#a4a8b0"/><path d="M71 58 Q73 56 76 58 M81 58 Q84 56 86 58" stroke="#4a4e56" stroke-width="1.6" fill="none"/><path d="M78 58 V68 M76 70 H81" stroke="#6a6e76" stroke-width="1.6" fill="none"/><path d="M72 76 Q78 79 84 76" stroke="#4a4e56" stroke-width="1.4" fill="none"/><path d="M71 62 H85" stroke="#8a8e96" stroke-width="1" opacity=".6"/>
+    <ellipse cx="102" cy="64" rx="12" ry="16" fill="url(#fc)" stroke="#6a6e76" stroke-width="1"/>
+    <path d="M91 54 Q102 44 113 54 L111 58 Q102 52 93 58Z" fill="#a4a8b0"/><path d="M95 62 Q97 60 100 62 M105 62 Q108 60 110 62" stroke="#4a4e56" stroke-width="1.6" fill="none"/><path d="M102 62 V72 M100 74 H105" stroke="#6a6e76" stroke-width="1.6" fill="none"/><path d="M96 80 Q102 83 108 80" stroke="#4a4e56" stroke-width="1.4" fill="none"/><path d="M94 76 Q102 92 110 76" fill="#8a8e96" opacity=".7"/>
+  </g>
+  <g fill="#2f6a3a"><path d="M0 126 L8 104 L16 126Z M12 126 L20 100 L28 126Z M104 126 L112 100 L120 126Z M116 126 L124 106 L128 126Z"/></g>
+</svg>

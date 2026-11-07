@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="wd" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c58a4c"/><stop offset="1" stop-color="#7a4a22"/></linearGradient>
+  </defs>
+  <!-- 特洛伊木馬：木板拼成的巨大馬，底下有輪子，背後是特洛伊城牆 -->
+  <rect x="4" y="76" width="30" height="40" fill="#d8c8a6" stroke="#b5a380" stroke-width="1"/>
+  <g fill="#d8c8a6" stroke="#b5a380" stroke-width="1"><rect x="4" y="68" width="8" height="8"/><rect x="16" y="68" width="8" height="8"/><rect x="28" y="68" width="6" height="8"/></g>
+  <!-- 馬身（朝右） -->
+  <path d="M30 58 Q30 44 54 44 L84 44 Q96 44 98 56 L100 90 L88 90 L86 70 L50 70 L48 90 L36 90 Z" fill="url(#wd)" stroke="#4a2a12" stroke-width="1.6"/>
+  <path d="M84 48 Q92 26 98 14 L110 12 Q118 18 116 28 L108 34 L104 50Z" fill="url(#wd)" stroke="#4a2a12" stroke-width="1.6"/>
+  <path d="M96 14 Q92 8 98 6 Q100 12 104 14" fill="#4a2a12"/>
+  <circle cx="108" cy="22" r="2.4" fill="#fff"/><circle cx="108.6" cy="22.4" r="1.1" fill="#111"/>
+  <path d="M112 30 Q116 32 118 30" stroke="#4a2a12" stroke-width="1.6" fill="none"/>
+  <path d="M96 12 Q88 20 90 36" stroke="#3b2210" stroke-width="3.6" fill="none" stroke-linecap="round"/>
+  <path d="M30 54 Q22 60 26 76" stroke="#3b2210" stroke-width="3.6" fill="none" stroke-linecap="round"/>
+  <!-- 木板紋、艙門 -->
+  <g stroke="#4a2a12" stroke-width="1.2" opacity=".75"><path d="M32 54 H84 M34 62 H88 M40 70 H50 M88 56 L94 50"/><path d="M48 44 V70 M64 44 V70 M80 44 V70"/></g>
+  <rect x="58" y="72" width="14" height="14" fill="#5a3418" stroke="#2a1608" stroke-width="1.2"/>
+  <!-- 輪子 -->
+  <g fill="#6a4020" stroke="#2a1608" stroke-width="1.4"><circle cx="40" cy="108" r="9"/><circle cx="94" cy="108" r="9"/></g>
+  <g stroke="#2a1608" stroke-width="1.2"><path d="M40 99 V117 M31 108 H49 M94 99 V117 M85 108 H103"/></g>
+  <rect x="34" y="94" width="66" height="6" fill="#4a2a12"/>
+</svg>

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 90">
+  <defs>
+    <linearGradient id="lc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2f9a5e"/><stop offset="1" stop-color="#1c5f3a"/></linearGradient>
+    <linearGradient id="c1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a86d0"/><stop offset="1" stop-color="#2a5a96"/></linearGradient>
+    <linearGradient id="c2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d8493d"/><stop offset="1" stop-color="#992a20"/></linearGradient>
+  </defs>
+  <!-- 西伯利亞鐵路：綠色蒸汽火車頭拉著三節客車，沿鐵軌往左行駛（雪地、冒煙） -->
+  <!-- 煙 -->
+  <g fill="#cfd5de"><circle cx="40" cy="14" r="7" opacity=".85"><animate attributeName="cx" values="40;26;12" dur="2.4s" repeatCount="indefinite"/><animate attributeName="cy" values="22;12;4" dur="2.4s" repeatCount="indefinite"/><animate attributeName="opacity" values=".85;.5;0" dur="2.4s" repeatCount="indefinite"/><animate attributeName="r" values="4;8;11" dur="2.4s" repeatCount="indefinite"/></circle>
+  <circle cx="40" cy="14" r="7" opacity=".85"><animate attributeName="cx" values="40;26;12" dur="2.4s" begin="1.2s" repeatCount="indefinite"/><animate attributeName="cy" values="22;12;4" dur="2.4s" begin="1.2s" repeatCount="indefinite"/><animate attributeName="opacity" values=".85;.5;0" dur="2.4s" begin="1.2s" repeatCount="indefinite"/><animate attributeName="r" values="4;8;11" dur="2.4s" begin="1.2s" repeatCount="indefinite"/></circle></g>
+  <!-- 火車頭 -->
+  <rect x="26" y="40" width="40" height="22" rx="3" fill="url(#lc)"/>
+  <rect x="36" y="26" width="9" height="16" fill="#17171d"/><rect x="34" y="23" width="13" height="5" rx="1" fill="#17171d"/>
+  <rect x="52" y="30" width="18" height="30" rx="2" fill="url(#lc)"/><rect x="55" y="34" width="12" height="9" fill="#cfe9f5"/>
+  <path d="M20 62 L26 62 L26 50 L20 56Z" fill="#c0392b"/>
+  <path d="M42 48 L44 52 L48 52 L45 55 L46 59 L42 56.5 L38 59 L39 55 L36 52 L40 52Z" fill="#ffd24d"/>
+  <circle cx="34" cy="66" r="6" fill="#2a2a33" stroke="#999" stroke-width="1.5"/><circle cx="48" cy="66" r="6" fill="#2a2a33" stroke="#999" stroke-width="1.5"/><circle cx="62" cy="66" r="6" fill="#2a2a33" stroke="#999" stroke-width="1.5"/>
+  <path d="M34 66 H62" stroke="#c0392b" stroke-width="2"/>
+  <!-- 車廂 -->
+  <g>
+    <rect x="72" y="36" width="46" height="28" rx="3" fill="url(#c1)"/><path d="M72 56 H118" stroke="#f2c14e" stroke-width="2.4"/>
+    <rect x="122" y="36" width="46" height="28" rx="3" fill="url(#c2)"/><path d="M122 56 H168" stroke="#f2c14e" stroke-width="2.4"/>
+    <rect x="172" y="36" width="46" height="28" rx="3" fill="url(#c1)"/><path d="M172 56 H218" stroke="#f2c14e" stroke-width="2.4"/>
+  </g>
+  <g fill="#cfe9f5"><rect x="78" y="41" width="9" height="8" rx="1"/><rect x="92" y="41" width="9" height="8" rx="1"/><rect x="106" y="41" width="9" height="8" rx="1"/><rect x="128" y="41" width="9" height="8" rx="1"/><rect x="142" y="41" width="9" height="8" rx="1"/><rect x="156" y="41" width="9" height="8" rx="1"/><rect x="178" y="41" width="9" height="8" rx="1"/><rect x="192" y="41" width="9" height="8" rx="1"/><rect x="206" y="41" width="9" height="8" rx="1"/></g>
+  <g fill="#2a2a33"><circle cx="82" cy="68" r="4.5"/><circle cx="108" cy="68" r="4.5"/><circle cx="132" cy="68" r="4.5"/><circle cx="158" cy="68" r="4.5"/><circle cx="182" cy="68" r="4.5"/><circle cx="208" cy="68" r="4.5"/></g>
+  <path d="M66 52 H72 M118 52 H122 M168 52 H172" stroke="#444" stroke-width="2"/>
+  <!-- 鐵軌與雪地 -->
+  <path d="M4 74 H236" stroke="#59636f" stroke-width="2.4"/>
+  <g stroke="#6a4a2a" stroke-width="3"><path d="M10 78 V74 M30 78 V74 M50 78 V74 M70 78 V74 M90 78 V74 M110 78 V74 M130 78 V74 M150 78 V74 M170 78 V74 M190 78 V74 M210 78 V74 M230 78 V74"/></g>
+  <path d="M0 78 Q30 74 60 78 T120 78 T180 78 T240 78 V90 H0Z" fill="#f4f8fc"/>
+  <path d="M0 84 Q40 80 80 84 T160 84 T240 84" stroke="#cfdbe8" stroke-width="1.4" fill="none"/>
+</svg>

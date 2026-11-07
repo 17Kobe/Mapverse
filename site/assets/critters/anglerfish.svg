@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <radialGradient id="bd" cx="40%" cy="35%" r="80%"><stop offset="0" stop-color="#4a5a78"/><stop offset="1" stop-color="#151b2e"/></radialGradient>
+    <radialGradient id="gl" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#d8fff0"/><stop offset=".35" stop-color="#6dffd0"/><stop offset="1" stop-color="#6dffd0" stop-opacity="0"/></radialGradient>
+  </defs>
+  <!-- 馬里亞納海溝的深海鮟鱇魚：頭上掛著發光的誘餌，張著利齒（朝左） -->
+  <path d="M30 40 Q34 18 52 10 Q64 4 70 14" stroke="#2a3248" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <circle cx="22" cy="40" r="22" fill="url(#gl)"><animate attributeName="opacity" values=".9;.4;.9" dur="1.8s" repeatCount="indefinite"/></circle>
+  <circle cx="22" cy="40" r="5.5" fill="#e6fff6"/>
+  <!-- 魚尾 -->
+  <path d="M104 74 L126 52 L122 74 L126 98Z" fill="#202840" stroke="#3a4668" stroke-width="1.4"/>
+  <!-- 魚身 -->
+  <path d="M20 86 Q24 52 62 50 Q98 52 108 74 Q98 100 62 104 Q36 106 24 96Z" fill="url(#bd)" stroke="#5a6a8c" stroke-width="1.4"/>
+  <path d="M28 66 Q40 52 62 54" stroke="#6a7aa0" stroke-width="1.6" fill="none" opacity=".7"/>
+  <path d="M62 50 L70 38 L78 52 M82 52 L92 42 L98 58" fill="#202840" stroke="#3a4668" stroke-width="1.2"/>
+  <!-- 嘴與牙 -->
+  <path d="M22 84 Q38 100 66 96 Q44 84 22 84Z" fill="#1a0f18"/>
+  <g fill="#f4f6fa"><path d="M24 85 L27 92 L30 86 L33 94 L36 88 L40 95 L43 89 L47 96 L50 90 L54 96 L57 91 L61 96 L64 92Z"/></g>
+  <path d="M26 83 L29 76 L32 83 M36 86 L39 78 L42 86 M46 88 L49 80 L52 88" fill="#f4f6fa"/>
+  <!-- 眼 -->
+  <circle cx="42" cy="68" r="7" fill="#d8fff0"/><circle cx="41" cy="68" r="3.6" fill="#0a1018"/><circle cx="39.6" cy="66.4" r="1.2" fill="#fff"/>
+  <!-- 小氣泡 -->
+  <g fill="none" stroke="#9fe8ff" stroke-width="1.2" opacity=".7"><circle cx="10" cy="86" r="2.6"/><circle cx="6" cy="76" r="1.8"/></g>
+</svg>
