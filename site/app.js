@@ -42,7 +42,7 @@
     // 手機版城市旗幟的放大倍率（數字太小看不清楚）
     const BUBBLE_SCALE_MOBILE = 1.25;
     // 電腦版股市旗幟（連字型）最多放大的倍率，實際倍率依畫面大小與擁擠程度決定（見 layoutMarkers）
-    const DESK_SCALE_MAX = 1.5;
+    const DESK_SCALE_MAX = 1.6;
     const DESK_SCALE_ALL = 1.45; // 全球檢視調大，讓卡片與文字更清楚
     const deskUCache = new Map();
     // 單一指數旗幟的高度：色帶（含邊框）下方留 22px 放指數，數字的基線固定在 FULL_BASE，各瀏覽器位置才會一致
@@ -3423,7 +3423,8 @@
                 pick = 1;
                 // 全球檢視國家多、很擠：倍率上限較低
                 const isAll = state.activeRegion === 'all';
-                const uMax = Math.max(1, Math.min(isAll ? DESK_SCALE_ALL : DESK_SCALE_MAX, W / 1280, H / 720));
+                // 上限跟著畫面大小走（寬 / 1180、高 / 640 倍）；放不放得下由下面的檢查決定，放不下就退到較小的倍率
+                const uMax = Math.max(1, Math.min(isAll ? DESK_SCALE_ALL : DESK_SCALE_MAX, W / 1180, H / 640));
                 if (uMax > 1.03) {
                     const base = new Map(best.snap.map(([o, b]) => [o.m.s, rank(b)]));
                     // 篩選的那一區自己的國家一個都不能退步；全球檢視，或其他區（例如中東非洲畫面裡的印度、中國）的國家，
@@ -3434,11 +3435,15 @@
                             const r0 = base.get(o.m.s),
                                 r1 = rank(b);
                             if (r1 >= r0) continue;
-                            if ((!isAll && o.m.r === state.activeRegion) || r0 === 3 || r1 < 1 || ++down > 2) return false;
+                            if ((!isAll && o.m.r === state.activeRegion) || r0 === 3) return false;
+                            // 區域外、本來就只剩迷你版的鄰近國家（例如看美洲時，畫面邊緣的荷蘭）：放大後擠不下就讓它隱藏，
+                            // 不能因為它一個小角色就害整個區域的卡片都放不大
+                            if (r0 === 1 && !isAll) continue;
+                            if (r1 < 1 || ++down > 2) return false;
                         }
                         return true;
                     };
-                    for (const u of [uMax, 1 + (uMax - 1) * 0.66, 1 + (uMax - 1) * 0.33]) {
+                    for (const u of [uMax, 1 + (uMax - 1) * 0.75, 1 + (uMax - 1) * 0.5, 1 + (uMax - 1) * 0.25]) {
                         U = u;
                         const t = solve();
                         if (okRank(t)) {
