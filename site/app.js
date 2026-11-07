@@ -275,6 +275,8 @@
         { src: 'critters/baobab.svg', lon: 37.5, lat: -9.5, mode: 'still', face: 'F', s: 1.2, deco: true, landmark: true }, // 非洲猴麵包樹
         { src: 'critters/uluru.svg', lon: 131, lat: -25.3, mode: 'still', face: 'F', s: 1.2, deco: true, landmark: true }, // 烏魯魯巨岩
         { src: 'critters/danxia.svg', lon: 100, lat: 38.9, mode: 'still', face: 'F', s: 1.2, deco: true, landmark: true }, // 七彩丹霞
+        { src: 'critters/iceland-volcano.svg', lon: -19, lat: 64.8, mode: 'bob', face: 'F', s: 1.2, deco: true, landmark: true }, // 冰島戴雪帽的小火山
+        { src: 'critters/ring-tailed-lemur.svg', lon: 46.5, lat: -19.5, mode: 'wander', s: 0.95, deco: true, maxDeg: 1.5 }, // 馬達加斯加環尾狐猴
         {
             src: 'critters/bermuda.svg',
             lon: -70,
@@ -1312,7 +1314,95 @@
                 vis: false,
                 spout: true,
             });
+            attachTip(g, critters[critters.length - 1]);
         }
+    }
+    /* ---------- 小角色 / 地標的說明視窗（tips.js 提供文字） ---------- */
+    let ctipEl = null,
+        ctipOwner = null,
+        ctipTimer = 0,
+        ctipInit = false;
+    function tipInfo(c) {
+        const d = c.d;
+        if (d.folk) {
+            const m = state.bySym[d.market],
+                q = state.quotes[d.market],
+                pct = q ? q.pct : 0;
+            const mood =
+                pct >= 0.15
+                    ? `📈 大盤 +${pct.toFixed(2)}%：居民高舉雙手歡呼、蹦蹦跳跳！`
+                    : pct <= -0.15
+                      ? `📉 大盤 ${pct.toFixed(2)}%：居民垂頭喪氣，邊哭邊擦眼淚。`
+                      : '➖ 大盤平盤：居民悠閒散步，偶爾揮揮手。';
+            const outfit = (window.FOLK_OUTFITS || {})[d.market];
+            return {
+                iconHtml: m ? flagHtml(m.flag) : '🧑',
+                title: `${m ? m.short || m.zh : ''}居民`,
+                kind: '人物文化',
+                desc: outfit ? `穿著${outfit}。他們會隨該國主要指數的漲跌有不同反應。` : '會隨該國主要指數的漲跌有不同反應。',
+                mood,
+            };
+        }
+        const t = window.CRITTER_TIPS && window.CRITTER_TIPS[d.src];
+        return t ? { icon: t[0], title: t[1], kind: t[2], desc: t[3] } : null;
+    }
+    function moveCtip(ev) {
+        const st = $('#stage').getBoundingClientRect(),
+            w = ctipEl.offsetWidth,
+            h = ctipEl.offsetHeight;
+        let x = ev.clientX - st.left + 16,
+            y = ev.clientY - st.top + 18;
+        if (x + w > st.width - 6) x = ev.clientX - st.left - w - 16;
+        if (y + h > st.height - 6) y = ev.clientY - st.top - h - 14;
+        ctipEl.style.left = Math.max(6, x) + 'px';
+        ctipEl.style.top = Math.max(6, y) + 'px';
+    }
+    function showCtip(c, ev) {
+        if (parseFloat(c.body.style.opacity || 1) < 0.3) return;
+        const info = tipInfo(c);
+        if (!info) return;
+        ctipEl = ctipEl || $('#ctip');
+        ctipOwner = c;
+        ctipEl.innerHTML =
+            `<div class="th"><div class="ti">${info.iconHtml || esc(info.icon)}</div><div class="tt"><div class="tn">${esc($t(info.title))}</div>` +
+            `<span class="tk" data-k="${esc(info.kind)}">${esc($t(info.kind))}</span></div></div>` +
+            `<div class="td">${esc($t(info.desc))}</div>${info.mood ? `<div class="tm">${esc(info.mood)}</div>` : ''}`;
+        ctipEl.classList.add('show');
+        moveCtip(ev);
+    }
+    function hideCtip() {
+        clearTimeout(ctipTimer);
+        ctipOwner = null;
+        if (ctipEl) ctipEl.classList.remove('show');
+    }
+    function attachTip(g, c) {
+        if (!c.d.folk && !(window.CRITTER_TIPS && window.CRITTER_TIPS[c.d.src])) return;
+        if (!ctipInit) {
+            ctipInit = true;
+            document.addEventListener('pointerdown', (e) => {
+                if (!(e.target.closest && e.target.closest('.cr'))) hideCtip();
+            });
+            $('#stage').addEventListener('wheel', hideCtip, { passive: true });
+        }
+        const canHover = window.matchMedia('(hover: hover)').matches;
+        g.classed('tipped', true)
+            .style('pointer-events', 'auto')
+            .on('pointerenter', (e) => {
+                if (e.pointerType === 'mouse') showCtip(c, e);
+            })
+            .on('pointermove', (e) => {
+                if (ctipOwner === c && e.pointerType === 'mouse') moveCtip(e);
+            })
+            .on('pointerleave', (e) => {
+                if (ctipOwner === c && e.pointerType === 'mouse') hideCtip();
+            })
+            .on('click', (e) => {
+                if (canHover) return;
+                if (ctipOwner === c) return hideCtip();
+                showCtip(c, e);
+                clearTimeout(ctipTimer);
+                ctipTimer = setTimeout(hideCtip, 6000);
+            });
     }
     // 在自己附近隨機選點走過去，到了就停一下；回傳是否正在移動
     function wander(c, dt, speed, span, sq = 0.42) {
@@ -1402,6 +1492,7 @@
     }
     function stepCritters(dt, t) {
         const still = !state.anim || reduceMotion.matches;
+        if (ctipOwner && !ctipOwner.vis) hideCtip();
         for (const c of critters) {
             if (!c.vis) continue;
             const R = c.size,

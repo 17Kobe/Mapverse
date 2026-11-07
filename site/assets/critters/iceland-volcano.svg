@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="bs" x1="0" x2="1"><stop offset="0" stop-color="#6a5a62"/><stop offset=".5" stop-color="#4a3e46"/><stop offset="1" stop-color="#2e252d"/></linearGradient>
+    <linearGradient id="sn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#c8dcf0"/></linearGradient>
+    <radialGradient id="lv" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#fff2a0"/><stop offset=".5" stop-color="#ff9a2e"/><stop offset="1" stop-color="#e2402c"/></radialGradient>
+  </defs>
+  <!-- 冰島「冰與火」小火山：戴著雪帽、眨眼吐舌頭的調皮火山，帽頂冒出火星和煙 -->
+  <!-- 煙與火星（從帽頂的洞冒出） -->
+  <g>
+    <circle cx="66" cy="18" r="6" fill="#cfd5de" opacity=".85"><animate attributeName="cy" values="30;8" dur="2.6s" repeatCount="indefinite"/><animate attributeName="opacity" values=".85;0" dur="2.6s" repeatCount="indefinite"/><animate attributeName="r" values="3;9" dur="2.6s" repeatCount="indefinite"/></circle>
+    <circle cx="66" cy="18" r="6" fill="#cfd5de" opacity=".85"><animate attributeName="cy" values="30;8" dur="2.6s" begin="1.3s" repeatCount="indefinite"/><animate attributeName="opacity" values=".85;0" dur="2.6s" begin="1.3s" repeatCount="indefinite"/><animate attributeName="r" values="3;9" dur="2.6s" begin="1.3s" repeatCount="indefinite"/></circle>
+    <circle cx="60" cy="30" r="2.4" fill="#ffb23a"><animate attributeName="cy" values="34;10;34" dur="1.2s" repeatCount="indefinite"/><animate attributeName="cx" values="60;52;48" dur="1.2s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0.2;0" dur="1.2s" repeatCount="indefinite"/></circle>
+    <circle cx="70" cy="30" r="2.4" fill="#ff7a2e"><animate attributeName="cy" values="34;6;34" dur="1.5s" repeatCount="indefinite"/><animate attributeName="cx" values="70;80;84" dur="1.5s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0.2;0" dur="1.5s" repeatCount="indefinite"/></circle>
+  </g>
+  <!-- 山身 -->
+  <path d="M10 122 Q18 84 44 56 L52 40 H80 L88 56 Q112 84 120 122Z" fill="url(#bs)"/>
+  <path d="M10 122 Q18 84 44 56 L52 40 L50 70 Q32 90 28 122Z" fill="#fff" opacity=".08"/>
+  <!-- 熔岩流 -->
+  <path d="M88 56 Q96 80 92 100 Q90 110 96 122 L104 122 Q100 104 104 90 Q108 76 96 62Z" fill="url(#lv)"><animate attributeName="opacity" values=".95;.7;.95" dur="1.6s" repeatCount="indefinite"/></path>
+  <!-- 雪帽（歪戴著），帽沿有雪水滴 -->
+  <path d="M40 62 Q44 44 52 40 L64 34 H80 L88 56 Q92 62 84 62 L78 58 Q76 66 70 62 Q66 70 60 62 Q56 68 52 62 Q46 68 40 62Z" fill="url(#sn)" stroke="#a8c0d8" stroke-width="1.2"/>
+  <path d="M52 40 Q66 30 80 40 L74 46 H58Z" fill="#fff"/>
+  <ellipse cx="66" cy="37" rx="9" ry="3.2" fill="#2a1a22"/>
+  <path d="M46 56 Q50 50 56 52 M72 46 Q78 44 82 48" stroke="#c8dcf0" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M60 70 Q62 76 60 78 Q58 76 60 70Z" fill="#cfe8fa"><animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite"/></path>
+  <!-- 臉：一隻大眼、一隻眨眼，吐舌頭 -->
+  <circle cx="52" cy="82" r="8" fill="#fff"/><circle cx="54" cy="83" r="3.6" fill="#17171d"/><circle cx="55" cy="81.8" r="1.2" fill="#fff"/>
+  <path d="M70 82 Q76 77 82 82" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M44 72 Q50 68 58 72" stroke="#17171d" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+  <path d="M48 96 Q64 108 80 94" stroke="#17171d" stroke-width="2.6" fill="#17171d" stroke-linecap="round"/>
+  <path d="M62 101 Q62 114 70 112 Q76 108 74 98Z" fill="#ff6a7a" stroke="#17171d" stroke-width="1.4"/>
+  <path d="M68 102 V108" stroke="#e24a5a" stroke-width="1.2"/>
+  <circle cx="40" cy="92" r="4" fill="#e2402c" opacity=".35"/><circle cx="90" cy="90" r="4" fill="#e2402c" opacity=".35"/>
+  <!-- 腳邊的冰塊 -->
+  <g fill="#dff0fb" stroke="#9fc4de" stroke-width="1"><path d="M4 122 L10 108 L18 122Z"/><path d="M110 122 L118 104 L126 122Z"/><path d="M96 122 L100 112 L106 122Z"/></g>
+</svg>

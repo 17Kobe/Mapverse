@@ -208,6 +208,50 @@ button{font:inherit;color:inherit;cursor:pointer}
 }
 #toast.show{opacity:1;transform:translate(-50%,0)}
 
+/* ---------- 小角色 / 地標的說明視窗（滑鼠移上或手機點一下） ---------- */
+.cr.tipped{cursor:help}
+#ctip{
+  position:absolute;z-index:9;left:0;top:0;width:max-content;max-width:min(268px,calc(100% - 16px));padding:10px 13px 11px;
+  pointer-events:none;opacity:0;transform:translateY(5px) scale(.96);transition:opacity .14s,transform .14s;
+  background:var(--panel);color:var(--cream);border:1px solid var(--rim);border-radius:13px;
+  box-shadow:0 0 0 1px var(--outline),inset 0 0 0 1px var(--outline),inset 0 0 0 3px rgba(255,230,170,.13),inset 0 6px 10px -6px rgba(255,255,255,.25),0 10px 24px rgba(0,0,0,.6);
+}
+#ctip.show{opacity:1;transform:none}
+/* 四角的金色飾釘 */
+#ctip::before,#ctip::after{
+  content:'';position:absolute;width:7px;height:7px;transform:rotate(45deg);pointer-events:none;
+  background:linear-gradient(135deg,#fff3c8 0%,#d9b05a 55%,#8a6526 100%);border:1px solid var(--outline);box-shadow:0 0 5px rgba(255,214,120,.55);
+}
+#ctip::before{left:-4px;top:-4px}
+#ctip::after{right:-4px;bottom:-4px}
+#ctip .th{display:flex;align-items:center;gap:9px;padding-bottom:7px;margin-bottom:7px;border-bottom:1px solid rgba(227,189,92,.3)}
+#ctip .ti{
+  flex:none;display:grid;place-items:center;width:38px;height:38px;border-radius:50%;font-size:22px;line-height:1;font-family:var(--emoji);
+  background:radial-gradient(circle at 35% 30%,#3d5f94 0%,#223a64 60%,#14233f 100%);
+  border:2px solid var(--outline);box-shadow:0 0 0 1px var(--rim),0 0 8px rgba(255,214,120,.35),inset 0 1px 2px rgba(255,255,255,.35);
+}
+#ctip .ti .flg{height:20px}
+#ctip .tt{min-width:0}
+#ctip .tn{
+  font-size:15.5px;font-weight:800;line-height:1.25;letter-spacing:.3px;
+  background:linear-gradient(180deg,#fff3c4 0%,#f0c75e 60%,#c8902a 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 1px 0 rgba(0,0,0,.6));
+}
+#ctip .tk{
+  display:inline-block;margin-top:3px;padding:1px 8px;border-radius:99px;font-size:10.5px;font-weight:700;color:#fff8e6;
+  border:1px solid var(--outline);box-shadow:0 0 0 1px rgba(255,231,163,.35);background:var(--gold-d);
+}
+#ctip .tk[data-k="動物"]{background:#3f7a3a}
+#ctip .tk[data-k="海洋生物"]{background:#23799a}
+#ctip .tk[data-k="傳說生物"]{background:#7a3f9a}
+#ctip .tk[data-k="世界地標"]{background:#9a7630}
+#ctip .tk[data-k="歷史"]{background:#9a4a2a}
+#ctip .tk[data-k="自然奇觀"]{background:#2a8a74}
+#ctip .tk[data-k="人物文化"]{background:#b0602a}
+#ctip .tk[data-k="科技"]{background:#3a62b0}
+#ctip .td{font-size:12.5px;line-height:1.6;color:var(--cream);opacity:.93}
+#ctip .tm{margin-top:6px;padding:4px 8px;border-radius:8px;font-size:12px;font-weight:700;background:rgba(6,11,21,.45);border:1px solid rgba(227,189,92,.25)}
+
 /* ---------- 地圖 ---------- */
 #stage{position:relative;flex:1;min-height:0;min-width:0;overflow:hidden;background:#2378b8}
 /* 地圖四周的暗角，像遊戲畫面的鏡頭邊緣 */

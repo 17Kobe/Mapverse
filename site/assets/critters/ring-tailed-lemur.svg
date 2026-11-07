@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <radialGradient id="gy" cx="40%" cy="30%" r="85%"><stop offset="0" stop-color="#c8ccd4"/><stop offset=".7" stop-color="#9ea4b0"/><stop offset="1" stop-color="#6f7684"/></radialGradient>
+  </defs>
+  <!-- 馬達加斯加環尾狐猴：灰色身體、黑白臉、長長的黑白環紋尾巴翹在背後（朝左） -->
+  <!-- 尾巴（黑白相間的環紋） -->
+  <path d="M92 90 Q124 82 120 50 Q116 24 96 18" stroke="#2a2a33" stroke-width="13" fill="none" stroke-linecap="round"/>
+  <path d="M92 90 Q124 82 120 50 Q116 24 96 18" stroke="#f4f4f4" stroke-width="13" fill="none" stroke-linecap="round" stroke-dasharray="8 8"/>
+  <path d="M96 18 Q90 16 88 12" stroke="#2a2a33" stroke-width="10" fill="none" stroke-linecap="round"/>
+  <!-- 遠側腿 -->
+  <rect x="50" y="92" width="9" height="28" rx="4.5" fill="#6f7684"/><rect x="82" y="92" width="9" height="28" rx="4.5" fill="#6f7684"/>
+  <!-- 身體 -->
+  <path d="M34 70 Q40 50 64 50 Q92 52 98 76 Q98 94 82 98 L48 98 Q32 92 34 70Z" fill="url(#gy)"/>
+  <path d="M44 84 Q64 100 90 84 Q88 96 64 98 Q46 96 44 84Z" fill="#f4f1ea"/>
+  <!-- 近側腿 -->
+  <rect x="42" y="92" width="10" height="29" rx="5" fill="url(#gy)"/><rect x="40" y="118" width="14" height="5" rx="2.5" fill="#4a4e58"/>
+  <rect x="74" y="92" width="10" height="29" rx="5" fill="url(#gy)"/><rect x="72" y="118" width="14" height="5" rx="2.5" fill="#4a4e58"/>
+  <!-- 手臂 -->
+  <path d="M40 66 Q30 80 28 96" stroke="#9ea4b0" stroke-width="8" fill="none" stroke-linecap="round"/>
+  <!-- 頭 -->
+  <path d="M24 56 Q22 40 38 38 Q54 38 56 52 Q56 66 42 68 Q28 68 24 56Z" fill="url(#gy)"/>
+  <path d="M30 46 Q38 42 46 46 Q50 56 44 62 Q34 62 30 54Z" fill="#f4f1ea"/>
+  <ellipse cx="14" cy="60" rx="9" ry="6.5" fill="#f4f1ea" stroke="#d8d4cc" stroke-width="1"/>
+  <ellipse cx="7" cy="59" rx="3.4" ry="2.6" fill="#17171d"/>
+  <ellipse cx="38" cy="50" rx="6.4" ry="7" fill="#17171d"/>
+  <ellipse cx="38" cy="50" rx="3.6" ry="4.6" fill="#f2b33a"/><ellipse cx="38" cy="50" rx="1.2" ry="3.6" fill="#17171d"/>
+  <path d="M30 36 Q26 26 32 24 Q38 28 38 36Z M44 38 Q48 28 54 30 Q54 38 50 42Z" fill="#9ea4b0"/>
+  <path d="M10 66 Q16 70 22 66" stroke="#4a4e58" stroke-width="1.4" fill="none"/>
+</svg>
