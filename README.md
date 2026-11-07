@@ -5,7 +5,7 @@
 
 股市地圖的台灣島上蓋著台股市值前十大公司的建築（`site/corps.js`）：縮小時前 3 大（台積電、聯發科、台達電）合成一座小城市；放大到台灣夠大時，10 棟建築各自蓋在公司總部所在地並掛上招牌。建築跟著台股加權指數變化：上漲亮燈、下跌變暗，漲超過 2% 放煙火，跌超過 2% 烏雲打雷下雨。建築造型參考模擬城市 4 封面（細長玻璃高樓、層層退縮、斜切或尖頂樓冠、塔吊、停機坪），各公司商標直接嵌在大樓正面上方（商標圖在 `site/corp-logos.js`，沒有商標圖時顯示公司名稱）。市值與總部資料的備用值寫在 `corps.js` 的 `CORPS`；市值與名次平常由 iKDx-realtime 的 `tw-top.json` 每天自動更新。
 
-開啟網頁時預設選「現在正在開盤」的區域。
+開啟網頁時預設顯示「全球」。依開盤時間自動選區域（台股開盤選亞太、美股開盤選美洲，其餘看開盤中最重要的市場）的邏輯還在，預設關閉：把 `app.js` 的 `AUTO_REGION_DEFAULT` 改成 `true`，或網址加 `?auto=1`（`?auto=0` 強制關閉），或在瀏覽器 console 執行 `localStorage.setItem('autoRegion', 'true')` 就會啟用。網址加 `#asia` 這類片段仍可直接開在指定篩選。
 
 **全部免費**：Cloudflare Pages 託管網頁，行情資料由 [iKDx-realtime](https://github.com/kobe-cht/iKDx-realtime) 統一抓取並發佈（Yahoo Finance、CNBC、證交所等來源，多來源備援），本專案沒有伺服器、沒有爬蟲、沒有 API key。
 

@@ -379,7 +379,19 @@
         nextCache[m.s] = { at: now, v };
         return v;
     }
-    // 開啟網頁時只在這三個主要區域之間挑（中東非洲市場少，需要時手動點）
+    // 開啟網頁時是否依開盤時間自動挑區域（亞太 / 歐洲 / 美洲）。預設關閉，一律從「全球」開始；
+    // 想開啟：把下面改成 true，或網址加 ?auto=1（?auto=0 強制關閉），或在 console 執行 localStorage.setItem('autoRegion', 'true')
+    const AUTO_REGION_DEFAULT = false;
+    function autoRegionOn() {
+        const q = new URLSearchParams(location.search).get('auto');
+        if (q === '1' || q === '0') return q === '1';
+        try {
+            const v = localStorage.getItem('autoRegion');
+            if (v === 'true' || v === 'false') return v === 'true';
+        } catch (e) {}
+        return AUTO_REGION_DEFAULT;
+    }
+    // 自動挑區域時只在這三個主要區域之間挑（中東非洲市場少，需要時手動點）
     const AUTO_REGIONS = ['asia', 'europe', 'americas'];
     // 剛開盤的前 30 分鐘：行情有 15 分鐘延遲，最新一筆還是前一天收盤，會被 marketStatus 的「資料太舊」規則判成休市；
     // 挑區域時這段時間改看交易時段表，不然美股剛開盤時會被忽略
@@ -4257,8 +4269,8 @@
         state.countries = topojson.feature(topo, topo.objects.countries).features;
         await Promise.all([loadQuotes(), loadTwTop(), loadTops(), loadEcon()]);
 
-        // 開啟網頁時選「現在正在開盤」的區域（都休市就選最快開盤的），之後由使用者自己切換
-        state.activeRegion = pickAutoRegion();
+        // 預設從「全球」開始；開啟 autoRegionOn() 時改選「現在正在開盤」的區域（都休市就選最快開盤的），之後由使用者自己切換
+        state.activeRegion = autoRegionOn() ? pickAutoRegion() : 'all';
         // 網址加上 #fx、#geo、#asia… 可以直接開在指定的篩選
         const hash = location.hash.slice(1);
         if (TOPICS[hash] || ['all', 'asia', 'americas', 'europe', 'mea'].includes(hash)) state.activeRegion = hash;
