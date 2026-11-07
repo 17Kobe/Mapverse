@@ -519,3 +519,8 @@ html.embed #rail,html.embed #hud{display:none}
 /* 分隔標題的字距是為中日文設計的（4px）；英文、韓文字母本身就比較寬，字距縮小 */
 html[lang="en"] .bubble .rn.sec{letter-spacing:.6px}
 html[lang="ko"] .bubble .rn.sec{letter-spacing:1.6px}
+/* ---------- 切換篩選的飛行動畫 ----------
+   飛行中（app.js 的 animateTo 會在 #map 加上 .flying）：動物、小角色、旗幟、卡片先淡出，飛行過程只畫地形與國界，才順；
+   它們的位置要等停下來才排得準，停下後排一次再淡入。 */
+#map > g.decor,#map > g.folk-layer,#map > g.geo-layer,#map > g.landmarks,#map > g.markers,#map > g.bubbles,#map > g.topics{transition:opacity .22s ease}
+#map.flying > g.decor,#map.flying > g.folk-layer,#map.flying > g.geo-layer,#map.flying > g.landmarks,#map.flying > g.markers,#map.flying > g.bubbles,#map.flying > g.topics{opacity:0;transition-duration:.1s}

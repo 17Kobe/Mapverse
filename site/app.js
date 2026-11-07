@@ -317,6 +317,7 @@
         t: d3.zoomIdentity,
         rot: 0, // 多指數旗幟的輪播序號
         flash: {}, // 剛更新的報價：代碼 → { until, up }，旗幟 / 卡片用它閃一下（見 animateQuotes）
+        flying: false, // 切換篩選 / 飛到某處的動畫進行中：只畫地形與國界，不排版（停下來再排）
         highlightId: null,      // 點擊高亮（關閉彈窗時清除）
         hoverHighlightId: null, // hover 高亮（mouseleave 時清除）
     };
@@ -2010,9 +2011,32 @@
         if (!projection) return;
         paintLand(); // 國界只顯示目前篩選相關的國家
         const tr = nearestCopy(regionTransform(state.activeRegion));
-        const sel = animate && state.anim ? svg.transition().duration(900).ease(d3.easeCubicInOut) : svg;
-        sel.call(zoomB.transform, tr);
+        animateTo(tr, animate);
         prefetchChips();
+    }
+    // 套用視角。animate 時飛過去：飛行中 state.flying 為 true，動物 / 旗幟 / 卡片淡出（CSS 的 #map.flying），
+    // 也不排版（排版是每幀最重的工作，而且動畫中排出來的位置馬上就過時）；停下來（或被使用者打斷）後排一次再淡入。
+    let flyId = 0;
+    function animateTo(tr, animate) {
+        const id = ++flyId,
+            map = $('#map');
+        if (animate && state.anim) {
+            state.flying = true;
+            map.classList.add('flying');
+            const done = () => {
+                if (id !== flyId) return; // 已經被新的視角取代，由新的那次收尾
+                state.flying = false;
+                layoutMarkers();
+                map.classList.remove('flying');
+            };
+            svg.transition().duration(900).ease(d3.easeCubicInOut).on('end.fly interrupt.fly cancel.fly', done).call(zoomB.transform, tr);
+        } else {
+            const was = state.flying;
+            state.flying = false;
+            svg.interrupt().call(zoomB.transform, tr);
+            if (was) layoutMarkers();
+            map.classList.remove('flying');
+        }
     }
     // 背景先把其它篩選按鈕會飛到的畫面畫好存起來（terrain.js 會等目前畫面的圖磚都好了才開始），
     // 之後切換篩選就是直接讀磁碟快取，不會先出現方塊
@@ -2852,7 +2876,7 @@
     }
 
     function layoutMarkers() {
-        if (!projection || !state.maps.length) return;
+        if (!projection || !state.maps.length || state.flying) return;
         if (window.GeoScenes) GeoScenes.layout();
         const t = state.t,
             k = t.k;
@@ -3802,7 +3826,7 @@
     }
 
     /* ---------- 日夜晨昏線 ---------- */
-    let nightCv = null;
+    // 日夜遮罩的貼圖（見 drawNight）
     // 快取當前太陽參數（每分鐘只算一次）
     let _sunCache = null, _sunCacheMin = -1;
     function sunParams() {
@@ -3826,51 +3850,89 @@
         // 晨昏帶 ±6°（sin ≈ ±0.1045），柔化邊緣
         return Math.max(0, Math.min(1, (sinAlt + 0.1045) / 0.209));
     }
-    function drawNight() {
-        if (!tctx || !W) return;
-        const t = state.t,
-            cw = tctx.canvas.width,
-            ch = tctx.canvas.height;
-        if (!nightCv) nightCv = document.createElement('canvas');
-        if (nightCv.width !== cw || nightCv.height !== ch) {
-            nightCv.width = cw;
-            nightCv.height = ch;
+    // 晨昏線只跟時間有關，和縮放 / 拖曳無關：把全世界的夜色畫成一張小貼圖（Mercator 座標，只涵蓋可視緯度），
+    // 每分鐘重畫一次；每一幀只是把貼圖貼到畫面上（以前每一幀逐格呼叫 projection.invert 再 fillRect 十幾萬次，是切換篩選時最大的卡頓來源）
+    const NIGHT_TW = 1024; // 貼圖寬（每格約 0.35 度經度）
+    const mercY = (lat) => 0.5 - Math.log(Math.tan(Math.PI / 4 + (lat * Math.PI) / 360)) / (2 * Math.PI); // 單位 Mercator 的 y（0~1）
+    const NIGHT_Y0 = mercY(VIEW_N),
+        NIGHT_Y1 = mercY(VIEW_S);
+    let nightTex = null,
+        nightTexMin = -1;
+    function nightTexture() {
+        sunParams(); // 順便更新 _sunCacheMin
+        if (nightTex && nightTexMin === _sunCacheMin) return nightTex;
+        const { sunLon, decl } = _sunCache;
+        const TH = Math.ceil(NIGHT_TW * (NIGHT_Y1 - NIGHT_Y0));
+        if (!nightTex) {
+            nightTex = document.createElement('canvas');
+            nightTex.width = NIGHT_TW;
+            nightTex.height = TH;
         }
-        const nc = nightCv.getContext('2d');
-        nc.setTransform(1, 0, 0, 1, 0, 0);
-        nc.clearRect(0, 0, cw, ch);
-        // 在 CSS 像素解析度畫（和 fog 一樣）
-        nc.setTransform(dpr, 0, 0, dpr, 0, 0);
-        // 預先算好太陽參數（sunParams 有快取，這裡只是確保一幀只算一次）
-        sunParams();
-        // 逐列（每 3px 一條）計算晨昏梯度，畫垂直色條
-        const step = 3;
-        for (let px = 0; px < W; px += step) {
-            // 把螢幕 x 換算回世界座標，再取得對應經度
-            const wx = (px - t.x) / t.k;
-            // 只用 x 方向取得該列的經度（y 位置不影響經度）
-            const geoX = projection.invert([wx, (H / 2 - t.y) / t.k]);
-            if (!geoX) continue;
-            const lon = geoX[0];
-            // 垂直掃一遍：每 step px 取一個緯度樣本
-            for (let py = 0; py < H; py += step) {
-                const wyRow = (py - t.y) / t.k;
-                const geoRow = projection.invert([wx, wyRow]);
-                if (!geoRow) continue;
-                const bright = nightBrightAt(lon, geoRow[1]);
-                if (bright >= 1) continue; // 完全白天：不畫
-                nc.fillStyle = `rgba(0,8,30,${((1 - bright) * 0.62).toFixed(3)})`;
-                nc.fillRect(px, py, step, step);
+        const g = nightTex.getContext('2d');
+        const img = g.createImageData(NIGHT_TW, TH);
+        const d = img.data;
+        // 亮度 = sin(緯度)·sin(赤緯) + cos(緯度)·cos(赤緯)·cos(時角)：前一項只跟列有關，後面的 cos(時角) 只跟欄有關
+        const cosHa = new Float32Array(NIGHT_TW);
+        for (let c = 0; c < NIGHT_TW; c++) cosHa[c] = Math.cos((((c + 0.5) / NIGHT_TW) * 360 - 180 - sunLon) * (Math.PI / 180));
+        const sd = Math.sin(decl),
+            cd = Math.cos(decl);
+        for (let r = 0; r < TH; r++) {
+            const y = NIGHT_Y0 + ((r + 0.5) / TH) * (NIGHT_Y1 - NIGHT_Y0);
+            const lat = Math.atan(Math.sinh(Math.PI * (1 - 2 * y)));
+            const a = Math.sin(lat) * sd,
+                b = Math.cos(lat) * cd;
+            for (let c = 0; c < NIGHT_TW; c++) {
+                // 晨昏帶 ±6°（sin ≈ ±0.1045），柔化邊緣；遮罩不透明度 = 夜色 × 0.62
+                const bright = Math.max(0, Math.min(1, (a + b * cosHa[c] + 0.1045) / 0.209));
+                const o = (r * NIGHT_TW + c) * 4;
+                d[o + 1] = 8;
+                d[o + 2] = 30;
+                d[o + 3] = Math.round((1 - bright) * 0.62 * 255);
             }
         }
-        // 以 saturation 先讓夜側褪色，再蓋深藍遮罩
+        g.putImageData(img, 0, 0);
+        nightTexMin = _sunCacheMin;
+        return nightTex;
+    }
+    function drawNight() {
+        if (!tctx || !W) return;
+        const tex = nightTexture(),
+            t = state.t,
+            ww = S0 * t.k, // 世界（一圈）在畫面上的寬度
+            y = t.y + NIGHT_Y0 * ww,
+            h = (NIGHT_Y1 - NIGHT_Y0) * ww,
+            TH = tex.height;
+        // 世界左右循環：畫面涵蓋到的每一份都貼；只取畫面內的那一塊來源，放大很多倍時也不會拉出巨大的圖
+        const dy0 = Math.max(0, y),
+            dy1 = Math.min(H, y + h);
+        if (dy1 <= dy0) {
+            layoutStars();
+            return;
+        }
+        const tiles = [];
+        for (let n = Math.floor(-t.x / ww); n <= Math.floor((W - t.x) / ww); n++) {
+            const x = t.x + n * ww,
+                dx0 = Math.max(0, x),
+                dx1 = Math.min(W, x + ww);
+            if (dx1 <= dx0) continue;
+            tiles.push([
+                ((dx0 - x) / ww) * NIGHT_TW,
+                ((dy0 - y) / h) * TH,
+                ((dx1 - dx0) / ww) * NIGHT_TW,
+                ((dy1 - dy0) / h) * TH,
+                dx0 * dpr,
+                dy0 * dpr,
+                (dx1 - dx0) * dpr,
+                (dy1 - dy0) * dpr,
+            ]);
+        }
         tctx.setTransform(1, 0, 0, 1, 0, 0);
-        tctx.globalCompositeOperation = 'saturation';
         tctx.globalAlpha = 1;
-        tctx.drawImage(nightCv, 0, 0);
-        // 重新畫一次當深藍遮罩（source-over）
-        tctx.globalCompositeOperation = 'source-over';
-        tctx.drawImage(nightCv, 0, 0);
+        // 以 saturation 先讓夜側褪色，再用 source-over 蓋深藍遮罩
+        for (const mode of ['saturation', 'source-over']) {
+            tctx.globalCompositeOperation = mode;
+            for (const q of tiles) tctx.drawImage(tex, ...q);
+        }
         tctx.globalCompositeOperation = 'source-over';
         // 同步更新 SVG 星星位置與亮度
         layoutStars();
@@ -3949,7 +4011,7 @@
             zoomB.translateExtent(),
         );
     function flyTo(tr) {
-        (state.anim ? svg.transition().duration(900).ease(d3.easeCubicInOut) : svg).call(zoomB.transform, constrainT(tr));
+        animateTo(constrainT(tr), true);
     }
     /* ================= 圖層列 / 篩選列 / 其它指數面板 ================= */
     function buildRail() {
