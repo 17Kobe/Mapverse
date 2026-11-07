@@ -3348,10 +3348,12 @@
                 }
             }
             // markets.json 的 swap：這個國家的旗幟和指定國家的旗幟互換位置（各自保持自己的大小，以對方的中心點為中心）
+            // above：同樣是互換，但只在自己的旗幟比指定國家的旗幟低的時候才換（讓自己固定排在上面）
             for (const m of order) {
                 const a = vis.get(m.s),
-                    b = m.swap && vis.get(m.swap);
-                if (!a || !b || !a.b || !b.b || (pinCols && (pinCols.has(m.s) || pinCols.has(m.swap)))) continue;
+                    b = vis.get(m.swap || m.above);
+                if (!a || !b || !a.b || !b.b || (pinCols && (pinCols.has(m.s) || pinCols.has(m.swap || m.above)))) continue;
+                if (!m.swap && a.b.r.y + a.b.r.h / 2 <= b.b.r.y + b.b.r.h / 2) continue;
                 const ca = { x: a.b.r.x + a.b.r.w / 2, y: a.b.r.y + a.b.r.h / 2 },
                     cb = { x: b.b.r.x + b.b.r.w / 2, y: b.b.r.y + b.b.r.h / 2 };
                 const ra = { ...a.b.r, x: cb.x - a.b.r.w / 2, y: cb.y - a.b.r.h / 2 },
