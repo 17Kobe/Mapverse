@@ -2097,6 +2097,34 @@
         const h = Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y);
         return w > 0 && h > 0 ? w * h : 0;
     };
+    // 候選位置只需要「由近到遠依序試到第一個放得下的」：用最小堆（O(n) 建堆、每次取最小 O(log n)），
+    // 比整批排序快很多（pin 的國家有上萬個格點候選）。比較方式與原本的排序相同：先看 d，再看原始順序 i
+    const candLess = (a, b) => a.d < b.d || (a.d === b.d && a.i < b.i);
+    function heapDown(h, i) {
+        const n = h.length;
+        for (;;) {
+            let m = i;
+            const l = 2 * i + 1,
+                r = l + 1;
+            if (l < n && candLess(h[l], h[m])) m = l;
+            if (r < n && candLess(h[r], h[m])) m = r;
+            if (m === i) return;
+            [h[i], h[m]] = [h[m], h[i]];
+            i = m;
+        }
+    }
+    function heapify(h) {
+        for (let i = (h.length >> 1) - 1; i >= 0; i--) heapDown(h, i);
+    }
+    function heapPop(h) {
+        const top = h[0],
+            last = h.pop();
+        if (h.length) {
+            h[0] = last;
+            heapDown(h, 0);
+        }
+        return top;
+    }
 
     /* ---------- 地圖標記的共用元件（股市的城市旗幟用這一套） ----------
      * 畫的時候一律用 attrQ / styleQ / textQ：拖曳時每幀都會重排，只有真的改變的值才寫進 DOM。 */
@@ -3319,14 +3347,17 @@
                     // 離動物越近越優先（距離相同時維持 上、下、右、左 的順序）
                     const d2 = (c) => (c.x + md.w / 2 - o.x) ** 2 + (c.y + md.h / 2 - (o.y - o.size / 2)) ** 2;
                     // markets.json 的 deskSide：桌機版優先放在動物的指定方向（up / down / left / right）
+                    // desktopMQ.matches 每次讀取都有成本，候選位置有上萬個，所以先讀一次
+                    const deskSide = desktopMQ.matches ? m.deskSide : null;
                     cands.forEach(
                         (c, i) => (
                             (c.i = i),
-                            (c.d = c.pos === 'under' || (desktopMQ.matches && c.pos === m.deskSide) ? -1 : d2(c))
+                            (c.d = c.pos === 'under' || (deskSide && c.pos === deskSide) ? -1 : d2(c))
                         ),
                     );
-                    cands.sort((p, q) => p.d - q.d || p.i - q.i);
-                    for (const c of cands) {
+                    heapify(cands);
+                    while (cands.length) {
+                        const c = heapPop(cands);
                         const r = { x: c.x, y: c.y, w: md.w, h: md.h };
                         if (r.x < 2 || r.y < 2 || r.x + r.w > W - 2 || r.y + r.h > H - 2) continue;
                         // under 的旗幟是刻意貼在指定國家下面，就算蓋到別人的動物佔位框也沒關係
