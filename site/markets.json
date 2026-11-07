@@ -712,6 +712,7 @@
     {
       "type": "map",
       "s": "^MERV",
+      "deskSide": "right",
       "zh": "阿根廷Merval",
       "short": "阿根廷",
       "flag": "🇦🇷",
@@ -732,6 +733,7 @@
     {
       "type": "map",
       "s": "^IPSA",
+      "deskSide": "left",
       "zh": "智利IPSA（MSCI）",
       "short": "智利",
       "flag": "🇨🇱",
