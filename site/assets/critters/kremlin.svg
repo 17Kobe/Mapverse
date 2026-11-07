@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="b" x1="0" x2="1"><stop offset="0" stop-color="#c0392b"/><stop offset="1" stop-color="#8e2118"/></linearGradient>
+    <linearGradient id="d1" x1="0" x2="1"><stop offset="0" stop-color="#f2c14e"/><stop offset="1" stop-color="#c8902a"/></linearGradient>
+  </defs>
+  <!-- 莫斯科克里姆林宮：紅磚城牆與垛口、斯巴斯基鐘塔（綠色尖頂 + 紅星）、後方有洋蔥頂的大教堂 -->
+  <!-- 後方的教堂：洋蔥頂金圓頂 -->
+  <g>
+    <rect x="22" y="62" width="16" height="30" fill="#f0e7d4"/>
+    <path d="M30 40 Q20 54 22 62 L38 62 Q40 54 30 40Z" fill="url(#d1)"/><path d="M30 34 V40" stroke="#c8902a" stroke-width="2"/>
+    <rect x="44" y="52" width="16" height="40" fill="#f0e7d4"/>
+    <path d="M52 28 Q40 46 44 54 L60 54 Q64 46 52 28Z" fill="url(#d1)"/><path d="M52 20 V28" stroke="#c8902a" stroke-width="2"/><path d="M49 24 H55" stroke="#c8902a" stroke-width="2"/>
+    <rect x="94" y="62" width="16" height="30" fill="#f0e7d4"/>
+    <path d="M102 40 Q92 54 94 62 L110 62 Q112 54 102 40Z" fill="url(#d1)"/><path d="M102 34 V40" stroke="#c8902a" stroke-width="2"/>
+  </g>
+  <!-- 斯巴斯基塔 -->
+  <rect x="68" y="50" width="20" height="46" fill="url(#b)"/>
+  <rect x="66" y="46" width="24" height="6" fill="#a82a20"/>
+  <rect x="72" y="62" width="12" height="12" fill="#f0e7d4"/><circle cx="78" cy="68" r="4.4" fill="#17171d"/><path d="M78 68 V65 M78 68 L80.5 69" stroke="#f2c14e" stroke-width="1"/>
+  <path d="M69 46 L78 16 L87 46Z" fill="#2f8f5a"/><path d="M73 46 L78 22" stroke="#46b077" stroke-width="1.4"/>
+  <path d="M78 8 L80 13 L85 13 L81 16.5 L82.6 21.5 L78 18.5 L73.4 21.5 L75 16.5 L71 13 L76 13Z" fill="#e0342f"/>
+  <!-- 城牆 -->
+  <rect x="2" y="84" width="124" height="28" fill="url(#b)"/>
+  <g fill="#a82a20"><path d="M2 84 V76 H10 V84Z M16 84 V76 H24 V84Z M30 84 V76 H38 V84Z M44 84 V76 H52 V84Z M58 84 V76 H66 V84Z M92 84 V76 H100 V84Z M106 84 V76 H114 V84Z M118 84 V76 H126 V84Z"/></g>
+  <g stroke="#7a1a12" stroke-width="1" opacity=".55"><path d="M2 92 H126 M2 100 H126 M2 108 H126"/><path d="M14 84 V92 M34 92 V100 M54 84 V92 M74 100 V108 M98 92 V100 M118 100 V108"/></g>
+</svg>

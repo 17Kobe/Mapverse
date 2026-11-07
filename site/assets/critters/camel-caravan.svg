@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100">
+  <defs>
+    <g id="cm">
+      <rect x="9" y="38" width="5" height="26" rx="2" fill="#a9763a"/><rect x="40" y="38" width="5" height="26" rx="2" fill="#a9763a"/>
+      <path d="M12 34 Q-3 26 2 12" stroke="#d9a35e" stroke-width="8" fill="none" stroke-linecap="round"/>
+      <ellipse cx="-1" cy="10" rx="8" ry="4.2" transform="rotate(-12 -1 10)" fill="#d9a35e"/>
+      <circle cx="-3" cy="8" r="1.1" fill="#2a1a10"/>
+      <ellipse cx="30" cy="36" rx="25" ry="11" fill="#d9a35e"/>
+      <ellipse cx="35" cy="24" rx="8.5" ry="9" fill="#c9923f"/>
+      <rect x="17" y="40" width="5" height="26" rx="2" fill="#d9a35e"/><rect x="48" y="40" width="5" height="26" rx="2" fill="#d9a35e"/>
+      <path d="M52 34 Q60 36 58 46" stroke="#a9763a" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+      <path d="M22 30 L48 30 L46 42 L24 42Z" fill="#b8312b"/><path d="M22 36 L47 36" stroke="#f2c14e" stroke-width="2"/>
+    </g>
+  </defs>
+  <!-- 撒哈拉駱駝商隊：三隻駱駝用繩子連成一列，領頭的駱駝上坐著商人（朝左走） -->
+  <path d="M34 36 Q56 40 70 38 M92 36 Q112 40 128 38" stroke="#6a4020" stroke-width="1.4" fill="none"/>
+  <use xlink:href="#cm" xmlns:xlink="http://www.w3.org/1999/xlink" transform="translate(130 22)"/>
+  <use xlink:href="#cm" xmlns:xlink="http://www.w3.org/1999/xlink" transform="translate(68 24)"/>
+  <g transform="translate(6 20)">
+    <use xlink:href="#cm" xmlns:xlink="http://www.w3.org/1999/xlink"/>
+    <rect x="31" y="6" width="9" height="14" rx="3" fill="#2f5fb0"/>
+    <circle cx="35.5" cy="3" r="4.2" fill="#c58e60"/>
+    <path d="M30.5 1.5 Q35.5 -5 41 1.5 L41 5 L30.5 5Z" fill="#f4f1e6"/>
+  </g>
+  <!-- 貨物 -->
+  <g transform="translate(74 18)"><rect x="12" y="2" width="14" height="12" rx="2" fill="#8a4a2a"/><rect x="28" y="4" width="12" height="10" rx="2" fill="#c9923f"/></g>
+  <g transform="translate(136 16)"><rect x="12" y="2" width="14" height="12" rx="2" fill="#c9923f"/><rect x="28" y="4" width="12" height="10" rx="2" fill="#8a4a2a"/></g>
+</svg>

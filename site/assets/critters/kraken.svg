@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <radialGradient id="k" cx="40%" cy="30%" r="85%"><stop offset="0" stop-color="#b44a6a"/><stop offset=".6" stop-color="#7d2c4e"/><stop offset="1" stop-color="#4a1630"/></radialGradient>
+    <linearGradient id="t" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a23e62"/><stop offset="1" stop-color="#5a1c38"/></linearGradient>
+  </defs>
+  <!-- 克拉肯：挪威傳說中的巨型海怪，觸手和巨大的頭探出海面 -->
+  <!-- 觸手（會搖擺） -->
+  <g stroke="url(#t)" stroke-width="9" fill="none" stroke-linecap="round">
+    <g><animateTransform attributeName="transform" type="rotate" values="-5 20 112;6 20 112;-5 20 112" dur="3.2s" repeatCount="indefinite"/><path d="M20 112 Q6 84 18 62 Q26 46 14 30"/></g>
+    <g><animateTransform attributeName="transform" type="rotate" values="6 108 112;-6 108 112;6 108 112" dur="2.7s" repeatCount="indefinite"/><path d="M108 112 Q122 82 110 60 Q102 44 116 28"/></g>
+    <g><animateTransform attributeName="transform" type="rotate" values="-4 42 112;7 42 112;-4 42 112" dur="3.8s" repeatCount="indefinite"/><path d="M42 112 Q30 96 40 80 Q46 70 36 58" stroke-width="7"/></g>
+    <g><animateTransform attributeName="transform" type="rotate" values="5 88 112;-7 88 112;5 88 112" dur="3.4s" repeatCount="indefinite"/><path d="M88 112 Q100 96 90 80 Q84 70 94 56" stroke-width="7"/></g>
+  </g>
+  <g fill="#e9b3c4" opacity=".9"><circle cx="16" cy="76" r="2"/><circle cx="14" cy="62" r="2"/><circle cx="112" cy="74" r="2"/><circle cx="112" cy="58" r="2"/></g>
+  <!-- 巨大的頭 -->
+  <path d="M30 108 Q28 52 64 36 Q100 52 98 108Z" fill="url(#k)"/>
+  <path d="M64 36 Q60 24 64 14 Q68 24 64 36Z" fill="#5a1c38"/>
+  <ellipse cx="48" cy="72" rx="10" ry="8" fill="#f4d35e"/><ellipse cx="80" cy="72" rx="10" ry="8" fill="#f4d35e"/>
+  <ellipse cx="48" cy="72" rx="3.2" ry="7" fill="#17171d"/><ellipse cx="80" cy="72" rx="3.2" ry="7" fill="#17171d"/>
+  <path d="M46 94 Q64 104 82 94" stroke="#2a0c1c" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+  <!-- 海面與浪花 -->
+  <path d="M0 108 Q10 102 22 108 T46 108 T70 108 T94 108 T118 108 L128 108 L128 128 L0 128Z" fill="#1f4f7a" opacity=".92"/>
+  <path d="M0 108 Q10 102 22 108 T46 108 T70 108 T94 108 T118 108" stroke="#d7efff" stroke-width="2" fill="none" opacity=".85"/>
+</svg>

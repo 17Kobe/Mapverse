@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <radialGradient id="f" cx="40%" cy="30%" r="85%"><stop offset="0" stop-color="#b5814f"/><stop offset=".7" stop-color="#8a5c33"/><stop offset="1" stop-color="#5f3c1e"/></radialGradient>
+    <linearGradient id="w" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fd3e8" stop-opacity=".92"/><stop offset="1" stop-color="#3f9bbd" stop-opacity=".95"/></linearGradient>
+  </defs>
+  <!-- 日本的水豚：泡溫泉，頭上頂著一顆柚子，熱氣冒出來 -->
+  <g fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".7">
+    <path d="M30 56 Q24 44 32 34 Q38 24 30 14"><animate attributeName="opacity" values="0;.8;0" dur="2.6s" repeatCount="indefinite"/></path>
+    <path d="M62 52 Q56 40 64 30 Q70 20 62 10"><animate attributeName="opacity" values=".8;0;.8" dur="3.1s" repeatCount="indefinite"/></path>
+    <path d="M96 56 Q90 44 98 34 Q104 24 96 14"><animate attributeName="opacity" values="0;.8;0" dur="3.6s" repeatCount="indefinite"/></path>
+  </g>
+  <!-- 身體與頭 -->
+  <ellipse cx="62" cy="86" rx="36" ry="24" fill="url(#f)"/>
+  <ellipse cx="34" cy="68" rx="20" ry="17" fill="url(#f)"/>
+  <ellipse cx="22" cy="74" rx="11" ry="9" fill="#a06f43"/>
+  <ellipse cx="14.5" cy="71" rx="3" ry="2.2" fill="#2a1a10"/>
+  <circle cx="30" cy="64" r="2.6" fill="#1b110a"/><circle cx="30.8" cy="63.2" r="1" fill="#fff"/>
+  <ellipse cx="42" cy="54" rx="4.4" ry="3.4" fill="#6a4524"/>
+  <path d="M17 79 Q23 82 29 79" stroke="#5a3a1e" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+  <!-- 頭上的柚子 -->
+  <circle cx="36" cy="50" r="8.4" fill="#f4c533"/><circle cx="33.5" cy="47.5" r="2.6" fill="#fde680" opacity=".9"/>
+  <path d="M36 42 Q39 38 43 40 Q40 44 36 43Z" fill="#4f9a2d"/>
+  <!-- 溫泉木桶 -->
+  <path d="M4 82 L124 82 L116 122 Q114 126 108 126 L20 126 Q14 126 12 122Z" fill="url(#w)"/>
+  <path d="M4 82 Q64 90 124 82" stroke="#e9f9ff" stroke-width="2" fill="none"/>
+  <path d="M4 82 L124 82" stroke="#7a4a22" stroke-width="5"/>
+  <g stroke="#6a3e18" stroke-width="2" opacity=".6"><path d="M10 100 H118 M14 114 H114"/></g>
+  <g fill="#fff" opacity=".7"><circle cx="40" cy="96" r="2.2"/><circle cx="84" cy="104" r="2.8"/><circle cx="100" cy="92" r="1.8"/></g>
+</svg>

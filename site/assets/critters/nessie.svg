@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="n" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5f8f78"/><stop offset="1" stop-color="#2f5846"/></linearGradient>
+  </defs>
+  <!-- 尼斯湖水怪：長脖子探出水面，後面兩個拱起的背 -->
+  <path d="M18 110 Q20 82 34 66 Q36 40 30 30" stroke="url(#n)" stroke-width="13" fill="none" stroke-linecap="round"/>
+  <ellipse cx="25" cy="26" rx="13" ry="8" transform="rotate(-18 25 26)" fill="url(#n)"/>
+  <circle cx="21" cy="22" r="2.6" fill="#fff"/><circle cx="21.5" cy="22.4" r="1.3" fill="#111"/>
+  <path d="M30 20 L32 12 M35 22 L38 14" stroke="#2f5846" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M12 28 Q18 33 26 31" stroke="#1d3a2e" stroke-width="1.5" fill="none"/>
+  <path d="M46 112 Q58 80 72 112Z" fill="url(#n)"/>
+  <path d="M78 112 Q92 84 106 112Z" fill="url(#n)"/>
+  <path d="M110 112 Q118 100 124 108 L120 112Z" fill="#2f5846"/>
+  <!-- 水波 -->
+  <g fill="none" stroke="#d7efff" stroke-width="1.8" opacity=".8" stroke-linecap="round">
+    <path d="M4 112 Q14 108 24 112 T44 112 T64 112 T84 112 T104 112 T124 112"/>
+    <ellipse cx="26" cy="116" rx="16" ry="3"/>
+  </g>
+</svg>

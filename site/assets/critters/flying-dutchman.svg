@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <radialGradient id="gl" cx="50%" cy="55%" r="60%"><stop offset="0" stop-color="#8fffd0" stop-opacity=".55"/><stop offset="1" stop-color="#8fffd0" stop-opacity="0"/></radialGradient>
+    <linearGradient id="h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5f8a86"/><stop offset="1" stop-color="#23403e"/></linearGradient>
+  </defs>
+  <!-- 飛翔的荷蘭人：永遠靠不了岸的幽靈船，半透明、發出幽綠的光、帆破爛（朝右） -->
+  <ellipse cx="64" cy="74" rx="62" ry="50" fill="url(#gl)"/>
+  <g fill="#27403f"><rect x="30" y="26" width="3" height="58"/><rect x="62" y="8" width="3.4" height="76"/><rect x="94" y="30" width="3" height="46"/></g>
+  <g fill="#b9d9cf" stroke="#6f9b92" stroke-width="1.2" opacity=".9">
+    <path d="M12 30 Q31 38 50 30 L52 60 L46 56 L42 66 L36 58 L30 68 L24 58 L18 66 L14 58 L10 62Z"/>
+    <path d="M36 12 Q64 22 92 12 L96 64 L90 58 L84 72 L76 60 L68 74 L60 60 L52 72 L46 58 L38 70 L34 58Z"/>
+    <path d="M100 34 L120 66 L108 62 L102 70Z"/>
+  </g>
+  <path d="M34 28 L40 32 M70 20 L74 30 M22 44 L26 50" stroke="#27403f" stroke-width="1.2" opacity=".6"/>
+  <path d="M65 8 L84 4 L72 8 L84 12Z" fill="#9aa8a2"/>
+  <path d="M4 82 L22 80 L102 80 L122 68 L120 90 Q112 110 90 114 L34 114 Q12 108 4 82Z" fill="url(#h)" opacity=".92"/>
+  <rect x="94" y="62" width="26" height="18" rx="2" fill="#2d4a47" opacity=".95"/>
+  <rect x="104" y="66" width="8" height="9" fill="#9dffd6"/>
+  <path d="M6 92 L118 92" stroke="#b9d9cf" stroke-width="2.6" opacity=".8"/>
+  <g fill="#9dffd6"><circle cx="36" cy="102" r="2.6"/><circle cx="54" cy="102" r="2.6"/><circle cx="72" cy="102" r="2.6"/></g>
+</svg>

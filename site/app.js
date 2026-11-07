@@ -89,7 +89,7 @@
         { src: 'critters/treasure-ship.svg', lon: 84, lat: 4, mode: 'boat', face: 'F', s: 1.4, sea: true },
         // 地理大發現：哥倉布（1492）、達伽馬（1498）、麥哲倫（1519~1522）；阿拉伯三角帆船、Vendée Globe 環球賽艇
         { src: 'critters/fleet-columbus.svg', lon: -66, lat: 22, mode: 'boat', face: 'F', s: 1.9, sea: true },
-        { src: 'critters/caravel-dias.svg', lon: 20, lat: -37, mode: 'boat', face: 'F', s: 1.3, sea: true }, // 迪亞士 1488 繞過好望角
+        { src: 'critters/caravel-dias.svg', lon: 21, lat: -40.5, mode: 'boat', face: 'F', s: 1.3, sea: true, maxDeg: 1.5 }, // 迪亞士 1488 繞過好望角
         { src: 'critters/ship-dagama.svg', lon: 71, lat: 11, mode: 'boat', face: 'F', s: 1.3, sea: true }, // 達伽馬 1498 抵達印度
         { src: 'critters/ship-victoria.svg', lon: -86, lat: -52, mode: 'boat', face: 'F', s: 1.3, sea: true }, // 麥哲倫船隊的維多利亞號環球航行
         { src: 'critters/dhow.svg', lon: 64, lat: 22, mode: 'boat', face: 'F', s: 1.2, sea: true },
@@ -98,6 +98,47 @@
         { src: 'critters/titanic.svg', lon: -49.9, lat: 41.7, mode: 'bob', face: 'F', s: 1.3, sea: true, deco: true },
         // 哥斯大黎加外海的海龜
         { src: 'critters/sea-turtle.svg', lon: -86.8, lat: 8.8, mode: 'turtle', s: 0.8, sea: true, deco: true },
+        // 傳說生物：水怪週期性浮出水面（emerge）、幽靈船半透明漂移（ghost）
+        {
+            src: 'critters/kraken.svg',
+            lon: 4,
+            lat: 66,
+            mode: 'emerge',
+            face: 'F',
+            s: 1.7,
+            sea: true,
+            deco: true,
+            cyc: 16,
+            vis: 0.5,
+        }, // 挪威克拉肯
+        { src: 'critters/flying-dutchman.svg', lon: 11, lat: -39, mode: 'ghost', face: 'R', s: 1.4, sea: true, maxDeg: 2 }, // 好望角飛翔的荷蘭人
+        {
+            src: 'critters/nessie.svg',
+            lon: -4.45,
+            lat: 57.3,
+            mode: 'emerge',
+            face: 'F',
+            s: 0.9,
+            sea: true,
+            deco: true,
+            cyc: 11,
+            vis: 0.45,
+        }, // 尼斯湖水怪
+        {
+            src: 'critters/tianchi-monster.svg',
+            lon: 128.06,
+            lat: 42.0,
+            mode: 'emerge',
+            face: 'F',
+            s: 0.9,
+            sea: true,
+            deco: true,
+            cyc: 9,
+            vis: 0.4,
+        }, // 長白山天池水怪
+        { src: 'critters/yeti.svg', lon: 86.5, lat: 28.2, mode: 'wander', gait: 'heavy', s: 1.1, deco: true, maxDeg: 0.8 }, // 喜馬拉雅雪人
+        { src: 'critters/capybara-onsen.svg', lon: 139.4, lat: 36.6, mode: 'bob', face: 'F', s: 0.9, deco: true }, // 日本水豚泡溫泉
+        { src: 'critters/camel-caravan.svg', lon: 5, lat: 24, mode: 'trek', face: 'L', s: 1.9, deco: true, maxDeg: 4 }, // 北非駝駝商隊
         // 北海小英雄：維京長船在北海巡航
         { src: 'people/viking.svg', lon: 3.5, lat: 59.5, mode: 'boat', face: 'R', s: 1.35, sea: true },
         // 非洲莽原：獵人追斑馬，旁邊有長頸鹿散步
@@ -168,7 +209,7 @@
         { src: 'critters/greek-house.svg', lon: 25.4, lat: 36.4, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 希臘聖托里尼
         { src: 'critters/pyramid.svg', lon: 31.1, lat: 29.97, mode: 'still', face: 'F', s: 1.2, deco: true, landmark: true }, // 吉薩金字塔
         { src: 'critters/hot-balloon.svg', lon: 34.85, lat: 37.8, mode: 'bob', s: 1.0, deco: true, landmark: true }, // 卡帕多奇亞熱氣球
-        { src: 'critters/aurora.svg', lon: 18.0, lat: 69.5, mode: 'still', face: 'F', s: 1.4, deco: true, landmark: true }, // 北歐極光
+        { src: 'critters/kremlin.svg', lon: 37.6, lat: 55.75, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 克里姆林宮
         { src: 'critters/taj-mahal.svg', lon: 78.04, lat: 27.17, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 泰姬瑪哈陵
         { src: 'critters/petra.svg', lon: 35.44, lat: 30.33, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 佩特拉古城
         {
@@ -1017,6 +1058,7 @@
         stepCritters(dt, t);
         if (window.GeoScenes) GeoScenes.step(dt, t);
         drawClouds(dt);
+        drawAurora(dt);
         if (!document.hidden) walkRaf = requestAnimationFrame(walkStep);
     }
     document.addEventListener('visibilitychange', () => {
@@ -1105,7 +1147,8 @@
                 const a = Math.random() * Math.PI * 2,
                     r = 0.35 + Math.sqrt(Math.random()) * 0.65;
                 // maxDeg：活動範圍不超過幾度經度，縮小地圖時才不會走到海上
-                const rr = Math.min(r * c.base * span, c.d.maxDeg && c.ppd ? c.d.maxDeg * c.ppd : Infinity);
+                const md = c.d.maxDeg ?? (c.d.mode === 'boat' ? 2 : 0);
+                const rr = Math.min(r * c.base * span, md && c.ppd ? md * c.ppd : Infinity);
                 c.tx = Math.cos(a) * rr;
                 c.ty = Math.sin(a) * rr * sq;
                 c.wait = 1 + Math.random() * 3;
@@ -1292,6 +1335,44 @@
                     op = 0;
                     wake = 0.4;
                 }
+            } else if (m === 'emerge') {
+                // 水怪：週期性從水裡浮出（從下往上長出來）、停一下再沉下去
+                const P = c.d.cyc || 12,
+                    T = (t + c.ph) % P,
+                    V = P * (c.d.vis || 0.5);
+                if (T < V) {
+                    const u = T / V,
+                        e = Math.min(1, u * 5, (1 - u) * 5),
+                        ee = e * e * (3 - 2 * e);
+                    sy = 0.3 + 0.7 * ee;
+                    op = Math.min(1, e * 1.6);
+                    hop = (1 - ee) * R * 0.25;
+                    rot = Math.sin(T * 1.6) * 3;
+                    wake = ee;
+                } else {
+                    op = 0;
+                    wake = 0.3;
+                }
+            } else if (m === 'ghost') {
+                // 幽靈船：緩緩漂移、半透明忍明忍滅
+                const T = t + c.ph,
+                    w = T * 0.12;
+                c.x = Math.sin(w) * Math.min(B * 2, (c.ppd || 9999) * (c.d.maxDeg || 2));
+                c.y = Math.sin(w * 1.7) * B * 0.1;
+                c.dir = faceDir(c, Math.cos(w));
+                hop = Math.sin(T * 1.2) * R * 0.04;
+                rot = Math.sin(T * 0.8) * 3;
+                op = 0.45 + 0.3 * Math.sin(T * 0.9);
+                wake = op;
+            } else if (m === 'trek') {
+                // 駝駝商隊：沿著一條線慢慢走到盡頭再回頭，步伐帶點搖晃
+                const T = t + c.ph,
+                    w = T * 0.14;
+                c.x = Math.sin(w) * Math.min(B * 2.2, (c.ppd || 9999) * (c.d.maxDeg || 3));
+                c.y = 0;
+                c.dir = faceDir(c, Math.cos(w));
+                hop = -Math.abs(Math.sin(T * 3)) * R * 0.025;
+                rot = Math.sin(T * 3) * 1.5;
             } else if (m === 'race') {
                 // 賽艇在南大洋來回疊式航行，轉向時調頭，船頭略抬、船身傾斜
                 const T = t + c.ph,
@@ -1521,6 +1602,96 @@
         ctx.globalAlpha = 1;
     }
 
+    // 北歐極光：用低解析度的大張畫布畫結光簾（預先繪好的 1×128 漸層條拉伸、疊加），24fps，不在畫面內或放大太多就不畫
+    const AURORA = { cv: null, ctx: null, sprites: null, acc: 0, t: 0, drawn: false };
+    function auroraSprites() {
+        const mk = (stops) => {
+            const c = document.createElement('canvas');
+            c.width = 1;
+            c.height = 128;
+            const g = c.getContext('2d'),
+                gr = g.createLinearGradient(0, 128, 0, 0);
+            stops.forEach(([o, col]) => gr.addColorStop(o, col));
+            g.fillStyle = gr;
+            g.fillRect(0, 0, 1, 128);
+            return c;
+        };
+        return [
+            mk([
+                [0, 'rgba(60,255,160,0)'],
+                [0.06, 'rgba(150,255,205,.95)'],
+                [0.3, 'rgba(70,235,150,.6)'],
+                [0.65, 'rgba(60,180,220,.28)'],
+                [1, 'rgba(150,90,230,0)'],
+            ]),
+            mk([
+                [0, 'rgba(120,255,200,0)'],
+                [0.1, 'rgba(90,240,230,.7)'],
+                [0.45, 'rgba(110,140,255,.35)'],
+                [0.8, 'rgba(200,90,240,.3)'],
+                [1, 'rgba(230,80,200,0)'],
+            ]),
+        ];
+    }
+    function drawAurora(dt) {
+        const A = AURORA;
+        if (!A.cv) {
+            A.cv = $('#aurora');
+            if (!A.cv) return;
+            A.ctx = A.cv.getContext('2d');
+            A.sprites = auroraSprites();
+        }
+        if (!W || !projection) return;
+        if (state.anim && !reduceMotion.matches) A.t += dt;
+        A.acc += dt;
+        if (A.acc < 1 / 24 && A.drawn) return;
+        A.acc = 0;
+        const S = 0.4,
+            cw = Math.max(1, Math.ceil(W * S)),
+            ch = Math.max(1, Math.ceil(H * S));
+        if (A.cv.width !== cw || A.cv.height !== ch) {
+            A.cv.width = cw;
+            A.cv.height = ch;
+        }
+        const ctx = A.ctx;
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.clearRect(0, 0, cw, ch);
+        A.drawn = true;
+        const fade = Math.max(0, Math.min(1, (9 - state.t.k) / 3));
+        if (!fade) return;
+        const LON0 = -6,
+            LON1 = 44,
+            N = 72;
+        const xa = screenXY(LON0, 70)[0],
+            xb = screenXY(LON1, 70)[0],
+            yTop = screenXY(18, 80)[1],
+            yBot = screenXY(18, 64)[1];
+        if (xb < 0 || xa > W || yBot < 0 || yTop > H || xb <= xa) return;
+        const T = A.t,
+            gap = (xb - xa) / (N - 1),
+            colW = Math.max(1.6, gap * 1.9),
+            night = 0.7 + 0.3 * (1 - nightBrightAt(18, 69));
+        ctx.globalCompositeOperation = 'lighter';
+        for (let cu = 0; cu < 3; cu++) {
+            const spr = A.sprites[cu === 1 ? 1 : 0],
+                gain = [0.95, 0.65, 0.5][cu];
+            for (let i = 0; i < N; i++) {
+                const lon = LON0 + ((LON1 - LON0) * i) / (N - 1),
+                    lat = 66.5 + cu * 2.2 + 2.4 * Math.sin(lon * 0.085 + cu * 1.9) + 0.9 * Math.sin(lon * 0.31 + T * 0.4 + cu);
+                const [x, y] = screenXY(lon, lat),
+                    hpx = (y - screenXY(lon, lat + 9)[1]) * 1.15;
+                const env = Math.pow(Math.sin((Math.PI * i) / (N - 1)), 0.7),
+                    ray = 0.55 + 0.3 * Math.sin(i * 0.45 + T * 0.9 + cu * 2) + 0.15 * Math.sin(i * 1.7 - T * 1.6),
+                    h = hpx * ray,
+                    sx = x + Math.sin(T * 0.5 + i * 0.15 + cu) * hpx * 0.08;
+                ctx.globalAlpha = Math.max(0, fade * env * night * gain * (0.55 + 0.3 * Math.sin(T * 1.1 + i * 0.2 + cu)));
+                ctx.drawImage(spr, 0, 0, 1, 128, (sx - colW / 2) * S, (y - h) * S, colW * S, h * S);
+            }
+        }
+        ctx.globalAlpha = 1;
+        ctx.globalCompositeOperation = 'source-over';
+    }
+
     function buildSvg() {
         svg = d3.select('#map');
         const cv = $('#terrain');
@@ -1731,7 +1902,7 @@
         Disasters.init({
             stage: $('#stage'),
             canvas: $('#fx'),
-            shakeEls: ['#terrain', '#clouds', '#map', '#fx'].map((s) => $(s)),
+            shakeEls: ['#terrain', '#clouds', '#aurora', '#map', '#fx'].map((s) => $(s)),
             enabled: () => state.layer === 'stocks',
             toScreen: screenXY,
             toGeo: geoAt,
@@ -4045,7 +4216,7 @@
             c.sy = y;
             c.base = size;
             // 每度經度在螢幕上有幾 px：追逐 / 背鰭巡游的活動範圍要用「地理距離」限制，才不會縮小地圖時跑出海岸線
-            if (c.d.maxDeg || ['chase', 'fin', 'surf', 'turtle'].includes(c.d.mode))
+            if (c.d.maxDeg || ['chase', 'fin', 'surf', 'turtle', 'boat', 'ghost', 'trek'].includes(c.d.mode))
                 c.ppd = Math.max(0.5, screenXY(c.d.lon + 1, c.d.lat)[0] - x);
             if (folk && c.d.first) {
                 // 每組只由第一個成員負責畫虛線：組的中心不在國家附近（距離超過 3 個基準大小）才畫

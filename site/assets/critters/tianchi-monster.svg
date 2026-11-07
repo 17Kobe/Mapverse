@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="n" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a5560"/><stop offset="1" stop-color="#1c232b"/></linearGradient>
+  </defs>
+  <!-- 長白山天池水怪：深色粗脖子，頭上有角，背上有鰭（朝左） -->
+  <path d="M20 112 Q24 84 40 68 Q50 56 40 40" stroke="url(#n)" stroke-width="16" fill="none" stroke-linecap="round"/>
+  <path d="M26 38 Q22 30 30 28 Q44 28 50 36 Q52 46 40 48 Q30 48 26 38Z" fill="url(#n)"/>
+  <path d="M34 28 L32 16 L40 26 M42 28 L44 16 L48 28" fill="#5d6874" stroke="#2c353f" stroke-width="1.4"/>
+  <circle cx="33" cy="36" r="3.4" fill="#ffd24d"/><circle cx="33" cy="36" r="1.5" fill="#111"/>
+  <path d="M26 44 Q32 48 40 46" stroke="#11171d" stroke-width="1.6" fill="none"/>
+  <path d="M60 112 Q70 86 84 112Z" fill="url(#n)"/>
+  <path d="M68 96 L72 82 L76 96 M78 100 L82 90 L86 102" fill="#5d6874" stroke="#2c353f" stroke-width="1.2"/>
+  <path d="M94 112 Q104 92 116 112Z" fill="url(#n)"/>
+  <g fill="none" stroke="#d7efff" stroke-width="1.8" opacity=".8" stroke-linecap="round">
+    <path d="M4 112 Q14 108 24 112 T44 112 T64 112 T84 112 T104 112 T124 112"/>
+    <ellipse cx="30" cy="117" rx="18" ry="3"/>
+  </g>
+</svg>
