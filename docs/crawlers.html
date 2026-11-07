@@ -113,7 +113,7 @@
   <div class="arrow">→</div>
   <div class="box"><b>JSON 檔</b>爬蟲把結果 commit 回 <code>public/data/</code>，Cloudflare Pages 發佈到 <code>ikdx-realtime.pages.dev</code></div>
   <div class="arrow">→</div>
-  <div class="box"><b>Mapverse 前端</b>瀏覽器直接 fetch 4 個檔：<code>quotes.json</code>、<code>tw-top.json</code>、<code>top10.json</code>、<code>econ.json</code></div>
+  <div class="box"><b>Mapverse 前端</b>瀏覽器直接 fetch 5 個檔：<code>quotes.json</code>、<code>tw-top.json</code>、<code>top10.json</code>、<code>econ.json</code>、<code>fng.json</code></div>
 </div>
 <p class="dim">前端讀取週期：<code>quotes.json</code> 每 60 秒；<code>top10.json</code> 最多每 4 分鐘；<code>econ.json</code> 最多每 10 分鐘；<code>tw-top.json</code> 只在開啟網頁時讀一次（見「發現的問題」）。</p>
 <div class="note">cloudflare-cron-worker 不在這兩個專案裡，我無法確認它實際的 cron 設定。iKDx-realtime 的 README 已改成「由外部 worker 約每 10 分鐘觸發，頻率以 worker 設定為準」。</div>
@@ -148,6 +148,12 @@
   <td><code>world/econ.json</code></td>
   <td>全失敗就沿用上一版並標 <code>stale</code>；過期資料（月資料超過 130 天等）視為失敗；至少隔 180 分鐘才重抓</td>
   <td><span class="tag live">是</span></td></tr>
+<tr><td><code>fetch-world-fng.js</code><br><span class="dim">npm run fetch-world-fng</span></td>
+  <td>CNN 貪婪與恐慌指數（0～100，含前一日 / 一週 / 一個月 / 一年前的值）</td>
+  <td>CNN dataviz API</td>
+  <td><code>world/fng.json</code></td>
+  <td>失敗沿用上一版；結果沒變不重寫檔案</td>
+  <td><span class="tag live">是</span>（概況卡的情緒條）</td></tr>
 <tr><td class="grp" colspan="6">台股（workflow：fetch-realtime，台灣平日 09:00～13:50）</td></tr>
 <tr><td><code>fetch-realtime.js</code><br><span class="dim">npm run fetch</span></td>
   <td>約 283 檔台股個股的即時價</td>

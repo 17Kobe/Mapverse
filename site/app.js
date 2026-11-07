@@ -1,4 +1,4 @@
-/* 地圖世界 */
+/* 環遊股村 */
 (function () {
     'use strict';
 
@@ -306,6 +306,7 @@
         quotes: {},
         econ: {}, // 經濟數據（econ.json 的 items）：代碼 → { v, prev, d, unit, ref, light?, stale? }
         tops: null, // 其它十個國家 / 地區的市值前十大公司（top10.json 的 countries）：國家代碼 → { title, cur, date, top, rows }
+        fng: null, // CNN 貪婪與恐慌指數（fng.json）：{ score 0~100, rating, updated, prev: { close, week, month, year } }
         generated: null,
         demo: false,
         activeRegion: 'all',
@@ -727,6 +728,19 @@
             state.econ = j.items || {};
         } catch (e) {
             econAt = 0; // 失敗了，下一輪再試
+        }
+    }
+    // CNN 貪婪與恐慌指數：最多每 4 分鐘讀一次。失敗就沿用上一份，沒有的話情緒條顯示 --
+    let fngAt = 0;
+    async function loadFng() {
+        if (Date.now() - fngAt < 240e3) return;
+        fngAt = Date.now();
+        try {
+            const j = await fetchJSON(DATA_BASE + 'fng.json?_=' + Date.now());
+            if (typeof j.score !== 'number' || !(j.score >= 0 && j.score <= 100)) throw new Error('fng.json 格式不對');
+            state.fng = j;
+        } catch (e) {
+            fngAt = 0; // 失敗了，下一輪再試
         }
     }
     function makeDemo() {
@@ -4080,14 +4094,48 @@
         });
     }
 
+    // CNN 貪婪與恐慌指數的分級（0～24 極度恐慌、25～44 恐慌、45～55 中立、56～75 貪婪、76～100 極度貪婪）
+    // 顏色：恐慌藍 → 中立金黃 → 貪婪橘紅；不用紅綠，避免和「紅漲綠跌」設定混淆
+    function fngLevel(score) {
+        if (score < 25) return { icon: '😱', label: '極度恐慌', color: '#2f6fed' };
+        if (score < 45) return { icon: '😨', label: '恐慌', color: '#5aa0ff' };
+        if (score <= 55) return { icon: '😐', label: '中立', color: '#f0c75e' };
+        if (score <= 75) return { icon: '😏', label: '貪婪', color: '#fb923c' };
+        return { icon: '🤑', label: '極度貪婪', color: '#ef4444' };
+    }
+    function renderFng() {
+        const f = state.fng;
+        const fill = $('#hpFill');
+        const hp = $('.hp');
+        if (!f) {
+            fill.style.width = '0%';
+            $('#hpIcon').textContent = '😐';
+            $('#hpText').textContent = '--';
+            hp.title = $t('CNN 貪婪與恐慌指數');
+            return;
+        }
+        const score = Math.round(f.score);
+        const lv = fngLevel(f.score);
+        fill.style.width = Math.max(6, score) + '%';
+        fill.style.background = lv.color;
+        $('#hpIcon').textContent = lv.icon;
+        $('#hpText').textContent = `${score} ${$t(lv.label)}`;
+        const p = f.prev || {};
+        const fmt = (v) => (typeof v === 'number' ? Math.round(v) : '--');
+        hp.title =
+            $t('CNN 貪婪與恐慌指數') +
+            '　' +
+            $t('前一日 {a}　一週前 {b}　一個月前 {c}　一年前 {d}', {
+                a: fmt(p.close),
+                b: fmt(p.week),
+                c: fmt(p.month),
+                d: fmt(p.year),
+            });
+    }
+
     function renderHud() {
         const open = state.maps.filter((m) => marketStatus(m) === 'open');
-        const pool = (open.length ? open : state.maps).map((m) => state.quotes[m.s]).filter(Boolean);
-        const avg = pool.length ? pool.reduce((a, q) => a + q.pct, 0) / pool.length : 0;
-        const fill = $('#hpFill');
-        fill.style.width = Math.max(6, Math.min(100, 50 + avg * 12)) + '%';
-        fill.style.background = `hsl(${hue(avg)},72%,55%)`;
-        $('#hpText').textContent = fmtPct(avg);
+        renderFng();
         let line;
         const when = state.generated
             ? new Date(state.generated).toLocaleTimeString(I18n.intl, { hour: '2-digit', minute: '2-digit' })
@@ -4334,7 +4382,7 @@
         );
         state.maps.forEach((m) => (state.byId[pad3(m.id)] = m));
         state.countries = topojson.feature(topo, topo.objects.countries).features;
-        await Promise.all([loadQuotes(), loadTwTop(), loadTops(), loadEcon()]);
+        await Promise.all([loadQuotes(), loadTwTop(), loadTops(), loadEcon(), loadFng()]);
 
         // 預設從「全球」開始；開啟 autoRegionOn() 時改選「現在正在開盤」的區域（都休市就選最快開盤的），之後由使用者自己切換
         state.activeRegion = autoRegionOn() ? pickAutoRegion() : 'all';
@@ -4392,7 +4440,7 @@
 
         setInterval(async () => {
             const old = state.quotes;
-            await Promise.all([loadQuotes(), loadTwTop(), loadTops(), loadEcon()]);
+            await Promise.all([loadQuotes(), loadTwTop(), loadTops(), loadEcon(), loadFng()]);
             animateQuotes(old);
             tick();
         }, 60000);
@@ -4406,7 +4454,7 @@
         document.addEventListener('visibilitychange', async () => {
             if (!document.hidden) {
                 const old = state.quotes;
-                await Promise.all([loadQuotes(), loadTwTop(), loadTops(), loadEcon()]);
+                await Promise.all([loadQuotes(), loadTwTop(), loadTops(), loadEcon(), loadFng()]);
                 animateQuotes(old);
                 tick();
             }
