@@ -132,7 +132,7 @@
         applyDom: function () {
             var root = document.documentElement;
             root.lang = lang;
-            document.title = t('環遊股村');
+            document.title = t('股市村');
             [['data-i18n', null], ['data-i18n-aria', 'aria-label'], ['data-i18n-title', 'title']].forEach(function (p) {
                 var nodes = document.querySelectorAll('[' + p[0] + ']');
                 for (var i = 0; i < nodes.length; i++) {

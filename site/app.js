@@ -1,4 +1,4 @@
-/* 環遊股村 */
+/* 股市村 */
 (function () {
     'use strict';
 
@@ -4107,8 +4107,13 @@
         const f = state.fng;
         const fill = $('#hpFill');
         const hp = $('.hp');
+        const setBar = (pct, color) => {
+            fill.style.clipPath = `inset(0 ${100 - pct}% 0 0 round 99px)`;
+            $('#hpKnob').style.left = pct + '%';
+            hp.querySelector('.fngi').style.setProperty('--fc', color);
+        };
         if (!f) {
-            fill.style.width = '0%';
+            setBar(0, '#8a94a6');
             $('#hpIcon').textContent = '😐';
             $('#hpText').textContent = '--';
             hp.title = $t('CNN 貪婪與恐慌指數');
@@ -4116,8 +4121,7 @@
         }
         const score = Math.round(f.score);
         const lv = fngLevel(f.score);
-        fill.style.width = Math.max(6, score) + '%';
-        fill.style.background = lv.color;
+        setBar(score, lv.color);
         $('#hpIcon').textContent = lv.icon;
         $('#hpText').textContent = `${score} ${$t(lv.label)}`;
         const p = f.prev || {};

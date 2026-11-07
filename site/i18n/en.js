@@ -107,7 +107,7 @@ I18n.add('en', {
   "選好後，點地圖降下災難": "After choosing, tap the map to unleash a disaster",
   "地圖圖層": "Map Layers",
   "全球概況": "Global Overview",
-  "環遊股村": "Mapverse",
+  "股市村": "Mapverse",
   "CNN 貪婪與恐慌指數": "CNN Fear & Greed Index",
   "極度恐慌": "Extreme Fear",
   "恐慌": "Fear",

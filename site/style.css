@@ -109,6 +109,29 @@ button{font:inherit;color:inherit;cursor:pointer}
 .bar{flex:1;height:12px;border:1px solid var(--rim);border-radius:99px;background:var(--navy-d);overflow:hidden;box-shadow:0 0 0 1px var(--outline),inset 0 0 0 1px var(--outline),inset 0 2px 4px rgba(0,0,0,.6)}
 .bar i{display:block;height:100%;width:50%;border-radius:99px;transition:width .8s,background .8s;background:#aaa;box-shadow:inset 0 2px 0 rgba(255,255,255,.35)}
 .hpt{font-size:12.5px;font-weight:700;min-width:72px;text-align:right;white-space:nowrap;color:var(--gold-l)}
+/* CNN 貪婪與恐慌指數：圓形表情徽章 + 恐慌藍 → 中立金 → 貪婪紅的漸層條，亮的是目前分數的長度，亮點是目前位置 */
+.fngi{
+  --fc:#f0c75e;flex:none;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;font-size:15px;line-height:1;
+  background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--fc) 55%,#fff) 0%,var(--fc) 55%,color-mix(in srgb,var(--fc) 55%,#000) 100%);
+  border:2px solid var(--outline);box-shadow:0 0 0 1px var(--fc),0 0 8px color-mix(in srgb,var(--fc) 70%,transparent),inset 0 1px 1px rgba(255,255,255,.5);
+  transition:background .6s,box-shadow .6s;
+}
+.bar.fng{
+  position:relative;overflow:visible;height:11px;
+  --fng:linear-gradient(90deg,#2f6fed 0%,#5aa0ff 22%,#f0c75e 50%,#fb923c 78%,#ef4444 100%);
+  background:linear-gradient(rgba(12,22,40,.6),rgba(12,22,40,.6)),var(--fng);
+}
+.bar.fng i{
+  position:absolute;inset:0;width:auto;border-radius:99px;background:var(--fng);
+  clip-path:inset(0 50% 0 0 round 99px);transition:clip-path .8s;
+  box-shadow:none;background-image:linear-gradient(rgba(255,255,255,.28),rgba(255,255,255,0) 55%),var(--fng);
+}
+.bar.fng b{
+  position:absolute;top:50%;left:50%;width:13px;height:13px;margin:-6.5px 0 0 -6.5px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#fff 0%,#ffe7a3 60%,#d4ac57 100%);
+  border:1px solid var(--outline);box-shadow:0 0 0 1px var(--rim),0 0 6px rgba(255,231,163,.8);
+  transition:left .8s;
+}
 .sub{font-size:11px;opacity:.8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px}
 
 /* ---------- 篩選列（Google 地圖式的膠囊按鈕，浮在地圖上方，可橫向捲動） ---------- */
