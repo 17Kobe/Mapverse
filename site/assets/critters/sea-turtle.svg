@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <radialGradient id="s" cx="40%" cy="25%" r="85%"><stop offset="0" stop-color="#9ccb5a"/><stop offset=".6" stop-color="#6b9c3a"/><stop offset="1" stop-color="#3f6a24"/></radialGradient>
+    <radialGradient id="k" cx="40%" cy="30%" r="85%"><stop offset="0" stop-color="#b6d77a"/><stop offset="1" stop-color="#6f9a42"/></radialGradient>
+  </defs>
+  <!-- 朝左游的海龜：前鰭上下拍動 -->
+  <!-- 遠側後鰭 -->
+  <ellipse cx="94" cy="96" rx="14" ry="5" fill="#5f8a36" transform="rotate(30 94 96)"/>
+  <!-- 尾巴 -->
+  <path d="M100 82 L116 90 L100 90Z" fill="#6f9a42"/>
+  <!-- 殼下的肚子 -->
+  <ellipse cx="66" cy="88" rx="34" ry="12" fill="#e7d28f"/>
+  <!-- 頭與脖子 -->
+  <path d="M38 80 Q26 78 20 72 Q12 70 12 78 Q14 88 28 90 Q38 90 44 88Z" fill="url(#k)"/>
+  <circle cx="22" cy="75" r="2.8" fill="#1b2214"/>
+  <circle cx="23" cy="74" r="1" fill="#fff"/>
+  <path d="M14 82 Q19 84 24 82" stroke="#3d5a22" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+  <!-- 背殼 -->
+  <path d="M30 82 Q34 44 68 42 Q102 44 104 82 Q70 92 30 82Z" fill="url(#s)"/>
+  <path d="M48 50 L58 66 M68 44 L68 68 M88 50 L78 66 M36 70 Q66 76 100 70 M50 80 L56 70 M86 80 L80 70" stroke="#33561c" stroke-width="2.2" fill="none" stroke-linecap="round" opacity=".7"/>
+  <!-- 近側前鰭（拍動） -->
+  <g transform="translate(52 86)">
+    <g>
+      <animateTransform attributeName="transform" type="rotate" values="-35;28;-35" dur="1.8s" repeatCount="indefinite" calcMode="spline" keySplines=".4 0 .6 1;.4 0 .6 1" keyTimes="0;.5;1"/>
+      <path d="M0 0 Q20 6 34 24 Q18 22 -2 8Z" fill="url(#k)" stroke="#4d7a2b" stroke-width="1.5"/>
+    </g>
+  </g>
+  <!-- 近側後鰭 -->
+  <ellipse cx="90" cy="94" rx="13" ry="5" fill="#7aa84a" transform="rotate(35 90 94)"/>
+</svg>

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6b4a30"/><stop offset="1" stop-color="#352214"/></linearGradient>
+  </defs>
+  <!-- 達伽馬的聖加百列號（1498 年繞過好望角抵達印度），帆上是葡萄牙的基督十字 -->
+  <g fill="#3b2614">
+    <rect x="28" y="30" width="3" height="54"/>
+    <rect x="58" y="8" width="3.4" height="76"/>
+    <rect x="88" y="34" width="3" height="40"/>
+  </g>
+  <g fill="#fbfaf4" stroke="#b8b4a2" stroke-width="1.2">
+    <path d="M14 34 Q29 40 44 34 L46 66 Q29 73 12 66Z"/>
+    <path d="M38 12 Q60 19 82 12 L86 46 Q60 54 34 46Z"/>
+    <path d="M40 48 Q60 55 80 48 L84 78 Q60 85 36 78Z"/>
+    <path d="M92 36 L112 68 L92 68Z"/>
+  </g>
+  <!-- 基督騎士團十字：紅色寬十字、中間一條白線 -->
+  <g>
+    <path d="M55 20 H65 V26 H71 V36 H65 V42 H55 V36 H49 V26 H55Z" fill="#c4312b"/>
+    <path d="M55 54 H65 V60 H71 V70 H65 V76 H55 V70 H49 V60 H55Z" fill="#c4312b"/>
+    <path d="M24 42 H33 V47 H38 V56 H33 V61 H24 V56 H19 V47 H24Z" fill="#c4312b"/>
+  </g>
+  <path d="M61 8 L82 4 L61 0Z" fill="#fbfaf4" stroke="#c4312b" stroke-width="1"/>
+  <path d="M88 34 L103 31 L88 28Z" fill="#2f5fb0"/>
+  <path d="M6 82 L22 80 L98 80 L118 68 L116 84 Q110 108 88 113 L34 113 Q14 108 6 82Z" fill="url(#h)"/>
+  <rect x="90" y="62" width="26" height="16" rx="2" fill="#4a3220"/>
+  <rect x="4" y="72" width="22" height="9" rx="2" fill="#4a3220"/>
+  <path d="M8 91 L114 91" stroke="#fbfaf4" stroke-width="3"/>
+  <g fill="#c4312b"><circle cx="38" cy="100" r="2.5"/><circle cx="56" cy="100" r="2.5"/><circle cx="74" cy="100" r="2.5"/></g>
+</svg>

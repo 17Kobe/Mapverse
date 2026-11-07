@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <radialGradient id="b" cx="40%" cy="30%" r="85%"><stop offset="0" stop-color="#f3c987"/><stop offset=".6" stop-color="#dba660"/><stop offset="1" stop-color="#b57a38"/></radialGradient>
+    <radialGradient id="m" cx="45%" cy="40%" r="75%"><stop offset="0" stop-color="#a8601f"/><stop offset="1" stop-color="#6b3510"/></radialGradient>
+  </defs>
+  <!-- 朝左走的獅子 -->
+  <path d="M112 74 Q124 60 118 38" stroke="#c88a46" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <ellipse cx="118" cy="36" rx="6" ry="9" fill="#6b3510"/>
+  <rect x="50" y="92" width="14" height="30" rx="6" fill="#b57a38"/>
+  <rect x="94" y="92" width="14" height="30" rx="6" fill="#b57a38"/>
+  <ellipse cx="74" cy="80" rx="40" ry="22" fill="url(#b)"/>
+  <rect x="38" y="92" width="15" height="31" rx="7" fill="url(#b)"/>
+  <rect x="84" y="92" width="15" height="31" rx="7" fill="url(#b)"/>
+  <ellipse cx="45" cy="122" rx="10" ry="3.5" fill="#000" opacity=".25"/>
+  <ellipse cx="91" cy="122" rx="10" ry="3.5" fill="#000" opacity=".25"/>
+  <!-- 鬃毛與頭 -->
+  <circle cx="36" cy="62" r="29" fill="url(#m)"/>
+  <circle cx="22" cy="40" r="7.5" fill="#d79a52"/>
+  <circle cx="22" cy="40" r="3.5" fill="#6b3510"/>
+  <circle cx="34" cy="66" r="18" fill="#efc07c"/>
+  <ellipse cx="22" cy="72" rx="10" ry="8" fill="#f8dca8"/>
+  <ellipse cx="14.5" cy="68" rx="4.5" ry="3.4" fill="#4a2a1a"/>
+  <path d="M16 78 Q22 83 29 79" stroke="#6b3510" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <circle cx="30" cy="60" r="3" fill="#2a1a10"/>
+  <circle cx="31" cy="59" r="1" fill="#fff"/>
+</svg>

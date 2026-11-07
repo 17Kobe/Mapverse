@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a3326"/><stop offset="1" stop-color="#1f130c"/></linearGradient>
+    <radialGradient id="g" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="#7fc0ff"/><stop offset="1" stop-color="#1f5fb0"/></radialGradient>
+  </defs>
+  <!-- 麥哲倫船隊的維多利亞號（1519~1522，繞地球一圈）：帆被海風吹得破爛補丁，桅頂掛著地球旗 -->
+  <g fill="#3b2614">
+    <rect x="26" y="30" width="3" height="54"/>
+    <rect x="60" y="12" width="3.4" height="72"/>
+    <rect x="94" y="36" width="3" height="40"/>
+    <path d="M4 80 L24 72 L24 75 L5 84Z"/>
+  </g>
+  <!-- 艏斜帆 -->
+  <path d="M4 78 L22 60 L22 76Z" fill="#d9c796" stroke="#a89466" stroke-width="1"/>
+  <!-- 破損的方帆（下緣呈鋸齒狀） -->
+  <g fill="#dccb9b" stroke="#a89466" stroke-width="1.2">
+    <path d="M10 36 Q27 42 44 36 L46 62 L41 66 L36 61 L30 67 L24 61 L18 66 L12 62 L9 64Z"/>
+    <path d="M34 14 Q62 24 90 14 L94 68 L88 73 L81 66 L73 74 L65 67 L57 75 L49 67 L41 73 L36 66 L32 70Z"/>
+    <path d="M98 40 L118 70 L98 70Z"/>
+  </g>
+  <!-- 補丁 -->
+  <g fill="#b99f68" opacity=".8"><rect x="68" y="30" width="10" height="9" transform="rotate(4 73 34)"/><rect x="42" y="52" width="9" height="8"/><rect x="16" y="46" width="8" height="7"/></g>
+  <!-- 聖地牙哥十字：紅十字，下端尖如劍 -->
+  <path d="M57 22 H65 V30 H72 V37 H65 V54 L61 58 L57 54 V37 H50 V30 H57Z" fill="#b8231d"/>
+  <path d="M23 44 H29 V50 H34 V55 H29 V60 L26 63 L23 60 V55 H18 V50 H23Z" fill="#b8231d"/>
+  <!-- 桅頂的地球旗 -->
+  <circle cx="62" cy="7" r="6.5" fill="url(#g)" stroke="#e9f3ff" stroke-width="1"/>
+  <path d="M57 5 Q60 3 62 6 Q60 9 58 9Z M63 9 Q66 7 67 10 Q65 12 63 11Z" fill="#6fbf6a"/>
+  <path d="M96 36 L110 33 L96 30Z" fill="#b8231d"/>
+  <!-- 船身 -->
+  <path d="M6 84 L24 82 L104 82 L122 68 L122 90 Q114 112 92 116 L32 116 Q12 110 6 84Z" fill="url(#h)"/>
+  <rect x="96" y="60" width="26" height="22" rx="2" fill="#2e1d12"/>
+  <rect x="104" y="66" width="9" height="10" rx="1.5" fill="#ffd877"/>
+  <path d="M8 94 L120 94" stroke="#f3ecd8" stroke-width="3.2"/>
+  <g fill="#f3ecd8"><circle cx="34" cy="104" r="2.4"/><circle cx="52" cy="104" r="2.4"/><circle cx="70" cy="104" r="2.4"/><circle cx="88" cy="104" r="2.4"/></g>
+</svg>

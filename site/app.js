@@ -33,7 +33,14 @@
 
     // 左側圖層列（手機版是底部導覽列）。之後要加新地圖，在這裡加一筆並把 ready 設成 true 即可
     const LAYERS = [
-        { k: 'stocks', icon: '📈', label: $t('總體經濟'), title: $t('總體經濟'), desc: $t('指數、商品、匯率、債券、利率、經濟數據、地緣'), ready: true },
+        {
+            k: 'stocks',
+            icon: '📈',
+            label: $t('總體經濟'),
+            title: $t('總體經濟'),
+            desc: $t('指數、商品、匯率、債券、利率、經濟數據、地緣'),
+            ready: true,
+        },
         { k: 'picks', icon: '📊', label: $t('個股'), title: $t('個股'), desc: $t('個股報價、走勢與公司資訊') },
         { k: 'holdings', icon: '💼', label: $t('持倉'), title: $t('持倉'), desc: $t('我的持股、成本與損益') },
         { k: 'balance', icon: '⚖️', label: $t('資產負債'), title: $t('資產負債'), desc: $t('資產、負債與淨值') },
@@ -70,20 +77,45 @@
         { src: 'critters/dolphin.png', lon: 72, lat: -12, mode: 'dolphin', s: 0.85, sea: true },
         { src: 'critters/shark.png', lon: 62, lat: -36, mode: 'dolphin', s: 0.9, sea: true },
         { src: 'critters/seal.png', lon: -27, lat: 66, mode: 'bob', s: 0.75, sea: true },
-        { src: 'critters/sailboat.png', lon: -140, lat: 22, mode: 'boat', face: 'F', s: 1, sea: true },
-        { src: 'critters/sailboat.png', lon: 162, lat: 12, mode: 'boat', face: 'F', s: 1, sea: true },
+        // 南島民族（由台灣出發往太平洋、印度洋拓展）：蘭嶼達悟族拼板舟，和往太平洋、馬達加斯加遠航的拼板舟
+        { src: 'critters/tatara-yami.svg', lon: 122.4, lat: 20.8, mode: 'boat', face: 'F', s: 1.2, sea: true, maxDeg: 1.2 },
+        { src: 'critters/tatara-yami.svg', lon: -146, lat: 14, mode: 'boat', face: 'F', s: 1.2, sea: true },
+        { src: 'critters/tatara-yami.svg', lon: 163, lat: 7, mode: 'boat', face: 'F', s: 1.2, sea: true },
+        { src: 'critters/tatara-yami.svg', lon: 56, lat: -14, mode: 'boat', face: 'F', s: 1.2, sea: true },
+        // 日本黑船（1853 年培里艦隊開進浦賀、逼日本開國）
+        { src: 'critters/black-ship.svg', lon: 142, lat: 33.5, mode: 'boat', face: 'F', s: 1.4, sea: true, maxDeg: 1 },
+        // 大航海時代的船隊：馬尼拉大帆船（太平洋）、鄭和寶船（印度洋）
+        { src: 'critters/galleon-manila.svg', lon: -118, lat: 14, mode: 'boat', face: 'F', s: 1.3, sea: true },
+        { src: 'critters/treasure-ship.svg', lon: 84, lat: 4, mode: 'boat', face: 'F', s: 1.4, sea: true },
+        // 地理大發現：哥倉布（1492）、達伽馬（1498）、麥哲倫（1519~1522）；阿拉伯三角帆船、Vendée Globe 環球賽艇
+        { src: 'critters/fleet-columbus.svg', lon: -66, lat: 22, mode: 'boat', face: 'F', s: 1.9, sea: true },
+        { src: 'critters/caravel-dias.svg', lon: 20, lat: -37, mode: 'boat', face: 'F', s: 1.3, sea: true }, // 迪亞士 1488 繞過好望角
+        { src: 'critters/ship-dagama.svg', lon: 71, lat: 11, mode: 'boat', face: 'F', s: 1.3, sea: true }, // 達伽馬 1498 抵達印度
+        { src: 'critters/ship-victoria.svg', lon: -86, lat: -52, mode: 'boat', face: 'F', s: 1.3, sea: true }, // 麥哲倫船隊的維多利亞號環球航行
+        { src: 'critters/dhow.svg', lon: 64, lat: 22, mode: 'boat', face: 'F', s: 1.2, sea: true },
+        { src: 'critters/yacht-vendee.svg', lon: 40, lat: -47, mode: 'race', face: 'R', s: 1.4, sea: true },
+        // 北大西洋：鐵達尼號沉了一半（1912 年撞冰山的海域）
+        { src: 'critters/titanic.svg', lon: -49.9, lat: 41.7, mode: 'bob', face: 'F', s: 1.3, sea: true, deco: true },
+        // 哥斯大黎加外海的海龜
+        { src: 'critters/sea-turtle.svg', lon: -86.8, lat: 8.8, mode: 'turtle', s: 0.8, sea: true, deco: true },
         // 北海小英雄：維京長船在北海巡航
         { src: 'people/viking.svg', lon: 3.5, lat: 59.5, mode: 'boat', face: 'R', s: 1.35, sea: true },
         // 非洲莽原：獵人追斑馬，旁邊有長頸鹿散步
         { src: 'critters/zebra.png', lon: 33.5, lat: -6, mode: 'chase', lag: 0, s: 0.95 },
         { src: 'critters/hunter.png', lon: 33.5, lat: -6, mode: 'chase', lag: 1.05, s: 0.85 },
         { src: 'critters/giraffe.png', lon: 29, lat: -10, mode: 'wander', s: 1.2 },
+        { src: 'critters/lion.svg', lon: 36.5, lat: -2, mode: 'wander', gait: 'heavy', s: 1.05, deco: true, maxDeg: 2 }, // 非洲獅
+        { src: 'animals/leopard.png', lon: 26, lat: 3, mode: 'wander', s: 0.95, deco: true, maxDeg: 2 }, // 非洲豹
+        { src: 'animals/rhinoceros.png', lon: 22, lat: -19, mode: 'wander', gait: 'heavy', s: 1.15, deco: true, maxDeg: 2 }, // 犀牛
         // 北極：因紐特（愛斯基摩）人在冰屋旁走來走去
         { src: 'people/igloo.svg', lon: -74, lat: 68.5, mode: 'still', face: 'F', s: 1 },
         { src: 'people/eskimo.svg', lon: -69, lat: 67.6, mode: 'wander', face: 'F', gait: 'waddle', s: 0.85 },
         // 其他特別的人
         { src: 'critters/rower.png', lon: -62, lat: -3.3, mode: 'boat', face: 'F', s: 0.9 }, // 亞馬遜河划船
-        { src: 'critters/surfer.png', lon: 155, lat: -30, mode: 'surf', face: 'R', s: 0.9, sea: true }, // 澳洲黃金海岸衝浪
+        { src: 'critters/surfer.png', lon: 155.8, lat: -30, mode: 'surf', face: 'R', s: 0.9, sea: true }, // 澳洲黃金海岸外海衝浪
+        // 澳洲東南部：無尾熊抱著尤加利樹幹慢慢往上爬、停下來啃葉子，再爬下來
+        { src: 'critters/eucalyptus.svg', lon: 147.5, lat: -36, mode: 'still', face: 'F', s: 1.5, deco: true },
+        { src: 'critters/koala.svg', lon: 147.5, lat: -36, mode: 'climb', face: 'F', s: 0.55, deco: true, noShadow: true },
         { src: 'critters/skier.png', lon: 14, lat: 65, mode: 'ski', face: 'R', s: 0.85 }, // 挪威山上滑雪
         // 各地代表動物
         { src: 'critters/panda.svg', lon: 101.2, lat: 30.8, mode: 'wander', gait: 'waddle', s: 1.05, deco: true }, // 四川的貓熊
@@ -95,25 +127,62 @@
         // 美國西海岸外海的大白鯊：只露出背鰭，拖著水痕在海面上慢慢巡游
         { src: 'critters/shark-fin.svg', lon: -127.5, lat: 36.8, mode: 'fin', s: 1.15, sea: true, deco: true },
         // ── 世界地標 ──────────────────────────────────────────────────
-        { src: 'critters/jellyfish.svg', lon: 134.5, lat: 7.5, mode: 'bob', s: 0.9, sea: true, deco: true, landmark: true },     // 帛琉水母
-        { src: 'critters/fuji.svg', lon: 138.3, lat: 34.4, mode: 'still', face: 'F', s: 1.2, deco: true, landmark: true },       // 富士山
+        { src: 'critters/jellyfish.svg', lon: 134.5, lat: 7.5, mode: 'bob', s: 0.9, sea: true, deco: true, landmark: true }, // 帛琉水母
+        { src: 'critters/fuji.svg', lon: 138.3, lat: 34.4, mode: 'still', face: 'F', s: 1.2, deco: true, landmark: true }, // 富士山
         { src: 'critters/great-wall.svg', lon: 117.2, lat: 40.7, mode: 'still', face: 'F', s: 1.2, deco: true, landmark: true }, // 萬里長城
         { src: 'critters/opera-house.svg', lon: 152.5, lat: -34.8, mode: 'still', face: 'F', s: 1.0, deco: true, landmark: true }, // 雪梨歌劇院
-        { src: 'critters/statue-liberty.svg', lon: -73.2, lat: 40.8, mode: 'still', face: 'F', s: 1.0, deco: true, landmark: true }, // 自由女神像
-        { src: 'critters/christ-redeemer.svg', lon: -43.2, lat: -22.95, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 基督像
-        { src: 'critters/machu-picchu.svg', lon: -72.5, lat: -13.2, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 馬丘比丘
+        {
+            src: 'critters/statue-liberty.svg',
+            lon: -73.2,
+            lat: 40.8,
+            mode: 'still',
+            face: 'F',
+            s: 1.0,
+            deco: true,
+            landmark: true,
+        }, // 自由女神像
+        {
+            src: 'critters/christ-redeemer.svg',
+            lon: -43.2,
+            lat: -22.95,
+            mode: 'still',
+            face: 'F',
+            s: 1.1,
+            deco: true,
+            landmark: true,
+        }, // 基督像
+        {
+            src: 'critters/machu-picchu.svg',
+            lon: -72.5,
+            lat: -13.2,
+            mode: 'still',
+            face: 'F',
+            s: 1.1,
+            deco: true,
+            landmark: true,
+        }, // 馬丘比丘
         { src: 'critters/eiffel-tower.svg', lon: 2.3, lat: 48.3, mode: 'still', face: 'F', s: 1.0, deco: true, landmark: true }, // 艾菲爾鐵塔
-        { src: 'critters/big-ben.svg', lon: 0.8, lat: 51.0, mode: 'still', face: 'F', s: 1.0, deco: true, landmark: true },      // 大笨鐘
+        { src: 'critters/big-ben.svg', lon: 0.8, lat: 51.0, mode: 'still', face: 'F', s: 1.0, deco: true, landmark: true }, // 大笨鐘
         { src: 'critters/leaning-tower.svg', lon: 10.4, lat: 42.8, mode: 'still', face: 'F', s: 1.0, deco: true, landmark: true }, // 比薩斜塔
-        { src: 'critters/colosseum.svg', lon: 12.5, lat: 41.9, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },   // 羅馬競技場
+        { src: 'critters/colosseum.svg', lon: 12.5, lat: 41.9, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 羅馬競技場
         { src: 'critters/greek-house.svg', lon: 25.4, lat: 36.4, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 希臘聖托里尼
-        { src: 'critters/pyramid.svg', lon: 31.1, lat: 29.97, mode: 'still', face: 'F', s: 1.2, deco: true, landmark: true },    // 吉薩金字塔
-        { src: 'critters/hot-balloon.svg', lon: 34.85, lat: 37.8, mode: 'bob', s: 1.0, deco: true, landmark: true },             // 卡帕多奇亞熱氣球
-        { src: 'critters/aurora.svg', lon: 18.0, lat: 69.5, mode: 'still', face: 'F', s: 1.4, deco: true, landmark: true },      // 北歐極光
+        { src: 'critters/pyramid.svg', lon: 31.1, lat: 29.97, mode: 'still', face: 'F', s: 1.2, deco: true, landmark: true }, // 吉薩金字塔
+        { src: 'critters/hot-balloon.svg', lon: 34.85, lat: 37.8, mode: 'bob', s: 1.0, deco: true, landmark: true }, // 卡帕多奇亞熱氣球
+        { src: 'critters/aurora.svg', lon: 18.0, lat: 69.5, mode: 'still', face: 'F', s: 1.4, deco: true, landmark: true }, // 北歐極光
         { src: 'critters/taj-mahal.svg', lon: 78.04, lat: 27.17, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 泰姬瑪哈陵
-        { src: 'critters/petra.svg', lon: 35.44, lat: 30.33, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },     // 佩特拉古城
-        { src: 'critters/polar-bear.svg', lon: -40.0, lat: 72.0, mode: 'wander', gait: 'heavy', s: 1.0, deco: true, landmark: true }, // 格陵蘭北極熊
-        { src: 'critters/moai.svg', lon: -109.4, lat: -27.1, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },     // 復活島摩艾
+        { src: 'critters/petra.svg', lon: 35.44, lat: 30.33, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 佩特拉古城
+        {
+            src: 'critters/polar-bear-l.svg',
+            lon: -40.0,
+            lat: 72.0,
+            mode: 'wander',
+            gait: 'heavy',
+            maxDeg: 3,
+            s: 1.0,
+            deco: true,
+            landmark: true,
+        }, // 格陵蘭北極熊
+        { src: 'critters/moai.svg', lon: -109.4, lat: -27.1, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 復活島摩艾
     ];
     // 原住民小人（natives.js）：該國主要指數漲就歡呼跳舞、跌就沮喪哭泣，平盤時散步 / 揮手 / 眨眼
     // mode 'folk'；market = 看哪個指數；ox / oy = 相對位置點的偏移（單位：小角色基準大小）；minK = 縮小到這個倍率以下就收起來
@@ -199,7 +268,7 @@
             f = FOLK_MASK_SC;
         folkMaskCtx.fillStyle = '#000';
         // 世界左右各有一份（x 繞回 S0 之內）：把畫面涵蓋到的每一份都畫上去
-        const n0 = Math.floor((-t.x / t.k) / S0) - 1,
+        const n0 = Math.floor(-t.x / t.k / S0) - 1,
             n1 = Math.floor((W - t.x) / t.k / S0) + 1;
         for (let n = n0; n <= n1; n++) {
             folkMaskCtx.setTransform(f * t.k, 0, 0, f * t.k, f * (t.x + n * S0 * t.k), f * t.y);
@@ -319,7 +388,7 @@
         rot: 0, // 多指數旗幟的輪播序號
         flash: {}, // 剛更新的報價：代碼 → { until, up }，旗幟 / 卡片用它閃一下（見 animateQuotes）
         flying: false, // 切換篩選 / 飛到某處的動畫進行中：只畫地形與國界，不排版（停下來再排）
-        highlightId: null,      // 點擊高亮（關閉彈窗時清除）
+        highlightId: null, // 點擊高亮（關閉彈窗時清除）
         hoverHighlightId: null, // hover 高亮（mouseleave 時清除）
     };
 
@@ -833,10 +902,13 @@
         // 國名：奶油白到琥珀金的漸層，呼應旗幟的金色邊框
         grad('nameGold', '#fffbe8', '#ffc247');
         // 夜晚城市燈光發光暈：城市旗幟在夜側時散發溫暖橘黃光
-        const glow = defs.append('filter')
+        const glow = defs
+            .append('filter')
             .attr('id', 'cityGlow')
-            .attr('x', '-40%').attr('y', '-40%')
-            .attr('width', '180%').attr('height', '180%');
+            .attr('x', '-40%')
+            .attr('y', '-40%')
+            .attr('width', '180%')
+            .attr('height', '180%');
         glow.append('feGaussianBlur').attr('stdDeviation', 4).attr('result', 'blur');
         const glowMerge = glow.append('feMerge');
         glowMerge.append('feMergeNode').attr('in', 'blur');
@@ -971,7 +1043,8 @@
                 .attr('class', d.sea ? 'wake' : 'shadow')
                 .attr('filter', 'url(#soft)');
             const body = wk.append('g');
-            let img, poses = null;
+            let img,
+                poses = null;
             if (d.folk) {
                 // 原住民小人（natives.js）：每個姿勢是 <svg> 裡的一個 <g>，依漲跌切換顯示哪一個
                 img = body.append('g').append('svg');
@@ -1031,8 +1104,10 @@
             if (c.wait <= 0) {
                 const a = Math.random() * Math.PI * 2,
                     r = 0.35 + Math.sqrt(Math.random()) * 0.65;
-                c.tx = Math.cos(a) * r * c.base * span;
-                c.ty = Math.sin(a) * r * c.base * span * sq;
+                // maxDeg：活動範圍不超過幾度經度，縮小地圖時才不會走到海上
+                const rr = Math.min(r * c.base * span, c.d.maxDeg && c.ppd ? c.d.maxDeg * c.ppd : Infinity);
+                c.tx = Math.cos(a) * rr;
+                c.ty = Math.sin(a) * rr * sq;
                 c.wait = 1 + Math.random() * 3;
             }
             return false;
@@ -1088,7 +1163,8 @@
             } else {
                 sy = 1 + Math.sin(T * 2.2) * 0.02; // 站著輕輕呼吸
                 const cyc = T % 10;
-                if (cyc < 1.8) pose = Math.floor(T * 4) % 2 ? 'wave2' : 'wave1'; // 偶爾揮手
+                if (cyc < 1.8)
+                    pose = Math.floor(T * 4) % 2 ? 'wave2' : 'wave1'; // 偶爾揮手
                 else if (T % 3.4 < 0.14) pose = 'idleBlink'; // 眨眼
             }
         }
@@ -1216,9 +1292,47 @@
                     op = 0;
                     wake = 0.4;
                 }
+            } else if (m === 'race') {
+                // 賽艇在南大洋來回疊式航行，轉向時調頭，船頭略抬、船身傾斜
+                const T = t + c.ph,
+                    w = T * 0.18;
+                c.x = Math.sin(w) * B * 3;
+                c.y = Math.sin(w * 2) * B * 0.15;
+                c.dir = faceDir(c, Math.cos(w));
+                hop = -R * 0.04 - Math.sin(T * 2.1) * R * 0.02;
+                rot = -c.dir * 3 + Math.sin(T * 1.3) * 2;
+            } else if (m === 'turtle') {
+                // 海龜：慢慢游一個橫 8 字，轉彎時翻面；活動範圍用 ppd 限制在 ±1.5 度內
+                const T = t + c.ph,
+                    w = T * 0.2;
+                c.x = Math.sin(w) * Math.min(B * 1.8, (c.ppd || 9999) * 1.5);
+                c.y = Math.sin(w * 2) * Math.min(B * 0.35, (c.ppd || 9999) * 0.5);
+                c.dir = faceDir(c, Math.cos(w));
+                hop = Math.sin(T * 1.5) * R * 0.04;
+                rot = Math.sin(T * 0.9) * 3;
+            } else if (m === 'climb') {
+                // 16 秒一輪：爬上去 → 在樹上啃葉子 → 爬下來 → 休息
+                const T = (t + c.ph) % 16;
+                let u = 0,
+                    moving = false;
+                if (T < 4) ((u = T / 4), (moving = true));
+                else if (T < 8) u = 1;
+                else if (T < 12) ((u = 1 - (T - 8) / 4), (moving = true));
+                u = u * u * (3 - 2 * u);
+                c.x = 0;
+                c.y = -u * B * 0.45;
+                if (moving) {
+                    const s = Math.sin(T * Math.PI * 2.4);
+                    hop = -Math.abs(s) * R * 0.05;
+                    rot = s * 4;
+                } else {
+                    sy = 1 + Math.sin(t * 9 + c.ph) * 0.02; // 啃葉子
+                    rot = Math.sin(t * 1.2 + c.ph) * 1.5;
+                }
             } else if (m === 'surf') {
+                // 橫向振幅用 ppd 限制在 ±1.1 度內，縮小地圖時才不會衝上陸地
                 const w = (t + c.ph) * 0.5;
-                c.x = Math.sin(w) * B * 1.6;
+                c.x = Math.sin(w) * Math.min(B * 1.6, (c.ppd || 9999) * 1.1);
                 c.y = 0;
                 c.dir = faceDir(c, Math.cos(w));
                 hop = -Math.abs(Math.sin((t + c.ph) * 2.2)) * R * 0.12;
@@ -1233,16 +1347,21 @@
                 rot = Math.cos(u * z) * 10;
                 op = Math.min(1, u / 0.08, (1 - u) / 0.1);
             }
+            if (c.d.sea && cloudHits.length) {
+                const cv = 1 - cloudCover(c.sx + c.x, c.sy + c.y - c.size * 0.3);
+                op *= cv;
+                wake *= cv;
+            }
             const lift = Math.max(0, Math.min(1, -hop / (R * 0.35)));
             c.shadow.setAttribute('transform', `scale(${(1 - lift * 0.4).toFixed(3)})`);
-            c.shadow.style.opacity = (c.d.sea ? 0.42 * wake : 0.45 * (1 - lift * 0.5) * op).toFixed(2);
+            c.shadow.style.opacity = c.d.noShadow ? '0' : (c.d.sea ? 0.42 * wake : 0.45 * (1 - lift * 0.5) * op).toFixed(2);
             c.body.style.opacity = op.toFixed(2);
             // 夜間暗化：依晨昏線壓低亮度（海上生物依浮沉位置估算當前經緯）
             {
                 const nb = nightBrightAt(c.d.lon, c.d.lat);
                 if (nb < 1) {
                     // 動物在夜晚最暗到 0.5（比旗幟更暗沒關係，它們不是文字資訊）
-                    const br = (0.50 + nb * 0.50).toFixed(2);
+                    const br = (0.5 + nb * 0.5).toFixed(2);
                     c.body.style.filter = `brightness(${br}) hue-rotate(${Math.round((1 - nb) * -15)}deg)`;
                 } else {
                     c.body.style.filter = '';
@@ -1354,7 +1473,18 @@
             });
         }
     }
+    // 這一幀的雲（螢幕座標的橢圓）：海上的小角色飄到雲下時要淡出，不然會變成站在雲上
+    const cloudHits = [];
+    function cloudCover(x, y) {
+        let cv = 0;
+        for (const h of cloudHits) {
+            const d = Math.hypot((x - h.cx) / h.rx, (y - h.cy) / h.ry);
+            if (d < 1.15) cv = Math.max(cv, h.a * Math.min(1, (1.15 - d) / 0.4));
+        }
+        return Math.min(1, cv * 1.2);
+    }
     function drawClouds(dt) {
+        cloudHits.length = 0;
         if (!cctx || !W || !projection) return;
         const ctx = cctx,
             t = state.t,
@@ -1386,6 +1516,7 @@
         for (const [c, x, y, w, h] of list) {
             ctx.globalAlpha = c.a * fade;
             ctx.drawImage(c.sp.body, x, y, w, h);
+            cloudHits.push({ cx: x + w * 0.5, cy: y + h * 0.55, rx: w * 0.42, ry: h * 0.26, a: c.a * fade });
         }
         ctx.globalAlpha = 1;
     }
@@ -1868,8 +1999,8 @@
                 .classed('on', on || hl || hv)
                 .classed('hl-land', hl)
                 .classed('hv-land', hv)
-                .attr('fill', (hl || hv) ? null : on ? b.fill : 'none')
-                .style('stroke', (hl || hv) ? null : on ? b.line : null);
+                .attr('fill', hl || hv ? null : on ? b.fill : 'none')
+                .style('stroke', hl || hv ? null : on ? b.line : null);
         });
         gLine.selectAll('path').each(function (d) {
             const id = pad3(d.id);
@@ -1881,7 +2012,7 @@
                 .classed('on', on || hl || hv)
                 .classed('hl-line', hl)
                 .classed('hv-line', hv)
-                .style('stroke', (hl || hv) ? null : on ? borderOf(id).line : null);
+                .style('stroke', hl || hv ? null : on ? borderOf(id).line : null);
         });
         gEdge.selectAll('path').each(function (d) {
             const id = pad3(d.id);
@@ -2032,7 +2163,11 @@
                 layoutMarkers();
                 map.classList.remove('flying');
             };
-            svg.transition().duration(900).ease(d3.easeCubicInOut).on('end.fly interrupt.fly cancel.fly', done).call(zoomB.transform, tr);
+            svg.transition()
+                .duration(900)
+                .ease(d3.easeCubicInOut)
+                .on('end.fly interrupt.fly cancel.fly', done)
+                .call(zoomB.transform, tr);
         } else {
             const was = state.flying;
             state.flying = false;
@@ -2273,8 +2408,7 @@
     }
     // 台股還沒讀到最新排行（用的是 corps.js 內建的備用數字）時加註「備用」，不要讓人以為是最新的
     // 旗幟上的分隔標題：所有國家統一寫「市值前十大」（國家已經看旗幟與國名，不再加「台股」「德股」…）
-    const extraTitle = (m) =>
-        m.extra === 'corps' && window.Corps && !Corps.LIVE ? $t('市值前十大（備用）') : $t('市值前十大');
+    const extraTitle = (m) => (m.extra === 'corps' && window.Corps && !Corps.LIVE ? $t('市值前十大（備用）') : $t('市值前十大'));
     // 這張旗幟能不能整張列出（multi）：有多個指數，或放大到有公司列。單一指數又沒有公司列的國家只有 full / mini
     const hasRows = (m, n = m.group.length) => n > 1 || extraList(m).length > 0;
     // 整張列出（multi）時的旗幟高度（未放大的座標）：色帶 24 + 每個指數 16 + 底部 4，再加上額外的公司列
@@ -2348,7 +2482,9 @@
     const fmtWan = (p) => (I18n.lang === 'en' ? `${fmtInt(p / 1e3)}K` : $t('{n}萬', { n: (p / 1e4).toFixed(1) }));
     // 月份：英文用 Sep，其他語言用「9月」
     const monthLabel = (n) =>
-        I18n.lang === 'en' ? new Intl.DateTimeFormat('en-US', { month: 'short' }).format(new Date(2024, n - 1, 1)) : $t('{m}月', { m: n });
+        I18n.lang === 'en'
+            ? new Intl.DateTimeFormat('en-US', { month: 'short' }).format(new Date(2024, n - 1, 1))
+            : $t('{m}月', { m: n });
     const toYi = (v, unit) => (/Million/i.test(unit) ? v / 100 : /Billion/i.test(unit) ? v * 10 : null);
     const signed = (n, s) => (n > 0 ? '+' : n < 0 ? '-' : '') + s;
     // 變動值的顯示：四捨五入後是 0 就當「持平」，顯示 0（不帶箭頭、不帶正負號、灰色），不要出現「–0.0」「▲0.0」
@@ -2379,7 +2515,12 @@
                 // 前後期都是正數（外銷訂單）才顯示變動幅度；貿易收支這類會正負翻轉的只顯示數值（差額沒意義，也佔寬度）
                 const pct = pyi != null && pyi > 0 && yi > 0 ? ((yi - pyi) / pyi) * 100 : null;
                 const { chg, flat } = pct == null ? { chg: '', flat: false } : chgText(pct, Math.abs(pct).toFixed(1) + '%');
-                return { val: `${yi < 0 ? '-' : ''}${fmtYi(Math.abs(yi))}`, chg: flat ? '0%' : chg, flat, cd: pyi == null ? 0 : yi - pyi };
+                return {
+                    val: `${yi < 0 ? '-' : ''}${fmtYi(Math.abs(yi))}`,
+                    chg: flat ? '0%' : chg,
+                    flat,
+                    cd: pyi == null ? 0 : yi - pyi,
+                };
             }
             case 'rate': {
                 // 央行政策利率：只顯示目前水準（有下限 lo 時是目標區間，例如 3.75–4.00%），不顯示變動
@@ -2694,7 +2835,10 @@
             // 底部多留 34px：右下角的災難按鈕與地圖來源標示不要壓到卡片
             const room = H - top0 - 34 - GAP * (Math.max(colN[0], colN[1]) - 1);
             // 經濟數據去掉分隔標題後比較矮，畫面夠高時字可以放更大
-            const U = Math.max(0.6, Math.min(state.activeRegion === 'econ' ? 1.4 : BUBBLE_SCALE_MOBILE, room / Math.max(colH[0], colH[1], 1)));
+            const U = Math.max(
+                0.6,
+                Math.min(state.activeRegion === 'econ' ? 1.4 : BUBBLE_SCALE_MOBILE, room / Math.max(colH[0], colH[1], 1)),
+            );
             const w = Math.min(colW, Math.round(Math.min(200, Math.floor(colW / U)) * U));
             const ys = [top0, top0];
             for (const c of order) {
@@ -2757,7 +2901,10 @@
                 used.push(hit);
                 out.push({ c, hit, pin: { x: ax, y: ay } });
                 // 卡片邊緣離國家的距離（卡片蓋在國家上方算 0）
-                far = Math.max(far, Math.hypot(Math.max(hit.x - ax, 0, ax - hit.x - hit.w), Math.max(hit.y - ay, 0, ay - hit.y - hit.h)));
+                far = Math.max(
+                    far,
+                    Math.hypot(Math.max(hit.x - ax, 0, ax - hit.x - hit.w), Math.max(hit.y - ay, 0, ay - hit.y - hit.h)),
+                );
             }
             return { out, miss, used, far };
         };
@@ -2776,9 +2923,9 @@
                 bestU = U;
                 break;
             }
-            if (!alt) (alt = t), (altU = U);
+            if (!alt) ((alt = t), (altU = U));
         }
-        if (!best && alt) (best = alt), (bestU = altU);
+        if (!best && alt) ((best = alt), (bestU = altU));
         best = best || place(1, rects);
         for (const { c, hit, pin } of best.out) {
             if (!hit) d3.select(c.el).styleQ('display', 'none');
@@ -2887,14 +3034,16 @@
                 x.sec
                     ? `<div style="margin-top:8px;padding:2px 8px;background:#1f7f95;border-radius:4px"><b style="color:#fff;letter-spacing:4px">${esc(x.sec)}</b></div>`
                     : x.note
-                    ? `<div>${esc(x.note)}</div>`
-                    : `<div><b>${esc(x.lab)}</b>　<span style="color:${x.vcol || '#fff'}">${esc(x.val)}</span>${x.chg ? `　${x.pq ? pctSpan(x.cd, esc(x.chg)) : `<span style="color:${x.col}">${esc(x.chg)}</span>`}` : ''}${x.ref ? `　<span class="small">${esc(x.ref)}${x.stale ? ' ⚠️' + $t('沿用舊資料') : ''}</span>` : ''}</div>`,
+                      ? `<div>${esc(x.note)}</div>`
+                      : `<div><b>${esc(x.lab)}</b>　<span style="color:${x.vcol || '#fff'}">${esc(x.val)}</span>${x.chg ? `　${x.pq ? pctSpan(x.cd, esc(x.chg)) : `<span style="color:${x.col}">${esc(x.chg)}</span>`}` : ''}${x.ref ? `　<span class="small">${esc(x.ref)}${x.stale ? ' ⚠️' + $t('沿用舊資料') : ''}</span>` : ''}</div>`,
             )
             .join('');
         const quoted = c.rows.some((r) => r.s || r.calc);
         const econ = c.rows.some((r) => r.e);
         const src = econ
-            ? $t('資料來源：{src}。各項為最近一次公布的數值，右側小字是統計期間；變動是和前一期的差。', { src: c.src || $t('手動整理') })
+            ? $t('資料來源：{src}。各項為最近一次公布的數值，右側小字是統計期間；變動是和前一期的差。', {
+                  src: c.src || $t('手動整理'),
+              })
             : quoted
               ? $t('行情來自 Yahoo Finance、CNBC、Trading Economics，通常延遲 15 分鐘以上。')
               : $t('資料來源：{src}。這是手動維護的資料，可能不是最新。', { src: c.src || $t('手動整理') });
@@ -2980,7 +3129,16 @@
         // 小人的位置只在「換視角 / 縮放或拖曳停下來之後」重找一次（結果存在 folkCache），拖曳 / 縮放途中沿用上一次的結果：
         // 找位置要對整個畫面的格點做 isPointInPath（國家輪廓有幾千個點），十個國家每一幀都找手機會非常卡
         const folkKey = `${W}x${H}|${state.activeRegion}|${desktopMQ.matches ? 'd' : 'm'}`;
-        const placeFolk = (avoid, wide) => {
+        // 世界地標（泰姬瑪哈陵、自由女神…）不會让人，小人要自己避開
+        const lmRects = critters
+            .filter((o) => o.d.landmark && !o.d.sea)
+            .map((o) => {
+                const [lx, ly] = screenXY(o.d.lon, o.d.lat),
+                    lz = csz * o.d.s;
+                return { x: lx - lz * 0.6, y: ly - lz * 1.1, w: lz * 1.2, h: lz * 1.2 };
+            });
+        const placeFolk = (avoidIn, wide) => {
+            const avoid = avoidIn.concat(lmRects);
             for (const c of critters) {
                 if (c.d.mode !== 'folk' || folkShift.has(c.d.market)) continue;
                 const grp = critters.filter((o) => o.d.mode === 'folk' && o.d.market === c.d.market);
@@ -3005,9 +3163,15 @@
                                 r.x + r.w <= W - 2 &&
                                 r.y >= 2 &&
                                 r.y + r.h <= H - 2 &&
-                                // 自己國家的動物：小人可以站在旁邊（台灣縮小時動物和小人都在島上）。
+                                // 自己國家的動物：台灣縮小時動物和小人都在島上，可以靠近；其他國家要離開一段距離，才看得清楚小人。
                                 // 公司建築：小人畫在它上面（見 gFolk），所以可以站在建築前面，不會被蓋住
-                                !avoid.some((q) => inter(r, q) / (r.w * r.h) > (q.corp ? 0.9 : q.mk === c.d.market ? 0.8 : 0.12)),
+                                !avoid.some((q) => {
+                                    if (q.corp) return inter(r, q) / (r.w * r.h) > 0.9;
+                                    if (q.mk !== c.d.market) return inter(r, q) / (r.w * r.h) > 0.12;
+                                    if (q.mk === '^TWII') return inter(r, q) / (r.w * r.h) > 0.8;
+                                    const g = q.w * 0.6; // 動物四周留的空隙
+                                    return inter(r, { x: q.x - g, y: q.y - g, w: q.w + g * 2, h: q.h + g * 2 }) > 0;
+                                }),
                         );
                     const hit = folkCache.get(c.d.market);
                     // 拖曳 / 縮放停下來後，上次的位置如果已經是最好的（正常大小、三個人的腳都在陸地上）而且還是有效，就直接沿用，不用重掃
@@ -3016,8 +3180,9 @@
                         const [dx, dy, , sp] = h.pick;
                         const rs = rectsOf(...h.pick);
                         return (
-                            grp.every((o) => onLand(c.d.market, bx + ((o.d.ox || 0) * sp + dx) * csz, by + ((o.d.oy || 0) * sp + dy) * csz)) &&
-                            free(rs)
+                            grp.every((o) =>
+                                onLand(c.d.market, bx + ((o.d.ox || 0) * sp + dx) * csz, by + ((o.d.oy || 0) * sp + dy) * csz),
+                            ) && free(rs)
                         );
                     };
                     if (hit && hit.key === folkKey && hit.gen === folkGen) {
@@ -3045,13 +3210,30 @@
                         // 分三級找位置，越前面越嚴格：① 三個人的腳都在自己國家的陸地上 ② 至少 2/3 在陸地上 ③ 整組的中心在陸地上。
                         // 每一級先試正常大小的小人，陸地放不下就縮小（最小約 13px）、或把三個人往中間靠攏（像一小群人擠在小島上）；
                         // 三級都找不到才收起來。這樣國家小（例如台灣）時，三個人也會在島上，不會跑到海上或別的國家
-                        outer: for (const need of [1, 2 / 3, 0]) {
+                        // 最嘗試的一級是「腳邊留一點陸地」（台灣這種小島不適用），小人才不會緊貼海岸、看起來在海上
+                        const tiers =
+                            c.d.market === '^TWII'
+                                ? [
+                                      [1, false],
+                                      [2 / 3, false],
+                                      [0, false],
+                                  ]
+                                : [
+                                      [1, true],
+                                      [1, false],
+                                      [2 / 3, false],
+                                      [0, false],
+                                  ];
+                        outer: for (const [need, margin] of tiers) {
                             for (const sc of FOLK_SCALES) {
                                 const cz = csz * sc;
-                                if (cz < 13) break;
+                                if (cz < 13 || (margin && sc < 0.5)) break;
                                 for (const sp of FOLK_SPREADS) {
                                     const feet = (dx, dy) =>
-                                        grp.map((o) => [bx + ((o.d.ox || 0) * sp + dx) * cz, by + ((o.d.oy || 0) * sp + dy) * cz]);
+                                        grp.map((o) => [
+                                            bx + ((o.d.ox || 0) * sp + dx) * cz,
+                                            by + ((o.d.oy || 0) * sp + dy) * cz,
+                                        ]);
                                     const landOk = (dx, dy) => {
                                         const f = feet(dx, dy);
                                         if (need === 0) {
@@ -3059,7 +3241,17 @@
                                                 cy = f.reduce((s, p) => s + p[1], 0) / f.length;
                                             return landAt(cx, cy);
                                         }
-                                        return f.filter(([x, y]) => landAt(x, y)).length >= Math.ceil(f.length * need - 1e-9);
+                                        // 整個身體（左右、腳下、頭頂）都要在自己國家內，才不會站在國界上、頭露到鄰國
+                                        const ok = ([x, y]) =>
+                                            landAt(x, y) &&
+                                            (!margin ||
+                                                (landAt(x - cz * 0.9, y) &&
+                                                    landAt(x + cz * 0.9, y) &&
+                                                    landAt(x, y + cz * 0.4) &&
+                                                    landAt(x, y - cz * 1.8) &&
+                                                    landAt(x - cz * 0.9, y - cz) &&
+                                                    landAt(x + cz * 0.9, y - cz)));
+                                        return f.filter(ok).length >= Math.ceil(f.length * need - 1e-9);
                                     };
                                     const tryAt = (dx, dy) => {
                                         if (!landOk(dx, dy)) return false;
@@ -3072,7 +3264,12 @@
                                     for (const [dx, dy] of FOLK_SPOTS) if (tryAt(dx, dy)) break outer;
                                     if (wide)
                                         for (const [gx, gy] of getLandPts())
-                                            if (tryAt((gx - bx) / cz - (c.d.grpOx || 0) * sp, (gy - by) / cz - (c.d.grpOy || 0) * sp))
+                                            if (
+                                                tryAt(
+                                                    (gx - bx) / cz - (c.d.grpOx || 0) * sp,
+                                                    (gy - by) / cz - (c.d.grpOy || 0) * sp,
+                                                )
+                                            )
                                                 break outer;
                                 }
                             }
@@ -3132,7 +3329,9 @@
                         mu,
                         col: o.m.g10[0] === 'L' ? 0 : 1,
                         no: +o.m.g10.slice(1),
-                        w: mu ? Math.round(iw * u) : Math.round(Math.max(n > 1 ? 136 : 118, headNeedW(o.m, n > 1 ? n * 6 + 4 : 0)) * u),
+                        w: mu
+                            ? Math.round(iw * u)
+                            : Math.round(Math.max(n > 1 ? 136 : 118, headNeedW(o.m, n > 1 ? n * 6 + 4 : 0)) * u),
                         h: Math.round(h1(o, multi) * u),
                     };
                 });
@@ -3359,10 +3558,7 @@
                     // desktopMQ.matches 每次讀取都有成本，候選位置有上萬個，所以先讀一次
                     const deskSide = desktopMQ.matches ? m.deskSide : null;
                     cands.forEach(
-                        (c, i) => (
-                            (c.i = i),
-                            (c.d = c.pos === 'under' || (deskSide && c.pos === deskSide) ? -1 : d2(c))
-                        ),
+                        (c, i) => ((c.i = i), (c.d = c.pos === 'under' || (deskSide && c.pos === deskSide) ? -1 : d2(c))),
                     );
                     heapify(cands);
                     while (cands.length) {
@@ -3411,10 +3607,7 @@
             // markets.json 的 pin：一定要整張列出的國家（例如上證、韓國），分數特別高，其他國家只好讓位
             for (const o of vis.values()) {
                 if (!o.b) continue;
-                sc +=
-                    (o.b.mode === 'multi' ? 100 : o.b.mode === 'full' ? 10 : 1) *
-                    (hasRows(o.m) ? 3 : 1) *
-                    (o.m.pin ? 20 : 1);
+                sc += (o.b.mode === 'multi' ? 100 : o.b.mode === 'full' ? 10 : 1) * (hasRows(o.m) ? 3 : 1) * (o.m.pin ? 20 : 1);
                 // pin 的旗幟離自己的動物越遠越扣分（扣不到讓它變成非整張列出，只是讓位置盡量靠近）
                 if (o.m.pin && o.b.mode !== 'mini' && o.b.pos !== 'under') {
                     const dist = Math.hypot(o.b.r.x + o.b.r.w / 2 - o.x, o.b.r.y + o.b.r.h / 2 - o.y);
@@ -3452,10 +3645,7 @@
                         !tried.has(m.s) &&
                         vis.get(m.s) &&
                         state.quotes[m.s] &&
-                        !(
-                            vis.get(m.s).b &&
-                            (vis.get(m.s).b.mode === 'multi' || (!hasRows(m) && vis.get(m.s).b.mode === 'full'))
-                        );
+                        !(vis.get(m.s).b && (vis.get(m.s).b.mode === 'multi' || (!hasRows(m) && vis.get(m.s).b.mode === 'full')));
                     const miss = order.find((m) => m.pin && missing(m)) || order.find(missing);
                     if (!miss) break;
                     tried.add(miss.s);
@@ -3656,11 +3846,24 @@
                 t1.select('.m').textQ('');
             }
             // 報價剛更新：外框發光（群組裡任何一個指數有更新就閃）、數字區塊閃一下
-            setFlash(b, grpOf(m).map((x) => flashOf(x.s)).find(Boolean) || null);
+            setFlash(
+                b,
+                grpOf(m)
+                    .map((x) => flashOf(x.s))
+                    .find(Boolean) || null,
+            );
             const fl = b.select('.fl');
             setFlash(fl, multi ? null : flashOf(mode === 'full' ? cur.s : m.s));
-            if (mini) fl.attrQ('x', 3).attrQ('y', 3).attrQ('width', w - 6).attrQ('height', h - 6);
-            else fl.attrQ('x', 4).attrQ('y', 23).attrQ('width', w - 8).attrQ('height', Math.max(0, h - 26));
+            if (mini)
+                fl.attrQ('x', 3)
+                    .attrQ('y', 3)
+                    .attrQ('width', w - 6)
+                    .attrQ('height', h - 6);
+            else
+                fl.attrQ('x', 4)
+                    .attrQ('y', 23)
+                    .attrQ('width', w - 8)
+                    .attrQ('height', Math.max(0, h - 26));
             // 漲跌幅超過 BIG_MOVE 的數字：實心底色 + 白字（單一指數 / 輪播 / 迷你版共用這顆矩形）
             const hl = b.select('.hl');
             let hlBox = null,
@@ -3715,7 +3918,11 @@
                     if (k2 === 'sec') {
                         // 分隔線：和經濟數據卡片的分隔標題同一個樣式
                         setFlash(r, null);
-                        r.select('.rn').attrQ('x', 9).attrQ('y', y + 9.2).styleQ('font-size', null).textQ(extraTitle(m));
+                        r.select('.rn')
+                            .attrQ('x', 9)
+                            .attrQ('y', y + 9.2)
+                            .styleQ('font-size', null)
+                            .textQ(extraTitle(m));
                         r.select('.rk').textQ('');
                         r.select('.rv').textQ('');
                         r.select('.rp').textQ('');
@@ -3727,8 +3934,7 @@
                     setFlash(r, k2 === 'idx' ? flashOf(x.s) : null);
                     // 數字用 .rv/.rp（<text>）：CSS 的 fill 會蓋過屬性，漲跌色要用行內樣式；兩欄靠右對齊，依漲跌幅實際寬度排
                     // 公司股價超過 10 萬（韓股常見，例如 1,318,000）改用「萬」，不然數字太寬會擠到名稱
-                    const vs =
-                        rq && rq.p != null ? (k2 === 'corp' && rq.p >= 1e5 ? fmtWan(rq.p) : fmtN(rq.p, 'short')) : '--',
+                    const vs = rq && rq.p != null ? (k2 === 'corp' && rq.p >= 1e5 ? fmtWan(rq.p) : fmtN(rq.p, 'short')) : '--',
                         ps = rq ? fmtChgPct(rq.pct) : '';
                     // 公司列：名稱放大、數字略縮（CORP_FS）；指數列維持原本字級。寬度要乘上字級比例
                     const isCorp = k2 === 'corp',
@@ -3753,7 +3959,10 @@
                     r.select('.rn')
                         .attrQ('x', nx)
                         .attrQ('y', y + 12.5)
-                        .styleQ('font-size', lw > room ? `${Math.max(9, (baseFs * room) / lw).toFixed(1)}px` : fs ? `${fs.rn}px` : null)
+                        .styleQ(
+                            'font-size',
+                            lw > room ? `${Math.max(9, (baseFs * room) / lw).toFixed(1)}px` : fs ? `${fs.rn}px` : null,
+                        )
                         .textQ(lbl);
                     r.select('.rv')
                         .attrQ('x', rvx)
@@ -3806,11 +4015,7 @@
 
         // 小角色：活動範圍不壓住市場標記才顯示；放大到街道等級就收起來
         // 小角色比市場動物大一點，世界視角也看得出在做什麼
-        if (!desktopMQ.matches)
-            placeFolk(
-                rects.concat([...vis.values()].filter((o) => o.b).map((o) => o.b.r)),
-                true,
-            );
+        if (!desktopMQ.matches) placeFolk(rects.concat([...vis.values()].filter((o) => o.b).map((o) => o.b.r)), true);
         for (const c of critters) {
             const folk = c.d.mode === 'folk';
             const fs = folk ? folkShift.get(c.d.market) : null;
@@ -3836,9 +4041,12 @@
                 (!folk && !c.d.landmark && rects.some((q) => !(c.d.deco && q.an) && inter(r, q) / (r.w * r.h) > 0.15));
             c.vis = !hide;
             c.size = z;
+            c.sx = x;
+            c.sy = y;
             c.base = size;
             // 每度經度在螢幕上有幾 px：追逐 / 背鰭巡游的活動範圍要用「地理距離」限制，才不會縮小地圖時跑出海岸線
-            if (c.d.mode === 'chase' || c.d.mode === 'fin') c.ppd = Math.max(0.5, screenXY(c.d.lon + 1, c.d.lat)[0] - x);
+            if (c.d.maxDeg || ['chase', 'fin', 'surf', 'turtle'].includes(c.d.mode))
+                c.ppd = Math.max(0.5, screenXY(c.d.lon + 1, c.d.lat)[0] - x);
             if (folk && c.d.first) {
                 // 每組只由第一個成員負責畫虛線：組的中心不在國家附近（距離超過 3 個基準大小）才畫
                 const ld = folkLeads.get(c.d.market);
@@ -3874,7 +4082,8 @@
     /* ---------- 日夜晨昏線 ---------- */
     // 日夜遮罩的貼圖（見 drawNight）
     // 快取當前太陽參數（每分鐘只算一次）
-    let _sunCache = null, _sunCacheMin = -1;
+    let _sunCache = null,
+        _sunCacheMin = -1;
     function sunParams() {
         const now = new Date();
         const min = now.getUTCHours() * 60 + now.getUTCMinutes();
@@ -3882,7 +4091,7 @@
         const utcH = now.getUTCHours() + now.getUTCMinutes() / 60 + now.getUTCSeconds() / 3600;
         const sunLon = (utcH / 24 - 0.5) * -360;
         const dayOfYear = Math.floor((now - new Date(now.getUTCFullYear(), 0, 0)) / 864e5);
-        const decl = (-23.45 * Math.PI) / 180 * Math.cos((2 * Math.PI * (dayOfYear + 10)) / 365);
+        const decl = ((-23.45 * Math.PI) / 180) * Math.cos((2 * Math.PI * (dayOfYear + 10)) / 365);
         _sunCache = { sunLon, decl };
         _sunCacheMin = min;
         return _sunCache;
@@ -3989,7 +4198,7 @@
     const STARS_DATA = (() => {
         // 簡單 LCG 產生穩定的假隨機數
         let s = 0xdeadbeef;
-        const rand = () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296);
+        const rand = () => (s = (s * 1664525 + 1013904223) >>> 0) / 4294967296;
         const pts = [];
         for (let i = 0; i < 120; i++) {
             const lon = -180 + rand() * 360;
@@ -4001,9 +4210,12 @@
     })();
     function buildStars() {
         if (!gStars) return;
-        gStars.selectAll('circle').data(STARS_DATA).enter()
+        gStars
+            .selectAll('circle')
+            .data(STARS_DATA)
+            .enter()
             .append('circle')
-            .attr('r', d => d.r)
+            .attr('r', (d) => d.r)
             .attr('fill', '#e8f0ff')
             .style('opacity', 0)
             .style('pointer-events', 'none');
@@ -4013,7 +4225,7 @@
         gStars.selectAll('circle').each(function (d) {
             const nb = nightBrightAt(d.lon, d.lat);
             // 只在深夜（nb < 0.35）才顯示，晨昏帶漸入
-            const op = Math.max(0, Math.min(0.9, (0.35 - nb) / 0.35 * 0.9));
+            const op = Math.max(0, Math.min(0.9, ((0.35 - nb) / 0.35) * 0.9));
             if (op <= 0) {
                 this.style.opacity = 0;
                 return;
@@ -4183,8 +4395,8 @@
                         ? $t('手動整理，可能不是最新')
                         : $t('行情約延遲 15 分鐘');
             line = `${topic.icon} ${topic.label} · ${$t('更新於 {when}', { when })} · ${note}`;
-        }
-        else line = `🟢 ${$t('{n} 個市場開盤中', { n: open.length })} · ${$t('更新於 {when}', { when })} · ${$t('資料約延遲 15 分鐘')}`;
+        } else
+            line = `🟢 ${$t('{n} 個市場開盤中', { n: open.length })} · ${$t('更新於 {when}', { when })} · ${$t('資料約延遲 15 分鐘')}`;
         $('#statusLine').textContent = line;
     }
 
@@ -4209,9 +4421,7 @@
                   : tq.pct < 0
                     ? '🌫️ ' + $t('台股下跌，城市一片低迷')
                     : '';
-        const twii = tq
-            ? `<div class="chg">${$t('台股加權')} ${fmtN(tq.p)}　${pctSpan(tq.pct, fmtChgPct(tq.pct))}</div>`
-            : '';
+        const twii = tq ? `<div class="chg">${$t('台股加權')} ${fmtN(tq.p)}　${pctSpan(tq.pct, fmtChgPct(tq.pct))}</div>` : '';
         const note = Corps.LIVE
             ? `<p class="small">${$t('市值 = {when} × 已發行普通股數（新台幣），價格與漲跌幅對前一個交易日收盤；資料取自證交所與即時報價，每 10 分鐘自動更新；總部地址取自證交所上市公司基本資料。', { when: Corps.LIVE_AT ? $t('{t} 盤中價', { t: liveAtLocal(Corps.LIVE_AT) }) : $t('{d} 收盤價', { d: Corps.DATA_DATE }) })}</p>`
             : `<p class="small">${$t('市值為 {d} 收盤附近的約略數字（新台幣），不同網站的統計口徑可能略有差異；總部地址取自證交所上市公司基本資料。', { d: Corps.DATA_DATE })}</p>`;
@@ -4221,7 +4431,10 @@
         if (!c) {
             showSheet(`<h3>🏙️ ${$t('台股市值前十大')}</h3>${twii}${mood ? `<p class="desc">${mood}</p>` : ''}
       <div class="meta">${Corps.topList()
-          .map((x) => `<div><b>${x.rk}. ${$t(x.name)}</b>（${x.s}）　${$t('{n} 兆', { n: x.cap.toFixed(2) })}${pctTag(x.pct)}　<span class="small">${$t(x.ind)}</span></div>`)
+          .map(
+              (x) =>
+                  `<div><b>${x.rk}. ${$t(x.name)}</b>（${x.s}）　${$t('{n} 兆', { n: x.cap.toFixed(2) })}${pctTag(x.pct)}　<span class="small">${$t(x.ind)}</span></div>`,
+          )
           .join('')}</div>
       <p class="small">${$t('放大到台灣，就能看到每家公司蓋在自己總部的建築。')}</p>${note}`);
             return;
@@ -4276,9 +4489,7 @@
             ? `<div class="gtabs" role="tablist">${grp
                   .map((x) => {
                       const xq = state.quotes[x.s];
-                      const xp = xq
-                          ? pctSpan(xq.pct, fmtChgPct(xq.pct))
-                          : '<span>--</span>';
+                      const xp = xq ? pctSpan(xq.pct, fmtChgPct(xq.pct)) : '<span>--</span>';
                       return `<button class="gtab gbtn${x === m ? ' on' : ''}" role="tab" aria-selected="${x === m}" data-s="${x.s}"><b>${x.abbr || x.zh}</b>${xp}</button>`;
                   })
                   .join('')}</div>`
@@ -4438,7 +4649,10 @@
         $('#btnSet').addEventListener('click', openSettings);
         // Esc：關掉詳情卡
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') { $('#sheet').hidden = true; clearHighlight(); }
+            if (e.key === 'Escape') {
+                $('#sheet').hidden = true;
+                clearHighlight();
+            }
         });
 
         let rt = 0;
@@ -4495,6 +4709,10 @@
     init().catch((e) => {
         console.error(e);
         const l = $('#loading');
-        if (l) l.innerHTML = '<div class="spin">😵</div><p>' + (window.I18n ? I18n.t('地圖載入失敗，請檢查網路後重新整理') : '地圖載入失敗，請檢查網路後重新整理') + '</p>';
+        if (l)
+            l.innerHTML =
+                '<div class="spin">😵</div><p>' +
+                (window.I18n ? I18n.t('地圖載入失敗，請檢查網路後重新整理') : '地圖載入失敗，請檢查網路後重新整理') +
+                '</p>';
     });
 })();

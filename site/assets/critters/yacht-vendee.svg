@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="hl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#cfd9e6"/></linearGradient>
+  </defs>
+  <!-- Vendée Globe 的 IMOCA 60 環球賽艇：細長船身、水下水翼、傾斜航行（朝右） -->
+  <!-- 水翼 -->
+  <path d="M78 104 Q84 118 100 122" stroke="#2a3340" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+  <path d="M96 121 L110 119" stroke="#2a3340" stroke-width="3" stroke-linecap="round"/>
+  <!-- 前帆（大三角帆，紅藍配色） -->
+  <path d="M62 12 L66 96 L120 98Z" fill="#e0342f"/>
+  <path d="M62 12 L66 96 L88 97 L64 40Z" fill="#fbfbfd" opacity=".9"/>
+  <!-- 主帆 -->
+  <path d="M58 8 L58 94 L10 96Z" fill="#f6f8fb" stroke="#b5c0cf" stroke-width="1.2"/>
+  <path d="M58 24 L24 94 L58 94Z" fill="#2f6fd1" opacity=".85"/>
+  <g stroke="#97a5b8" stroke-width="1" opacity=".9"><path d="M58 30 L38 95 M58 50 L34 95 M58 70 L28 95"/></g>
+  <!-- 桅杆、吊桿與拉索 -->
+  <rect x="57" y="4" width="3" height="94" fill="#2a3340"/>
+  <rect x="8" y="94" width="52" height="2.6" fill="#2a3340"/>
+  <path d="M58 4 L6 100 M60 6 L124 100" stroke="#4a5868" stroke-width=".8" fill="none"/>
+  <!-- 船身 -->
+  <path d="M2 100 L56 94 L120 96 L126 100 Q100 110 60 110 Q22 110 2 100Z" fill="url(#hl)" stroke="#8fa0b6" stroke-width="1.4"/>
+  <path d="M4 101 Q60 107 124 100" stroke="#2f6fd1" stroke-width="3" fill="none"/>
+  <path d="M10 98 L50 96 L50 100 L12 101Z" fill="#2a3340"/>
+  <ellipse cx="40" cy="97" rx="9" ry="3.2" fill="#e0342f"/>
+</svg>

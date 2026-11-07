@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4f3a2a"/><stop offset="1" stop-color="#241810"/></linearGradient>
+  </defs>
+  <!-- 馬尼拉大帆船：載著美洲白銀橫渡太平洋 -->
+  <g fill="#3b2614">
+    <rect x="34" y="28" width="3" height="56"/>
+    <rect x="62" y="8" width="3.5" height="76"/>
+    <rect x="90" y="34" width="3" height="40"/>
+  </g>
+  <g fill="#f3deaa" stroke="#b59a5c" stroke-width="1.2">
+    <path d="M20 32 Q35 38 50 32 L52 64 Q35 71 18 64Z"/>
+    <path d="M44 12 Q64 19 84 12 L87 44 Q64 52 41 44Z"/>
+    <path d="M46 46 Q64 53 82 46 L86 76 Q64 83 42 76Z"/>
+    <path d="M93 36 L112 66 L93 66Z"/>
+  </g>
+  <!-- 帆上的勃艮第十字（深紅斜十字） -->
+  <g stroke="#a82a24" stroke-width="3.2" stroke-linecap="round">
+    <path d="M52 20 L76 40 M76 20 L52 40"/>
+    <path d="M54 56 L74 72 M74 56 L54 72"/>
+    <path d="M26 42 L44 58 M44 42 L26 58"/>
+  </g>
+  <path d="M65 8 L86 4 L65 0Z" fill="#f2c14e"/>
+  <path d="M93 34 L106 31 L93 28Z" fill="#a82a24"/>
+  <!-- 船身：深色木頭加金邊，船艙堆著白銀 -->
+  <path d="M10 82 L26 80 L100 80 L120 70 L118 84 Q112 108 90 114 L38 114 Q18 108 10 82Z" fill="url(#h)"/>
+  <rect x="94" y="62" width="24" height="14" rx="2" fill="#5d3f26"/>
+  <rect x="6" y="72" width="22" height="10" rx="2" fill="#5d3f26"/>
+  <path d="M12 92 L116 92" stroke="#d9a93e" stroke-width="3"/>
+  <path d="M30 80 L96 80" stroke="#c8ced6" stroke-width="4"/>
+  <g fill="#dfe4ea"><rect x="38" y="76" width="9" height="5" rx="1"/><rect x="50" y="76" width="9" height="5" rx="1"/><rect x="62" y="76" width="9" height="5" rx="1"/></g>
+  <g fill="#120a05"><circle cx="40" cy="101" r="2.6"/><circle cx="56" cy="101" r="2.6"/><circle cx="72" cy="101" r="2.6"/><circle cx="88" cy="101" r="2.6"/></g>
+</svg>

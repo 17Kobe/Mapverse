@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <radialGradient id="g" cx="38%" cy="28%" r="85%"><stop offset="0" stop-color="#c3c8d1"/><stop offset=".6" stop-color="#a2a8b3"/><stop offset="1" stop-color="#7d8390"/></radialGradient>
+    <radialGradient id="b" cx="50%" cy="35%" r="70%"><stop offset="0" stop-color="#f3f4f7"/><stop offset="1" stop-color="#d4d7df"/></radialGradient>
+  </defs>
+  <!-- 抱著樹幹的雙臂與手 -->
+  <ellipse cx="30" cy="88" rx="10" ry="20" transform="rotate(18 30 88)" fill="#8c93a0"/>
+  <ellipse cx="98" cy="88" rx="10" ry="20" transform="rotate(-18 98 88)" fill="#8c93a0"/>
+  <circle cx="24" cy="70" r="6.5" fill="#666c78"/>
+  <circle cx="104" cy="70" r="6.5" fill="#666c78"/>
+  <!-- 後腳 -->
+  <ellipse cx="44" cy="122" rx="14" ry="8" fill="#7d8390"/>
+  <ellipse cx="84" cy="122" rx="14" ry="8" fill="#7d8390"/>
+  <!-- 身體與肚子 -->
+  <ellipse cx="64" cy="94" rx="30" ry="32" fill="url(#g)"/>
+  <ellipse cx="64" cy="100" rx="18" ry="22" fill="url(#b)"/>
+  <!-- 耳朵 -->
+  <circle cx="24" cy="36" r="21" fill="#8c93a0"/>
+  <circle cx="104" cy="36" r="21" fill="#8c93a0"/>
+  <circle cx="24" cy="37" r="12.5" fill="#f1e8ee"/>
+  <circle cx="104" cy="37" r="12.5" fill="#f1e8ee"/>
+  <!-- 頭 -->
+  <ellipse cx="64" cy="50" rx="35" ry="31" fill="url(#g)"/>
+  <circle cx="50" cy="46" r="3.6" fill="#1a1a22"/>
+  <circle cx="78" cy="46" r="3.6" fill="#1a1a22"/>
+  <circle cx="51" cy="44.8" r="1.2" fill="#fff"/>
+  <circle cx="79" cy="44.8" r="1.2" fill="#fff"/>
+  <!-- 大黑鼻子 -->
+  <ellipse cx="64" cy="58" rx="8.5" ry="12" fill="#2b2b33"/>
+  <ellipse cx="61" cy="53" rx="2.6" ry="3.6" fill="#fff" opacity=".35"/>
+  <path d="M56 74 Q64 79 72 74" stroke="#4a4a55" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+</svg>

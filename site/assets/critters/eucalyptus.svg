@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="t" x1="0" x2="1"><stop offset="0" stop-color="#cdbfa6"/><stop offset=".55" stop-color="#b6a68b"/><stop offset="1" stop-color="#8f8068"/></linearGradient>
+    <radialGradient id="l" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="#9fd1b4"/><stop offset="1" stop-color="#4f9078"/></radialGradient>
+  </defs>
+  <!-- 樹幹 -->
+  <path d="M52 128 L76 128 Q70 96 71 60 L70 36 L58 36 L57 60 Q58 96 52 128Z" fill="url(#t)"/>
+  <path d="M60 120 Q63 90 61 50 M68 118 Q66 92 67 56" stroke="#8f8068" stroke-width="1.6" fill="none" stroke-linecap="round" opacity=".7"/>
+  <!-- 樹枝 -->
+  <path d="M60 46 Q40 36 28 24 M68 44 Q88 34 100 22 M64 40 L64 14" stroke="#9c8c72" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <!-- 尤加利葉 -->
+  <g fill="url(#l)">
+    <ellipse cx="22" cy="20" rx="14" ry="5.5" transform="rotate(-35 22 20)"/>
+    <ellipse cx="34" cy="10" rx="14" ry="5.5" transform="rotate(-70 34 10)"/>
+    <ellipse cx="14" cy="34" rx="13" ry="5" transform="rotate(10 14 34)"/>
+    <ellipse cx="106" cy="18" rx="14" ry="5.5" transform="rotate(35 106 18)"/>
+    <ellipse cx="94" cy="8" rx="14" ry="5.5" transform="rotate(70 94 8)"/>
+    <ellipse cx="116" cy="32" rx="13" ry="5" transform="rotate(-10 116 32)"/>
+    <ellipse cx="64" cy="8" rx="13" ry="5.5" transform="rotate(90 64 8)"/>
+    <ellipse cx="50" cy="22" rx="13" ry="5" transform="rotate(-50 50 22)"/>
+    <ellipse cx="78" cy="22" rx="13" ry="5" transform="rotate(50 78 22)"/>
+  </g>
+</svg>

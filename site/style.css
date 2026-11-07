@@ -68,6 +68,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 }
 #rail .brand{display:none}
 #layers{display:contents}
+#btnSet{display:none}
 .rl{
   flex:1;min-width:0;position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;
   padding:3px 0;background:none;border:0;color:var(--cream);
@@ -505,7 +506,7 @@ body.noanim .corps .bk,body.noanim .corps .flame{animation:none}
   #layers{display:flex;flex-direction:column;gap:8px}
   .rl{flex:none;padding:4px 0}
   .rl .ri{width:52px;height:32px;font-size:19px}
-  #btnSet{margin-top:auto}
+  #btnSet{display:flex;margin-top:auto}
 
   /* 左上：概況卡；篩選列在它右邊 */
   #side{
