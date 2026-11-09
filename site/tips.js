@@ -159,7 +159,7 @@ window.CRITTER_TIPS = {
     'critters/bermuda.svg': [
         '🔺',
         '百慕達三角',
-        '傳說生物',
+        '傳說',
         '北大西洋的神祕海域，傳說許多飛機和船隻在此失蹤。科學家認為多半是天氣、洋流與人為失誤。',
     ],
     'critters/ufo-aliens.svg': [
@@ -432,7 +432,7 @@ window.CRITTER_TIPS = {
     'critters/hanging-gardens.svg': [
         '🌺',
         '巴比倫空中花園',
-        '傳說生物',
+        '傳說',
         '古代世界七大奇蹟之一，但確切位置至今仍有爭議，是否真實存在也缺乏考古證據，傳說是為思鄉的王后所建的層層花園。',
     ],
     'critters/cn-tower.svg': [
