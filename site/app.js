@@ -440,8 +440,6 @@
             deco: true,
             landmark: true,
         }, // 奇琴伊茲
-        { src: 'critters/kicc.svg', lon: 36.82, lat: -1.29, mode: 'still', face: 'F', s: 1.0, deco: true, landmark: true }, // 肯雅塔國際會議中心
-        { src: 'critters/oslo-opera.svg', lon: 10.75, lat: 59.91, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 奧斯陸歌劇院
         { src: 'critters/cn-tower.svg', lon: -79.39, lat: 43.64, mode: 'still', face: 'F', s: 1.2, deco: true, landmark: true }, // 多倫多西恩塔
         {
             src: 'critters/hanging-gardens.svg',
@@ -506,6 +504,32 @@
         { src: 'critters/berlin-wall.svg', lon: 13.39, lat: 52.52, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },       // 柏林圍牆
         { src: 'critters/okavango.svg', lon: 22.9, lat: -19.3, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },           // 奧卡萬戈三角洲
         { src: 'critters/waitomo-caves.svg', lon: 175.1, lat: -38.26, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },    // 螢火蟲洞
+        // ── 古代七大奇蹟補充 ──────────────────────────────────────────
+        { src: 'critters/lighthouse-alexandria.svg', lon: 29.885, lat: 31.214, mode: 'still', face: 'F', s: 1.2, sea: true, deco: true, landmark: true }, // 亞歷山大燈塔
+        { src: 'critters/colossus-rhodes.svg', lon: 28.227, lat: 36.451, mode: 'still', face: 'F', s: 1.2, sea: true, deco: true, landmark: true },       // 羅德島巨像
+        // ── 第四批地標（用戶補充清單） ────────────────────────────────
+        { src: 'critters/borobudur.svg', lon: 110.2, lat: -7.61, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },         // 婆羅浮屠
+        { src: 'critters/potala-palace.svg', lon: 91.12, lat: 29.66, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },     // 布達拉宮
+        { src: 'critters/sagrada-familia.svg', lon: 2.17, lat: 41.4, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },     // 聖家堂
+        { src: 'critters/neuschwanstein.svg', lon: 10.75, lat: 47.56, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },    // 新天鵝堡
+        { src: 'critters/mont-saint-michel.svg', lon: -1.51, lat: 48.64, mode: 'still', face: 'F', s: 1.1, sea: true, deco: true, landmark: true }, // 聖米歇爾山
+        { src: 'critters/alhambra.svg', lon: -3.59, lat: 37.18, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },          // 阿爾罕布拉宮
+        { src: 'critters/lalibela.svg', lon: 39.04, lat: 12.03, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },          // 拉利貝拉岩石教堂
+        { src: 'critters/teotihuacan.svg', lon: -98.84, lat: 19.69, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },       // 特奧蒂瓦坎太陽金字塔
+        { src: 'critters/nazca-lines.svg', lon: -75.13, lat: -14.74, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },     // 納斯卡線
+        { src: 'critters/niagara-falls.svg', lon: -79.07, lat: 43.08, mode: 'still', face: 'F', s: 1.1, sea: true, deco: true, landmark: true }, // 尼加拉瀑布
+        // ── 新增動物（世界各地代表物種） ──────────────────────────────
+        { src: 'animals/tiger.png', lon: 79.0, lat: 21.0, mode: 'wander', s: 1.0, deco: true, maxDeg: 2 },            // 印度：老虎在森林漫步
+        { src: 'critters/wombat.svg', lon: 146.0, lat: -42.0, mode: 'still', face: 'F', s: 0.9, deco: true },         // 澳洲：袋熊鑽洞
+        { src: 'critters/jaguar.svg', lon: -65.0, lat: -6.0, mode: 'wander', s: 1.0, deco: true, maxDeg: 2 },         // 南美：美洲豹穿越雨林
+        { src: 'critters/toucan.svg', lon: -58.0, lat: -10.0, mode: 'still', face: 'F', s: 0.85, deco: true },        // 南美：巨嘴鳥跳動
+        { src: 'critters/hippo.svg', lon: 31.0, lat: 1.0, mode: 'bob', s: 1.0, sea: true, deco: true },               // 非洲：河馬探頭
+        { src: 'animals/elephant.png', lon: 37.5, lat: -3.0, mode: 'wander', gait: 'heavy', s: 1.05, deco: true, maxDeg: 2 }, // 非洲：象群遷徙
+        { src: 'animals/penguin.png', lon: -60.0, lat: -62.0, mode: 'wander', gait: 'waddle', s: 0.85, deco: true, maxDeg: 2 }, // 南極：企鵝冰上搖擺
+        { src: 'critters/japanese-macaque-onsen.svg', lon: 138.5, lat: 36.7, mode: 'still', face: 'F', s: 0.95, deco: true }, // 日本：獼猴泡溫泉
+        { src: 'critters/golden-monkey.svg', lon: 103.0, lat: 31.0, mode: 'wander', s: 0.9, deco: true, maxDeg: 2 },  // 中國：金絲猴森林跳躍
+        { src: 'critters/chameleon.svg', lon: 49.0, lat: -17.0, mode: 'still', face: 'F', s: 0.85, deco: true },      // 馬達加斯加：變色龍伸舌頭
+        { src: 'critters/piranha.svg', lon: -60.0, lat: -2.0, mode: 'swim', s: 0.8, sea: true, deco: true },         // 南美：食人魚群游
     ];
     // 原住民小人（natives.js）：該國主要指數漲就歡呼跳舞、跌就沮喪哭泣，平盤時散步 / 揮手 / 眨眼
     // mode 'folk'；market = 看哪個指數；ox / oy = 相對位置點的偏移（單位：小角色基準大小）；minK = 縮小到這個倍率以下就收起來

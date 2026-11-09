@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <!-- 海面 -->
+  <ellipse cx="40" cy="73" rx="34" ry="5" fill="#2a7ab8" stroke="white" stroke-width="1.5"/>
+  <ellipse cx="40" cy="73" rx="30" ry="3.5" fill="#4a9ad8" opacity="0.6"/>
+
+  <!-- 燈塔底座（最寬，方形） -->
+  <path d="M20,70 L22,52 L58,52 L60,70 Z" fill="#dcd2b4" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+  <!-- 底座裝飾線 -->
+  <line x1="24" y1="60" x2="56" y2="60" stroke="#b8ac8a" stroke-width="1.2"/>
+  <!-- 底座窗洞 -->
+  <rect x="36" y="56" width="8" height="10" rx="1" fill="#5a4a30" stroke="white" stroke-width="1"/>
+
+  <!-- 中段（八角形輪廓，稍窄） -->
+  <path d="M27,52 L29,34 L51,34 L53,52 Z" fill="#e8dec2" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+  <line x1="32" y1="42" x2="48" y2="42" stroke="#c0b490" stroke-width="1"/>
+
+  <!-- 上段（圓柱形，最窄） -->
+  <path d="M33,34 L34,20 L46,20 L47,34 Z" fill="#f0e8d0" stroke="white" stroke-width="1.8" stroke-linejoin="round"/>
+
+  <!-- 燈塔頂部平台 -->
+  <ellipse cx="40" cy="20" rx="8" ry="2.5" fill="#c8bc9a" stroke="white" stroke-width="1.5"/>
+
+  <!-- 火焰信號燈 -->
+  <g>
+    <path d="M37,19 Q35,13 38,8 Q40,12 40,8 Q42,12 42,8 Q45,13 43,19 Z" fill="#ff8c30" stroke="#e05a10" stroke-width="0.8">
+      <animate attributeName="d"
+        values="M37,19 Q35,13 38,8 Q40,12 40,8 Q42,12 42,8 Q45,13 43,19 Z;
+                 M37,19 Q34,14 37,7 Q40,11 40,7 Q43,11 43,7 Q46,14 43,19 Z;
+                 M37,19 Q35,13 38,8 Q40,12 40,8 Q42,12 42,8 Q45,13 43,19 Z"
+        dur="1.2s" repeatCount="indefinite"/>
+    </path>
+    <path d="M38,19 Q37,15 39,11 Q40,13 40,11 Q41,13 41,11 Q43,15 42,19 Z" fill="#ffd060">
+      <animate attributeName="opacity" values="0.9;0.6;0.9" dur="0.9s" repeatCount="indefinite"/>
+    </path>
+  </g>
+
+  <!-- 光暈 -->
+  <ellipse cx="40" cy="14" rx="14" ry="10" fill="#ffe8a0" opacity="0.25">
+    <animate attributeName="opacity" values="0.15;0.35;0.15" dur="1.5s" repeatCount="indefinite"/>
+  </ellipse>
+
+  <!-- 遠處小船 -->
+  <path d="M8,68 L14,68 L12,64 Z" fill="#8a7050" stroke="white" stroke-width="1"/>
+  <line x1="12" y1="64" x2="12" y2="60" stroke="#8a7050" stroke-width="1"/>
+  <path d="M12,61 L17,63 L12,64 Z" fill="#e8e0c8"/>
+</svg>

@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+<ellipse cx="40" cy="65" rx="28" ry="5" fill="#a8d8e8" stroke="white" stroke-width="1.8"/>
+<ellipse cx="40" cy="65" rx="19" ry="2.5" fill="#cdeaf5" opacity="0.75">
+  <animateTransform attributeName="transform" type="translate" values="-3,0;3,0;-3,0" dur="4s" repeatCount="indefinite"/>
+</ellipse>
+
+<path d="M12,64 L17,50 L14,45 L23,34 L20,29 L31,19 L40,12 L49,19 L60,29 L57,34 L66,45 L63,50 L68,64 Z" fill="#8a7a68" stroke="white" stroke-width="2"/>
+<path d="M20,58 L25,48 L21,45 L17,56 Z" fill="#7a6a58" opacity="0.5"/>
+<path d="M60,58 L55,48 L59,45 L63,56 Z" fill="#7a6a58" opacity="0.5"/>
+
+<rect x="24" y="50" width="32" height="12" fill="#d8d2c0" stroke="white" stroke-width="1.8"/>
+<polygon points="24,50 40,42 56,50" fill="#b5ae98" stroke="white" stroke-width="1.6"/>
+<rect x="38.5" y="53" width="3" height="5" rx="1.3" fill="#4a5a66" opacity="0.85"/>
+
+<rect x="27" y="38" width="26" height="12" fill="#d8d2c0" stroke="white" stroke-width="1.8"/>
+<polygon points="27,38 40,30 53,38" fill="#b5ae98" stroke="white" stroke-width="1.6"/>
+<rect x="38.7" y="42" width="2.6" height="4.5" rx="1" fill="#4a5a66" opacity="0.85"/>
+
+<rect x="31" y="28" width="18" height="10" fill="#d8d2c0" stroke="white" stroke-width="1.6"/>
+<polygon points="31,28 40,21 49,28" fill="#b5ae98" stroke="white" stroke-width="1.4"/>
+<rect x="38.8" y="31" width="2.4" height="4" rx="1" fill="#4a5a66" opacity="0.85"/>
+
+<rect x="35" y="20" width="10" height="9" fill="#d8d2c0" stroke="white" stroke-width="1.6"/>
+<polygon points="35,20 40,14 45,20" fill="#c8c2ae" stroke="white" stroke-width="1.4"/>
+<rect x="38.5" y="22.5" width="3" height="5" rx="1.3" fill="#4a5a66" opacity="0.85"/>
+
+<polygon points="39,14 40,6 41,14" fill="#c8c2ae" stroke="white" stroke-width="1.5"/>
+<circle cx="40" cy="6" r="2" fill="#ffd700" stroke="white" stroke-width="1.2">
+  <animate attributeName="opacity" values="1;0.55;1" dur="2s" repeatCount="indefinite"/>
+</circle>
+
+</svg>

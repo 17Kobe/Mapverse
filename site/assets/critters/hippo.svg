@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+<g>
+  <!-- 背部（大部分沉在水下，只留一小塊露出） -->
+  <ellipse cx="19" cy="50" rx="12" ry="11" fill="#8a8a9a" stroke="#ffffff" stroke-width="1.6"/>
+
+  <!-- 頭部 -->
+  <ellipse cx="43" cy="41" rx="20" ry="18" fill="#8a8a9a" stroke="#ffffff" stroke-width="1.7"/>
+
+  <!-- 吻部/鼻樑突出 -->
+  <ellipse cx="60" cy="39" rx="9" ry="7.5" fill="#8a8a9a" stroke="#ffffff" stroke-width="1.5"/>
+
+  <!-- 耳朵（突出水面上方） -->
+  <circle cx="29" cy="23" r="5.5" fill="#6f6f88" stroke="#ffffff" stroke-width="1.5"/>
+  <circle cx="46" cy="18" r="5.2" fill="#6f6f88" stroke="#ffffff" stroke-width="1.5"/>
+  <circle cx="29" cy="24" r="2.6" fill="#53536a"/>
+  <circle cx="46" cy="19" r="2.4" fill="#53536a"/>
+
+  <!-- 眼睛（河馬特有：高高突出在頭頂） -->
+  <circle cx="36" cy="27" r="5.3" fill="#8a8a9a" stroke="#ffffff" stroke-width="1.4"/>
+  <circle cx="49" cy="23" r="5.1" fill="#8a8a9a" stroke="#ffffff" stroke-width="1.4"/>
+  <circle cx="36" cy="27" r="2.9" fill="#ffffff"/>
+  <circle cx="49" cy="23" r="2.8" fill="#ffffff"/>
+  <circle cx="36.6" cy="27.6" r="1.5" fill="#262630"/>
+  <circle cx="49.6" cy="23.6" r="1.4" fill="#262630"/>
+
+  <!-- 鼻孔（突出在吻部頂端） -->
+  <ellipse cx="61" cy="35" rx="2.6" ry="2.2" fill="#8a8a9a" stroke="#ffffff" stroke-width="1.3"/>
+  <ellipse cx="66" cy="38" rx="2.4" ry="2" fill="#8a8a9a" stroke="#ffffff" stroke-width="1.3"/>
+  <circle cx="61" cy="35" r="1" fill="#45455a"/>
+  <circle cx="66" cy="38" r="0.9" fill="#45455a"/>
+
+  <!-- 水面（半橢圓，蓋住身體下半部製造浮出水面效果） -->
+  <ellipse cx="40" cy="63" rx="35" ry="15" fill="#1ec9c0" fill-opacity="0.8" stroke="#ffffff" stroke-width="1.6">
+    <animate attributeName="ry" values="15;16.3;15" dur="3s" repeatCount="indefinite"/>
+  </ellipse>
+
+  <!-- 水波紋 -->
+  <g stroke="#eafffd" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.85">
+    <path d="M6,52 Q16,48 26,52 T46,52 T66,52">
+      <animate attributeName="d" dur="2.4s" repeatCount="indefinite"
+        values="M6,52 Q16,48 26,52 T46,52 T66,52;
+                 M6,54 Q16,50 26,54 T46,54 T66,54;
+                 M6,52 Q16,48 26,52 T46,52 T66,52"/>
+    </path>
+    <path d="M10,60 Q20,57 30,60 T50,60 T70,60">
+      <animate attributeName="d" dur="2.4s" begin="0.3s" repeatCount="indefinite"
+        values="M10,60 Q20,57 30,60 T50,60 T70,60;
+                 M10,58 Q20,55 30,58 T50,58 T70,58;
+                 M10,60 Q20,57 30,60 T50,60 T70,60"/>
+    </path>
+  </g>
+</g>
+</svg>

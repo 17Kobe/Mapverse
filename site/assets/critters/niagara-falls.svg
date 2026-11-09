@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+<defs>
+  <linearGradient id="niagaraFallGrad" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#d8eef8"/>
+    <stop offset="100%" stop-color="#ffffff"/>
+  </linearGradient>
+</defs>
+
+<path d="M8,16 C6,28 8,42 12,56 L24,57 C20,46 19,34 21,24 C22,17 18,11 11,10 Z" fill="#9c8268" stroke="white" stroke-width="2"/>
+<path d="M72,16 C74,28 72,42 68,56 L56,57 C60,46 61,34 59,24 C58,17 62,11 69,10 Z" fill="#9c8268" stroke="white" stroke-width="2"/>
+
+<ellipse cx="14" cy="11" rx="7" ry="4.5" fill="#5a9c4a" stroke="white" stroke-width="1.5"/>
+<circle cx="20" cy="13" r="3.5" fill="#4a7c3f" stroke="white" stroke-width="1.5"/>
+<ellipse cx="66" cy="11" rx="7" ry="4.5" fill="#5a9c4a" stroke="white" stroke-width="1.5"/>
+<circle cx="60" cy="13" r="3.5" fill="#4a7c3f" stroke="white" stroke-width="1.5"/>
+
+<path d="M24,17 C19,25 18,37 20,47 C22,57 29,64 40,66 C51,64 58,57 60,47 C62,37 61,25 56,17 C50,23 46,26 40,26 C34,26 30,23 24,17 Z" fill="url(#niagaraFallGrad)" stroke="white" stroke-width="2.2"/>
+
+<path d="M30,27 C28,36 29,48 32,58" stroke="#b8def0" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.8"/>
+<path d="M40,28 C39,38 40,50 40,60" stroke="#ffffff" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.7"/>
+<path d="M50,27 C52,36 51,48 48,58" stroke="#b8def0" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.8"/>
+
+<ellipse cx="40" cy="66" rx="29" ry="5" fill="#7fc3dd" stroke="white" stroke-width="2"/>
+
+<ellipse cx="40" cy="61" rx="15" ry="5" fill="white" stroke="white" stroke-width="1.5" opacity="0.85"/>
+<circle cx="29" cy="58" r="3" fill="white" opacity="0.8"/>
+<circle cx="51" cy="57" r="3" fill="white" opacity="0.8"/>
+
+<ellipse cx="40" cy="38" rx="19" ry="9" fill="white" opacity="0.4">
+  <animate attributeName="opacity" values="0.2;0.5;0.2" dur="3.5s" repeatCount="indefinite"/>
+</ellipse>
+<ellipse cx="31" cy="32" rx="11" ry="6" fill="white" opacity="0.35">
+  <animate attributeName="opacity" values="0.15;0.45;0.15" dur="4s" begin="0.5s" repeatCount="indefinite"/>
+</ellipse>
+<ellipse cx="50" cy="34" rx="11" ry="6" fill="white" opacity="0.35">
+  <animate attributeName="opacity" values="0.15;0.45;0.15" dur="3.2s" begin="1s" repeatCount="indefinite"/>
+</ellipse>
+
+<g>
+  <animateTransform attributeName="transform" type="translate" values="0,0; 0,-1; 0,0" dur="2.5s" repeatCount="indefinite"/>
+  <ellipse cx="60" cy="65" rx="6" ry="2.2" fill="#dfe6e9" stroke="white" stroke-width="1.5"/>
+  <rect x="57.5" y="61.5" width="5" height="3.5" rx="1" fill="#e74c3c" stroke="white" stroke-width="1.5"/>
+</g>
+</svg>

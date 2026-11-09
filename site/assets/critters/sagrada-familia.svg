@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+<!-- 地面廣場 -->
+<ellipse cx="40" cy="71" rx="30" ry="5" fill="#9c8d6f" stroke="white" stroke-width="1.8"/>
+
+<!-- 塔1 (左側較矮) 陰影 -->
+<path d="M16,36 C17,39 18.4,42 18.2,46 C19.7,52.4 23,61.4 22,68 L16,68 Z" fill="#b09858"/>
+<!-- 塔1 主體 -->
+<path d="M10,68 C9.2,60.3 12.9,51.5 13.8,46 C12.4,42 15.1,39 16,36 C17,39 18.4,42 18.2,46 C19.7,52.4 23,61.4 22,68 Z" fill="#d4c090" stroke="white" stroke-width="2"/>
+<path d="M13,41.5 Q16,39.5 19,41.5" fill="none" stroke="#8a7540" stroke-width="1"/>
+<circle cx="13" cy="62" r="0.8" fill="#6b5530"/>
+<circle cx="19" cy="58" r="0.9" fill="#6b5530"/>
+<circle cx="15" cy="54" r="0.7" fill="#6b5530"/>
+<circle cx="18" cy="50" r="0.8" fill="#6b5530"/>
+
+<!-- 塔2 陰影 -->
+<path d="M31,16 C32,19 34.2,25.1 33.5,30 C35.3,43.3 39.2,57.4 38,68 L31,68 Z" fill="#b09858"/>
+<!-- 塔2 主體 -->
+<path d="M24,68 C23,56.6 27,41.4 28.5,30 C27.5,24.4 29.8,19 31,16 C32,19 34.2,25.1 33.5,30 C35.3,43.3 39.2,57.4 38,68 Z" fill="#d4c090" stroke="white" stroke-width="2"/>
+<path d="M28,21.5 Q31,19.5 34,21.5" fill="none" stroke="#8a7540" stroke-width="1"/>
+<circle cx="27" cy="58" r="0.9" fill="#6b5530"/>
+<circle cx="34" cy="52" r="1" fill="#6b5530"/>
+<circle cx="29" cy="44" r="0.8" fill="#6b5530"/>
+<circle cx="33" cy="38" r="0.9" fill="#6b5530"/>
+<circle cx="28" cy="34" r="0.7" fill="#6b5530"/>
+
+<!-- 塔3 (最高，頂端有十字) 陰影 -->
+<path d="M48,9 C49.1,12 51.6,18.75 50.8,24 C52.7,38.1 56.8,56.1 55.5,68 L48,68 Z" fill="#b09858"/>
+<!-- 塔3 主體 -->
+<path d="M40.5,68 C39.5,54.8 43.6,36.3 45.2,24 C44.2,18 46.7,12 48,9 C49.1,12 51.6,18.75 50.8,24 C52.7,38.1 56.8,56.1 55.5,68 Z" fill="#d4c090" stroke="white" stroke-width="2.2"/>
+<path d="M45,14.5 Q48,12.5 51,14.5" fill="none" stroke="#8a7540" stroke-width="1"/>
+<circle cx="44" cy="58" r="1" fill="#6b5530"/>
+<circle cx="52" cy="52" r="1" fill="#6b5530"/>
+<circle cx="46" cy="44" r="0.9" fill="#6b5530"/>
+<circle cx="51" cy="36" r="0.9" fill="#6b5530"/>
+<circle cx="45" cy="30" r="0.8" fill="#6b5530"/>
+<circle cx="50" cy="26" r="0.7" fill="#6b5530"/>
+<!-- 塔頂光澤動畫 -->
+<ellipse cx="46" cy="17" rx="1.8" ry="3.5" fill="white" opacity="0.3">
+  <animate attributeName="opacity" values="0.15;0.6;0.15" dur="2.5s" repeatCount="indefinite"/>
+</ellipse>
+<!-- 十字架 -->
+<rect x="47" y="2.5" width="2" height="8" rx="0.5" fill="#ece0bd" stroke="white" stroke-width="1.3"/>
+<rect x="44.3" y="5" width="7.4" height="2.2" rx="0.5" fill="#ece0bd" stroke="white" stroke-width="1.3"/>
+
+<!-- 塔4 陰影 -->
+<path d="M63,30 C64,33 65.9,37.8 65.1,42 C67.3,50.3 70.5,60.2 69.5,68 L63,68 Z" fill="#b09858"/>
+<!-- 塔4 主體 -->
+<path d="M56.5,68 C55.6,59.7 59.3,48.8 60.7,42 C59.8,37.2 62,33 63,30 C64,33 65.9,37.8 65.1,42 C67.3,50.3 70.5,60.2 69.5,68 Z" fill="#d4c090" stroke="white" stroke-width="2"/>
+<path d="M60,35.5 Q63,33.5 66,35.5" fill="none" stroke="#8a7540" stroke-width="1"/>
+<circle cx="59" cy="60" r="0.8" fill="#6b5530"/>
+<circle cx="66" cy="56" r="0.9" fill="#6b5530"/>
+<circle cx="61" cy="50" r="0.7" fill="#6b5530"/>
+<circle cx="65" cy="46" r="0.8" fill="#6b5530"/>
+
+</svg>

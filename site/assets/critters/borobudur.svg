@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+<path d="M8,74 A32,6 0 0 1 72,74 Z" fill="#3d8b3d" stroke="white" stroke-width="2"/>
+
+<g>
+  <animateTransform attributeName="transform" type="rotate" values="-3 14 70;3 14 70;-3 14 70" dur="3s" repeatCount="indefinite"/>
+  <circle cx="14" cy="68" r="5" fill="#4caf50" stroke="white" stroke-width="1.5"/>
+  <circle cx="19" cy="70" r="3.5" fill="#3d8b3d" stroke="white" stroke-width="1.5"/>
+</g>
+<g>
+  <animateTransform attributeName="transform" type="rotate" values="3 66 70;-3 66 70;3 66 70" dur="3.4s" repeatCount="indefinite"/>
+  <circle cx="66" cy="68" r="5" fill="#4caf50" stroke="white" stroke-width="1.5"/>
+  <circle cx="61" cy="70" r="3.5" fill="#3d8b3d" stroke="white" stroke-width="1.5"/>
+</g>
+
+<polygon points="10,70 70,70 64,61 16,61" fill="#6a6a5a" stroke="white" stroke-width="2"/>
+<polygon points="70,70 64,61 64,70" fill="#54544a" opacity="0.55"/>
+<rect x="20" y="63" width="4" height="5" fill="#54544a" stroke="white" stroke-width="1.2"/>
+<rect x="30" y="63" width="4" height="5" fill="#54544a" stroke="white" stroke-width="1.2"/>
+<rect x="46" y="63" width="4" height="5" fill="#54544a" stroke="white" stroke-width="1.2"/>
+<rect x="56" y="63" width="4" height="5" fill="#54544a" stroke="white" stroke-width="1.2"/>
+
+<polygon points="14,61 66,61 60,52 20,52" fill="#6a6a5a" stroke="white" stroke-width="2"/>
+<polygon points="66,61 60,52 60,61" fill="#54544a" opacity="0.55"/>
+<polygon points="24,56 27,56 25.5,52.5" fill="#54544a" stroke="white" stroke-width="1.2"/>
+<polygon points="37,56 40,56 38.5,52.5" fill="#54544a" stroke="white" stroke-width="1.2"/>
+<polygon points="49,56 52,56 50.5,52.5" fill="#54544a" stroke="white" stroke-width="1.2"/>
+
+<polygon points="18,52 62,52 57,44 23,44" fill="#6a6a5a" stroke="white" stroke-width="2"/>
+<polygon points="62,52 57,44 57,52" fill="#54544a" opacity="0.55"/>
+<rect x="27" y="46" width="3.5" height="4.5" fill="#54544a" stroke="white" stroke-width="1.2"/>
+<rect x="37" y="46" width="3.5" height="4.5" fill="#54544a" stroke="white" stroke-width="1.2"/>
+<rect x="47" y="46" width="3.5" height="4.5" fill="#54544a" stroke="white" stroke-width="1.2"/>
+
+<polygon points="22,44 58,44 54,37 26,37" fill="#6a6a5a" stroke="white" stroke-width="2"/>
+<polygon points="58,44 54,37 54,44" fill="#54544a" opacity="0.55"/>
+
+<circle cx="40" cy="26" r="13" fill="#ffe9a8" opacity="0.25">
+  <animate attributeName="opacity" values="0.15;0.4;0.15" dur="2.5s" repeatCount="indefinite"/>
+</circle>
+
+<path d="M21,37 Q20,30 26,29 Q32,30 31,37 Z" fill="#787868" stroke="white" stroke-width="1.5"/>
+<polygon points="24.7,29 26,24 27.3,29" fill="#787868" stroke="white" stroke-width="1.5"/>
+
+<path d="M28,37 Q27,30 33,29 Q39,30 38,37 Z" fill="#787868" stroke="white" stroke-width="1.5"/>
+<polygon points="31.7,29 33,24 34.3,29" fill="#787868" stroke="white" stroke-width="1.5"/>
+
+<path d="M42,37 Q41,30 47,29 Q53,30 52,37 Z" fill="#787868" stroke="white" stroke-width="1.5"/>
+<polygon points="45.7,29 47,24 48.3,29" fill="#787868" stroke="white" stroke-width="1.5"/>
+
+<path d="M49,37 Q48,30 54,29 Q60,30 59,37 Z" fill="#787868" stroke="white" stroke-width="1.5"/>
+<polygon points="52.7,29 54,24 55.3,29" fill="#787868" stroke="white" stroke-width="1.5"/>
+
+<ellipse cx="40" cy="37" rx="9.5" ry="1.8" fill="#54544a" stroke="white" stroke-width="1.5"/>
+<path d="M31,37 Q29,24 40,21 Q51,24 49,37 Z" fill="#6a6a5a" stroke="white" stroke-width="2"/>
+<polygon points="38.3,21 40,10 41.7,21" fill="#6a6a5a" stroke="white" stroke-width="2"/>
+<circle cx="40" cy="10" r="1.8" fill="#f0c850" stroke="white" stroke-width="1.2">
+  <animate attributeName="opacity" values="1;0.55;1" dur="2s" repeatCount="indefinite"/>
+</circle>
+</svg>

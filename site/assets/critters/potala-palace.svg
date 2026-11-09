@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+<g>
+  <!-- 山丘岩石基座 -->
+  <polygon points="9,76 7,62 14,50 24,46 40,43 56,46 66,50 73,62 71,76" fill="#b8a068" stroke="white" stroke-width="2"/>
+
+  <!-- 左側小塔 -->
+  <polygon points="13,58 13,44 25,44 25,58" fill="#f0ede0" stroke="white" stroke-width="1.8"/>
+  <polygon points="12,44 26,44 19,36" fill="#d4a830" stroke="white" stroke-width="1.8"/>
+  <rect x="17" y="49" width="4" height="4" fill="#3a2a1a"/>
+
+  <!-- 右側小塔 -->
+  <polygon points="55,58 55,44 67,44 67,58" fill="#f0ede0" stroke="white" stroke-width="1.8"/>
+  <polygon points="54,44 68,44 61,36" fill="#d4a830" stroke="white" stroke-width="1.8"/>
+  <rect x="59" y="49" width="4" height="4" fill="#3a2a1a"/>
+
+  <!-- 白牆第一層 -->
+  <polygon points="18,60 62,60 58,46 22,46" fill="#f0ede0" stroke="white" stroke-width="2"/>
+  <rect x="24" y="52" width="3.5" height="4" fill="#3a2a1a"/>
+  <rect x="31" y="52" width="3.5" height="4" fill="#3a2a1a"/>
+  <rect x="38" y="52" width="3.5" height="4" fill="#3a2a1a"/>
+  <rect x="45" y="52" width="3.5" height="4" fill="#3a2a1a"/>
+  <rect x="52" y="52" width="3.5" height="4" fill="#3a2a1a"/>
+
+  <!-- 白牆第二層 -->
+  <polygon points="24,46 56,46 52,34 28,34" fill="#f0ede0" stroke="white" stroke-width="2"/>
+  <rect x="31" y="38" width="3.2" height="4" fill="#3a2a1a"/>
+  <rect x="38" y="38" width="3.2" height="4" fill="#3a2a1a"/>
+  <rect x="45" y="38" width="3.2" height="4" fill="#3a2a1a"/>
+
+  <!-- 紅色宮殿主體 -->
+  <polygon points="30,34 50,34 47,18 33,18" fill="#9a3828" stroke="white" stroke-width="2"/>
+  <rect x="35" y="24" width="3" height="4" fill="#2a1810"/>
+  <rect x="40.5" y="24" width="3" height="4" fill="#2a1810"/>
+  <line x1="31" y1="20" x2="49" y2="20" stroke="#d4a830" stroke-width="1.5"/>
+
+  <!-- 金色屋頂 -->
+  <polygon points="28,18 52,18 40,7" fill="#d4a830" stroke="white" stroke-width="2"/>
+  <line x1="31" y1="15" x2="49" y2="15" stroke="#f5d060" stroke-width="1.2"/>
+
+  <!-- 屋頂金頂光澤動畫 -->
+  <circle cx="40" cy="7" r="2.3" fill="#fff3c0">
+    <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/>
+  </circle>
+</g>
+</svg>
