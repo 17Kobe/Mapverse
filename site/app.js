@@ -2593,6 +2593,7 @@
         gEdge.selectAll('path').data(state.countries).join('path');
         worldLod.reset();
         folkLand.clear(); // 投影換了，國家輪廓要重建
+        worldLandPath = null; // 季節色調的陸地遮罩也要重建（見 drawSeason）
         folkGen++;
         worldLod.update(state.t.k);
         textWCache.clear(); // 換尺寸可能跨過手機 / 桌機的字級設定
@@ -5046,12 +5047,12 @@
         _seasonDay = dayOfYear;
         return _seasonCache;
     }
-    // 四個季節的色調與強度：冬季霜白、春天嫩綠、夏天不染色（維持原本翠綠底色）、秋天橘棕；依相位循環內插
+    // 四個季節的色調與強度：冬季霜白、春天嫩綠、夏天不染色（維持原本翠綠底色）、秋天改用偏冷的落葉褐橙（不要太鮮豔像熱帶橘）
     const SEASON_ANCHORS = [
-        { p: 0, col: [235, 240, 248], a: 0.5 }, // 冬：霜白冷色
-        { p: 0.25, col: [195, 235, 140], a: 0.24 }, // 春：嫩綠
+        { p: 0, col: [225, 232, 242], a: 0.45 }, // 冬：霜白冷色
+        { p: 0.25, col: [190, 228, 150], a: 0.22 }, // 春：嫩綠
         { p: 0.5, col: [255, 255, 255], a: 0 }, // 夏：不染色
-        { p: 0.75, col: [222, 128, 45], a: 0.48 }, // 秋：橘棕
+        { p: 0.75, col: [196, 146, 98], a: 0.42 }, // 秋：偏冷的落葉褐橙（降低飽和度，不要太鮮豔）
     ];
     function seasonColorAt(phase) {
         const n = SEASON_ANCHORS.length;
@@ -5113,23 +5114,41 @@
         seasonTexDay = _seasonDay;
         return seasonTex;
     }
+    // 季節色調的陸地遮罩：重複利用國界資料（state.countries）合併成一個 Path2D（世界座標），
+    // 用 clip() 讓色調只蓋在陸地上，海洋完全不受影響。投影換了（resize）才重建，見 layoutGeometry 的 worldLandPath = null
+    let worldLandPath = null;
+    function getWorldLandPath() {
+        if (worldLandPath) return worldLandPath;
+        if (!projection || !state.countries.length) return null;
+        const gp = d3.geoPath(projection);
+        const path = new Path2D();
+        for (const f of state.countries) {
+            const d = gp(f);
+            if (d) path.addPath(new Path2D(d));
+        }
+        worldLandPath = path;
+        return worldLandPath;
+    }
     function drawSeason() {
-        if (!tctx || !W) return;
+        if (!tctx || !W || !projection) return;
+        const land = getWorldLandPath();
+        if (!land) return;
         const tex = seasonTexture(),
             t = state.t,
-            ww = S0 * t.k,
-            y = t.y + NIGHT_Y0 * ww,
-            h = (NIGHT_Y1 - NIGHT_Y0) * ww;
-        const dy0 = Math.max(0, y),
-            dy1 = Math.min(H, y + h);
-        if (dy1 <= dy0) return;
-        const sy0 = ((dy0 - y) / h) * SEASON_TH,
-            sy1 = ((dy1 - y) / h) * SEASON_TH;
-        tctx.setTransform(1, 0, 0, 1, 0, 0);
-        tctx.globalAlpha = 1;
-        tctx.globalCompositeOperation = 'source-over';
-        // 和經度無關：不用像夜色一樣逐份世界貼多次，一次拉伸貼滿可視寬度即可
-        tctx.drawImage(tex, 0, sy0, 2, sy1 - sy0, 0, dy0 * dpr, W * dpr, (dy1 - dy0) * dpr);
+            ww = S0 * t.k;
+        // 世界可能同時看到好幾份（左右循環），逐份裁切陸地範圍再貼色調
+        const n0 = Math.floor(-t.x / ww),
+            n1 = Math.floor((W - t.x) / ww);
+        for (let n = n0; n <= n1; n++) {
+            tctx.save();
+            // 把世界座標（含這份世界的位移 n*ww）轉成裝置像素：clip 和 drawImage 都用世界座標畫
+            tctx.setTransform(t.k * dpr, 0, 0, t.k * dpr, (t.x + n * ww) * dpr, t.y * dpr);
+            tctx.beginPath();
+            tctx.clip(land);
+            // 貼圖拉滿整個世界寬度與可視緯度範圍（世界座標），裁切後只留在陸地上，海洋完全排除
+            tctx.drawImage(tex, 0, 0, 2, SEASON_TH, 0, NIGHT_Y0 * S0, S0, (NIGHT_Y1 - NIGHT_Y0) * S0);
+            tctx.restore();
+        }
     }
 
     /* ---------- 夜空星星（SVG，固定在地理座標上） ---------- */
