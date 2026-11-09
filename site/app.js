@@ -2238,13 +2238,15 @@
 
 
     function drawWeather(dt) {
-        // 畫在 aurora canvas（和北極光同層），烏雲位置推到旗幟正上方空中，不蓋住旗幟文字
-        const A = AURORA;
-        if (!A.cv || !W || !projection) return;
+        // 畫在 clouds canvas（已移到 SVG 之後，蓋在國界/旗幟/地標上面），不再用 aurora（會被地圖壓住）
+        if (!cctx || !W || !projection) return;
         if (!state.maps || !state.maps.length) return;
         WEATHER_T.t += dt;
-        const T = WEATHER_T.t, S = 0.4;
-        const ctx = A.ctx;
+        const T = WEATHER_T.t;
+        const ctx = cctx;
+        // drawClouds 可能已經把 transform 留在 dpr 縮放狀態（或在雲完全淡出時還停在單位矩陣），
+        // 這裡自己明確設一次，不依賴前一個函式留下的狀態
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         const rspr = rainSprite(), cspr = cloudSprite();
 
         for (const m of state.maps) {
@@ -2266,14 +2268,14 @@
                     ctx.globalCompositeOperation = 'source-over';
                     ctx.globalAlpha = 0.15;
                     ctx.beginPath();
-                    ctx.arc(sh.x * S, sh.y * S, 4 * S, 0, Math.PI * 2);
+                    ctx.arc(sh.x, sh.y, 4, 0, Math.PI * 2);
                     ctx.fillStyle = 'rgba(15,15,35,1)';
                     ctx.fill();
                     ctx.globalCompositeOperation = 'lighter';
                     ctx.globalAlpha = 1;
-                    ctx.drawImage(spr, 0, 0, 16, 16, (sh.x - 3.5) * S, (sh.y - 3.5) * S, 7 * S, 7 * S);
+                    ctx.drawImage(spr, 0, 0, 16, 16, sh.x - 3.5, sh.y - 3.5, 7, 7);
                     ctx.globalAlpha = 0.5;
-                    ctx.drawImage(spr, 0, 0, 16, 16, (sh.x - 2) * S, (sh.y + 5) * S, 4 * S, 10 * S);
+                    ctx.drawImage(spr, 0, 0, 16, 16, sh.x - 2, sh.y + 5, 4, 10);
                 } else if (sh.phase === 'burst') {
                     // 多層同心圓：每層各自延遲展開、各自半徑比例，點與點之間用各自相位閃爍
                     const spr = fwSprite(sh.col);
@@ -2294,7 +2296,7 @@
                             ctx.globalCompositeOperation = 'source-over';
                             ctx.globalAlpha = sh.fade * 0.18;
                             ctx.beginPath();
-                            ctx.arc(px * S, py * S, sz * 0.85 * S, 0, Math.PI * 2);
+                            ctx.arc(px, py, sz * 0.85, 0, Math.PI * 2);
                             ctx.fillStyle = 'rgba(15,15,35,1)';
                             ctx.fill();
                             // 再疊上亮點（lighter，發光感）
@@ -2302,7 +2304,7 @@
                             const alpha = sh.fade * (0.7 + twinkle * 0.3); // 基礎亮度拉高
                             ctx.globalAlpha = alpha;
                             ctx.drawImage(spr, 0, 0, 16, 16,
-                                (px - sz) * S, (py - sz) * S, sz * 2 * S, sz * 2 * S);
+                                px - sz, py - sz, sz * 2, sz * 2);
                         }
                     }
                     // 中心核心光球（讓整體看起來更圓更飽滿）
@@ -2310,11 +2312,11 @@
                     ctx.globalAlpha = sh.fade * 0.6;
                     const coreSz = sh.maxRadius * 0.28;
                     ctx.drawImage(spr, 0, 0, 16, 16,
-                        (sh.bx - coreSz) * S, (sh.by - coreSz) * S, coreSz * 2 * S, coreSz * 2 * S);
+                        sh.bx - coreSz, sh.by - coreSz, coreSz * 2, coreSz * 2);
                 }
                 ctx.globalCompositeOperation = 'source-over';
             } else {
-                // ── 烏雲 + 雨滴（canvas sprite，和北極光同品質）──
+                // ── 烏雲 + 雨滴 ──
                 const k = state.t.k;
                 const cloudW = Math.max(22, Math.min(58, 42 / Math.sqrt(Math.max(1, k * 0.7))));
                 const rainW  = cloudW * 0.92;
@@ -2325,8 +2327,8 @@
                           cy2 = skyY + Math.cos(T * 0.18 + ci * 1.5) * 2.5;
                     ctx.globalAlpha = 0.82;
                     ctx.drawImage(cspr, 0, 0, 64, 40,
-                        (cx2 - cloudW / 2) * S, (cy2 - CLOUD_H / 2) * S,
-                        cloudW * S, CLOUD_H * S);
+                        cx2 - cloudW / 2, cy2 - CLOUD_H / 2,
+                        cloudW, CLOUD_H);
                 }
                 const N_RAIN = 20;
                 for (let ri = 0; ri < N_RAIN; ri++) {
@@ -2335,14 +2337,12 @@
                           ry = skyY + CLOUD_H / 2 + phase * 38;
                     ctx.globalAlpha = Math.sin(phase * Math.PI) * 0.55;
                     ctx.drawImage(rspr, 0, 0, 2, 18,
-                        (rx - 1) * S, ry * S, 2 * S, 18 * S);
+                        rx - 1, ry, 2, 18);
                 }
             }
         }
         ctx.globalAlpha = 1;
         ctx.globalCompositeOperation = 'source-over';
-        // 清掉 gWeather 裡殘留的 SVG 元素
-        if (gWeather) gWeather.selectAll('*').remove();
     }
 
     function buildSvg() {
