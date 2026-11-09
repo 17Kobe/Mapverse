@@ -68,8 +68,8 @@ button{font:inherit;color:inherit;cursor:pointer}
 }
 #rail .brand{display:none}
 #layers{display:contents}
-/* 手機版：設定按鈕顯示在 rail 最右側（資產負債右邊），但載入動畫期間不干擾（#loading 蓋在上面） */
-#btnSet{display:flex}
+/* 手機版：預設隱藏，載入完成後由 JS 設定 display:flex */
+#btnSet{display:none}
 .rl{
   flex:1;min-width:0;position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;
   padding:3px 0;background:none;border:0;color:var(--cream);

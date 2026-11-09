@@ -5392,6 +5392,8 @@
         initDisasters();
         initGeoScenes();
         $('#loading').classList.add('gone');
+        // 載入完成後才顯示手機版設定按鈕（避免在載入動畫下方露出）
+        $('#btnSet').style.display = 'flex';
         startWalk();
 
         $('#sheet').addEventListener('click', onSheetClick);
