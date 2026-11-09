@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+<ellipse cx="40" cy="76" rx="32" ry="12" fill="#a89a66" stroke="white" stroke-width="2"/>
+<path d="M12,66 L14,60 L16,66 Z" fill="#8a7d4f"/>
+<path d="M60,68 L62,61 L64,68 Z" fill="#8a7d4f"/>
+<path d="M68,64 L70,58 L72,64 Z" fill="#8a7d4f"/>
+
+<g>
+  <animateTransform attributeName="transform" type="translate" values="0,0;0,-2;0,0" dur="2.4s" repeatCount="indefinite"/>
+
+  <path d="M26,56 L21,56 L19,67 Q19,69 22,69 L27,69 Q29,67 28,56 Z" fill="#564738" stroke="white" stroke-width="1.5"/>
+  <path d="M56,56 L61,56 L63,67 Q63,69 60,69 L55,69 Q53,67 54,56 Z" fill="#564738" stroke="white" stroke-width="1.5"/>
+
+  <path d="M28,46 C16,44 7,36 5,20 C4,17 7,17 9,19 C15,34 24,42 32,52 Z" fill="#6a5a48" stroke="white" stroke-width="2"/>
+
+  <ellipse cx="42" cy="48" rx="22" ry="11" fill="#6a5a48" stroke="white" stroke-width="2"/>
+
+  <path d="M22,50 Q42,60 62,50 Q58,57 42,59 Q26,57 22,50 Z" fill="#8a7a60" stroke="white" stroke-width="1.5"/>
+
+  <path d="M31,54 L25,54 L22,67 Q22,70 25,70 L32,70 Q34,67 33,54 Z" fill="#6a5a48" stroke="white" stroke-width="2"/>
+  <path d="M23,70 L21,74 M26,70 L25,74 M29,70 L30,74" fill="none" stroke="#3a2f22" stroke-width="1.3" stroke-linecap="round"/>
+
+  <path d="M59,54 L53,54 L51,67 Q51,70 54,70 L60,70 Q62,67 61,54 Z" fill="#6a5a48" stroke="white" stroke-width="2"/>
+  <path d="M53,70 L52,74 M56,70 L55,74 M59,70 L60,74" fill="none" stroke="#3a2f22" stroke-width="1.3" stroke-linecap="round"/>
+
+  <path d="M14,32 L18,27 L22,32 L26,26 L31,31 L37,25 L43,30 L49,25 L55,30 L61,27 L65,32" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <path d="M20,40 Q24,37 28,40" fill="none" stroke="#4a3d2d" stroke-width="1"/>
+  <path d="M30,38 Q34,35 38,38" fill="none" stroke="#4a3d2d" stroke-width="1"/>
+  <path d="M40,37 Q44,34 48,37" fill="none" stroke="#4a3d2d" stroke-width="1"/>
+  <path d="M50,38 Q54,35 58,38" fill="none" stroke="#4a3d2d" stroke-width="1"/>
+
+  <path d="M58,38 Q70,36 76,43 Q78,45 76,47 Q70,52 59,52 Q53,50 53,44 Q53,40 58,38 Z" fill="#6a5a48" stroke="white" stroke-width="2"/>
+
+  <circle cx="64" cy="42" r="2.2" fill="#1a140d"/>
+  <circle cx="64.6" cy="41.3" r="0.6" fill="white"/>
+
+  <circle cx="74.5" cy="43" r="1" fill="#1a140d"/>
+
+  <path d="M58,47 Q68,50 76,46" fill="none" stroke="#2a1f14" stroke-width="1.2"/>
+
+  <path d="M62,48 L63,45 L64,48 Z" fill="white" stroke="#2a1f14" stroke-width="0.5"/>
+  <path d="M68,49 L69,46 L70,49 Z" fill="white" stroke="#2a1f14" stroke-width="0.5"/>
+  <path d="M73,48 L74,45.5 L75,48 Z" fill="white" stroke="#2a1f14" stroke-width="0.5"/>
+
+  <g transform="translate(77,45)">
+    <path d="M0,0 L9,-2.5 M0,0 L9,2.5" fill="none" stroke="#d94f4f" stroke-width="1.6" stroke-linecap="round">
+      <animateTransform attributeName="transform" type="scale" values="0.2;1;0.2" dur="1.6s" repeatCount="indefinite"/>
+    </path>
+  </g>
+</g>
+</svg>

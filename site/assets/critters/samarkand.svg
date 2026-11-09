@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+<ellipse cx="40" cy="70" rx="30" ry="5" fill="#000000" opacity="0.15"/>
+
+<rect x="8" y="58" width="64" height="10" rx="2" fill="#c9a86a" stroke="white" stroke-width="2"/>
+
+<rect x="10" y="28" width="8" height="30" rx="1.5" fill="#e0c888" stroke="white" stroke-width="2"/>
+<ellipse cx="14" cy="27" rx="5" ry="6" fill="#2a7ab8" stroke="white" stroke-width="1.8"/>
+<line x1="14" y1="21" x2="14" y2="17" stroke="#f4d03f" stroke-width="2" stroke-linecap="round"/>
+<circle cx="14" cy="16" r="2" fill="#f4d03f" stroke="white" stroke-width="1.5"/>
+
+<rect x="62" y="28" width="8" height="30" rx="1.5" fill="#e0c888" stroke="white" stroke-width="2"/>
+<ellipse cx="66" cy="27" rx="5" ry="6" fill="#2a7ab8" stroke="white" stroke-width="1.8"/>
+<line x1="66" y1="21" x2="66" y2="17" stroke="#f4d03f" stroke-width="2" stroke-linecap="round"/>
+<circle cx="66" cy="16" r="2" fill="#f4d03f" stroke="white" stroke-width="1.5"/>
+
+<rect x="24" y="22" width="32" height="36" rx="2" fill="#e0c888" stroke="white" stroke-width="2"/>
+
+<rect x="24" y="36" width="4" height="4" fill="#2a7ab8" stroke="white" stroke-width="1.5" transform="rotate(45 26 38)"/>
+<rect x="24" y="44" width="4" height="4" fill="#2a7ab8" stroke="white" stroke-width="1.5" transform="rotate(45 26 46)"/>
+<rect x="24" y="52" width="4" height="4" fill="#2a7ab8" stroke="white" stroke-width="1.5" transform="rotate(45 26 54)"/>
+<rect x="52" y="36" width="4" height="4" fill="#2a7ab8" stroke="white" stroke-width="1.5" transform="rotate(45 54 38)"/>
+<rect x="52" y="44" width="4" height="4" fill="#2a7ab8" stroke="white" stroke-width="1.5" transform="rotate(45 54 46)"/>
+<rect x="52" y="52" width="4" height="4" fill="#2a7ab8" stroke="white" stroke-width="1.5" transform="rotate(45 54 54)"/>
+
+<path d="M31,58 L31,40 Q31,28 40,28 Q49,28 49,40 L49,58 Z" fill="#163442" stroke="white" stroke-width="1.8"/>
+
+<path d="M24,22 C24,15 29,10 40,9 C51,10 56,15 56,22 Z" fill="#2a7ab8" stroke="white" stroke-width="2.2"/>
+<path d="M40,9 L40,22" stroke="white" stroke-width="1" opacity="0.5" fill="none"/>
+<path d="M33,11 C31,15 30,19 31,22" stroke="white" stroke-width="1" opacity="0.5" fill="none"/>
+<path d="M47,11 C49,15 50,19 49,22" stroke="white" stroke-width="1" opacity="0.5" fill="none"/>
+
+<line x1="40" y1="9" x2="40" y2="5" stroke="#f4d03f" stroke-width="2" stroke-linecap="round"/>
+<circle cx="40" cy="4" r="2.2" fill="#f4d03f" stroke="white" stroke-width="1.5"/>
+
+<circle cx="47" cy="15" r="1.6" fill="white">
+  <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite"/>
+</circle>
+</svg>

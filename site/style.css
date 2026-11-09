@@ -253,6 +253,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 #ctip .tk[data-k="人物文化"]{background:#b0602a}
 #ctip .tk[data-k="科技"]{background:#3a62b0}
 #ctip .tk[data-k="國家公園"]{background:#2f8a3a}
+#ctip .tk[data-k="國家"]{background:#2a5a9a}
 #ctip .td{font-size:12.5px;line-height:1.6;color:var(--cream);opacity:.93}
 #ctip .tm{margin-top:6px;padding:4px 8px;border-radius:8px;font-size:12px;font-weight:700;background:rgba(6,11,21,.45);border:1px solid rgba(227,189,92,.25)}
 

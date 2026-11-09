@@ -485,6 +485,27 @@
         { src: 'critters/n-seoul-tower.svg', lon: 126.99, lat: 37.55, mode: 'still', face: 'F', s: 1.0, deco: true, landmark: true }, // 首爾塔（南山）
         { src: 'critters/varanasi.svg', lon: 83.0, lat: 25.3, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },       // 瓦拉納西
         { src: 'critters/red-fort.svg', lon: 77.24, lat: 28.66, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },     // 紅堡
+        // ── 第三批地標 ────────────────────────────────────────────────
+        { src: 'critters/angkor-wat.svg', lon: 103.87, lat: 13.41, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },       // 吳哥窟
+        { src: 'critters/victoria-falls.svg', lon: 25.86, lat: -17.92, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },   // 維多利亞瀑布
+        { src: 'critters/salar-de-uyuni.svg', lon: -67.5, lat: -20.1, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },    // 天空之鏡
+        { src: 'critters/great-barrier-reef.svg', lon: 147.7, lat: -18.3, mode: 'still', face: 'F', s: 1.1, sea: true, deco: true, landmark: true }, // 大堡礁
+        { src: 'critters/everest.svg', lon: 86.93, lat: 27.99, mode: 'still', face: 'F', s: 1.2, deco: true, landmark: true },           // 聖母峰
+        { src: 'critters/bagan.svg', lon: 94.86, lat: 21.17, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },             // 蒲甘
+        { src: 'critters/abu-simbel.svg', lon: 31.63, lat: 22.34, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },        // 阿布辛貝
+        { src: 'critters/samarkand.svg', lon: 66.97, lat: 39.65, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },         // 撒馬爾罕
+        { src: 'critters/komodo-dragon.svg', lon: 119.49, lat: -8.55, mode: 'wander', gait: 'heavy', s: 1.0, deco: true, landmark: true }, // 科莫多巨蜥
+        { src: 'critters/socotra.svg', lon: 53.87, lat: 12.47, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },           // 索科特拉島
+        { src: 'critters/maasai.svg', lon: 36.8, lat: -2.5, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },              // 馬賽族
+        { src: 'critters/angel-falls.svg', lon: -62.54, lat: 5.97, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },       // 安赫爾瀑布
+        { src: 'critters/halong-bay.svg', lon: 107.08, lat: 20.91, mode: 'bob', s: 1.0, sea: true, deco: true, landmark: true },         // 下龍灣
+        { src: 'critters/pamukkale.svg', lon: 29.12, lat: 37.92, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },         // 棉堡
+        { src: 'critters/giants-causeway.svg', lon: -6.51, lat: 55.24, mode: 'still', face: 'F', s: 1.1, sea: true, deco: true, landmark: true }, // 巨人堤道
+        { src: 'critters/pearl-harbor.svg', lon: -157.95, lat: 21.37, mode: 'bob', s: 1.0, sea: true, deco: true, landmark: true },      // 珍珠港
+        { src: 'critters/normandy.svg', lon: -0.87, lat: 49.34, mode: 'still', face: 'F', s: 1.1, sea: true, deco: true, landmark: true }, // 諾曼第登陸
+        { src: 'critters/berlin-wall.svg', lon: 13.39, lat: 52.52, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },       // 柏林圍牆
+        { src: 'critters/okavango.svg', lon: 22.9, lat: -19.3, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },           // 奧卡萬戈三角洲
+        { src: 'critters/waitomo-caves.svg', lon: 175.1, lat: -38.26, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },    // 螢火蟲洞
     ];
     // 原住民小人（natives.js）：該國主要指數漲就歡呼跳舞、跌就沮喪哭泣，平盤時散步 / 揮手 / 眨眼
     // mode 'folk'；market = 看哪個指數；ox / oy = 相對位置點的偏移（單位：小角色基準大小）；minK = 縮小到這個倍率以下就收起來
@@ -2475,8 +2496,8 @@
                     .append('g')
                     .attr('class', 'mk bk')
                     .on('click', () => openCard(d))
-                    .on('mouseenter', (e) => setHover(d, true, e))
-                    .on('mouseleave', (e) => setHover(d, false, e))
+                    .on('mouseenter', (e) => setHover(d, true, e, true))
+                    .on('mouseleave', (e) => setHover(d, false, e, true))
                     .each(function () {
                         d.bk = this;
                     }),
@@ -3965,11 +3986,18 @@
         return `${nb < 0.2 ? 'url(#cityGlow) ' : ''}brightness(${br}) hue-rotate(${hue}deg)`;
     }
     // hover 進出：只更新旗幟亮度，不觸發國土高亮（國土高亮只在點擊卡片時才出現）
-    function setHover(d, on, ev) {
+    // isCard：true 表示從旗幟卡片 hover 進出（要讓國界變黃），動物 hover 不傳或傳 false（只顯示提示，不要國界效果）
+    function setHover(d, on, ev, isCard) {
         d.__hover = on;
         if (ev) d.__lastEv = ev;
         if (d.bk) d3.select(d.bk).select('.bubble').styleQ('filter', bubbleFilter(d));
-        if (on) showMarketTip(d, d.__lastEv);
+        if (isCard) {
+            const host = d.type === 'map' ? d : d.type === 'sub' ? state.bySym[d.of] : null;
+            const prev = state.hoverHighlightId;
+            state.hoverHighlightId = on && host && host.id ? pad3(host.id) : null;
+            if (prev !== state.hoverHighlightId) paintLand(new Set([prev, state.hoverHighlightId].filter(Boolean)));
+        }
+        if (on) isCard ? showCardTip(d, d.__lastEv) : showMarketTip(d, d.__lastEv);
         else hideCtip();
     }
     // 市場動物（walker）的 tooltip：顯示國家名稱 + 動物 emoji + 說明
@@ -3988,6 +4016,28 @@
             `<div class="th"><div class="ti">${esc(icon)}</div><div class="tt">` +
             `<div class="tn">${esc(animalName || (name + '的代表動物'))}</div>` +
             `<span class="tk" data-k="動物">動物</span></div></div>` +
+            `<div class="td">${esc(desc)}</div>`;
+        ctipEl.classList.add('show');
+        moveCtip(ev);
+    }
+    // 旗幟卡片的 tooltip：介紹該「國家 / 市場」本身（不是動物），顯示國旗 + 國名 + 開盤狀態 + 指數名稱
+    function showCardTip(d, ev) {
+        if (!ev) return;
+        ctipEl = ctipEl || $('#ctip');
+        const host = d.type === 'map' ? d : d.type === 'sub' ? state.bySym[d.of] : null;
+        const name = d.short || d.zh || '';
+        const iconHtml = flagHtml(d.flag, 'flg');
+        let desc = d.zh || '';
+        if (host) {
+            const st = marketStatus(host);
+            const label = { open: '🟢 ' + $t('開盤中'), break: '🍱 ' + $t('午休中'), closed: '😴 ' + $t('休市') }[st] || '';
+            desc = [desc, label].filter(Boolean).join('　');
+        }
+        ctipOwner = null;
+        ctipEl.innerHTML =
+            `<div class="th"><div class="ti">${iconHtml}</div><div class="tt">` +
+            `<div class="tn">${esc(name)}</div>` +
+            `<span class="tk" data-k="國家">${esc($t('國家'))}</span></div></div>` +
             `<div class="td">${esc(desc)}</div>`;
         ctipEl.classList.add('show');
         moveCtip(ev);

@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+<defs>
+<g id="pagoda">
+<polygon points="1,30 19,30 16,23 4,23" fill="#8f4228" stroke="white" stroke-width="1.8" vector-effect="non-scaling-stroke"/>
+<polygon points="4,23 16,23 13,16 7,16" fill="#b85838" stroke="white" stroke-width="1.8" vector-effect="non-scaling-stroke"/>
+<ellipse cx="10" cy="14" rx="6" ry="5.5" fill="#b85838" stroke="white" stroke-width="1.8" vector-effect="non-scaling-stroke"/>
+<ellipse cx="10" cy="10.5" rx="3.3" ry="1.4" fill="#d4a830" stroke="white" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+<rect x="9" y="4" width="2" height="6.5" fill="#d4a830" stroke="white" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+<circle cx="10" cy="3" r="2" fill="#d4a830" stroke="white" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+</g>
+</defs>
+
+<ellipse cx="40" cy="70" rx="36" ry="9" fill="#b8c04a" stroke="white" stroke-width="2.2"/>
+
+<use href="#pagoda" transform="translate(2,35.4) scale(0.42)"/>
+<use href="#pagoda" transform="translate(16,33.6) scale(0.48)"/>
+<use href="#pagoda" transform="translate(34,36) scale(0.4)"/>
+<use href="#pagoda" transform="translate(50,34.2) scale(0.46)"/>
+<use href="#pagoda" transform="translate(66,34.8) scale(0.44)"/>
+
+<use href="#pagoda" transform="translate(10,27) scale(1.3)"/>
+<use href="#pagoda" transform="translate(30,18) scale(1.6)"/>
+<use href="#pagoda" transform="translate(52,25.5) scale(1.35)"/>
+
+<g>
+<animateTransform attributeName="transform" type="translate" values="0,0; 0,-3; 0,0" dur="3s" repeatCount="indefinite"/>
+<line x1="14" y1="16" x2="11" y2="20.5" stroke="white" stroke-width="1"/>
+<line x1="14" y1="16" x2="17" y2="20.5" stroke="white" stroke-width="1"/>
+<rect x="11.5" y="20.5" width="5" height="3.5" rx="0.6" fill="#8a5a2e" stroke="white" stroke-width="1.3"/>
+<ellipse cx="14" cy="10" rx="6" ry="7" fill="#d84848" stroke="white" stroke-width="1.8"/>
+<path d="M 8,10 Q 14,8 20,10" fill="none" stroke="white" stroke-width="1"/>
+<path d="M 9,14 Q 14,16 19,14" fill="none" stroke="white" stroke-width="1"/>
+</g>
+
+<g>
+<animateTransform attributeName="transform" type="translate" values="0,0; 0,-3; 0,0" dur="3.5s" repeatCount="indefinite"/>
+<line x1="64" y1="20" x2="61.5" y2="24" stroke="white" stroke-width="0.9"/>
+<line x1="64" y1="20" x2="66.5" y2="24" stroke="white" stroke-width="0.9"/>
+<rect x="61.8" y="24" width="4.4" height="3" rx="0.5" fill="#8a5a2e" stroke="white" stroke-width="1.2"/>
+<ellipse cx="64" cy="15" rx="4.5" ry="5.5" fill="#4878c8" stroke="white" stroke-width="1.6"/>
+<path d="M 59.5,15 Q 64,13.3 68.5,15" fill="none" stroke="white" stroke-width="0.9"/>
+</g>
+
+<g>
+<animateTransform attributeName="transform" type="translate" values="0,0; 0,-2; 0,0" dur="4s" repeatCount="indefinite"/>
+<line x1="40" y1="11.2" x2="38.3" y2="14" stroke="white" stroke-width="0.8"/>
+<line x1="40" y1="11.2" x2="41.7" y2="14" stroke="white" stroke-width="0.8"/>
+<rect x="38.3" y="14" width="3.4" height="2.3" rx="0.4" fill="#8a5a2e" stroke="white" stroke-width="1"/>
+<ellipse cx="40" cy="8" rx="3.5" ry="4.2" fill="#e8b840" stroke="white" stroke-width="1.5"/>
+</g>
+</svg>

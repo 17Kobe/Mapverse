@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+<!-- 遠方天空 -->
+<ellipse cx="14" cy="10" rx="7" ry="4" fill="#eaf6ff" stroke="white" stroke-width="1.6" opacity="0.85">
+  <animateTransform attributeName="transform" type="translate" values="0,0;3,0;0,0" dur="6s" repeatCount="indefinite"/>
+</ellipse>
+<ellipse cx="20" cy="12" rx="5" ry="3" fill="#eaf6ff" stroke="white" stroke-width="1.6" opacity="0.85">
+  <animateTransform attributeName="transform" type="translate" values="0,0;3,0;0,0" dur="6s" repeatCount="indefinite"/>
+</ellipse>
+<ellipse cx="66" cy="8" rx="6" ry="3.5" fill="#eaf6ff" stroke="white" stroke-width="1.6" opacity="0.85">
+  <animateTransform attributeName="transform" type="translate" values="0,0;-3,0;0,0" dur="7s" repeatCount="indefinite"/>
+</ellipse>
+<ellipse cx="60" cy="10" rx="4" ry="2.5" fill="#eaf6ff" stroke="white" stroke-width="1.6" opacity="0.85">
+  <animateTransform attributeName="transform" type="translate" values="0,0;-3,0;0,0" dur="7s" repeatCount="indefinite"/>
+</ellipse>
+
+<!-- 第四層（最上、最小） -->
+<path d="M27,16 L53,16 L53,23 Q47,27 40,23 Q33,27 27,23 Z"
+      fill="#f5f2e8" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+<ellipse cx="40" cy="16" rx="12" ry="3.4" fill="#a8d8c8" stroke="white" stroke-width="1.8"/>
+
+<!-- 第三層 -->
+<path d="M21,26 L59,26 L59,33 Q53,38 46,33 Q40,38 33,33 Q26,38 21,33 Z"
+      fill="#f5f2e8" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+<ellipse cx="40" cy="26" rx="18" ry="4" fill="#a8d8c8" stroke="white" stroke-width="1.8"/>
+
+<!-- 第二層 -->
+<path d="M15,38 L65,38 L65,45 Q58,51 52,45 Q46,51 40,45 Q34,51 27,45 Q21,51 15,45 Z"
+      fill="#f5f2e8" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+<ellipse cx="40" cy="38" rx="24" ry="4.6" fill="#a8d8c8" stroke="white" stroke-width="1.8"/>
+
+<!-- 第一層（最下、最寬） -->
+<path d="M9,52 L71,52 L71,60 Q64,66 58,60 Q52,66 46,60 Q39,66 33,60 Q27,66 21,60 Q15,66 9,60 Z"
+      fill="#f5f2e8" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+<ellipse cx="40" cy="52" rx="30" ry="5.2" fill="#a8d8c8" stroke="white" stroke-width="1.8"/>
+
+<!-- 水面光斑（水波閃爍動畫） -->
+<ellipse cx="30" cy="51" rx="4" ry="1.3" fill="#ffffff" opacity="0.6">
+  <animate attributeName="opacity" values="0.3;0.8;0.3" dur="2.2s" repeatCount="indefinite"/>
+</ellipse>
+<ellipse cx="50" cy="53" rx="3" ry="1" fill="#ffffff" opacity="0.5">
+  <animate attributeName="opacity" values="0.7;0.2;0.7" dur="2.6s" repeatCount="indefinite"/>
+</ellipse>
+<ellipse cx="40" cy="37" rx="3" ry="1" fill="#ffffff" opacity="0.6">
+  <animate attributeName="opacity" values="0.3;0.9;0.3" dur="2.4s" repeatCount="indefinite"/>
+</ellipse>
+</svg>

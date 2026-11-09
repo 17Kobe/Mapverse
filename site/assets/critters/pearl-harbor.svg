@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+<!-- 背景山丘（深綠） -->
+<path d="M8,34 Q16,16 26,28 Q34,18 44,27 Q52,17 62,27 Q68,20 72,30 L72,46 L8,46 Z" fill="#3f7a32" stroke="white" stroke-width="1.8"/>
+<!-- 背景山丘（淺綠，前景層） -->
+<path d="M8,38 Q18,24 30,34 Q40,25 50,34 Q60,25 72,36 L72,50 L8,50 Z" fill="#6ab04c" stroke="white" stroke-width="1.8"/>
+
+<!-- 港灣海水 -->
+<ellipse cx="40" cy="55" rx="32" ry="18" fill="#2f80c9" stroke="white" stroke-width="2"/>
+
+<!-- 海面波浪紋 -->
+<path d="M12,62 Q18,59 24,62 Q30,65 36,62" fill="none" stroke="white" stroke-width="1.3" opacity="0.5"/>
+<path d="M40,67 Q46,64 52,67 Q58,70 64,67" fill="none" stroke="white" stroke-width="1.3" opacity="0.5"/>
+<path d="M14,70 Q20,67 26,70" fill="none" stroke="white" stroke-width="1.3" opacity="0.45"/>
+
+<!-- 亞利桑那紀念館風格白色建築（漂浮於水面） -->
+<g>
+  <path d="M15,54 L15,47 Q17,43 20,44.5 Q23,46.5 26,44.5 Q29,43 32,47 L32,54 Z" fill="#ffffff" stroke="white" stroke-width="1.6"/>
+  <rect x="18.5" y="46" width="1.8" height="7" fill="#2f80c9"/>
+  <rect x="22.5" y="46" width="1.8" height="7" fill="#2f80c9"/>
+  <rect x="26.5" y="46" width="1.8" height="7" fill="#2f80c9"/>
+  <rect x="13" y="54" width="21" height="2.2" fill="#e3e8ea" stroke="white" stroke-width="1.5"/>
+</g>
+
+<!-- 戰艦主體群組：整體上下微幅漂浮動畫 -->
+<g>
+  <animateTransform attributeName="transform" type="translate" values="0,0; 0,-1.6; 0,0" dur="2.6s" repeatCount="indefinite"/>
+
+  <!-- 船體（戰艦灰） -->
+  <path d="M34,58 L41,49 L62,49 L68,54 L68,61 L34,61 Z" fill="#7a8088" stroke="white" stroke-width="2"/>
+  <!-- 船體吃水線陰影 -->
+  <path d="M34,61 L68,61 L68,58.5 L34,58.5 Z" fill="#5f6369" stroke="white" stroke-width="1.5"/>
+
+  <!-- 艦橋塔 -->
+  <rect x="47" y="36" width="10" height="13" rx="1.5" fill="#9aa0a8" stroke="white" stroke-width="1.8"/>
+  <!-- 煙囪 -->
+  <rect x="58" y="33" width="4" height="7" rx="0.8" fill="#6b7177" stroke="white" stroke-width="1.5"/>
+
+  <!-- 主炮塔 -->
+  <circle cx="40" cy="47" r="3.6" fill="#5f6369" stroke="white" stroke-width="1.6"/>
+  <rect x="34.5" y="45.6" width="6" height="2.6" fill="#5f6369" stroke="white" stroke-width="1.3"/>
+  <circle cx="63" cy="47" r="3.6" fill="#5f6369" stroke="white" stroke-width="1.6"/>
+  <rect x="61.5" y="45.6" width="6" height="2.6" fill="#5f6369" stroke="white" stroke-width="1.3"/>
+
+  <!-- 船桅 -->
+  <line x1="52" y1="36" x2="52" y2="24" stroke="#5f6369" stroke-width="1.8"/>
+
+  <!-- 旗子：以船桅頂點為軸心小幅擺動 -->
+  <g transform-origin="52 24">
+    <animateTransform attributeName="transform" type="rotate" values="-6 52 24; 10 52 24; -6 52 24" dur="1.8s" repeatCount="indefinite"/>
+    <path d="M52,24 L60,26.5 L52,29 Z" fill="#d32f2f" stroke="white" stroke-width="1.4"/>
+  </g>
+</g>
+</svg>

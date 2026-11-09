@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+<!-- 水面波紋 -->
+<path d="M4,10 Q12,6 20,10 T36,10" stroke="#4ac8c0" stroke-width="2.2" fill="none" stroke-linecap="round" opacity="0.6"/>
+<path d="M48,6 Q56,2 64,6 T80,6" stroke="#4ac8c0" stroke-width="2.2" fill="none" stroke-linecap="round" opacity="0.6"/>
+
+<!-- 海底沙地（半橢圓，非矩形） -->
+<path d="M8,72 A32,7 0 0 1 72,72 Z" fill="#ede0b0" stroke="white" stroke-width="2.2"/>
+
+<!-- 腦珊瑚（橙色） -->
+<path d="M8,72 C8,52 14,46 24,46 C34,46 40,52 40,72 Z" fill="#ff8c4a" stroke="white" stroke-width="2"/>
+<path d="M12,58 Q18,52 24,58 Q30,64 36,58" stroke="#d1601f" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+<path d="M10,66 Q18,60 26,66 Q34,71 38,65" stroke="#d1601f" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+<path d="M14,50 Q20,46 26,50" stroke="#d1601f" stroke-width="1.1" fill="none" stroke-linecap="round"/>
+
+<!-- 海扇珊瑚（紫色） -->
+<path d="M62,72 C58,72 54,68 54,60 C54,46 58,34 64,28 C66,26 68,26 70,28 C76,34 76,46 74,60 C74,68 70,72 66,72 Z" fill="#a855f7" stroke="white" stroke-width="2.2"/>
+<path d="M62,70 Q60,54 58,34" stroke="#7c3aed" stroke-width="1.1" fill="none"/>
+<path d="M63,70 Q64,50 64,30" stroke="#7c3aed" stroke-width="1.1" fill="none"/>
+<path d="M64,70 Q68,52 70,32" stroke="#7c3aed" stroke-width="1.1" fill="none"/>
+<path d="M62,70 Q56,58 56,42" stroke="#7c3aed" stroke-width="1" fill="none" opacity="0.8"/>
+<path d="M64,70 Q72,56 73,44" stroke="#7c3aed" stroke-width="1" fill="none" opacity="0.8"/>
+
+<!-- 鹿角珊瑚（粉紅色） -->
+<path d="M36,72 L34,46 Q34,41 37,39 L43,39 Q46,41 46,46 L44,72 Z" fill="#ff4fa3" stroke="white" stroke-width="2"/>
+<path d="M35,47 Q25,41 22,25 Q21,21 24,20 Q27,21 28,26 Q31,39 38,43 Z" fill="#ff4fa3" stroke="white" stroke-width="1.8"/>
+<path d="M45,47 Q55,39 58,23 Q59,19 56,18 Q53,19 52,24 Q49,38 42,43 Z" fill="#ff4fa3" stroke="white" stroke-width="1.8"/>
+<path d="M39,41 Q38,29 40,17 Q41,13 44,13 Q46,14 45,18 Q43,29 43,41 Z" fill="#ff6fb5" stroke="white" stroke-width="1.8"/>
+
+<!-- 黃色珊瑚簇 -->
+<path d="M46,72 Q45,62 50,62 Q55,62 54,72 Z" fill="#ffd23f" stroke="white" stroke-width="1.6"/>
+<path d="M54,72 Q53,58 59,58 Q65,58 63,72 Z" fill="#ffe066" stroke="white" stroke-width="1.6"/>
+<path d="M60,72 Q59,65 63,65 Q67,65 66,72 Z" fill="#ffd23f" stroke="white" stroke-width="1.5"/>
+
+<!-- 綠蠵龜（游動動畫） -->
+<g transform="rotate(-8 45 20)">
+  <g>
+    <animateTransform attributeName="transform" type="translate" values="0,0; 0,-3; 0,0" dur="3s" repeatCount="indefinite"/>
+
+    <!-- 後鰭（背側） -->
+    <ellipse cx="30" cy="12" rx="8" ry="3.5" fill="#359648" stroke="white" stroke-width="1.5">
+      <animateTransform attributeName="transform" type="rotate" values="-10 33,15; 10 33,15; -10 33,15" dur="1.6s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="30" cy="28" rx="8" ry="3.5" fill="#359648" stroke="white" stroke-width="1.5">
+      <animateTransform attributeName="transform" type="rotate" values="10 33,25; -10 33,25; 10 33,25" dur="1.6s" repeatCount="indefinite"/>
+    </ellipse>
+
+    <!-- 龜殼 -->
+    <ellipse cx="45" cy="20" rx="16" ry="10" fill="#3fae5a" stroke="white" stroke-width="2.2"/>
+    <path d="M35,14 L41,12 L47,14" stroke="#2d8a44" stroke-width="1" fill="none" stroke-linecap="round"/>
+    <path d="M35,20 L41,18 L47,20 L53,18" stroke="#2d8a44" stroke-width="1" fill="none" stroke-linecap="round"/>
+    <path d="M37,27 L43,25 L49,27" stroke="#2d8a44" stroke-width="1" fill="none" stroke-linecap="round"/>
+
+    <!-- 前鰭（腹側） -->
+    <ellipse cx="58" cy="10" rx="9" ry="4" fill="#3fae5a" stroke="white" stroke-width="1.6">
+      <animateTransform attributeName="transform" type="rotate" values="-18 57,13; 15 57,13; -18 57,13" dur="1.3s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="58" cy="30" rx="9" ry="4" fill="#3fae5a" stroke="white" stroke-width="1.6">
+      <animateTransform attributeName="transform" type="rotate" values="18 57,27; -15 57,27; 18 57,27" dur="1.3s" repeatCount="indefinite"/>
+    </ellipse>
+
+    <!-- 頭部 -->
+    <path d="M70,20 L74,18 L74,22 Z" fill="#4fc06a" stroke="white" stroke-width="1.2"/>
+    <circle cx="64" cy="20" r="7" fill="#4fc06a" stroke="white" stroke-width="1.8"/>
+    <circle cx="67" cy="18" r="1.2" fill="#163a1f"/>
+  </g>
+</g>
+</svg>

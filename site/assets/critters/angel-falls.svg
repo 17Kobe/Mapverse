@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+<g>
+  <!-- 地面 -->
+  <ellipse cx="40" cy="70" rx="33" ry="6" fill="#6b8f3f" stroke="white" stroke-width="2"/>
+
+  <!-- 左側平頂山 -->
+  <polygon points="9,60 38,60 33,16 15,20" fill="#7a6a5a" stroke="white" stroke-width="2"/>
+  <!-- 右側平頂山 -->
+  <polygon points="47,60 71,60 65,20 47,16" fill="#7a6a5a" stroke="white" stroke-width="2"/>
+
+  <!-- 岩壁紋理 -->
+  <path d="M20,28 L18,55" stroke="#5e5146" stroke-width="2" stroke-linecap="round" fill="none"/>
+  <path d="M29,24 L26,57" stroke="#5e5146" stroke-width="2" stroke-linecap="round" fill="none"/>
+  <path d="M55,24 L57,57" stroke="#5e5146" stroke-width="2" stroke-linecap="round" fill="none"/>
+  <path d="M63,28 L64,55" stroke="#5e5146" stroke-width="2" stroke-linecap="round" fill="none"/>
+
+  <!-- 頂部植被 -->
+  <ellipse cx="24" cy="17" rx="13" ry="5" fill="#4f7a2e" stroke="white" stroke-width="1.8"/>
+  <ellipse cx="57" cy="17" rx="13" ry="5" fill="#4f7a2e" stroke="white" stroke-width="1.8"/>
+
+  <!-- 瀑布主體（自平頂山頂端垂直落下） -->
+  <path d="M35,15 L45,15 L50,60 L30,60 Z" fill="#d9eef7" stroke="white" stroke-width="2"/>
+
+  <!-- 水流動感線條 -->
+  <line x1="36" y1="19" x2="35" y2="58" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="5 7" opacity="0.9">
+    <animate attributeName="stroke-dashoffset" from="0" to="-24" dur="0.6s" repeatCount="indefinite"/>
+  </line>
+  <line x1="40" y1="17" x2="40" y2="59" stroke="white" stroke-width="3" stroke-linecap="round" stroke-dasharray="6 8" opacity="0.85">
+    <animate attributeName="stroke-dashoffset" from="0" to="-28" dur="0.5s" repeatCount="indefinite"/>
+  </line>
+  <line x1="44" y1="19" x2="45" y2="58" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="5 7" opacity="0.9">
+    <animate attributeName="stroke-dashoffset" from="0" to="-24" dur="0.7s" repeatCount="indefinite"/>
+  </line>
+
+  <!-- 落水濺起的小水花 -->
+  <path d="M30,60 Q40,66 50,60" stroke="white" stroke-width="2" fill="none" opacity="0.8"/>
+
+  <!-- 底部雲霧 -->
+  <ellipse cx="40" cy="62" rx="15" ry="6" fill="white" opacity="0.6">
+    <animate attributeName="opacity" values="0.45;0.8;0.45" dur="2s" repeatCount="indefinite"/>
+  </ellipse>
+  <ellipse cx="32" cy="65" rx="10" ry="5" fill="white" opacity="0.55">
+    <animate attributeName="opacity" values="0.4;0.7;0.4" dur="2.4s" repeatCount="indefinite"/>
+  </ellipse>
+  <ellipse cx="48" cy="65" rx="10" ry="5" fill="white" opacity="0.55">
+    <animate attributeName="opacity" values="0.7;0.4;0.7" dur="1.8s" repeatCount="indefinite"/>
+  </ellipse>
+</g>
+</svg>
