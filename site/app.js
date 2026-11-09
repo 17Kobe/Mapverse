@@ -452,6 +452,24 @@
             landmark: true,
         }, // 格陵蘭北極熊
         { src: 'critters/moai.svg', lon: -109.4, lat: -27.1, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 復活島摩艾
+        // ── 第二批地標 ────────────────────────────────────────────────
+        { src: 'critters/mongolian-ger.svg', lon: 106.9, lat: 47.9, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 蒙古包
+        { src: 'critters/tipi.svg', lon: -105.0, lat: 45.0, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },         // 北美 Tipi
+        { src: 'critters/gassho-house.svg', lon: 136.9, lat: 36.2, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },  // 白川鄉合掌造
+        { src: 'critters/tulou.svg', lon: 117.1, lat: 24.7, mode: 'still', face: 'F', s: 1.2, deco: true, landmark: true },         // 福建土樓
+        { src: 'critters/overwater-bungalow.svg', lon: 73.5, lat: 4.2, mode: 'bob', s: 1.0, sea: true, deco: true, landmark: true }, // 馬爾地夫水上屋
+        { src: 'critters/windmill.svg', lon: 4.9, lat: 52.3, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },        // 荷蘭風車
+        { src: 'critters/great-blue-hole.svg', lon: -87.5, lat: 17.3, mode: 'still', face: 'F', s: 1.2, sea: true, deco: true, landmark: true }, // 大藍洞
+        { src: 'critters/chernobyl.svg', lon: 30.1, lat: 51.4, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },      // 車諾比
+        { src: 'critters/kiyomizudera.svg', lon: 135.8, lat: 34.99, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 清水寺
+        { src: 'critters/osaka-castle.svg', lon: 135.5, lat: 34.6, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },  // 大阪城
+        { src: 'critters/forbidden-city.svg', lon: 116.4, lat: 39.9, mode: 'still', face: 'F', s: 1.2, deco: true, landmark: true }, // 紫禁城
+        { src: 'critters/terracotta-army.svg', lon: 109.3, lat: 34.4, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 兵馬俑
+        { src: 'critters/zhangjiajie.svg', lon: 110.5, lat: 29.1, mode: 'still', face: 'F', s: 1.2, deco: true, landmark: true },   // 張家界
+        { src: 'critters/gyeongbokgung.svg', lon: 126.98, lat: 37.58, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 景福宮
+        { src: 'critters/n-seoul-tower.svg', lon: 126.99, lat: 37.55, mode: 'still', face: 'F', s: 1.0, deco: true, landmark: true }, // 首爾塔（南山）
+        { src: 'critters/varanasi.svg', lon: 83.0, lat: 25.3, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },       // 瓦拉納西
+        { src: 'critters/red-fort.svg', lon: 77.24, lat: 28.66, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },     // 紅堡
     ];
     // 原住民小人（natives.js）：該國主要指數漲就歡呼跳舞、跌就沮喪哭泣，平盤時散步 / 揮手 / 眨眼
     // mode 'folk'；market = 看哪個指數；ox / oy = 相對位置點的偏移（單位：小角色基準大小）；minK = 縮小到這個倍率以下就收起來
@@ -2321,8 +2339,8 @@
             .append('g')
             .attr('class', 'mk')
             .on('click', (e, d) => openCard(d))
-            .on('mouseenter', (e, d) => setHover(d, true))
-            .on('mouseleave', (e, d) => setHover(d, false));
+            .on('mouseenter', (e, d) => setHover(d, true, e))
+            .on('mouseleave', (e, d) => setHover(d, false, e));
         g.each(function (d) {
             const s = d3.select(this);
             // 3D 動物：原點就是牠腳踩的地面，會在自己國家附近走動，所以整組放在 walker 裡
@@ -2368,8 +2386,8 @@
                     .append('g')
                     .attr('class', 'mk bk')
                     .on('click', () => openCard(d))
-                    .on('mouseenter', () => setHover(d, true))
-                    .on('mouseleave', () => setHover(d, false))
+                    .on('mouseenter', (e) => setHover(d, true, e))
+                    .on('mouseleave', (e) => setHover(d, false, e))
                     .each(function () {
                         d.bk = this;
                     }),
@@ -3809,14 +3827,33 @@
         const hue = Math.round((1 - nb) * -18);
         return `${nb < 0.2 ? 'url(#cityGlow) ' : ''}brightness(${br}) hue-rotate(${hue}deg)`;
     }
-    // hover 進出：只更新這張旗幟的亮度與國土高亮，不重排整張地圖（重排要重跑一次旗幟排版，會讓高亮晚好幾十毫秒才出現）
-    function setHover(d, on) {
+    // hover 進出：只更新旗幟亮度，不觸發國土高亮（國土高亮只在點擊卡片時才出現）
+    function setHover(d, on, ev) {
         d.__hover = on;
+        if (ev) d.__lastEv = ev;
         if (d.bk) d3.select(d.bk).select('.bubble').styleQ('filter', bubbleFilter(d));
-        const host = d.type === 'map' ? d : d.type === 'sub' ? state.bySym[d.of] : null;
-        const prev = state.hoverHighlightId;
-        state.hoverHighlightId = on && host && host.id ? pad3(host.id) : null;
-        if (prev !== state.hoverHighlightId) paintLand(new Set([prev, state.hoverHighlightId].filter(Boolean)));
+        if (on) showMarketTip(d, d.__lastEv);
+        else hideCtip();
+    }
+    // 市場動物（walker）的 tooltip：顯示國家名稱 + 動物 emoji + 說明
+    function showMarketTip(d, ev) {
+        if (!ev) return;
+        ctipEl = ctipEl || $('#ctip');
+        const icon = d.a || '🐾';
+        const name = d.short || d.zh || '';
+        // 從 CRITTER_TIPS 找動物對應說明（以 emoji 比對）
+        const tips = window.CRITTER_TIPS || {};
+        const tipKey = Object.keys(tips).find(k => tips[k][0] === icon && tips[k][2] === '動物');
+        const animalName = tipKey ? tips[tipKey][1] : '';
+        const desc = tipKey ? tips[tipKey][3] : `${name}的代表動物，點擊旗幟可看更多資訊。`;
+        ctipOwner = null;
+        ctipEl.innerHTML =
+            `<div class="th"><div class="ti">${esc(icon)}</div><div class="tt">` +
+            `<div class="tn">${esc(animalName || (name + '的代表動物'))}</div>` +
+            `<span class="tk" data-k="動物">動物</span></div></div>` +
+            `<div class="td">${esc(desc)}</div>`;
+        ctipEl.classList.add('show');
+        moveCtip(ev);
     }
 
     function layoutMarkers() {

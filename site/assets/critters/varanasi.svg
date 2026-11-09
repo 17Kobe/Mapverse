@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+
+  <!-- Ground / water base -->
+  <ellipse cx="40" cy="72" rx="30" ry="5" fill="#4a9eda" stroke="white" stroke-width="1"/>
+
+  <!-- Water surface with wave lines -->
+  <rect x="12" y="60" width="56" height="14" rx="2" fill="#5ab4e8" stroke="white" stroke-width="1"/>
+  <path d="M14 63 Q20 61 26 63 Q32 65 38 63 Q44 61 50 63 Q56 65 62 63 Q66 61 68 63" fill="none" stroke="white" stroke-width="0.8" opacity="0.7"/>
+  <path d="M14 67 Q20 65 26 67 Q32 69 38 67 Q44 65 50 67 Q56 69 62 67 Q66 65 68 67" fill="none" stroke="white" stroke-width="0.8" opacity="0.7">
+    <animate attributeName="d"
+      values="M14 67 Q20 65 26 67 Q32 69 38 67 Q44 65 50 67 Q56 69 62 67 Q66 65 68 67;
+              M14 67 Q20 69 26 67 Q32 65 38 67 Q44 69 50 67 Q56 65 62 67 Q66 69 68 67;
+              M14 67 Q20 65 26 67 Q32 69 38 67 Q44 65 50 67 Q56 69 62 67 Q66 65 68 67"
+      dur="2.5s" repeatCount="indefinite"/>
+  </path>
+
+  <!-- Stone steps (ghats) - multiple layers -->
+  <!-- Bottom step -->
+  <rect x="18" y="57" width="44" height="5" rx="1" fill="#d4c5a9" stroke="white" stroke-width="1.5"/>
+  <!-- Step 2 -->
+  <rect x="20" y="51" width="40" height="6" rx="1" fill="#c9b99a" stroke="white" stroke-width="1.5"/>
+  <!-- Step 3 -->
+  <rect x="22" y="45" width="36" height="6" rx="1" fill="#bfae91" stroke="white" stroke-width="1.5"/>
+  <!-- Step 4 -->
+  <rect x="24" y="40" width="32" height="5" rx="1" fill="#b5a488" stroke="white" stroke-width="1.5"/>
+  <!-- Step lines for depth -->
+  <line x1="18" y1="57" x2="62" y2="57" stroke="white" stroke-width="0.5" opacity="0.5"/>
+  <line x1="20" y1="51" x2="60" y2="51" stroke="white" stroke-width="0.5" opacity="0.5"/>
+
+  <!-- Temple / Shikara on left -->
+  <rect x="23" y="28" width="12" height="14" rx="1" fill="#e8834a" stroke="white" stroke-width="1.5"/>
+  <!-- Shikara tower (cone-like spire) -->
+  <polygon points="29,8 23,28 35,28" fill="#e8834a" stroke="white" stroke-width="1.5"/>
+  <!-- Spire detail bands -->
+  <line x1="24" y1="24" x2="34" y2="24" stroke="white" stroke-width="0.8" opacity="0.7"/>
+  <line x1="25" y1="20" x2="33" y2="20" stroke="white" stroke-width="0.8" opacity="0.7"/>
+  <line x1="26" y1="16" x2="32" y2="16" stroke="white" stroke-width="0.8" opacity="0.7"/>
+  <!-- Temple top ornament -->
+  <circle cx="29" cy="7" r="2" fill="#f5c842" stroke="white" stroke-width="1"/>
+
+  <!-- Second smaller temple on right -->
+  <rect x="46" y="32" width="10" height="11" rx="1" fill="#e8834a" stroke="white" stroke-width="1.5"/>
+  <polygon points="51,15 46,32 56,32" fill="#e8834a" stroke="white" stroke-width="1.5"/>
+  <line x1="47" y1="28" x2="55" y2="28" stroke="white" stroke-width="0.7" opacity="0.6"/>
+  <line x1="47.5" y1="24" x2="54.5" y2="24" stroke="white" stroke-width="0.7" opacity="0.6"/>
+  <circle cx="51" cy="14" r="1.5" fill="#f5c842" stroke="white" stroke-width="1"/>
+
+  <!-- Small silhouette people on steps -->
+  <!-- Person 1 -->
+  <circle cx="33" cy="49" r="1.5" fill="#8b6914" stroke="white" stroke-width="0.8"/>
+  <line x1="33" y1="50.5" x2="33" y2="54" stroke="#8b6914" stroke-width="1.2" stroke-linecap="round"/>
+  <!-- Person 2 (praying pose - arms up) -->
+  <circle cx="41" cy="53" r="1.5" fill="#8b6914" stroke="white" stroke-width="0.8"/>
+  <line x1="41" y1="54.5" x2="41" y2="58" stroke="#8b6914" stroke-width="1.2" stroke-linecap="round"/>
+  <!-- Person 3 sitting -->
+  <circle cx="50" cy="49" r="1.5" fill="#a07830" stroke="white" stroke-width="0.8"/>
+
+  <!-- Marigold flower decorations (orange balls) -->
+  <!-- Flower 1 -->
+  <circle cx="40" cy="42" r="2.5" fill="#f5a623" stroke="white" stroke-width="1"/>
+  <circle cx="40" cy="42" r="1.2" fill="#f7c462" stroke="none"/>
+  <!-- Flower 2 -->
+  <circle cx="28" cy="39" r="2" fill="#f5a623" stroke="white" stroke-width="1"/>
+  <circle cx="28" cy="39" r="1" fill="#f7c462" stroke="none"/>
+  <!-- Flower 3 -->
+  <circle cx="54" cy="42" r="2" fill="#e8834a" stroke="white" stroke-width="1"/>
+  <circle cx="54" cy="42" r="1" fill="#f5a623" stroke="none"/>
+
+  <!-- Floating flower petal on water (animated) -->
+  <ellipse cx="25" cy="64" rx="3" ry="1.5" fill="#f5a623" stroke="white" stroke-width="0.8">
+    <animate attributeName="cx" values="25;55;25" dur="8s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="1;0.7;1" dur="8s" repeatCount="indefinite"/>
+  </ellipse>
+  <ellipse cx="50" cy="66" rx="2.5" ry="1.2" fill="#f0c040" stroke="white" stroke-width="0.8">
+    <animate attributeName="cx" values="50;20;50" dur="10s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.8;1;0.8" dur="10s" repeatCount="indefinite"/>
+  </ellipse>
+
+</svg>

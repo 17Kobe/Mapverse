@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+
+  <!-- Ground hill (Namsan) -->
+  <ellipse cx="40" cy="72" rx="30" ry="10" fill="#2d7a3a" stroke="white" stroke-width="1.5"/>
+  <ellipse cx="40" cy="68" rx="22" ry="8" fill="#3a9e4a" stroke="white" stroke-width="1"/>
+
+  <!-- Tower base/pedestal on hill -->
+  <rect x="35" y="55" width="10" height="14" rx="2" fill="#b0bec5" stroke="white" stroke-width="1.5"/>
+
+  <!-- Observation deck platform -->
+  <ellipse cx="40" cy="54" rx="12" ry="4" fill="#78909c" stroke="white" stroke-width="1.5"/>
+  <rect x="31" y="50" width="18" height="5" rx="2" fill="#90a4ae" stroke="white" stroke-width="1.5"/>
+
+  <!-- Tower shaft above deck -->
+  <rect x="37.5" y="22" width="5" height="29" rx="1.5" fill="#e0e0e0" stroke="white" stroke-width="1.5"/>
+
+  <!-- Colored light bands on tower shaft -->
+  <rect x="37.5" y="26" width="5" height="2.5" rx="0.5" fill="#2196f3" stroke="none">
+    <animate attributeName="opacity" values="1;0.4;1" dur="1.8s" repeatCount="indefinite"/>
+  </rect>
+  <rect x="37.5" y="30.5" width="5" height="2.5" rx="0.5" fill="#f44336" stroke="none">
+    <animate attributeName="opacity" values="0.4;1;0.4" dur="1.8s" repeatCount="indefinite"/>
+  </rect>
+  <rect x="37.5" y="35" width="5" height="2.5" rx="0.5" fill="#4caf50" stroke="none">
+    <animate attributeName="opacity" values="1;0.4;1" dur="2.2s" repeatCount="indefinite"/>
+  </rect>
+  <rect x="37.5" y="39.5" width="5" height="2.5" rx="0.5" fill="#ff9800" stroke="none">
+    <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/>
+  </rect>
+
+  <!-- Small observation ring mid-tower -->
+  <ellipse cx="40" cy="44" rx="7" ry="2.5" fill="#607d8b" stroke="white" stroke-width="1"/>
+
+  <!-- Top antenna -->
+  <line x1="40" y1="10" x2="40" y2="22" stroke="#9e9e9e" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="40" cy="9" r="2" fill="#f44336" stroke="white" stroke-width="1">
+    <animate attributeName="opacity" values="1;0.2;1" dur="1.2s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- Stars/sparkles around tower for night ambience -->
+  <circle cx="18" cy="20" r="1.2" fill="#fffde7">
+    <animate attributeName="opacity" values="0;1;0" dur="2.5s" begin="0s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="62" cy="16" r="1" fill="#fffde7">
+    <animate attributeName="opacity" values="0;1;0" dur="2s" begin="0.8s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="65" cy="32" r="1.2" fill="#fffde7">
+    <animate attributeName="opacity" values="0;1;0" dur="3s" begin="1.5s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="15" cy="38" r="1" fill="#fffde7">
+    <animate attributeName="opacity" values="0;1;0" dur="2.8s" begin="0.4s" repeatCount="indefinite"/>
+  </circle>
+
+</svg>

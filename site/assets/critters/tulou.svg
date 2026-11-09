@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+<!-- Ground shadow -->
+<ellipse cx="40" cy="74" rx="28" ry="5" fill="#00000033" stroke="none"/>
+
+<!-- Main circular wall body -->
+<path d="M14,62 Q14,30 40,22 Q66,30 66,62 Z" fill="#c8a060" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+
+<!-- Outer arc wall top edge -->
+<ellipse cx="40" cy="62" rx="26" ry="5" fill="#b8905a" stroke="white" stroke-width="1.5"/>
+
+<!-- Layer lines (floors) -->
+<line x1="15" y1="50" x2="65" y2="50" stroke="#a07840" stroke-width="1"/>
+<line x1="17" y1="38" x2="63" y2="38" stroke="#a07840" stroke-width="1"/>
+<line x1="21" y1="28" x2="59" y2="28" stroke="#a07840" stroke-width="1"/>
+
+<!-- Windows floor 1 (bottom) -->
+<rect x="20" y="53" width="5" height="6" rx="1" fill="#3a2010" stroke="white" stroke-width="0.8"/>
+<rect x="31" y="53" width="5" height="6" rx="1" fill="#3a2010" stroke="white" stroke-width="0.8"/>
+<rect x="44" y="53" width="5" height="6" rx="1" fill="#3a2010" stroke="white" stroke-width="0.8"/>
+<rect x="55" y="53" width="5" height="6" rx="1" fill="#3a2010" stroke="white" stroke-width="0.8"/>
+
+<!-- Windows floor 2 (middle) -->
+<rect x="22" y="41" width="5" height="6" rx="1" fill="#3a2010" stroke="white" stroke-width="0.8"/>
+<rect x="33" y="41" width="5" height="6" rx="1" fill="#3a2010" stroke="white" stroke-width="0.8"/>
+<rect x="42" y="41" width="5" height="6" rx="1" fill="#3a2010" stroke="white" stroke-width="0.8"/>
+<rect x="53" y="41" width="5" height="6" rx="1" fill="#3a2010" stroke="white" stroke-width="0.8"/>
+
+<!-- Windows floor 3 (upper) -->
+<rect x="25" y="30" width="4" height="5" rx="1" fill="#3a2010" stroke="white" stroke-width="0.8"/>
+<rect x="35" y="30" width="4" height="5" rx="1" fill="#3a2010" stroke="white" stroke-width="0.8"/>
+<rect x="41" y="30" width="4" height="5" rx="1" fill="#3a2010" stroke="white" stroke-width="0.8"/>
+<rect x="51" y="30" width="4" height="5" rx="1" fill="#3a2010" stroke="white" stroke-width="0.8"/>
+
+<!-- Roof top curve with grey tiles -->
+<path d="M21,28 Q40,16 59,28 L57,26 Q40,14 23,26 Z" fill="#888888" stroke="white" stroke-width="1.2"/>
+<ellipse cx="40" cy="20" rx="19" ry="4" fill="#999999" stroke="white" stroke-width="1.2"/>
+<!-- Roof ridge details -->
+<line x1="25" y1="24" x2="27" y2="28" stroke="#666" stroke-width="0.8"/>
+<line x1="32" y1="20" x2="32" y2="24" stroke="#666" stroke-width="0.8"/>
+<line x1="40" y1="17" x2="40" y2="21" stroke="#666" stroke-width="0.8"/>
+<line x1="48" y1="20" x2="48" y2="24" stroke="#666" stroke-width="0.8"/>
+<line x1="55" y1="24" x2="53" y2="28" stroke="#666" stroke-width="0.8"/>
+
+<!-- Gate/Door opening -->
+<rect x="34" y="56" width="12" height="11" rx="1" fill="#3a2010" stroke="white" stroke-width="1.2"/>
+<!-- Door arch -->
+<path d="M34,60 Q40,54 46,60" fill="none" stroke="white" stroke-width="1"/>
+
+<!-- Left lantern -->
+<g id="lanternL">
+  <line x1="26" y1="50" x2="26" y2="54" stroke="#888" stroke-width="1"/>
+  <ellipse cx="26" cy="57" rx="3.5" ry="5" fill="#e03030" stroke="white" stroke-width="1"/>
+  <line x1="23" y1="55" x2="29" y2="55" stroke="#ffcc00" stroke-width="0.8"/>
+  <line x1="23" y1="57" x2="29" y2="57" stroke="#ffcc00" stroke-width="0.8"/>
+  <line x1="23" y1="59" x2="29" y2="59" stroke="#ffcc00" stroke-width="0.8"/>
+  <ellipse cx="26" cy="62" rx="2" ry="1" fill="#c02020" stroke="white" stroke-width="0.8"/>
+  <line x1="26" y1="63" x2="26" y2="65" stroke="#ffcc00" stroke-width="1"/>
+  <animateTransform attributeName="transform" type="rotate" values="-5,26,54;5,26,54;-5,26,54" dur="3s" repeatCount="indefinite"/>
+</g>
+
+<!-- Right lantern -->
+<g id="lanternR">
+  <line x1="54" y1="50" x2="54" y2="54" stroke="#888" stroke-width="1"/>
+  <ellipse cx="54" cy="57" rx="3.5" ry="5" fill="#e03030" stroke="white" stroke-width="1"/>
+  <line x1="51" y1="55" x2="57" y2="55" stroke="#ffcc00" stroke-width="0.8"/>
+  <line x1="51" y1="57" x2="57" y2="57" stroke="#ffcc00" stroke-width="0.8"/>
+  <line x1="51" y1="59" x2="57" y2="59" stroke="#ffcc00" stroke-width="0.8"/>
+  <ellipse cx="54" cy="62" rx="2" ry="1" fill="#c02020" stroke="white" stroke-width="0.8"/>
+  <line x1="54" y1="63" x2="54" y2="65" stroke="#ffcc00" stroke-width="1"/>
+  <animateTransform attributeName="transform" type="rotate" values="5,54,54;-5,54,54;5,54,54" dur="3s" repeatCount="indefinite"/>
+</g>
+</svg>

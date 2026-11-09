@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+<!-- Ground -->
+<ellipse cx="40" cy="68" rx="30" ry="7" fill="#5a9e3a" stroke="white" stroke-width="1.5"/>
+
+<!-- Main dome body -->
+<ellipse cx="40" cy="52" rx="26" ry="14" fill="#f5f0e8" stroke="white" stroke-width="1.5"/>
+
+<!-- Decorative band - orange/blue traditional pattern -->
+<path d="M14 52 Q14 60 40 63 Q66 60 66 52" fill="#e07820" stroke="white" stroke-width="1"/>
+<!-- Blue pattern dots on band -->
+<circle cx="25" cy="57" r="2" fill="#2a7abf" stroke="white" stroke-width="0.8"/>
+<circle cx="33" cy="58.5" r="2" fill="#2a7abf" stroke="white" stroke-width="0.8"/>
+<circle cx="41" cy="59" r="2" fill="#2a7abf" stroke="white" stroke-width="0.8"/>
+<circle cx="49" cy="58.5" r="2" fill="#2a7abf" stroke="white" stroke-width="0.8"/>
+<circle cx="57" cy="57" r="2" fill="#2a7abf" stroke="white" stroke-width="0.8"/>
+
+<!-- Upper dome -->
+<ellipse cx="40" cy="47" rx="20" ry="10" fill="#f5f0e8" stroke="white" stroke-width="1.5"/>
+
+<!-- Dome top cap / skylight ring -->
+<ellipse cx="40" cy="38" rx="8" ry="4" fill="#ddd0b8" stroke="white" stroke-width="1.2"/>
+<!-- Skylight center -->
+<ellipse cx="40" cy="38" rx="4" ry="2" fill="#a0b8d0" stroke="white" stroke-width="1"/>
+
+<!-- Vertical ribs on dome -->
+<path d="M40 37 L40 52" stroke="#c8b89a" stroke-width="0.8" fill="none"/>
+<path d="M32 39 L28 52" stroke="#c8b89a" stroke-width="0.8" fill="none"/>
+<path d="M48 39 L52 52" stroke="#c8b89a" stroke-width="0.8" fill="none"/>
+
+<!-- Door frame -->
+<rect x="35" y="51" width="10" height="12" rx="1" fill="#c0392b" stroke="white" stroke-width="1.2"/>
+<!-- Door panel lines -->
+<line x1="40" y1="51" x2="40" y2="63" stroke="#a03020" stroke-width="0.8"/>
+<line x1="35" y1="57" x2="45" y2="57" stroke="#a03020" stroke-width="0.8"/>
+
+<!-- Campfire group (right side) -->
+<!-- Fire logs -->
+<line x1="61" y1="65" x2="67" y2="63" stroke="#8B4513" stroke-width="2" stroke-linecap="round"/>
+<line x1="64" y1="65" x2="70" y2="63" stroke="#8B4513" stroke-width="2" stroke-linecap="round"/>
+
+<!-- Fire outer flame -->
+<g transform-origin="65 62">
+  <path d="M62 65 Q61 61 63 59 Q64 63 65 60 Q66 57 67 59 Q69 61 68 65 Z" fill="#e8a020" stroke="none">
+    <animateTransform attributeName="transform" type="scale" values="1 1;1.08 1.12;0.95 1.05;1.05 1.08;1 1" dur="0.8s" repeatCount="indefinite" additive="sum" from="0 0" to="0 0"/>
+    <animate attributeName="opacity" values="1;0.85;1;0.9;1" dur="0.8s" repeatCount="indefinite"/>
+  </path>
+  <!-- Fire inner flame -->
+  <path d="M63 65 Q62.5 62 64 60.5 Q65 63 66 61 Q66.5 63 66 65 Z" fill="#f5d020" stroke="none">
+    <animateTransform attributeName="transform" type="scale" values="1 1;0.95 1.1;1.05 0.95;1 1.08;1 1" dur="0.6s" repeatCount="indefinite" additive="sum" from="0 0" to="0 0"/>
+  </path>
+</g>
+</svg>

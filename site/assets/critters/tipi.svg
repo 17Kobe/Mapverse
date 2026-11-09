@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+<!-- Ground shadow -->
+<ellipse cx="40" cy="74" rx="22" ry="5" fill="#5a8a3a" stroke="white" stroke-width="1.5"/>
+
+<!-- Campfire base logs -->
+<ellipse cx="40" cy="70" rx="7" ry="2.5" fill="#8B4513" stroke="white" stroke-width="1"/>
+
+<!-- Campfire flames - animated -->
+<g>
+  <!-- Main flame -->
+  <polygon points="40,57 36,70 44,70" fill="#FF8C00" stroke="white" stroke-width="0.5">
+    <animate attributeName="points" 
+      values="40,57 36,70 44,70; 39,55 35,70 44,70; 41,56 36,70 45,70; 40,57 36,70 44,70"
+      dur="0.8s" repeatCount="indefinite"/>
+    <animate attributeName="fill" values="#FF8C00;#FFD700;#FF4500;#FF8C00" dur="0.8s" repeatCount="indefinite"/>
+  </polygon>
+  <!-- Left small flame -->
+  <polygon points="37,60 34,70 40,70" fill="#FFD700" stroke="none">
+    <animate attributeName="points"
+      values="37,60 34,70 40,70; 36,58 33,70 40,70; 38,61 34,70 41,70; 37,60 34,70 40,70"
+      dur="0.6s" repeatCount="indefinite"/>
+    <animate attributeName="fill" values="#FFD700;#FF8C00;#FFD700" dur="0.6s" repeatCount="indefinite"/>
+  </polygon>
+  <!-- Right small flame -->
+  <polygon points="43,61 40,70 46,70" fill="#FF6600" stroke="none">
+    <animate attributeName="points"
+      values="43,61 40,70 46,70; 44,59 40,70 47,70; 42,62 39,70 45,70; 43,61 40,70 46,70"
+      dur="0.7s" repeatCount="indefinite"/>
+  </polygon>
+</g>
+
+<!-- Tipi main body -->
+<polygon points="40,8 18,68 62,68" fill="#c8a870" stroke="white" stroke-width="1.5"/>
+
+<!-- Tipi vertical stripe decorations -->
+<line x1="33" y1="20" x2="24" y2="68" stroke="#7a5c2a" stroke-width="1.2"/>
+<line x1="37" y1="12" x2="32" y2="68" stroke="#7a5c2a" stroke-width="1.2"/>
+<line x1="43" y1="12" x2="48" y2="68" stroke="#7a5c2a" stroke-width="1.2"/>
+<line x1="47" y1="20" x2="56" y2="68" stroke="#7a5c2a" stroke-width="1.2"/>
+
+<!-- Tipi geometric pattern band (middle) -->
+<g fill="#7a5c2a">
+  <!-- Diamond shapes around the middle -->
+  <polygon points="35,42 37,38 39,42 37,46"/>
+  <polygon points="40,40 42,36 44,40 42,44"/>
+  <polygon points="45,42 47,38 49,42 47,46"/>
+  <!-- Dots -->
+  <circle cx="37" cy="52" r="1.5"/>
+  <circle cx="40" cy="50" r="1.5"/>
+  <circle cx="43" cy="52" r="1.5"/>
+</g>
+
+<!-- Tipi entrance (dark triangle at bottom) -->
+<polygon points="40,68 36,68 38,60" fill="#5a3a1a"/>
+<polygon points="40,68 44,68 42,60" fill="#5a3a1a"/>
+
+<!-- Top wooden poles extending out -->
+<line x1="40" y1="8" x2="34" y2="2" stroke="#7a5c2a" stroke-width="1.5" stroke-linecap="round"/>
+<line x1="40" y1="8" x2="40" y2="1" stroke="#7a5c2a" stroke-width="1.5" stroke-linecap="round"/>
+<line x1="40" y1="8" x2="46" y2="2" stroke="#7a5c2a" stroke-width="1.5" stroke-linecap="round"/>
+<line x1="40" y1="8" x2="37" y2="1" stroke="#8B6914" stroke-width="1" stroke-linecap="round"/>
+<line x1="40" y1="8" x2="43" y2="1" stroke="#8B6914" stroke-width="1" stroke-linecap="round"/>
+
+<!-- Smoke puffs - animated -->
+<!-- Smoke 1 (left) -->
+<ellipse cx="37" cy="10" rx="3" ry="2" fill="white" fill-opacity="0.7">
+  <animateTransform attributeName="transform" type="translate"
+    values="0,0; -2,-8; -3,-16"
+    dur="3s" repeatCount="indefinite"/>
+  <animate attributeName="fill-opacity" values="0.7;0.4;0" dur="3s" repeatCount="indefinite"/>
+  <animate attributeName="rx" values="3;4;5" dur="3s" repeatCount="indefinite"/>
+</ellipse>
+
+<!-- Smoke 2 (center) -->
+<ellipse cx="40" cy="8" rx="2.5" ry="1.8" fill="white" fill-opacity="0.75">
+  <animateTransform attributeName="transform" type="translate"
+    values="0,0; 0,-8; 0,-16"
+    dur="3s" begin="1s" repeatCount="indefinite"/>
+  <animate attributeName="fill-opacity" values="0.75;0.45;0" dur="3s" begin="1s" repeatCount="indefinite"/>
+  <animate attributeName="rx" values="2.5;3.5;5" dur="3s" begin="1s" repeatCount="indefinite"/>
+</ellipse>
+
+<!-- Smoke 3 (right) -->
+<ellipse cx="43" cy="10" rx="3" ry="2" fill="white" fill-opacity="0.65">
+  <animateTransform attributeName="transform" type="translate"
+    values="0,0; 2,-8; 3,-16"
+    dur="3s" begin="2s" repeatCount="indefinite"/>
+  <animate attributeName="fill-opacity" values="0.65;0.35;0" dur="3s" begin="2s" repeatCount="indefinite"/>
+  <animate attributeName="rx" values="3;4.5;6" dur="3s" begin="2s" repeatCount="indefinite"/>
+</ellipse>
+</svg>

@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+<!-- Great Blue Hole -->
+<!-- Outer coral reef ring -->
+<ellipse cx="40" cy="40" rx="36" ry="36" fill="#40c8a0" stroke="white" stroke-width="1.2"/>
+<!-- Reef ring inner cutout -->
+<ellipse cx="40" cy="40" rx="28" ry="28" fill="#1a9e8a" stroke="white" stroke-width="1.0"/>
+<!-- Deep blue water -->
+<ellipse cx="40" cy="40" rx="24" ry="24" fill="#1a4a9a" stroke="white" stroke-width="1.0"/>
+<!-- Deeper blue -->
+<ellipse cx="40" cy="40" rx="18" ry="18" fill="#0d2f7a" stroke="white" stroke-width="0.8"/>
+<!-- Even deeper -->
+<ellipse cx="40" cy="40" rx="13" ry="13" fill="#071d5a" stroke="white" stroke-width="0.8"/>
+<!-- Deepest center -->
+<ellipse cx="40" cy="40" rx="8" ry="8" fill="#0a2060" stroke="white" stroke-width="0.8"/>
+<!-- Darkest core -->
+<ellipse cx="40" cy="40" rx="4" ry="4" fill="#050f30" stroke="none"/>
+
+<!-- Light shimmer animation on water surface -->
+<ellipse cx="34" cy="36" rx="3" ry="1.5" fill="white" opacity="0.0">
+  <animate attributeName="opacity" values="0;0.25;0" dur="3s" repeatCount="indefinite" begin="0s"/>
+</ellipse>
+<ellipse cx="46" cy="44" rx="2.5" ry="1.2" fill="white" opacity="0.0">
+  <animate attributeName="opacity" values="0;0.2;0" dur="3.5s" repeatCount="indefinite" begin="1.2s"/>
+</ellipse>
+<ellipse cx="40" cy="33" rx="2" ry="1" fill="white" opacity="0.0">
+  <animate attributeName="opacity" values="0;0.22;0" dur="2.8s" repeatCount="indefinite" begin="0.7s"/>
+</ellipse>
+
+<!-- Small island/reef outcrops around the hole -->
+<!-- Top-left islet -->
+<ellipse cx="12" cy="15" rx="5" ry="3" fill="#3aaa72" stroke="white" stroke-width="1.0"/>
+<ellipse cx="12" cy="15" rx="3" ry="1.8" fill="#2d8a5a" stroke="none"/>
+
+<!-- Top-right islet -->
+<ellipse cx="64" cy="13" rx="4.5" ry="2.5" fill="#3aaa72" stroke="white" stroke-width="1.0"/>
+<ellipse cx="64" cy="13" rx="2.8" ry="1.5" fill="#2d8a5a" stroke="none"/>
+
+<!-- Bottom-right islet -->
+<ellipse cx="68" cy="62" rx="5" ry="2.8" fill="#3aaa72" stroke="white" stroke-width="1.0"/>
+<ellipse cx="68" cy="62" rx="3" ry="1.6" fill="#2d8a5a" stroke="none"/>
+
+<!-- Bottom-left islet -->
+<ellipse cx="11" cy="60" rx="4" ry="2.4" fill="#3aaa72" stroke="white" stroke-width="1.0"/>
+<ellipse cx="11" cy="60" rx="2.5" ry="1.4" fill="#2d8a5a" stroke="none"/>
+
+<!-- Small coral details on reef ring -->
+<circle cx="40" cy="12.5" r="1.2" fill="#ff8c60" stroke="white" stroke-width="0.6"/>
+<circle cx="56" cy="18" r="1" fill="#ff6b6b" stroke="white" stroke-width="0.6"/>
+<circle cx="24" cy="18" r="1" fill="#ff8c60" stroke="white" stroke-width="0.6"/>
+<circle cx="65" cy="38" r="1.2" fill="#ffb347" stroke="white" stroke-width="0.6"/>
+<circle cx="15" cy="42" r="1" fill="#ff6b6b" stroke="white" stroke-width="0.6"/>
+<circle cx="40" cy="67" r="1.2" fill="#ff8c60" stroke="white" stroke-width="0.6"/>
+
+<!-- Ocean surrounding fill at corners (subtle) -->
+<ellipse cx="40" cy="40" rx="36" ry="36" fill="none" stroke="#2ad4b0" stroke-width="0.5" opacity="0.5"/>
+
+</svg>

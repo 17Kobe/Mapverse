@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+
+  <!-- Ground shadow -->
+  <ellipse cx="40" cy="74" rx="28" ry="4" fill="#00000033"/>
+
+  <!-- Stone base / gatehouse foundation -->
+  <rect x="10" y="52" width="60" height="18" rx="2" fill="#8a8a8a" stroke="white" stroke-width="1.5"/>
+  <!-- Arch gate opening -->
+  <path d="M32 70 L32 60 Q40 54 48 60 L48 70 Z" fill="#222233" stroke="white" stroke-width="1.2"/>
+  <!-- Stone texture lines on base -->
+  <line x1="11" y1="58" x2="79" y2="58" stroke="white" stroke-width="0.5" opacity="0.5"/>
+  <line x1="11" y1="64" x2="79" y2="64" stroke="white" stroke-width="0.5" opacity="0.5"/>
+  <!-- Vertical stone joints -->
+  <line x1="20" y1="52" x2="20" y2="70" stroke="white" stroke-width="0.5" opacity="0.4"/>
+  <line x1="30" y1="52" x2="30" y2="70" stroke="white" stroke-width="0.5" opacity="0.4"/>
+  <line x1="50" y1="52" x2="50" y2="70" stroke="white" stroke-width="0.5" opacity="0.4"/>
+  <line x1="60" y1="52" x2="60" y2="70" stroke="white" stroke-width="0.5" opacity="0.4"/>
+
+  <!-- Lower gate tower body (red wood) -->
+  <rect x="16" y="36" width="48" height="18" rx="1" fill="#c03020" stroke="white" stroke-width="1.5"/>
+  <!-- Windows / decorative panels on lower tower -->
+  <rect x="20" y="40" width="8" height="10" rx="1" fill="#8b1a0a" stroke="white" stroke-width="0.8"/>
+  <rect x="52" y="40" width="8" height="10" rx="1" fill="#8b1a0a" stroke="white" stroke-width="0.8"/>
+  <!-- Center door on tower -->
+  <rect x="34" y="40" width="12" height="14" rx="1" fill="#5a0f0f" stroke="white" stroke-width="0.8"/>
+
+  <!-- Lower roof (1st level) -->
+  <g>
+    <!-- Roof base band -->
+    <rect x="14" y="32" width="52" height="5" rx="1" fill="#3a5a3a" stroke="white" stroke-width="1.2"/>
+    <!-- Main roof shape -->
+    <path d="M8 34 Q40 22 72 34" fill="#3a5a3a" stroke="white" stroke-width="1.5"/>
+    <!-- Roof ridgeline highlight -->
+    <path d="M8 34 Q40 22 72 34" fill="none" stroke="#5a8a5a" stroke-width="0.8"/>
+    <!-- Upswept eave tips -->
+    <path d="M8 34 Q5 33 6 30" fill="none" stroke="white" stroke-width="1.2"/>
+    <path d="M72 34 Q75 33 74 30" fill="none" stroke="white" stroke-width="1.2"/>
+    <!-- Roof tile lines -->
+    <path d="M16 33 Q40 23 64 33" fill="none" stroke="white" stroke-width="0.4" opacity="0.5"/>
+    <path d="M20 33.5 Q40 24 60 33.5" fill="none" stroke="white" stroke-width="0.4" opacity="0.5"/>
+    <!-- Ridge ornament (chiwen) -->
+    <circle cx="8" cy="30" r="2" fill="#c8a020" stroke="white" stroke-width="0.8"/>
+    <circle cx="72" cy="30" r="2" fill="#c8a020" stroke="white" stroke-width="0.8"/>
+    <!-- Center ridge cap -->
+    <rect x="36" y="20" width="8" height="3" rx="1" fill="#c8a020" stroke="white" stroke-width="0.8"/>
+  </g>
+
+  <!-- Upper gate tower body (narrower, red) -->
+  <rect x="22" y="22" width="36" height="12" rx="1" fill="#c03020" stroke="white" stroke-width="1.5"/>
+  <!-- Upper tower windows -->
+  <rect x="26" y="25" width="6" height="7" rx="1" fill="#8b1a0a" stroke="white" stroke-width="0.8"/>
+  <rect x="48" y="25" width="6" height="7" rx="1" fill="#8b1a0a" stroke="white" stroke-width="0.8"/>
+  <rect x="37" y="25" width="6" height="7" rx="1" fill="#8b1a0a" stroke="white" stroke-width="0.8"/>
+
+  <!-- Upper roof (2nd level) -->
+  <g>
+    <!-- Roof base band upper -->
+    <rect x="19" y="18" width="42" height="5" rx="1" fill="#3a5a3a" stroke="white" stroke-width="1.2"/>
+    <!-- Main upper roof -->
+    <path d="M14 20 Q40 8 66 20" fill="#3a5a3a" stroke="white" stroke-width="1.5"/>
+    <!-- Upswept eave tips upper -->
+    <path d="M14 20 Q11 19 12 16" fill="none" stroke="white" stroke-width="1.2"/>
+    <path d="M66 20 Q69 19 68 16" fill="none" stroke="white" stroke-width="1.2"/>
+    <!-- Roof tile lines upper -->
+    <path d="M22 19 Q40 10 58 19" fill="none" stroke="white" stroke-width="0.4" opacity="0.5"/>
+    <!-- Ridge ornaments upper -->
+    <circle cx="14" cy="16" r="1.8" fill="#c8a020" stroke="white" stroke-width="0.8"/>
+    <circle cx="66" cy="16" r="1.8" fill="#c8a020" stroke="white" stroke-width="0.8"/>
+    <!-- Center finial -->
+    <rect x="37" y="6" width="6" height="3" rx="1" fill="#c8a020" stroke="white" stroke-width="0.8"/>
+    <polygon points="40,4 38,7 42,7" fill="#c8a020" stroke="white" stroke-width="0.8"/>
+  </g>
+
+  <!-- Decorative red lanterns hanging from lower eave -->
+  <g>
+    <!-- Left lantern -->
+    <line x1="18" y1="32" x2="18" y2="37" stroke="#c8a020" stroke-width="0.8"/>
+    <ellipse cx="18" cy="39" rx="2.5" ry="3.5" fill="#e02020" stroke="white" stroke-width="0.8">
+      <animate attributeName="rx" values="2.5;2.8;2.5" dur="2s" repeatCount="indefinite"/>
+      <animate attributeName="ry" values="3.5;3.2;3.5" dur="2s" repeatCount="indefinite"/>
+    </ellipse>
+    <line x1="18" y1="42.5" x2="18" y2="44.5" stroke="#c8a020" stroke-width="0.8"/>
+    <!-- Right lantern -->
+    <line x1="62" y1="32" x2="62" y2="37" stroke="#c8a020" stroke-width="0.8"/>
+    <ellipse cx="62" cy="39" rx="2.5" ry="3.5" fill="#e02020" stroke="white" stroke-width="0.8">
+      <animate attributeName="rx" values="2.5;2.8;2.5" dur="2.3s" repeatCount="indefinite"/>
+      <animate attributeName="ry" values="3.5;3.2;3.5" dur="2.3s" repeatCount="indefinite"/>
+    </ellipse>
+    <line x1="62" y1="42.5" x2="62" y2="44.5" stroke="#c8a020" stroke-width="0.8"/>
+  </g>
+
+  <!-- Animated birds flying around -->
+  <g>
+    <g transform="translate(5, 12)">
+      <animateTransform attributeName="transform" type="translate"
+        values="5,12; 15,9; 25,12; 35,10; 45,13"
+        dur="6s" repeatCount="indefinite"/>
+      <path d="M0,0 Q2,-2 4,0 Q2,-1 0,0" fill="none" stroke="#555" stroke-width="0.8"/>
+    </g>
+    <g transform="translate(55, 10)">
+      <animateTransform attributeName="transform" type="translate"
+        values="55,10; 65,8; 70,11; 75,9"
+        dur="5s" repeatCount="indefinite"/>
+      <path d="M0,0 Q2,-2 4,0 Q2,-1 0,0" fill="none" stroke="#555" stroke-width="0.8"/>
+    </g>
+  </g>
+
+</svg>
