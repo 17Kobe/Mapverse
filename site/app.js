@@ -2123,19 +2123,22 @@
     const WEATHER_T = { t: 0, cv: null, ctx: null }; // 獨立時間，不和極光共用
 
     // 預繪 sprite：煙火粒子（小圓點漸層）、雨滴（垂直線）
-    let _fwSprite = null, _rainSprite = null, _cloudSprite = null;
-    function fwSprite() {
-        if (_fwSprite) return _fwSprite;
+    let _fwSprites = new Map(), _rainSprite = null, _cloudSprite = null;
+    // 依顏色快取 sprite（白核心 → 該顏色 → 透明），避免 shadowBlur 的昂貴即時運算
+    function fwSprite(col) {
+        const key = col.join(',');
+        if (_fwSprites.has(key)) return _fwSprites.get(key);
         const c = document.createElement('canvas');
-        c.width = 12; c.height = 12;
+        c.width = 16; c.height = 16;
         const g = c.getContext('2d'),
-            gr = g.createRadialGradient(6, 6, 0, 6, 6, 6);
-        gr.addColorStop(0,   'rgba(255,255,200,1)');
-        gr.addColorStop(0.3, 'rgba(255,200,80,.8)');
-        gr.addColorStop(1,   'rgba(255,100,40,0)');
+            gr = g.createRadialGradient(8, 8, 0, 8, 8, 8);
+        gr.addColorStop(0,   'rgba(255,255,255,1)');
+        gr.addColorStop(0.35, `rgba(${col[0]},${col[1]},${col[2]},1)`);
+        gr.addColorStop(1,   `rgba(${col[0]},${col[1]},${col[2]},0)`);
         g.fillStyle = gr;
-        g.fillRect(0, 0, 12, 12);
-        return (_fwSprite = c);
+        g.fillRect(0, 0, 16, 16);
+        _fwSprites.set(key, c);
+        return c;
     }
     function rainSprite() {
         if (_rainSprite) return _rainSprite;
@@ -2169,45 +2172,56 @@
         return (_cloudSprite = c);
     }
 
-    // 煙火：每個國家維護一組粒子（最多 N_PT 顆），定時補發射
-    const FW_STATE = new Map(); // s → { pts[], nextShot }
-    const N_PT = 18, FW_COLORS = [
-        [255,220,60],[255,100,50],[100,220,255],[180,100,255],[80,255,160],
+    // 煙火：每個國家同時只有一顆煙火（發射 → 升空 → 爆炸成多層同心圓 → 一起變大 → 閃爍淡出）
+    const FW_STATE = new Map(); // s → shell 物件
+    // 3 層同心圓：[該層點數, 半徑比例(相對最外層), 展開延遲(秒)]
+    const FW_RINGS = [
+        { n: 10, scale: 1.0,  delay: 0 },    // 最外層：先展開
+        { n: 14, scale: 0.65, delay: 0.12 }, // 中層：稍晚一點
+        { n: 8,  scale: 0.3,  delay: 0.22 }, // 內層：最晚展開，製造層次感
     ];
-    function fwCountry(key) {
-        if (!FW_STATE.has(key)) FW_STATE.set(key, { pts: [], nextShot: 0 });
-        return FW_STATE.get(key);
-    }
-    function stepFwPts(fw, T, dt, cx, cy) {
-        // 更新現有粒子
-        fw.pts = fw.pts.filter(p => p.life > 0);
-        fw.pts.forEach(p => {
-            p.x  += p.vx * dt;
-            p.y  += p.vy * dt;
-            p.vy += 28 * dt;   // 重力
-            p.vx *= Math.pow(0.88, dt * 60);
-            p.life -= dt;
-        });
-        // 定時新增爆炸
-        if (T >= fw.nextShot) {
-            fw.nextShot = T + 0.7 + Math.random() * 0.8;
-            const col = FW_COLORS[Math.floor(Math.random() * FW_COLORS.length)];
-            const bx = cx + (Math.random() - 0.5) * 40,
-                  by = cy - 30 - Math.random() * 40;
-            for (let i = 0; i < N_PT; i++) {
-                const a = (i / N_PT) * Math.PI * 2,
-                      v = 18 + Math.random() * 22;
-                fw.pts.push({
-                    x: bx, y: by,
-                    vx: Math.cos(a) * v, vy: Math.sin(a) * v - 8,
-                    life: 0.9 + Math.random() * 0.5,
-                    maxLife: 1.4,
-                    col,
-                    r: 2.5 + Math.random() * 2,
-                });
+    const FW_COLORS = [
+        [255,255,180], [255,80,80], [80,200,255],
+        [255,120,255], [80,255,160], [255,160,40],
+    ];
+    // 推進單一國家的煙火狀態機；cx,cy 是旗幟上方的天空座標
+    function stepFw(key, T, dt, cx, cy) {
+        let sh = FW_STATE.get(key);
+        if (!sh || sh.phase === 'done') {
+            // 還沒輪到發射：等待隨機間隔
+            if (sh && sh.phase === 'done' && T < sh.nextAt) return sh;
+            sh = {
+                phase: 'launch',
+                x: cx + (Math.random() - 0.5) * 20,
+                y: cy + 55,          // 從旗幟上方一點的位置發射
+                ty: cy - 35 - Math.random() * 25, // 爆炸高度
+                t: 0,
+                col: FW_COLORS[Math.floor(Math.random() * FW_COLORS.length)],
+                // 每層每點各自的閃爍相位
+                seeds: FW_RINGS.map(ring => Array.from({ length: ring.n }, () => Math.random() * 10)),
+            };
+            FW_STATE.set(key, sh);
+        }
+        sh.t += dt;
+        if (sh.phase === 'launch') {
+            const dur = 0.5;
+            const p = Math.min(1, sh.t / dur);
+            sh.y = (cy + 55) + (sh.ty - (cy + 55)) * (1 - Math.pow(1 - p, 2)); // ease-out 上升
+            if (p >= 1) { sh.phase = 'burst'; sh.t = 0; sh.bx = sh.x; sh.by = sh.ty; }
+        } else if (sh.phase === 'burst') {
+            const dur = 1.7;
+            const p = Math.min(1, sh.t / dur);
+            sh.maxRadius = 42 * (1 - Math.pow(1 - p, 2)); // 最外層半徑上限（ease-out）
+            // 亮度曲線：前 70% 維持全亮，最後 30% 才淡出（避免整段都在變暗，看起來忽隱忽現）
+            sh.fade = p < 0.7 ? 1 : Math.max(0, 1 - (p - 0.7) / 0.3);
+            if (sh.t >= dur) {
+                sh.phase = 'done';
+                sh.nextAt = T + 0.8 + Math.random() * 1.0; // 下一顆的間隔
             }
         }
+        return sh;
     }
+
 
     function drawWeather(dt) {
         // 畫在 aurora canvas（和北極光同層），烏雲位置推到旗幟正上方空中，不蓋住旗幟文字
@@ -2217,7 +2231,7 @@
         WEATHER_T.t += dt;
         const T = WEATHER_T.t, S = 0.4;
         const ctx = A.ctx;
-        const spr = fwSprite(), rspr = rainSprite(), cspr = cloudSprite();
+        const rspr = rainSprite(), cspr = cloudSprite();
 
         for (const m of state.maps) {
             if (!m.pin) continue;
@@ -2225,28 +2239,64 @@
             if (!q || Math.abs(q.pct) < BIG_MOVE) { FW_STATE.delete(m.s); continue; }
             const [sx, sy] = screenXY(m.lon, m.lat);
             if (sx < -100 || sx > W + 100 || sy < -80 || sy > H + 80) continue;
-            // 推到更高的上空（lat+5），讓烏雲懸在旗幟正上方而非重疊在上面
-            const skyY = screenXY(m.lon, m.lat + 5)[1];
+            // 用固定螢幕像素位移到旗幟上方（不用經緯度位移：高倍率縮放時緯度位移換算的像素會爆增，
+            // 導致放大到單一國家時煙火被推到畫面外完全看不到）
+            const skyY = sy - 70;
 
             if (q.pct >= BIG_MOVE) {
-                // ── 煙火 ──
-                const fw = fwCountry(m.s);
-                stepFwPts(fw, T, dt, sx, skyY);
-                ctx.globalCompositeOperation = 'lighter';
-                for (const p of fw.pts) {
-                    const life01 = p.life / p.maxLife;
-                    const alpha = Math.pow(life01, 0.5) * 0.9;
-                    ctx.globalAlpha = alpha;
-                    const sz = p.r * life01 * 1.5;
-                    ctx.drawImage(spr, 0, 0, 12, 12,
-                        (p.x - sz) * S, (p.y - sz) * S, sz * 2 * S, sz * 2 * S);
-                    if (life01 > 0.3) {
-                        ctx.globalAlpha = alpha * 0.35;
-                        ctx.drawImage(spr, 0, 0, 12, 12,
-                            (p.x - p.vx * 0.04 - sz * 0.6) * S,
-                            (p.y - p.vy * 0.04 - sz * 0.6) * S,
-                            sz * 1.2 * S, sz * 1.2 * S);
+                // ── 煙火：發射上升 → 爆炸成圓球 → 慢慢變大 → 閃爍淡出 ──
+                const sh = stepFw(m.s, T, dt, sx, skyY);
+                if (sh.phase === 'launch') {
+                    // 上升軌跡：淡淡深色暈 + 亮點 + 拖尾
+                    const spr = fwSprite(sh.col);
+                    ctx.globalCompositeOperation = 'source-over';
+                    ctx.globalAlpha = 0.15;
+                    ctx.beginPath();
+                    ctx.arc(sh.x * S, sh.y * S, 4 * S, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(15,15,35,1)';
+                    ctx.fill();
+                    ctx.globalCompositeOperation = 'lighter';
+                    ctx.globalAlpha = 1;
+                    ctx.drawImage(spr, 0, 0, 16, 16, (sh.x - 3.5) * S, (sh.y - 3.5) * S, 7 * S, 7 * S);
+                    ctx.globalAlpha = 0.5;
+                    ctx.drawImage(spr, 0, 0, 16, 16, (sh.x - 2) * S, (sh.y + 5) * S, 4 * S, 10 * S);
+                } else if (sh.phase === 'burst') {
+                    // 多層同心圓：每層各自延遲展開、各自半徑比例，點與點之間用各自相位閃爍
+                    const spr = fwSprite(sh.col);
+                    for (let ri = 0; ri < FW_RINGS.length; ri++) {
+                        const ring = FW_RINGS[ri];
+                        // 這層的展開進度：扣掉延遲後才開始跑（延遲前半徑是 0，不畫）
+                        const localT = Math.max(0, sh.t - ring.delay);
+                        if (localT <= 0) continue;
+                        const radius = sh.maxRadius * ring.scale;
+                        if (radius <= 0) continue;
+                        for (let i = 0; i < ring.n; i++) {
+                            const a = (i / ring.n) * Math.PI * 2 + ri * 0.3; // 每層錯開角度，不會疊成放射線
+                            const px = sh.bx + Math.cos(a) * radius,
+                                  py = sh.by + Math.sin(a) * radius * 0.85; // 略扁一點更像煙火
+                            const twinkle = 0.5 + 0.5 * Math.sin(T * 9 + sh.seeds[ri][i]);
+                            const sz = 4.2 + twinkle * 2.2;
+                            // 先畫淡淡的深色暈墊底，只是微微提升對比，不是實心黑圈
+                            ctx.globalCompositeOperation = 'source-over';
+                            ctx.globalAlpha = sh.fade * 0.18;
+                            ctx.beginPath();
+                            ctx.arc(px * S, py * S, sz * 0.85 * S, 0, Math.PI * 2);
+                            ctx.fillStyle = 'rgba(15,15,35,1)';
+                            ctx.fill();
+                            // 再疊上亮點（lighter，發光感）
+                            ctx.globalCompositeOperation = 'lighter';
+                            const alpha = sh.fade * (0.7 + twinkle * 0.3); // 基礎亮度拉高
+                            ctx.globalAlpha = alpha;
+                            ctx.drawImage(spr, 0, 0, 16, 16,
+                                (px - sz) * S, (py - sz) * S, sz * 2 * S, sz * 2 * S);
+                        }
                     }
+                    // 中心核心光球（讓整體看起來更圓更飽滿）
+                    ctx.globalCompositeOperation = 'lighter';
+                    ctx.globalAlpha = sh.fade * 0.6;
+                    const coreSz = sh.maxRadius * 0.28;
+                    ctx.drawImage(spr, 0, 0, 16, 16,
+                        (sh.bx - coreSz) * S, (sh.by - coreSz) * S, coreSz * 2 * S, coreSz * 2 * S);
                 }
                 ctx.globalCompositeOperation = 'source-over';
             } else {
