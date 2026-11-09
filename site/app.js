@@ -1150,6 +1150,7 @@
         terrainRaf = 0;
         if (tctx && W) {
             Terrain.draw(tctx, state.t, S0, W, H, dpr);
+            drawSeason();
             drawNight();
         }
     }
@@ -5028,6 +5029,107 @@
         tctx.globalCompositeOperation = 'source-over';
         // 同步更新 SVG 星星位置與亮度
         layoutStars();
+    }
+
+    /* ---------- 四季：依現實月份 + 緯度，讓溫帶 / 副極地呈現對應的季節色調 ---------- */
+    // 只跟緯度和日期有關（跟經度無關），所以比晨昏線更省：只需一條直條貼圖，拉伸貼滿畫面寬度，
+    // 不用像夜色一樣逐份世界貼多次。一天只重算一次。
+    let _seasonCache = null,
+        _seasonDay = -1;
+    function seasonParams() {
+        const now = new Date();
+        const dayOfYear = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 864e5);
+        if (_seasonCache && dayOfYear === _seasonDay) return _seasonCache;
+        // 北半球「季節相位」0~1：0 = 冬至（約 12/21）、0.25 = 春分、0.5 = 夏至、0.75 = 秋分
+        const northPhase = (((dayOfYear - 355) / 365) % 1 + 1) % 1;
+        _seasonCache = { northPhase };
+        _seasonDay = dayOfYear;
+        return _seasonCache;
+    }
+    // 四個季節的色調與強度：冬季霜白、春天嫩綠、夏天不染色（維持原本翠綠底色）、秋天橘棕；依相位循環內插
+    const SEASON_ANCHORS = [
+        { p: 0, col: [235, 240, 248], a: 0.5 }, // 冬：霜白冷色
+        { p: 0.25, col: [195, 235, 140], a: 0.24 }, // 春：嫩綠
+        { p: 0.5, col: [255, 255, 255], a: 0 }, // 夏：不染色
+        { p: 0.75, col: [222, 128, 45], a: 0.48 }, // 秋：橘棕
+    ];
+    function seasonColorAt(phase) {
+        const n = SEASON_ANCHORS.length;
+        for (let i = 0; i < n; i++) {
+            const a = SEASON_ANCHORS[i],
+                b = SEASON_ANCHORS[(i + 1) % n],
+                bp = i === n - 1 ? 1 : b.p;
+            if (phase >= a.p && phase <= bp) {
+                const t = bp === a.p ? 0 : (phase - a.p) / (bp - a.p);
+                return {
+                    r: a.col[0] + (b.col[0] - a.col[0]) * t,
+                    g: a.col[1] + (b.col[1] - a.col[1]) * t,
+                    b: a.col[2] + (b.col[2] - a.col[2]) * t,
+                    a: a.a + (b.a - a.a) * t,
+                };
+            }
+        }
+        return { r: 255, g: 255, b: 255, a: 0 };
+    }
+    // 給定緯度（度），回傳現在這裡的季節色調；熱帶（|lat|<10）幾乎無季節，兩極常年冰雪不再疊色，
+    // 南北半球的相位相差半年（北冬南夏）。溫帶（約 30°起）就要有感，所以權重在 lat=30 左右已經接近滿強度
+    function seasonTintAt(lat) {
+        const { northPhase } = seasonParams();
+        const latAbs = Math.abs(lat);
+        const phase = lat >= 0 ? northPhase : (northPhase + 0.5) % 1;
+        const c = seasonColorAt(phase);
+        const forestW =
+            Math.max(0, Math.min(1, (latAbs - 10) / 20)) * Math.max(0, Math.min(1, (82 - latAbs) / 10));
+        return { r: c.r, g: c.g, b: c.b, a: c.a * forestW };
+    }
+    const SEASON_TH = 256; // 直條貼圖的縱向解析度
+    let seasonTex = null,
+        seasonTexDay = -1;
+    function seasonTexture() {
+        seasonParams();
+        if (seasonTex && seasonTexDay === _seasonDay) return seasonTex;
+        if (!seasonTex) {
+            seasonTex = document.createElement('canvas');
+            seasonTex.width = 2; // 寬度跟經度無關，拉伸貼滿畫面即可
+            seasonTex.height = SEASON_TH;
+        }
+        const g = seasonTex.getContext('2d');
+        const img = g.createImageData(2, SEASON_TH);
+        const d = img.data;
+        for (let r = 0; r < SEASON_TH; r++) {
+            const y = NIGHT_Y0 + ((r + 0.5) / SEASON_TH) * (NIGHT_Y1 - NIGHT_Y0);
+            const latRad = Math.atan(Math.sinh(Math.PI * (1 - 2 * y))),
+                latDeg = (latRad * 180) / Math.PI;
+            const tint = seasonTintAt(latDeg);
+            for (let c = 0; c < 2; c++) {
+                const o = (r * 2 + c) * 4;
+                d[o] = Math.round(tint.r);
+                d[o + 1] = Math.round(tint.g);
+                d[o + 2] = Math.round(tint.b);
+                d[o + 3] = Math.round(tint.a * 255);
+            }
+        }
+        g.putImageData(img, 0, 0);
+        seasonTexDay = _seasonDay;
+        return seasonTex;
+    }
+    function drawSeason() {
+        if (!tctx || !W) return;
+        const tex = seasonTexture(),
+            t = state.t,
+            ww = S0 * t.k,
+            y = t.y + NIGHT_Y0 * ww,
+            h = (NIGHT_Y1 - NIGHT_Y0) * ww;
+        const dy0 = Math.max(0, y),
+            dy1 = Math.min(H, y + h);
+        if (dy1 <= dy0) return;
+        const sy0 = ((dy0 - y) / h) * SEASON_TH,
+            sy1 = ((dy1 - y) / h) * SEASON_TH;
+        tctx.setTransform(1, 0, 0, 1, 0, 0);
+        tctx.globalAlpha = 1;
+        tctx.globalCompositeOperation = 'source-over';
+        // 和經度無關：不用像夜色一樣逐份世界貼多次，一次拉伸貼滿可視寬度即可
+        tctx.drawImage(tex, 0, sy0, 2, sy1 - sy0, 0, dy0 * dpr, W * dpr, (dy1 - dy0) * dpr);
     }
 
     /* ---------- 夜空星星（SVG，固定在地理座標上） ---------- */
