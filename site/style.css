@@ -78,6 +78,8 @@ button{font:inherit;color:inherit;cursor:pointer}
   display:grid;place-items:center;width:50px;height:28px;border-radius:999px;font-size:18px;line-height:1;
   font-family:var(--emoji);border:1px solid transparent;transition:background .15s,box-shadow .15s;
 }
+.rl .ri svg{width:20px;height:20px;display:block;color:var(--gold-l)}
+.rl.on .ri svg{color:var(--ink)}
 .rl .rt{font-size:11px;font-weight:700;white-space:nowrap;opacity:.85;text-shadow:0 1px 1px rgba(0,0,0,.6)}
 .rl:hover .ri{background:rgba(255,231,163,.12);border-color:rgba(212,172,87,.45)}
 .rl.on .ri{
