@@ -283,49 +283,68 @@ button{font:inherit;color:inherit;cursor:pointer}
 .dz-it .dz-i{width:22px;font-size:18px;line-height:1;text-align:center;font-family:var(--emoji)}
 .dz-it:hover{background:rgba(255,231,163,.1)}
 
-/* ---------- 骰子（原「上帝之手」的位置，右下角）：真正的 CSS 3D 立方體 ---------- */
+/* ---------- 骰子（原「上帝之手」的位置，右下角）：真正的 CSS 3D 立方體，大富翁風格 ---------- */
 #diceBtn{
-  position:absolute;z-index:5;right:10px;bottom:20px;display:flex;align-items:center;justify-content:center;
-  width:46px;height:46px;border-radius:14px;cursor:pointer;padding:0;
-  box-shadow:0 0 0 1px var(--outline),inset 0 0 0 1px rgba(255,240,190,.2),0 4px 12px rgba(0,0,0,.45);
-  transition:filter .15s;
+  position:absolute;z-index:5;right:14px;bottom:24px;display:flex;align-items:center;justify-content:center;
+  width:92px;height:92px;border:none;background:none;cursor:pointer;padding:0;
+  filter:drop-shadow(0 6px 10px rgba(0,0,0,.45));
+  transition:filter .15s,transform .15s;
 }
-#diceBtn:hover{filter:brightness(1.15)}
-#diceBtn:active{filter:brightness(.92)}
-/* 外層場景：負責翻滾時的上下跳動（固定的 keyframes），裡面的立方體負責轉到正確點數朝前（JS 動態設定角度） */
-#diceScene{width:26px;height:26px;position:relative;perspective:160px}
+#diceBtn:hover{transform:translateY(-2px) scale(1.04)}
+#diceBtn:active{transform:translateY(1px) scale(.97)}
+#diceBtn:focus{outline:none}
+#diceBtn:focus-visible{outline:none;box-shadow:0 0 0 3px var(--gold-l)}
+/* 外層場景：只負責建立 3D 透視與翻滾時的上下跳動，不能加 overflow:hidden 裁切——
+   旋轉中立方體的透視輪廓會比正面的 68x68 方框大（斜角時投影寬度可能到 90 幾 px），
+   固定視窗硬裁會把轉到一半的立方體邊角切掉，看起來像方塊卡住，所以圓角完全交給每個面自己處理 */
+#diceScene{width:68px;height:68px;position:relative;perspective:280px}
 #diceBtn.rolling #diceScene{animation:diceHop .9s cubic-bezier(.3,1.6,.4,1)}
 @keyframes diceHop{
   0%  {transform:translateY(0)}
-  28% {transform:translateY(-15px)}
-  55% {transform:translateY(-19px)}
+  28% {transform:translateY(-100px)}
+  55% {transform:translateY(-125px)}
   100%{transform:translateY(0)}
 }
 #diceCube{
-  width:26px;height:26px;position:relative;transform-style:preserve-3d;
+  width:68px;height:68px;position:relative;transform-style:preserve-3d;
   transition:transform .9s cubic-bezier(.3,1.6,.4,1);
 }
-/* 6 個面：固定點數（對面相加為 7），旋轉立方體本身來決定哪一面朝前，不是切換圖案 */
+/* 6 個面：固定點數（對面相加為 7），旋轉立方體本身來決定哪一面朝前，不是切換圖案。
+   每面是 fw（只負責旋轉，不放 translateZ）包兩層：fback（幾乎不圓角、精確貼合立方體邊界）+ df（真正可見的圓角面，同樣精確貼合）。
+   兩層大小精確等於立方體邊長（68px），不重疊也不留縫；df 的圓角是唯一的圓角來源，旋轉中每一面都保有自己的圓角，
+   fback 和 df 的 translateZ 差距拉大一點（28 / 34，6px 差距而不是 3px）降低 z-fighting 閃爍的風險 */
+.fw{position:absolute;inset:0;transform-style:preserve-3d}
+.fw.f1{transform:rotateX(0deg) rotateY(0deg)}
+.fw.f2{transform:rotateX(-90deg)}
+.fw.f3{transform:rotateY(90deg)}
+.fw.f4{transform:rotateY(-90deg)}
+.fw.f5{transform:rotateX(90deg)}
+.fw.f6{transform:rotateY(180deg)}
+.fback{
+  position:absolute;inset:0;width:68px;height:68px;border-radius:4px;
+  background:#ece6d6;transform:translateZ(28px);backface-visibility:hidden;
+}
 .df{
-  position:absolute;inset:0;width:26px;height:26px;border-radius:5px;
-  background:linear-gradient(180deg,#fffef8 0%,#e8e2d0 100%);
-  border:1.3px solid #fff;box-shadow:inset 0 0 2px rgba(0,0,0,.18);
+  position:absolute;inset:0;width:68px;height:68px;border-radius:18px;transform:translateZ(34px);
+  background:
+    radial-gradient(circle at 28% 22%, rgba(255,255,255,.95) 0%, rgba(255,255,255,0) 45%),
+    linear-gradient(160deg,#ffffff 0%,#f3f0e6 55%,#e2ddc8 100%);
+  border:2px solid #fff;box-shadow:inset 0 0 3px rgba(0,0,0,.15),inset 0 -4px 6px rgba(120,110,80,.18);
   backface-visibility:hidden;
 }
-.f1{transform:translateZ(13px)}
-.f2{transform:rotateX(-90deg) translateZ(13px)}
-.f3{transform:rotateY(90deg) translateZ(13px)}
-.f4{transform:rotateY(-90deg) translateZ(13px)}
-.f5{transform:rotateX(90deg) translateZ(13px)}
-.f6{transform:rotateY(180deg) translateZ(13px)}
-.pip{position:absolute;width:3.6px;height:3.6px;border-radius:50%;background:#2a2a38;box-shadow:inset 0 0 1px rgba(0,0,0,.4)}
-.p-c {left:50%;top:50%;margin:-1.8px 0 0 -1.8px}
-.p-tl{left:21%;top:21%}
-.p-tr{right:21%;top:21%}
-.p-bl{left:21%;bottom:21%}
-.p-br{right:21%;bottom:21%}
-.p-ml{left:21%;top:50%;margin-top:-1.8px}
-.p-mr{right:21%;top:50%;margin-top:-1.8px}
+.pip{
+  position:absolute;width:10px;height:10px;border-radius:50%;background:#262632;
+  box-shadow:inset 0 1px 1.5px rgba(0,0,0,.5),inset 0 -0.5px 0 rgba(255,255,255,.08);
+}
+/* 大富翁骰子習慣：1 點和 4 點是紅色 */
+.f1 .pip,.f4 .pip{background:#d4262a;box-shadow:inset 0 1px 1.5px rgba(0,0,0,.35),inset 0 -0.5px 0 rgba(255,180,180,.25)}
+.p-c {left:50%;top:50%;margin:-5px 0 0 -5px}
+.p-tl{left:20%;top:20%}
+.p-tr{right:20%;top:20%}
+.p-bl{left:20%;bottom:20%}
+.p-br{right:20%;bottom:20%}
+.p-ml{left:20%;top:50%;margin-top:-5px}
+.p-mr{right:20%;top:50%;margin-top:-5px}
 @media (prefers-reduced-motion:reduce){#diceBtn.rolling #diceScene{animation:none}#diceCube{transition:none}}
 .dz-it:focus-visible{outline:2px solid var(--gold-l);outline-offset:-2px}
 .dz-it.on{background:linear-gradient(180deg,#43669b 0%,#27436f 100%);border-color:var(--gold-l);color:var(--gold-l)}
