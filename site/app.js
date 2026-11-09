@@ -19,7 +19,7 @@
         commodity: { icon: '🛢️', label: $t('商品'), mlon: -35 }, // 大西洋：左邊看到一點美洲、右邊看到一點歐洲
         fx: { icon: '💵', label: $t('匯率'), mlon: GLOBAL_LON },
         // img：篩選按鈕改用 3D 圖片（系統 emoji 的長條圖太陽春）；icon 仍用在文字場合
-        econ: { icon: '�', img: 'assets/icons/bar_chart.png', label: $t('經濟數據'), mlon: GLOBAL_LON },
+        econ: { icon: '📊', img: 'assets/icons/bar_chart.png', label: $t('全球市場'), mlon: GLOBAL_LON },
         bond: { icon: '🏦', label: $t('債券'), mlon: GLOBAL_LON },
         rate: { icon: '🏛️', label: $t('利率'), mlon: GLOBAL_LON },
         geo: { icon: '⚔️', label: $t('地緣'), mlon: 85 },
@@ -36,9 +36,9 @@
         {
             k: 'stocks',
             icon: '📈',
-            label: $t('總體經濟'),
-            title: $t('總體經濟'),
-            desc: $t('指數、商品、匯率、債券、利率、經濟數據、地緣'),
+            label: $t('全球市場'),
+            title: $t('全球市場'),
+            desc: $t('指數、商品、匯率、債券、利率、全球市場、地緣'),
             ready: true,
         },
         { k: 'picks', icon: '📊', label: $t('個股'), title: $t('個股'), desc: $t('個股報價、走勢與公司資訊') },
@@ -3826,13 +3826,15 @@
             k = t.k;
         // 手機版全球檢視：只列十大市值國家（markets.json 的 g10），旗幟排成左右兩欄
         const top10 = !desktopMQ.matches && state.activeRegion === 'all';
-        // 商品 / 債券 / 利率 / 匯率 / 地緣 / 經濟數據篩選：股票動物與旗幟都收起來，只顯示主題卡片
+        // 商品 / 債券 / 利率 / 匯率 / 地緣 / 全球市場篩選：股票動物與旗幟都收起來，只顯示主題卡片
         const topicMode = !!TOPICS[state.activeRegion];
+        // 遊戲模式：只顯示地圖和動畫，隱藏所有卡片（和 topicMode 一起讓旗幟消失，但不顯示主題卡片）
+        const gameMode = state.activeRegion === 'game';
         const size = Math.max(19, Math.min(30, 14 + k * 2.8)); // 動物身高（px），放大地圖時略微變大
         const rects = [],
             vis = new Map();
         // pin 的國家優先放動物，這樣不會因為鄰近的動物（例如新加坡和馬來西亞）重疊就被隱藏
-        const arr = topicMode ? [] : state.maps.slice().sort((a, b) => !!b.pin - !!a.pin || b.w - a.w);
+        const arr = (topicMode || gameMode) ? [] : state.maps.slice().sort((a, b) => !!b.pin - !!a.pin || b.w - a.w);
 
         // 第一輪：放動物，太擠的先隱藏（放大後會出現）
         for (const m of arr) {
@@ -5045,17 +5047,16 @@
 
     function buildChips() {
         const defs = [
-            ['all', '🌍', $t('全球')],
-            ['asia', '⛩️', $t('亞太')],
-            ['americas', '🗽', $t('美洲')],
-            ['europe', '🏰', $t('歐洲')],
-            ['mea', '🐪', $t('中東非洲')],
+            ['game',     '🎮', $t('遊戲')],       // 遊戲：只顯示地圖，隱藏所有卡片
+            ['all',      '🌍', $t('全球')],
+            ['americas', '🗽', $t('美洲')],        // 美洲移到亞太左邊
+            ['asia',     '⛩️', $t('亞太')],
+            ['europe',   '🏰', $t('歐洲')],
+            ['mea',      '🐪', $t('中東非洲')],
         ];
         const chip = (k, i, t) =>
             `<button class="chip gbtn" data-k="${k}" aria-pressed="false"><span class="ci">${i}</span>${t}</button>`;
         const nav = $('#chips');
-        // 左邊是股票的區域，右邊（分隔線之後）是商品 / 債券 / 利率 / 匯率 / 地緣 / 經濟數據；都是單選
-        // 手機版分兩列（股票一列、主題一列），桌機版仍是同一列（見 style.css 的 .crow）
         nav.innerHTML =
             `<div class="crow">${defs.map((d) => chip(...d)).join('')}</div>` +
             '<span class="csep" aria-hidden="true"></span>' +
