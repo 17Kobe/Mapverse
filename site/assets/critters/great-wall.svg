@@ -1,43 +1,26 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
-  <!-- 山脊：3個起伏綠丘，在畫面下半 -->
-  <ellipse cx="12" cy="62" rx="16" ry="10" fill="#6a9040" stroke="white" stroke-width="1.2"/>
-  <ellipse cx="38" cy="55" rx="20" ry="11" fill="#5a8030" stroke="white" stroke-width="1.2"/>
-  <ellipse cx="66" cy="48" rx="18" ry="10" fill="#6a9040" stroke="white" stroke-width="1.2"/>
+  <!-- 山脊：起伏綠丘，襯托城牆 -->
+  <ellipse cx="14" cy="64" rx="18" ry="11" fill="#6a9048" stroke="white" stroke-width="1.5"/>
+  <ellipse cx="40" cy="58" rx="20" ry="12" fill="#5a8238" stroke="white" stroke-width="1.5"/>
+  <ellipse cx="66" cy="50" rx="18" ry="11" fill="#6a9048" stroke="white" stroke-width="1.5"/>
 
-  <!-- 城牆主體：從左下 (4,58) 斜到右上 (76,18) -->
-  <polygon points="4,58 76,18 76,27 4,67"
-    fill="#c8b080" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+  <!-- 城牆主體：單一清爽的斜向色帶，從左下到右上 -->
+  <path d="M4,60 L74,16 L74,26 L4,70 Z"
+    fill="#d4bb86" stroke="white" stroke-width="2.2" stroke-linejoin="round"/>
+  <!-- 城牆下緣陰影，增加厚度感 -->
+  <path d="M4,66 L74,22 L74,26 L4,70 Z" fill="#a98f5c"/>
 
-  <!-- 城牆暗面下緣 -->
-  <polygon points="4,64 76,24 76,27 4,67"
-    fill="#9a8050" stroke="none"/>
+  <!-- 城垛：鋸齒狀連續齒形（比分散的小矩形更乾淨好認） -->
+  <path d="M6,53 L10,50.5 L10,47 L14,47 L14,50.5 L18,48 L18,44.5 L22,44.5 L22,48
+           L45,33 L45,29.5 L49,29.5 L49,33 L53,30.5 L53,27 L57,27 L57,30.5 L61,28 L61,24.5 L65,24.5 L65,28 L70,25"
+    fill="none" stroke="#b89a60" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
 
-  <!-- 城垛（左段，垂直小矩形沿斜線排列） -->
-  <rect x="5"  y="49" width="5" height="7" rx="1" fill="#a09060" stroke="white" stroke-width="1.2"/>
-  <rect x="14" y="45" width="5" height="7" rx="1" fill="#a09060" stroke="white" stroke-width="1.2"/>
-  <rect x="23" y="41" width="5" height="6" rx="1" fill="#a09060" stroke="white" stroke-width="1.2"/>
-
-  <!-- 烽火台 1（左中） -->
-  <rect x="31" y="28" width="12" height="18" rx="1.5"
-    fill="#c8b080" stroke="white" stroke-width="2"/>
-  <!-- 烽火台1 城垛 -->
-  <rect x="31" y="23" width="3" height="6" rx="0.5" fill="#a09060" stroke="white" stroke-width="1.2"/>
-  <rect x="36" y="23" width="3" height="6" rx="0.5" fill="#a09060" stroke="white" stroke-width="1.2"/>
-  <rect x="41" y="23" width="3" height="6" rx="0.5" fill="#a09060" stroke="white" stroke-width="1.2"/>
-  <!-- 烽火台1 窗洞 -->
-  <rect x="35" y="34" width="4" height="5" rx="0.5" fill="#5a3a18" stroke="white" stroke-width="0.8"/>
-
-  <!-- 城垛（中段） -->
-  <rect x="47" y="30" width="4" height="6" rx="1" fill="#a09060" stroke="white" stroke-width="1.2"/>
-  <rect x="54" y="27" width="4" height="6" rx="1" fill="#a09060" stroke="white" stroke-width="1.2"/>
-
-  <!-- 烽火台 2（右中） -->
-  <rect x="60" y="13" width="11" height="16" rx="1.5"
-    fill="#c8b080" stroke="white" stroke-width="2"/>
-  <!-- 烽火台2 城垛 -->
-  <rect x="60" y="8"  width="3" height="6" rx="0.5" fill="#a09060" stroke="white" stroke-width="1.2"/>
-  <rect x="65" y="8"  width="3" height="6" rx="0.5" fill="#a09060" stroke="white" stroke-width="1.2"/>
-  <rect x="70" y="8"  width="3" height="6" rx="0.5" fill="#a09060" stroke="white" stroke-width="1.2"/>
-  <!-- 烽火台2 窗洞 -->
-  <rect x="64" y="19" width="4" height="5" rx="0.5" fill="#5a3a18" stroke="white" stroke-width="0.8"/>
+  <!-- 唯一的主烽火台（置中偏左，清楚好認） -->
+  <rect x="30" y="24" width="14" height="22" rx="1.5" fill="#d4bb86" stroke="white" stroke-width="2.2"/>
+  <!-- 烽火台城垛 -->
+  <rect x="30" y="18" width="3.5" height="6" fill="#b89a60" stroke="white" stroke-width="1"/>
+  <rect x="36" y="18" width="3.5" height="6" fill="#b89a60" stroke="white" stroke-width="1"/>
+  <rect x="41.5" y="18" width="3.5" height="6" fill="#b89a60" stroke="white" stroke-width="1"/>
+  <!-- 烽火台窗洞 -->
+  <rect x="34.5" y="33" width="5" height="7" rx="0.8" fill="#5a3f22" stroke="white" stroke-width="0.8"/>
 </svg>

@@ -33,9 +33,10 @@
 
         <main id="stage">
             <canvas id="terrain" aria-hidden="true"></canvas>
-            <canvas id="clouds" aria-hidden="true"></canvas>
             <canvas id="aurora" aria-hidden="true"></canvas>
             <svg id="map" role="img" aria-label="世界股市地圖" data-i18n-aria="世界股市地圖"></svg>
+            <!-- 雲在地圖最上層（國界、旗幟、動物都在雲下面），模擬從高空俯視的真實感 -->
+            <canvas id="clouds" aria-hidden="true"></canvas>
             <!-- 上帝視角的災難效果（disasters.js），疊在地圖上面、不擋滑鼠 -->
             <canvas id="fx" aria-hidden="true"></canvas>
             <div id="attrib">地形資料 © Mapzen/AWS Terrain Tiles · Esri, Maxar, Earthstar Geographics</div>
