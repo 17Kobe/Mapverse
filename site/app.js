@@ -1105,6 +1105,7 @@
         gCorp,
         gFolk,
         gMk,
+        gWeather, // 天氣效果（烏雲/煙火）：在動物上、旗幟下
         gBub,
         gLm,
         gGeo,
@@ -1287,6 +1288,8 @@
         if (window.GeoScenes) GeoScenes.step(dt, t);
         drawClouds(dt);
         drawAurora(dt);
+        drawBiolum(dt);
+        drawWeather(dt);
         if (!document.hidden) walkRaf = requestAnimationFrame(walkStep);
     }
     document.addEventListener('visibilitychange', () => {
@@ -2033,6 +2036,233 @@
         ctx.globalCompositeOperation = 'source-over';
     }
 
+    // 藍眼淚（生物螢光海）：在特定海岸夜晚顯示藍色波光，仿北極光架構，共用同一個 canvas
+    // 效能：24fps 節流、低解析度、放大太多（k>8）就不畫
+    const BIOLUM_SPOTS = [
+        // [中心經度, 中心緯度, 半徑度數, 方向角（光帶方向，0=水平）]
+        { lon: 119.9, lat: 26.2, r: 0.8  },  // 馬祖列島
+        { lon: 121.5, lat: 25.1, r: 0.5  },  // 台灣東北海岸
+        { lon: -65.4, lat: 18.1, r: 1.0  },  // 波多黎各 Vieques
+        { lon:  73.5, lat:  4.0, r: 1.2  },  // 馬爾地夫 Vaadhoo
+        { lon: 150.7, lat:-35.1, r: 0.9  },  // 澳洲 Jervis Bay
+    ];
+    let _biolumSprite = null;
+    function biolumSprite() {
+        if (_biolumSprite) return _biolumSprite;
+        const c = document.createElement('canvas');
+        c.width = 1; c.height = 64;
+        const g = c.getContext('2d'),
+            gr = g.createLinearGradient(0, 64, 0, 0);
+        gr.addColorStop(0,   'rgba(0,100,220,0)');
+        gr.addColorStop(0.1, 'rgba(20,160,255,.85)');
+        gr.addColorStop(0.35,'rgba(40,220,255,.55)');
+        gr.addColorStop(0.65,'rgba(60,180,255,.25)');
+        gr.addColorStop(1,   'rgba(100,220,255,0)');
+        g.fillStyle = gr;
+        g.fillRect(0, 0, 1, 64);
+        _biolumSprite = c;
+        return c;
+    }
+    function drawBiolum(dt) {
+        const A = AURORA; // 共用 canvas / ctx / acc / t
+        if (!A.cv || !W || !projection) return;
+        const fade0 = Math.max(0, Math.min(1, (9 - state.t.k) / 3)); // 放大太多就淡出
+        if (!fade0) return;
+        const ctx = A.ctx, S = 0.4, T = A.t;
+        const spr = biolumSprite();
+        ctx.globalCompositeOperation = 'lighter';
+        for (const sp of BIOLUM_SPOTS) {
+            const night = 1 - nightBrightAt(sp.lon, sp.lat);
+            if (night < 0.3) continue; // 白天跳過
+            const fade = fade0 * Math.max(0, (night - 0.3) / 0.7);
+            // 沿海岸線排 N 個發光點
+            const N = 28, r = sp.r;
+            for (let i = 0; i < N; i++) {
+                const a = (i / N) * Math.PI * 2;
+                const lon = sp.lon + Math.cos(a) * r * 1.8,
+                      lat = sp.lat + Math.sin(a) * r * 0.6;
+                const [x, y] = screenXY(lon, lat);
+                if (x < -80 || x > W + 80 || y < -80 || y > H + 80) continue;
+                // 波光：每個點高度隨時間 sin 波動
+                const wave = 0.45 + 0.35 * Math.sin(i * 0.65 + T * 2.2 + sp.lon * 0.1)
+                           + 0.2  * Math.sin(i * 1.3  - T * 1.5);
+                const hpx = Math.max(4, (screenXY(lon, lat + r * 0.5)[1] - y) * -1.2);
+                const env = Math.pow(Math.sin((Math.PI * i) / N), 0.5); // 淡入淡出
+                const colW = Math.max(2, hpx * 0.9);
+                ctx.globalAlpha = Math.max(0, fade * env * wave * 0.75);
+                ctx.drawImage(spr, 0, 0, 1, 64,
+                    (x - colW / 2) * S, (y - hpx * wave) * S,
+                    colW * S, hpx * wave * S);
+            }
+        }
+        ctx.globalAlpha = 1;
+        ctx.globalCompositeOperation = 'source-over';
+    }
+
+    // ── 煙火 & 烏雲效果 ───────────────────────────────────────────────────────
+    // 主要指數漲≥2%：上空放煙火；跌≥2%：上空出現烏雲+雨滴
+    // 使用 #fx canvas（在 SVG 之上），確保烏雲覆蓋船隻/動物
+    const WEATHER_T = { t: 0, cv: null, ctx: null }; // 獨立時間，不和極光共用
+
+    // 預繪 sprite：煙火粒子（小圓點漸層）、雨滴（垂直線）
+    let _fwSprite = null, _rainSprite = null, _cloudSprite = null;
+    function fwSprite() {
+        if (_fwSprite) return _fwSprite;
+        const c = document.createElement('canvas');
+        c.width = 12; c.height = 12;
+        const g = c.getContext('2d'),
+            gr = g.createRadialGradient(6, 6, 0, 6, 6, 6);
+        gr.addColorStop(0,   'rgba(255,255,200,1)');
+        gr.addColorStop(0.3, 'rgba(255,200,80,.8)');
+        gr.addColorStop(1,   'rgba(255,100,40,0)');
+        g.fillStyle = gr;
+        g.fillRect(0, 0, 12, 12);
+        return (_fwSprite = c);
+    }
+    function rainSprite() {
+        if (_rainSprite) return _rainSprite;
+        const c = document.createElement('canvas');
+        c.width = 2; c.height = 18;
+        const g = c.getContext('2d'),
+            gr = g.createLinearGradient(0, 0, 0, 18);
+        gr.addColorStop(0,   'rgba(120,160,220,0)');
+        gr.addColorStop(0.3, 'rgba(140,180,240,.7)');
+        gr.addColorStop(1,   'rgba(100,140,200,0)');
+        g.fillStyle = gr;
+        g.fillRect(0, 0, 2, 18);
+        return (_rainSprite = c);
+    }
+    function cloudSprite() {
+        if (_cloudSprite) return _cloudSprite;
+        const c = document.createElement('canvas');
+        c.width = 64; c.height = 40; // 高度從 32→40，更飽滿
+        const g = c.getContext('2d');
+        // 底層大橢圓（深灰，雲身主體）
+        g.fillStyle = 'rgba(50,50,72,.65)';
+        g.beginPath(); g.ellipse(32, 28, 28, 14, 0, 0, Math.PI * 2); g.fill();
+        // 頂部凸起（讓雲有立體感）
+        g.fillStyle = 'rgba(65,65,88,.7)';
+        g.beginPath(); g.ellipse(22, 20, 16, 13, 0, 0, Math.PI * 2); g.fill();
+        g.beginPath(); g.ellipse(38, 17, 15, 13, 0, 0, Math.PI * 2); g.fill();
+        g.beginPath(); g.ellipse(50, 22, 12, 10, 0, 0, Math.PI * 2); g.fill();
+        // 頂部亮邊（讓雲看起來有光感）
+        g.fillStyle = 'rgba(100,100,130,.3)';
+        g.beginPath(); g.ellipse(28, 17, 12, 8, 0, 0, Math.PI * 2); g.fill();
+        return (_cloudSprite = c);
+    }
+
+    // 煙火：每個國家維護一組粒子（最多 N_PT 顆），定時補發射
+    const FW_STATE = new Map(); // s → { pts[], nextShot }
+    const N_PT = 18, FW_COLORS = [
+        [255,220,60],[255,100,50],[100,220,255],[180,100,255],[80,255,160],
+    ];
+    function fwCountry(key) {
+        if (!FW_STATE.has(key)) FW_STATE.set(key, { pts: [], nextShot: 0 });
+        return FW_STATE.get(key);
+    }
+    function stepFwPts(fw, T, dt, cx, cy) {
+        // 更新現有粒子
+        fw.pts = fw.pts.filter(p => p.life > 0);
+        fw.pts.forEach(p => {
+            p.x  += p.vx * dt;
+            p.y  += p.vy * dt;
+            p.vy += 28 * dt;   // 重力
+            p.vx *= Math.pow(0.88, dt * 60);
+            p.life -= dt;
+        });
+        // 定時新增爆炸
+        if (T >= fw.nextShot) {
+            fw.nextShot = T + 0.7 + Math.random() * 0.8;
+            const col = FW_COLORS[Math.floor(Math.random() * FW_COLORS.length)];
+            const bx = cx + (Math.random() - 0.5) * 40,
+                  by = cy - 30 - Math.random() * 40;
+            for (let i = 0; i < N_PT; i++) {
+                const a = (i / N_PT) * Math.PI * 2,
+                      v = 18 + Math.random() * 22;
+                fw.pts.push({
+                    x: bx, y: by,
+                    vx: Math.cos(a) * v, vy: Math.sin(a) * v - 8,
+                    life: 0.9 + Math.random() * 0.5,
+                    maxLife: 1.4,
+                    col,
+                    r: 2.5 + Math.random() * 2,
+                });
+            }
+        }
+    }
+
+    function drawWeather(dt) {
+        // 畫在 aurora canvas（和北極光同層），烏雲位置推到旗幟正上方空中，不蓋住旗幟文字
+        const A = AURORA;
+        if (!A.cv || !W || !projection) return;
+        if (!state.maps || !state.maps.length) return;
+        WEATHER_T.t += dt;
+        const T = WEATHER_T.t, S = 0.4;
+        const ctx = A.ctx;
+        const spr = fwSprite(), rspr = rainSprite(), cspr = cloudSprite();
+
+        for (const m of state.maps) {
+            if (!m.pin) continue;
+            const q = state.quotes[m.s];
+            if (!q || Math.abs(q.pct) < BIG_MOVE) { FW_STATE.delete(m.s); continue; }
+            const [sx, sy] = screenXY(m.lon, m.lat);
+            if (sx < -100 || sx > W + 100 || sy < -80 || sy > H + 80) continue;
+            // 推到更高的上空（lat+5），讓烏雲懸在旗幟正上方而非重疊在上面
+            const skyY = screenXY(m.lon, m.lat + 5)[1];
+
+            if (q.pct >= BIG_MOVE) {
+                // ── 煙火 ──
+                const fw = fwCountry(m.s);
+                stepFwPts(fw, T, dt, sx, skyY);
+                ctx.globalCompositeOperation = 'lighter';
+                for (const p of fw.pts) {
+                    const life01 = p.life / p.maxLife;
+                    const alpha = Math.pow(life01, 0.5) * 0.9;
+                    ctx.globalAlpha = alpha;
+                    const sz = p.r * life01 * 1.5;
+                    ctx.drawImage(spr, 0, 0, 12, 12,
+                        (p.x - sz) * S, (p.y - sz) * S, sz * 2 * S, sz * 2 * S);
+                    if (life01 > 0.3) {
+                        ctx.globalAlpha = alpha * 0.35;
+                        ctx.drawImage(spr, 0, 0, 12, 12,
+                            (p.x - p.vx * 0.04 - sz * 0.6) * S,
+                            (p.y - p.vy * 0.04 - sz * 0.6) * S,
+                            sz * 1.2 * S, sz * 1.2 * S);
+                    }
+                }
+                ctx.globalCompositeOperation = 'source-over';
+            } else {
+                // ── 烏雲 + 雨滴（canvas sprite，和北極光同品質）──
+                const k = state.t.k;
+                const cloudW = Math.max(22, Math.min(58, 42 / Math.sqrt(Math.max(1, k * 0.7))));
+                const rainW  = cloudW * 0.92;
+                const CLOUD_H = 32;
+                ctx.globalCompositeOperation = 'source-over';
+                for (let ci = 0; ci < 3; ci++) {
+                    const cx2 = sx + (ci - 1) * cloudW * 0.55 + Math.sin(T * 0.2 + ci) * 3,
+                          cy2 = skyY + Math.cos(T * 0.18 + ci * 1.5) * 2.5;
+                    ctx.globalAlpha = 0.82;
+                    ctx.drawImage(cspr, 0, 0, 64, 40,
+                        (cx2 - cloudW / 2) * S, (cy2 - CLOUD_H / 2) * S,
+                        cloudW * S, CLOUD_H * S);
+                }
+                const N_RAIN = 20;
+                for (let ri = 0; ri < N_RAIN; ri++) {
+                    const phase = (ri / N_RAIN + T * 0.22 + ri * 0.11) % 1;
+                    const rx = sx + (ri / N_RAIN - 0.5) * rainW,
+                          ry = skyY + CLOUD_H / 2 + phase * 38;
+                    ctx.globalAlpha = Math.sin(phase * Math.PI) * 0.55;
+                    ctx.drawImage(rspr, 0, 0, 2, 18,
+                        (rx - 1) * S, ry * S, 2 * S, 18 * S);
+                }
+            }
+        }
+        ctx.globalAlpha = 1;
+        ctx.globalCompositeOperation = 'source-over';
+        // 清掉 gWeather 裡殘留的 SVG 元素
+        if (gWeather) gWeather.selectAll('*').remove();
+    }
+
     function buildSvg() {
         svg = d3.select('#map');
         const cv = $('#terrain');
@@ -2056,6 +2286,8 @@
         gLand = gZoom.selectAll('g.land');
         gLine = gZoom.selectAll('g.line');
         gEdge = gZoom.selectAll('g.edge');
+        // 地緣動畫場景（油輪、貨櫃船、無人機；geoscenes.js）：在裝飾動物之下，才不會壓在船上面
+        gGeo = svg.append('g').attr('class', 'geo-layer').style('pointer-events', 'none');
         gDecor = svg.append('g').attr('class', 'decor').style('pointer-events', 'none');
         // 夜空星星層（在 terrain canvas 上、動物下）
         gStars = svg.insert('g', '.decor').attr('class', 'stars').style('pointer-events', 'none');
@@ -2068,11 +2300,11 @@
         if (window.Corps && SHOW_CORP_BUILDINGS) Corps.build(gCorp.node(), { onPick: openCorp });
         // 原住民小人獨立一層，畫在公司建築上面：台灣縮小時整座島都是建築（小城市比島還大），小人才不會被蓋住看不見
         gFolk = svg.append('g').attr('class', 'folk-layer').style('pointer-events', 'none');
-        // 央行、白宮、地緣動畫圖示：不論篩選都留在地圖上，畫在動物下面
-        // 地緣動畫場景（油輪、貨櫃船、無人機；geoscenes.js）：任何篩選都顯示，畫在地標下面
-        gGeo = svg.append('g').attr('class', 'geo-layer').style('pointer-events', 'none');
+        // 央行、白宮等地標圖示
         gLm = svg.append('g').attr('class', 'landmarks');
         gMk = svg.append('g').attr('class', 'markers');
+        // 天氣效果（烏雲/煙火）：在動物上、旗幟下
+        gWeather = svg.append('g').attr('class', 'weather-layer').style('pointer-events', 'none');
         // 旗幟獨立一層畫在所有動物上方：不用再重排 DOM 節點（重排會讓 iOS Safari 的國旗圖片閃成空白）
         gBub = svg.append('g').attr('class', 'bubbles');
         // 商品 / 債券 / 利率 / 匯率 / 地緣 / 經濟數據的卡片
