@@ -282,7 +282,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .dz-it .dz-i{width:22px;font-size:18px;line-height:1;text-align:center;font-family:var(--emoji)}
 .dz-it:hover{background:rgba(255,231,163,.1)}
 
-/* ---------- 骰子（原「上帝之手」的位置，右下角）---------- */
+/* ---------- 骰子（原「上帝之手」的位置，右下角）：真正的 CSS 3D 立方體 ---------- */
 #diceBtn{
   position:absolute;z-index:5;right:10px;bottom:20px;display:flex;align-items:center;justify-content:center;
   width:46px;height:46px;border-radius:14px;cursor:pointer;padding:0;
@@ -291,16 +291,41 @@ button{font:inherit;color:inherit;cursor:pointer}
 }
 #diceBtn:hover{filter:brightness(1.15)}
 #diceBtn:active{filter:brightness(.92)}
-#diceBtn svg{transform-box:fill-box;transform-origin:center}
-#diceBtn.rolling svg{animation:diceRoll .9s cubic-bezier(.3,1.6,.4,1)}
-@keyframes diceRoll{
-  0%  {transform:translateY(0) rotate(0deg) scale(1)}
-  25% {transform:translateY(-34px) rotate(260deg) scale(1.08)}
-  50% {transform:translateY(-44px) rotate(520deg) scale(1.1)}
-  75% {transform:translateY(-14px) rotate(680deg) scale(1.03)}
-  100%{transform:translateY(0) rotate(720deg) scale(1)}
+/* 外層場景：負責翻滾時的上下跳動（固定的 keyframes），裡面的立方體負責轉到正確點數朝前（JS 動態設定角度） */
+#diceScene{width:26px;height:26px;position:relative;perspective:160px}
+#diceBtn.rolling #diceScene{animation:diceHop .9s cubic-bezier(.3,1.6,.4,1)}
+@keyframes diceHop{
+  0%  {transform:translateY(0)}
+  28% {transform:translateY(-15px)}
+  55% {transform:translateY(-19px)}
+  100%{transform:translateY(0)}
 }
-@media (prefers-reduced-motion:reduce){#diceBtn.rolling svg{animation:none}}
+#diceCube{
+  width:26px;height:26px;position:relative;transform-style:preserve-3d;
+  transition:transform .9s cubic-bezier(.3,1.6,.4,1);
+}
+/* 6 個面：固定點數（對面相加為 7），旋轉立方體本身來決定哪一面朝前，不是切換圖案 */
+.df{
+  position:absolute;inset:0;width:26px;height:26px;border-radius:5px;
+  background:linear-gradient(180deg,#fffef8 0%,#e8e2d0 100%);
+  border:1.3px solid #fff;box-shadow:inset 0 0 2px rgba(0,0,0,.18);
+  backface-visibility:hidden;
+}
+.f1{transform:translateZ(13px)}
+.f2{transform:rotateX(-90deg) translateZ(13px)}
+.f3{transform:rotateY(90deg) translateZ(13px)}
+.f4{transform:rotateY(-90deg) translateZ(13px)}
+.f5{transform:rotateX(90deg) translateZ(13px)}
+.f6{transform:rotateY(180deg) translateZ(13px)}
+.pip{position:absolute;width:3.6px;height:3.6px;border-radius:50%;background:#2a2a38;box-shadow:inset 0 0 1px rgba(0,0,0,.4)}
+.p-c {left:50%;top:50%;margin:-1.8px 0 0 -1.8px}
+.p-tl{left:21%;top:21%}
+.p-tr{right:21%;top:21%}
+.p-bl{left:21%;bottom:21%}
+.p-br{right:21%;bottom:21%}
+.p-ml{left:21%;top:50%;margin-top:-1.8px}
+.p-mr{right:21%;top:50%;margin-top:-1.8px}
+@media (prefers-reduced-motion:reduce){#diceBtn.rolling #diceScene{animation:none}#diceCube{transition:none}}
 .dz-it:focus-visible{outline:2px solid var(--gold-l);outline-offset:-2px}
 .dz-it.on{background:linear-gradient(180deg,#43669b 0%,#27436f 100%);border-color:var(--gold-l);color:var(--gold-l)}
 #map{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block;user-select:none;-webkit-user-select:none}

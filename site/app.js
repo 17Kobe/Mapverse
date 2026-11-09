@@ -2597,42 +2597,43 @@
         });
     }
 
-    // 骰子的 6 種點數排列（每個點是 [x, y]，座標配合 viewBox 0 0 40 40 的 pip 半徑 3）
-    const DICE_FACES = {
-        1: [[20, 20]],
-        2: [[12, 12], [28, 28]],
-        3: [[12, 12], [20, 20], [28, 28]],
-        4: [[12, 12], [28, 12], [12, 28], [28, 28]],
-        5: [[12, 12], [28, 12], [20, 20], [12, 28], [28, 28]],
-        6: [[12, 11], [28, 11], [12, 20], [28, 20], [12, 29], [28, 29]],
+    // 3D 骰子：6 面是固定點數（對面相加為 7，1-6/3-4/2-5），用 CSS 轉動立方體本身讓對應那面朝前，
+    // 不是切換圖案；DICE_SHOW_ROT 是「要讓第 n 面朝前」所需的 [rotateX, rotateY] 角度（配合 index.html 裡 .f1~.f6 的固定位置）
+    const DICE_SHOW_ROT = {
+        1: [0, 0],
+        2: [90, 0],
+        3: [0, -90],
+        4: [0, 90],
+        5: [-90, 0],
+        6: [0, 180],
     };
-    function renderDiceFace(n) {
-        const g = $('#dicePips');
-        if (!g) return;
-        g.innerHTML = (DICE_FACES[n] || DICE_FACES[1])
-            .map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3"></circle>`)
-            .join('');
-    }
     let diceRolling = false,
-        diceCycleTimer = 0;
+        diceSpinX = -18, // 目前累積角度，靜止時維持一個小傾角比較好看
+        diceSpinY = 28;
+    // 把目前角度往「前方」（正向增加）轉到 target（0~359 內的目標角度），外加 extraSpins 整圈，回傳新的累積角度
+    function spinTo(current, target, extraSpins) {
+        const forward = (((target % 360) - (current % 360)) % 360 + 360) % 360;
+        return current + forward + 360 * extraSpins;
+    }
     function initDice() {
-        const btn = $('#diceBtn');
-        if (!btn) return;
-        renderDiceFace(1);
+        const btn = $('#diceBtn'),
+            cube = $('#diceCube');
+        if (!btn || !cube) return;
+        cube.style.transform = `rotateX(${diceSpinX}deg) rotateY(${diceSpinY}deg)`;
         btn.addEventListener('click', () => {
             if (diceRolling) return;
             diceRolling = true;
             btn.classList.add('rolling');
-            // 翻滾過程中快速換點數，製造「正在轉動」的感覺
             const reduce = !state.anim || reduceMotion.matches;
-            if (!reduce) {
-                diceCycleTimer = setInterval(() => renderDiceFace(1 + Math.floor(Math.random() * 6)), 80);
-            }
+            const result = 1 + Math.floor(Math.random() * 6);
+            const [showX, showY] = DICE_SHOW_ROT[result];
+            const spins = reduce ? 0 : 2 + Math.floor(Math.random() * 2); // 多轉幾圈營造翻滾感
+            diceSpinX = spinTo(diceSpinX, showX, spins);
+            diceSpinY = spinTo(diceSpinY, showY, spins);
+            cube.style.transition = reduce ? 'none' : '';
+            cube.style.transform = `rotateX(${diceSpinX}deg) rotateY(${diceSpinY}deg)`;
             const DUR = reduce ? 0 : 900;
             setTimeout(() => {
-                clearInterval(diceCycleTimer);
-                const result = 1 + Math.floor(Math.random() * 6);
-                renderDiceFace(result);
                 btn.classList.remove('rolling');
                 diceRolling = false;
                 toast(`🎲 ${$t('擲出 {n} 點！', { n: result })}`);
