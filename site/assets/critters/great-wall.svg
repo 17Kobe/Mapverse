@@ -1,9 +1,4 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
-  <!-- 山脊：起伏綠丘，襯托城牆 -->
-  <ellipse cx="14" cy="64" rx="18" ry="11" fill="#6a9048" stroke="white" stroke-width="1.5"/>
-  <ellipse cx="40" cy="58" rx="20" ry="12" fill="#5a8238" stroke="white" stroke-width="1.5"/>
-  <ellipse cx="66" cy="50" rx="18" ry="11" fill="#6a9048" stroke="white" stroke-width="1.5"/>
-
   <!-- 城牆主體：單一清爽的斜向色帶，從左下到右上 -->
   <path d="M4,60 L74,16 L74,26 L4,70 Z"
     fill="#d4bb86" stroke="white" stroke-width="2.2" stroke-linejoin="round"/>

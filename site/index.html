@@ -34,12 +34,28 @@
         <main id="stage">
             <canvas id="terrain" aria-hidden="true"></canvas>
             <canvas id="aurora" aria-hidden="true"></canvas>
-            <svg id="map" role="img" aria-label="世界股市地圖" data-i18n-aria="世界股市地圖"></svg>
-            <!-- 雲在地圖最上層（國界、旗幟、動物都在雲下面），模擬從高空俯視的真實感 -->
+            <!-- 一般裝飾雲：在國界/旗幟/卡片下面，不擋內容 -->
             <canvas id="clouds" aria-hidden="true"></canvas>
+            <svg id="map" role="img" aria-label="世界股市地圖" data-i18n-aria="世界股市地圖"></svg>
+            <!-- 煙火 / 烏雲等漲跌特效：在卡片上面也沒關係，烏雲有形成→消散的呼吸週期，不會一直擋住卡片 -->
+            <canvas id="wfx" aria-hidden="true"></canvas>
             <!-- 上帝視角的災難效果（disasters.js），疊在地圖上面、不擋滑鼠 -->
             <canvas id="fx" aria-hidden="true"></canvas>
             <div id="attrib">地形資料 © Mapzen/AWS Terrain Tiles · Esri, Maxar, Earthstar Geographics</div>
+
+            <!-- 骰子（原「上帝之手」的位置）：點擊往上翻轉再落下，之後要做棋盤式小遊戲會用上骰子點數 -->
+            <button id="diceBtn" class="gbtn" aria-label="擲骰子" title="擲骰子">
+                <svg id="diceFace" viewBox="0 0 40 40" width="30" height="30" aria-hidden="true">
+                    <rect x="2" y="2" width="36" height="36" rx="8" fill="url(#diceFaceGrad)" stroke="#fff" stroke-width="1.5"/>
+                    <defs>
+                        <linearGradient id="diceFaceGrad" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0" stop-color="#fffef8"/>
+                            <stop offset="1" stop-color="#e8e2d0"/>
+                        </linearGradient>
+                    </defs>
+                    <g id="dicePips" fill="#2a2a38"></g>
+                </svg>
+            </button>
 
             <!-- 浮在地圖上的介面（仿 Google 地圖的位置） -->
             <div id="side">

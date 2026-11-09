@@ -63,8 +63,10 @@
     const BUBBLE_SCALE_MOBILE = 1.25;
     // 電腦版股市旗幟（連字型）最多放大的倍率，實際倍率依畫面大小與擁擠程度決定（見 layoutMarkers）
     const DESK_SCALE_MAX = 1.6;
-    const DESK_SCALE_ALL = 1.45; // 全球檢視調大，讓卡片與文字更清楚
+    const DESK_SCALE_ALL = 1.75; // 全球檢視儘可能放大文字；排版演算法會自動往下試，擠不下才會縮小，不會造成重疊
     const deskUCache = new Map();
+    // 上帝之手（降下災難特效）先隱藏：按鈕、點擊觸發地圖都關閉；disasters.js 整套程式碼保留，未來真的要用再打開
+    const ENABLE_GOD_HAND = false;
     // 單一指數旗幟的高度：色帶（含邊框）下方留 22px 放指數，數字的基線固定在 FULL_BASE，各瀏覽器位置才會一致
     const FULL_H = 44,
         FULL_BASE = 37.5;
@@ -2238,14 +2240,27 @@
 
 
     function drawWeather(dt) {
-        // 畫在 clouds canvas（已移到 SVG 之後，蓋在國界/旗幟/地標上面），不再用 aurora（會被地圖壓住）
-        if (!cctx || !W || !projection) return;
+        // 畫在獨立的 #wfx canvas（在 SVG 之後，蓋在國界/旗幟/卡片上面）：
+        // 煙火、烏雲蓋在卡片上沒關係（烏雲有形成→消散的呼吸週期，不會一直擋住），
+        // 但要跟一般裝飾雲（#clouds，在 SVG 之前）分開，裝飾雲不能擋卡片
+        const WT = WEATHER_T;
+        if (!WT.cv) {
+            WT.cv = $('#wfx');
+            if (!WT.cv) return;
+            WT.ctx = WT.cv.getContext('2d');
+        }
+        if (!W || !projection) return;
         if (!state.maps || !state.maps.length) return;
-        WEATHER_T.t += dt;
-        const T = WEATHER_T.t;
-        const ctx = cctx;
-        // drawClouds 可能已經把 transform 留在 dpr 縮放狀態（或在雲完全淡出時還停在單位矩陣），
-        // 這裡自己明確設一次，不依賴前一個函式留下的狀態
+        WT.t += dt;
+        const T = WT.t;
+        const ctx = WT.ctx;
+        const cw = Math.round(W * dpr), ch = Math.round(H * dpr);
+        if (WT.cv.width !== cw || WT.cv.height !== ch) {
+            WT.cv.width = cw;
+            WT.cv.height = ch;
+        }
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.clearRect(0, 0, cw, ch);
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         const rspr = rainSprite(), cspr = cloudSprite();
 
@@ -2316,26 +2331,36 @@
                 }
                 ctx.globalCompositeOperation = 'source-over';
             } else {
-                // ── 烏雲 + 雨滴 ──
+                // ── 烏雲 + 雨滴：有「形成→消散→重新形成」的呼吸週期，不會一直擋住卡片 ──
+                const CYCLE = 7; // 一次呼吸週期秒數
+                // 每個國家用代碼算一個固定相位偏移，週期才不會同步，看起來更自然
+                let seed = 0;
+                for (let ci = 0; ci < m.s.length; ci++) seed = (seed * 31 + m.s.charCodeAt(ci)) % 9973;
+                const offset = (seed % 1000) / 1000 * CYCLE;
+                const phase = ((T + offset) % CYCLE) / CYCLE; // 0~1
+                // 半正弦波：0 時完全消散（看得到卡片）、0.5 時完全成形（最濃）、1 時又回到消散
+                const breath = Math.sin(phase * Math.PI);
+                if (breath < 0.03) continue; // 幾乎消散時直接跳過，省運算，也確保卡片完全看得清楚
+
                 const k = state.t.k;
-                const cloudW = Math.max(22, Math.min(58, 42 / Math.sqrt(Math.max(1, k * 0.7))));
+                const cloudW = Math.max(22, Math.min(58, 42 / Math.sqrt(Math.max(1, k * 0.7)))) * (0.7 + breath * 0.3);
                 const rainW  = cloudW * 0.92;
-                const CLOUD_H = 32;
+                const CLOUD_H = 32 * (0.7 + breath * 0.3);
                 ctx.globalCompositeOperation = 'source-over';
                 for (let ci = 0; ci < 3; ci++) {
                     const cx2 = sx + (ci - 1) * cloudW * 0.55 + Math.sin(T * 0.2 + ci) * 3,
                           cy2 = skyY + Math.cos(T * 0.18 + ci * 1.5) * 2.5;
-                    ctx.globalAlpha = 0.82;
+                    ctx.globalAlpha = 0.82 * breath;
                     ctx.drawImage(cspr, 0, 0, 64, 40,
                         cx2 - cloudW / 2, cy2 - CLOUD_H / 2,
                         cloudW, CLOUD_H);
                 }
                 const N_RAIN = 20;
                 for (let ri = 0; ri < N_RAIN; ri++) {
-                    const phase = (ri / N_RAIN + T * 0.22 + ri * 0.11) % 1;
+                    const r_phase = (ri / N_RAIN + T * 0.22 + ri * 0.11) % 1;
                     const rx = sx + (ri / N_RAIN - 0.5) * rainW,
-                          ry = skyY + CLOUD_H / 2 + phase * 38;
-                    ctx.globalAlpha = Math.sin(phase * Math.PI) * 0.55;
+                          ry = skyY + CLOUD_H / 2 + r_phase * 38;
+                    ctx.globalAlpha = Math.sin(r_phase * Math.PI) * 0.55 * breath;
                     ctx.drawImage(rspr, 0, 0, 2, 18,
                         rx - 1, ry, 2, 18);
                 }
@@ -2516,15 +2541,18 @@
 
         // 上帝視角的災難（disasters.js，目前只在股市地圖）：左鍵點空白處（不是動物 / 旗幟）降下災難，右鍵選災難。
         // 拖曳地圖後放開不算點擊（d3-zoom 會吃掉那一下 click）。
-        svg.on('click.dz', (e) => {
-            if (state.layer !== 'stocks' || !window.Disasters || e.target.closest('.mk')) return;
-            Disasters.handleClick(e.clientX, e.clientY);
-        });
-        svg.on('contextmenu.dz', (e) => {
-            if (state.layer !== 'stocks' || !window.Disasters) return;
-            e.preventDefault();
-            Disasters.openMenu(e.clientX, e.clientY);
-        });
+        // 上帝之手先隱藏（ENABLE_GOD_HAND=false）：按鈕、點擊觸發都先關閉，未來真的要用再打開；程式碼整套保留不動
+        if (ENABLE_GOD_HAND) {
+            svg.on('click.dz', (e) => {
+                if (state.layer !== 'stocks' || !window.Disasters || e.target.closest('.mk')) return;
+                Disasters.handleClick(e.clientX, e.clientY);
+            });
+            svg.on('contextmenu.dz', (e) => {
+                if (state.layer !== 'stocks' || !window.Disasters) return;
+                e.preventDefault();
+                Disasters.openMenu(e.clientX, e.clientY);
+            });
+        }
     }
     // 螢幕座標 → 經緯度（經度繞回 -180～180）
     function geoAt(x, y) {
@@ -2553,7 +2581,7 @@
         scheduleLayout();
     }
     function initDisasters() {
-        if (!window.Disasters) return;
+        if (!ENABLE_GOD_HAND || !window.Disasters) return;
         Disasters.init({
             stage: $('#stage'),
             canvas: $('#fx'),
@@ -2566,6 +2594,49 @@
             size: () => [W, H, dpr],
             reduce: () => !state.anim || reduceMotion.matches, // 關閉動畫或減少動態時，地震不搖晃畫面
             toast,
+        });
+    }
+
+    // 骰子的 6 種點數排列（每個點是 [x, y]，座標配合 viewBox 0 0 40 40 的 pip 半徑 3）
+    const DICE_FACES = {
+        1: [[20, 20]],
+        2: [[12, 12], [28, 28]],
+        3: [[12, 12], [20, 20], [28, 28]],
+        4: [[12, 12], [28, 12], [12, 28], [28, 28]],
+        5: [[12, 12], [28, 12], [20, 20], [12, 28], [28, 28]],
+        6: [[12, 11], [28, 11], [12, 20], [28, 20], [12, 29], [28, 29]],
+    };
+    function renderDiceFace(n) {
+        const g = $('#dicePips');
+        if (!g) return;
+        g.innerHTML = (DICE_FACES[n] || DICE_FACES[1])
+            .map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3"></circle>`)
+            .join('');
+    }
+    let diceRolling = false,
+        diceCycleTimer = 0;
+    function initDice() {
+        const btn = $('#diceBtn');
+        if (!btn) return;
+        renderDiceFace(1);
+        btn.addEventListener('click', () => {
+            if (diceRolling) return;
+            diceRolling = true;
+            btn.classList.add('rolling');
+            // 翻滾過程中快速換點數，製造「正在轉動」的感覺
+            const reduce = !state.anim || reduceMotion.matches;
+            if (!reduce) {
+                diceCycleTimer = setInterval(() => renderDiceFace(1 + Math.floor(Math.random() * 6)), 80);
+            }
+            const DUR = reduce ? 0 : 900;
+            setTimeout(() => {
+                clearInterval(diceCycleTimer);
+                const result = 1 + Math.floor(Math.random() * 6);
+                renderDiceFace(result);
+                btn.classList.remove('rolling');
+                diceRolling = false;
+                toast(`🎲 ${$t('擲出 {n} 點！', { n: result })}`);
+            }, DUR);
         });
     }
 
@@ -3936,7 +4007,8 @@
         const rects = [],
             vis = new Map();
         // pin 的國家優先放動物，這樣不會因為鄰近的動物（例如新加坡和馬來西亞）重疊就被隱藏
-        const arr = (topicMode || gameMode) ? [] : state.maps.slice().sort((a, b) => !!b.pin - !!a.pin || b.w - a.w);
+        // 遊戲模式：動物正常顯示（和一般動畫一致），只隱藏旗幟卡片（見下方 gameMode 把 o.b 清空）
+        const arr = topicMode ? [] : state.maps.slice().sort((a, b) => !!b.pin - !!a.pin || b.w - a.w);
 
         // 第一輪：放動物，太擠的先隱藏（放大後會出現）
         for (const m of arr) {
@@ -4517,8 +4589,12 @@
                 pick = 1;
                 // 全球檢視國家多、很擠：倍率上限較低
                 const isAll = state.activeRegion === 'all';
-                // 上限跟著畫面大小走（寬 / 1180、高 / 640 倍）；放不放得下由下面的檢查決定，放不下就退到較小的倍率
-                const uMax = Math.max(1, Math.min(isAll ? DESK_SCALE_ALL : DESK_SCALE_MAX, W / 1180, H / 640));
+                // 上限跟著畫面大小走；全球檢視常被「高度 / 640」這一項卡住（大多數螢幕高度換算出來比 DESK_SCALE_ALL 更小，
+                // 導致調高 DESK_SCALE_ALL 常數也沒有效果），所以全球檢視用比較寬鬆的除數，才會真的變大
+                const uMax = Math.max(
+                    1,
+                    Math.min(isAll ? DESK_SCALE_ALL : DESK_SCALE_MAX, W / (isAll ? 1020 : 1180), H / (isAll ? 540 : 640)),
+                );
                 if (uMax > 1.03) {
                     const base = new Map(best.snap.map(([o, b]) => [o.m.s, rank(b)]));
                     // 篩選的那一區自己的國家一個都不能退步；全球檢視，或其他區（例如中東非洲畫面裡的印度、中國）的國家，
@@ -4556,6 +4632,8 @@
             U = pick;
         }
         for (const [o, bb] of best.snap) o.b = bb;
+        // 遊戲模式：旗幟幾何算完後直接清空，動物還是正常顯示（渲染迴圈靠 o.b 判斷要不要畫旗幟）
+        if (gameMode) for (const o of vis.values()) o.b = null;
 
         gMk.selectAll('g.mk').each(function (m) {
             const s = d3.select(this),
@@ -5611,6 +5689,7 @@
         renderHud();
         scheduleLayout();
         initDisasters();
+        initDice();
         initGeoScenes();
         $('#loading').classList.add('gone');
         // 載入完成後才顯示手機版設定按鈕（避免在載入動畫下方露出）
