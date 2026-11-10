@@ -519,17 +519,17 @@
         { src: 'critters/nazca-lines.svg', lon: -75.13, lat: -14.74, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },     // 納斯卡線
         { src: 'critters/niagara-falls.svg', lon: -79.07, lat: 43.08, mode: 'still', face: 'F', s: 1.1, sea: true, deco: true, landmark: true }, // 尼加拉瀑布
         // ── 新增動物（世界各地代表物種） ──────────────────────────────
-        { src: 'animals/tiger.png', lon: 79.0, lat: 21.0, mode: 'wander', s: 1.0, deco: true, maxDeg: 2 },            // 印度：老虎在森林漫步
+        { src: 'animals/tiger.png', lon: 79.0, lat: 21.0, mode: 'wander', face: 'R', s: 1.0, deco: true, maxDeg: 2 },  // 印度：老虎在森林漫步（素材朝右畫）
         { src: 'critters/wombat.svg', lon: 146.0, lat: -42.0, mode: 'still', face: 'F', s: 0.9, deco: true },         // 澳洲：袋熊鑽洞
-        { src: 'critters/jaguar.svg', lon: -65.0, lat: -6.0, mode: 'wander', s: 1.0, deco: true, maxDeg: 2 },         // 南美：美洲豹穿越雨林
+        { src: 'critters/jaguar.svg', lon: -65.0, lat: -6.0, mode: 'wander', face: 'R', s: 1.0, deco: true, maxDeg: 2 }, // 南美：美洲豹穿越雨林（素材朝右畫）
         { src: 'critters/toucan.svg', lon: -58.0, lat: -10.0, mode: 'still', face: 'F', s: 0.85, deco: true },        // 南美：巨嘴鳥跳動
         { src: 'critters/hippo.svg', lon: 31.0, lat: 1.0, mode: 'bob', s: 1.0, sea: true, deco: true },               // 非洲：河馬探頭
         { src: 'animals/elephant.png', lon: 37.5, lat: -3.0, mode: 'wander', gait: 'heavy', s: 1.05, deco: true, maxDeg: 2 }, // 非洲：象群遷徙
         { src: 'animals/penguin.png', lon: -60.0, lat: -62.0, mode: 'wander', gait: 'waddle', s: 0.85, deco: true, maxDeg: 2 }, // 南極：企鵝冰上搖擺
         { src: 'critters/japanese-macaque-onsen.svg', lon: 138.5, lat: 36.7, mode: 'still', face: 'F', s: 0.95, deco: true }, // 日本：獼猴泡溫泉
-        { src: 'critters/golden-monkey.svg', lon: 103.0, lat: 31.0, mode: 'wander', s: 0.9, deco: true, maxDeg: 2 },  // 中國：金絲猴森林跳躍
+        { src: 'critters/golden-monkey.svg', lon: 103.0, lat: 31.0, mode: 'wander', face: 'R', s: 0.9, deco: true, maxDeg: 2 }, // 中國：金絲猴森林跳躍（素材朝右畫）
         { src: 'critters/chameleon.svg', lon: 49.0, lat: -17.0, mode: 'still', face: 'F', s: 0.85, deco: true },      // 馬達加斯加：變色龍伸舌頭
-        { src: 'critters/piranha.svg', lon: -60.0, lat: -2.0, mode: 'swim', s: 0.8, sea: true, deco: true },         // 南美：食人魚群游
+        { src: 'critters/piranha.svg', lon: -60.0, lat: -2.0, mode: 'swim', face: 'R', s: 0.8, sea: true, deco: true }, // 南美：食人魚群游（素材朝右畫）
     ];
     // 原住民小人（natives.js）：該國主要指數漲就歡呼跳舞、跌就沮喪哭泣，平盤時散步 / 揮手 / 眨眼
     // mode 'folk'；market = 看哪個指數；ox / oy = 相對位置點的偏移（單位：小角色基準大小）；minK = 縮小到這個倍率以下就收起來
