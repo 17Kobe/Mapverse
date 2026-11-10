@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="waterGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7ec8e3"/>
+      <stop offset="55%" stop-color="#4a9fc9"/>
+      <stop offset="100%" stop-color="#2f6f94"/>
+    </linearGradient>
+    <linearGradient id="furGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#a9764f"/>
+      <stop offset="55%" stop-color="#8a5a37"/>
+      <stop offset="100%" stop-color="#6b4226"/>
+    </linearGradient>
+    <linearGradient id="headGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#b9815a"/>
+      <stop offset="100%" stop-color="#7a5234"/>
+    </linearGradient>
+    <linearGradient id="tailGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5b3a22"/>
+      <stop offset="100%" stop-color="#3b2415"/>
+    </linearGradient>
+    <linearGradient id="toothGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffcf6b"/>
+      <stop offset="100%" stop-color="#e8972e"/>
+    </linearGradient>
+    <linearGradient id="logGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#9c6b43"/>
+      <stop offset="100%" stop-color="#5e3d22"/>
+    </linearGradient>
+  </defs>
+
+  <!-- pond water, minimal, under subject -->
+  <ellipse cx="40" cy="73" rx="39" ry="10" fill="url(#waterGrad)"/>
+
+  <!-- ripples -->
+  <ellipse cx="30" cy="70" rx="10" ry="2.6" fill="none" stroke="#dff3fb" stroke-width="0.8" opacity="0.7">
+    <animate attributeName="rx" values="8;16;8" dur="3.2s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.7;0.1;0.7" dur="3.2s" repeatCount="indefinite"/>
+  </ellipse>
+  <ellipse cx="58" cy="71" rx="7" ry="2" fill="none" stroke="#eaf8ff" stroke-width="0.7" opacity="0.6">
+    <animate attributeName="rx" values="5;12;5" dur="2.6s" begin="0.4s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.6;0.05;0.6" dur="2.6s" begin="0.4s" repeatCount="indefinite"/>
+  </ellipse>
+
+  <!-- log / dam stick, poking from water, right side -->
+  <g>
+    <rect x="58" y="60" width="20" height="8" rx="4" fill="url(#logGrad)" stroke="#3a2614" stroke-width="0.4"/>
+    <ellipse cx="76" cy="64" rx="3.4" ry="4" fill="#caa06f" stroke="#5e3d22" stroke-width="0.4"/>
+    <circle cx="76" cy="64" r="1.6" fill="#8a6440"/>
+  </g>
+
+  <!-- tail, flat paddle, behind body, gentle bob/splash -->
+  <g>
+    <path d="M48,52 Q64,48 66,60 Q68,70 56,70 Q44,70 46,60 Z" fill="url(#tailGrad)" stroke="#2a1708" stroke-width="0.5">
+      <animateTransform attributeName="transform" type="rotate" values="0 56 60; -4 56 60; 0 56 60" dur="1.8s" repeatCount="indefinite"/>
+    </path>
+    <path d="M51,55 Q58,54 62,58" fill="none" stroke="#2a1708" stroke-width="0.6" opacity="0.6"/>
+    <path d="M50,60 Q58,59 63,62" fill="none" stroke="#2a1708" stroke-width="0.6" opacity="0.6"/>
+    <path d="M51,65 Q58,64 61,67" fill="none" stroke="#2a1708" stroke-width="0.6" opacity="0.6"/>
+  </g>
+
+  <!-- small splash droplets near tail -->
+  <g>
+    <circle cx="62" cy="52" r="1.2" fill="#eaf8ff" opacity="0.8">
+      <animate attributeName="cy" values="52;44;52" dur="1.8s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.8;0;0.8" dur="1.8s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="68" cy="54" r="0.9" fill="#eaf8ff" opacity="0.7">
+      <animate attributeName="cy" values="54;47;54" dur="1.8s" begin="0.3s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.7;0;0.7" dur="1.8s" begin="0.3s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <!-- body, plump, floating low, facing left -->
+  <ellipse cx="38" cy="58" rx="22" ry="17" fill="url(#furGrad)" stroke="#4a2e18" stroke-width="0.6"/>
+
+  <!-- belly shading -->
+  <ellipse cx="38" cy="65" rx="16" ry="9" fill="#5c3a22" opacity="0.35"/>
+
+  <!-- back ridge highlight -->
+  <path d="M22,48 Q38,40 56,48" fill="none" stroke="#c99a6c" stroke-width="2" opacity="0.5" stroke-linecap="round"/>
+
+  <!-- head -->
+  <ellipse cx="17" cy="48" rx="12.5" ry="11" fill="url(#headGrad)" stroke="#4a2e18" stroke-width="0.6"/>
+
+  <!-- ear -->
+  <circle cx="19" cy="38" r="3.4" fill="#7a5234" stroke="#4a2e18" stroke-width="0.5"/>
+  <circle cx="19" cy="38" r="1.6" fill="#5c3a22"/>
+
+  <!-- snout -->
+  <ellipse cx="6" cy="50" rx="6.5" ry="5.4" fill="#c79a6d" stroke="#4a2e18" stroke-width="0.5"/>
+
+  <!-- nose -->
+  <ellipse cx="1.5" cy="48" rx="1.8" ry="1.4" fill="#2a1a10"/>
+
+  <!-- eye -->
+  <circle cx="14" cy="44" r="1.9" fill="#1b1209"/>
+  <circle cx="14.6" cy="43.3" r="0.6" fill="#ffffff" opacity="0.85"/>
+
+  <!-- front teeth -->
+  <rect x="2" y="52" width="4" height="6" rx="1" fill="url(#toothGrad)" stroke="#a9671a" stroke-width="0.4"/>
+  <line x1="4" y1="52" x2="4" y2="58" stroke="#a9671a" stroke-width="0.3"/>
+
+  <!-- front little paw on water edge -->
+  <ellipse cx="18" cy="66" rx="5" ry="3.2" fill="#7a5234" stroke="#3f2715" stroke-width="0.5"/>
+</svg>

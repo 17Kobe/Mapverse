@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+<defs>
+  <linearGradient id="bodyYellow" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FFE066"/>
+    <stop offset="1" stop-color="#F2A900"/>
+  </linearGradient>
+  <linearGradient id="roofBlack" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#3a3a3a"/>
+    <stop offset="1" stop-color="#0d0d0d"/>
+  </linearGradient>
+  <radialGradient id="tireGrad" cx="0.35" cy="0.35" r="0.75">
+    <stop offset="0" stop-color="#4a4a4a"/>
+    <stop offset="0.6" stop-color="#1a1a1a"/>
+    <stop offset="1" stop-color="#000000"/>
+  </radialGradient>
+  <radialGradient id="hubGrad" cx="0.35" cy="0.35" r="0.8">
+    <stop offset="0" stop-color="#eeeeee"/>
+    <stop offset="1" stop-color="#8a8a8a"/>
+  </radialGradient>
+  <linearGradient id="glassGrad" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#e3f3fb"/>
+    <stop offset="1" stop-color="#9fc9dc"/>
+  </linearGradient>
+  <radialGradient id="headlightGrad" cx="0.5" cy="0.5" r="0.5">
+    <stop offset="0" stop-color="#fffbe0"/>
+    <stop offset="1" stop-color="#ffd84a"/>
+  </radialGradient>
+</defs>
+<g>
+  <animateTransform attributeName="transform" type="translate" values="0 0; 0 -1.3; 0 0" dur="0.55s" repeatCount="indefinite"/>
+  <ellipse cx="40" cy="75.5" rx="33" ry="4" fill="#000000" opacity="0.22"/>
+  <g>
+    <animateTransform attributeName="transform" type="rotate" from="0 57 69" to="360 57 69" dur="0.9s" repeatCount="indefinite"/>
+    <circle cx="57" cy="69" r="10" fill="url(#tireGrad)" stroke="#000000" stroke-width="0.5"/>
+    <circle cx="57" cy="69" r="4.3" fill="url(#hubGrad)" stroke="#555555" stroke-width="0.3"/>
+    <line x1="57" y1="63" x2="57" y2="75" stroke="#555555" stroke-width="1.1"/>
+    <line x1="51" y1="69" x2="63" y2="69" stroke="#555555" stroke-width="1.1"/>
+    <line x1="52.8" y1="64.8" x2="61.2" y2="73.2" stroke="#555555" stroke-width="1"/>
+    <line x1="52.8" y1="73.2" x2="61.2" y2="64.8" stroke="#555555" stroke-width="1"/>
+  </g>
+  <g>
+    <animateTransform attributeName="transform" type="rotate" from="0 21 69" to="360 21 69" dur="0.9s" repeatCount="indefinite"/>
+    <circle cx="21" cy="69" r="9" fill="url(#tireGrad)" stroke="#000000" stroke-width="0.5"/>
+    <circle cx="21" cy="69" r="3.6" fill="url(#hubGrad)" stroke="#555555" stroke-width="0.3"/>
+    <line x1="21" y1="63" x2="21" y2="75" stroke="#555555" stroke-width="1"/>
+    <line x1="15" y1="69" x2="27" y2="69" stroke="#555555" stroke-width="1"/>
+    <line x1="16.8" y1="64.8" x2="25.2" y2="73.2" stroke="#555555" stroke-width="0.9"/>
+    <line x1="16.8" y1="73.2" x2="25.2" y2="64.8" stroke="#555555" stroke-width="0.9"/>
+  </g>
+  <path d="M46,64 Q57,44 68,64 Z" fill="url(#roofBlack)" stroke="#000000" stroke-width="0.4"/>
+  <path d="M11,64 Q21,48 31,64 Z" fill="url(#roofBlack)" stroke="#000000" stroke-width="0.4"/>
+  <path d="M16,63 L16,50 Q16,46 20,46 L60,46 Q64,46 64,50 L64,61 Q64,63 62,63 Z" fill="url(#bodyYellow)" stroke="#8a5e00" stroke-width="0.5"/>
+  <rect x="16" y="58" width="48" height="5" fill="#0d0d0d" opacity="0.85"/>
+  <rect x="18" y="51.5" width="44" height="1.6" fill="#2f8f3e" opacity="0.9"/>
+  <path d="M22,46 Q22,27 40,26 Q58,27 60,46 Z" fill="url(#roofBlack)" stroke="#000000" stroke-width="0.4"/>
+  <path d="M18,46 L18,38 Q18,34 22,33 L26,33 L26,46 Z" fill="url(#glassGrad)" stroke="#6a97a8" stroke-width="0.4"/>
+  <circle cx="22.5" cy="38" r="2.6" fill="#232323"/>
+  <path d="M19,46 Q19,41 22.5,40.5 Q26,41 26,46 Z" fill="#232323"/>
+  <path d="M10,63 L10,54 Q10,47 16,46 L18,46 L18,63 Z" fill="url(#roofBlack)" stroke="#000000" stroke-width="0.4"/>
+  <circle cx="12.5" cy="54" r="2.4" fill="url(#headlightGrad)" stroke="#b38f00" stroke-width="0.3"/>
+  <line x1="18" y1="46" x2="18" y2="40" stroke="#1a1a1a" stroke-width="1.1"/>
+  <circle cx="17.3" cy="38.7" r="1.5" fill="#1a1a1a"/>
+  <circle cx="62.5" cy="54" r="1.8" fill="#e63b3b" stroke="#8a1515" stroke-width="0.3"/>
+</g>
+</svg>

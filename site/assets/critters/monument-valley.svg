@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="mv-butte1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d9713f"/>
+      <stop offset="60%" stop-color="#b8502a"/>
+      <stop offset="100%" stop-color="#8a3a22"/>
+    </linearGradient>
+    <linearGradient id="mv-butte2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e2854e"/>
+      <stop offset="60%" stop-color="#c25f34"/>
+      <stop offset="100%" stop-color="#93421f"/>
+    </linearGradient>
+    <linearGradient id="mv-sand" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d79a55"/>
+      <stop offset="100%" stop-color="#b9793c"/>
+    </linearGradient>
+    <linearGradient id="mv-sky-glow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffb46a" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#ffb46a" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- warm haze glow just behind the buttes, kept tight to the subject -->
+  <ellipse cx="40" cy="30" rx="30" ry="14" fill="url(#mv-sky-glow)"/>
+
+  <!-- distant small butte -->
+  <path d="M4 66 L10 42 L16 42 L22 66 Z" fill="url(#mv-butte2)" stroke="#6e2f18" stroke-width="0.5" opacity="0.85"/>
+  <path d="M10 42 H16 L17 46 H9 Z" fill="#8a3a22" opacity="0.85"/>
+
+  <!-- the Mittens: two tall rectangular buttes -->
+  <g>
+    <path d="M22 72 L26 24 Q28 20 32 20 L34 20 Q38 20 40 24 L44 72 Z" fill="url(#mv-butte1)" stroke="#6e2f18" stroke-width="0.6" stroke-linejoin="round"/>
+    <path d="M26 24 Q28 20 32 20 L34 20 L35 34 L27 34 Z" fill="#c8693a"/>
+    <!-- horizontal rock strata -->
+    <g stroke="#8a3a22" stroke-width="0.6" opacity="0.5">
+      <line x1="25" y1="40" x2="43" y2="40"/>
+      <line x1="24" y1="50" x2="44" y2="50"/>
+      <line x1="23" y1="60" x2="44" y2="60"/>
+    </g>
+    <!-- shadow face -->
+    <path d="M34 20 Q38 20 40 24 L44 72 L38 72 L35 24 Z" fill="#7a3220" opacity="0.5"/>
+  </g>
+
+  <g>
+    <path d="M44 72 L49 30 Q51 26 55 26 L58 26 Q62 26 64 30 L70 72 Z" fill="url(#mv-butte2)" stroke="#6e2f18" stroke-width="0.6" stroke-linejoin="round"/>
+    <path d="M49 30 Q51 26 55 26 L58 26 L59 38 L50 38 Z" fill="#d9713f"/>
+    <g stroke="#8a3a22" stroke-width="0.6" opacity="0.5">
+      <line x1="48" y1="46" x2="66" y2="46"/>
+      <line x1="47" y1="56" x2="67" y2="56"/>
+      <line x1="46" y1="66" x2="68" y2="66"/>
+    </g>
+    <path d="M58 26 Q62 26 64 30 L70 72 L64 72 L59 30 Z" fill="#8a3a22" opacity="0.5"/>
+  </g>
+
+  <!-- circling hawk, subtle motion -->
+  <path d="M0 0 Q2 -1.5 4 0 Q2 0.6 0 0 Z" fill="#2c1c12" opacity="0.8">
+    <animateMotion path="M10,12 Q40,2 62,14 Q40,24 10,12 Z" dur="9s" repeatCount="indefinite"/>
+  </path>
+
+  <!-- desert floor -->
+  <path d="M0 68 Q20 64 40 68 Q60 64 80 68 L80 80 L0 80 Z" fill="url(#mv-sand)"/>
+  <path d="M6 72 Q16 70 26 72 M48 71 Q60 69 72 72" stroke="#9c6b36" stroke-width="1" opacity="0.5" fill="none" stroke-linecap="round"/>
+</svg>

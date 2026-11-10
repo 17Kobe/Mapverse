@@ -566,6 +566,28 @@
         { src: 'critters/burj-al-arab.svg', lon: 55.1853, lat: 25.1412, mode: 'still', face: 'F', s: 1.1, sea: true, deco: true, landmark: true }, // 阿聯：帆船飯店
         { src: 'critters/hobbiton.svg', lon: 175.6818, lat: -37.8722, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 紐西蘭：哈比村
         { src: 'critters/dead-sea.svg', lon: 35.5, lat: 31.5, mode: 'still', face: 'F', s: 1.1, sea: true, deco: true, landmark: true }, // 死海
+        // ── 第八批補充（用戶列的世界地標） ──────────────────────────
+        { src: 'critters/matterhorn.svg', lon: 7.6586, lat: 45.9763, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 瑞士/義大利：馬特洪峰
+        { src: 'critters/kilimanjaro.svg', lon: 37.3556, lat: -3.0674, mode: 'still', face: 'F', s: 1.3, deco: true, landmark: true }, // 坦尚尼亞：吉力馬札羅山
+        { src: 'critters/monument-valley.svg', lon: -110.0046, lat: 36.9983, mode: 'still', face: 'F', s: 1.2, deco: true, landmark: true }, // 美國：紀念碑谷
+        { src: 'critters/iceberg.svg', lon: -30.0, lat: -65.0, mode: 'bob', s: 1.1, sea: true, deco: true, landmark: true }, // 南大洋：漂浮冰山
+        { src: 'critters/table-mountain.svg', lon: 18.4232, lat: -33.9628, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 南非：桌山
+        { src: 'critters/darvaza-crater.svg', lon: 58.4396, lat: 40.2522, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 土庫曼：地獄之門
+        // ── 第九批補充（太魯閣、雷門燈籠、雙層巴士、凱旋門） ──────────
+        { src: 'critters/taroko-gorge.svg', lon: 121.62, lat: 24.16, mode: 'still', face: 'F', s: 1.1, sea: true, deco: true, landmark: true }, // 台灣：太魯閣峽谷
+        { src: 'critters/kaminarimon-lantern.svg', lon: 139.796, lat: 35.7148, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 日本：淺草寺雷門燈籠
+        { src: 'critters/double-decker-bus.svg', lon: -1.5, lat: 52.3, mode: 'wander', s: 1.0, deco: true, maxDeg: 2 }, // 英國：紅色雙層巴士
+        { src: 'critters/arc-de-triomphe.svg', lon: 2.295, lat: 48.8738, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 法國：凱旋門
+        // ── 第十批補充（剩下 9 個：黑熊、龜船、天壇、舞龍、海狸、騎警、熱氣球、啤酒節、嘟嘟車） ──
+        { src: 'critters/formosan-black-bear.svg', lon: 121.0, lat: 23.7, mode: 'wander', s: 1.0, deco: true, maxDeg: 2 }, // 台灣：台灣黑熊
+        { src: 'critters/turtle-ship.svg', lon: 128.0, lat: 34.8, mode: 'bob', s: 1.1, sea: true, deco: true, landmark: true }, // 南韓：李舜臣龜船
+        { src: 'critters/temple-of-heaven.svg', lon: 116.6, lat: 39.7, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 中國：天壇
+        { src: 'critters/dragon-dance.svg', lon: 108.0, lat: 30.0, mode: 'still', face: 'F', s: 1.1, deco: true }, // 中國：舞龍
+        { src: 'critters/beaver.svg', lon: -95.0, lat: 54.0, mode: 'bob', s: 1.0, sea: true, deco: true }, // 加拿大：海狸
+        { src: 'critters/mountie.svg', lon: -106.0, lat: 50.45, mode: 'still', face: 'F', s: 1.0, deco: true }, // 加拿大：皇家騎警
+        { src: 'critters/montgolfier-balloon.svg', lon: 2.5, lat: 47.0, mode: 'bob', s: 1.0, deco: true, landmark: true }, // 法國：蒙格菲熱氣球
+        { src: 'critters/oktoberfest.svg', lon: 11.55, lat: 48.14, mode: 'still', face: 'F', s: 1.0, deco: true }, // 德國：慕尼黑啤酒節
+        { src: 'critters/tuk-tuk.svg', lon: 77.0, lat: 20.5, mode: 'wander', s: 1.0, deco: true, maxDeg: 2 }, // 印度：嘟嘟車
     ];
     // 原住民小人（natives.js）：該國主要指數漲就歡呼跳舞、跌就沮喪哭泣，平盤時散步 / 揮手 / 眨眼
     // mode 'folk'；market = 看哪個指數；ox / oy = 相對位置點的偏移（單位：小角色基準大小）；minK = 縮小到這個倍率以下就收起來

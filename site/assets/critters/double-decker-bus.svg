@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+<defs>
+<linearGradient id="bodyRed" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#e2423f"/>
+<stop offset="0.5" stop-color="#c81e2c"/>
+<stop offset="1" stop-color="#8f0f1c"/>
+</linearGradient>
+<linearGradient id="darkRed" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#7a0f1a"/>
+<stop offset="1" stop-color="#4c0a10"/>
+</linearGradient>
+<linearGradient id="roofShine" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#ff8a74" stop-opacity="0.6"/>
+<stop offset="1" stop-color="#ff8a74" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="glass" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#d6edf4"/>
+<stop offset="1" stop-color="#5c8ba3"/>
+</linearGradient>
+<radialGradient id="tire" cx="0.35" cy="0.3" r="0.75">
+<stop offset="0" stop-color="#4c4c4c"/>
+<stop offset="0.6" stop-color="#1c1c1c"/>
+<stop offset="1" stop-color="#040404"/>
+</radialGradient>
+<radialGradient id="hub" cx="0.35" cy="0.3" r="0.8">
+<stop offset="0" stop-color="#f4f4f4"/>
+<stop offset="1" stop-color="#999999"/>
+</radialGradient>
+<radialGradient id="shadow" cx="0.5" cy="0.5" r="0.5">
+<stop offset="0" stop-color="#000000" stop-opacity="0.35"/>
+<stop offset="1" stop-color="#000000" stop-opacity="0"/>
+</radialGradient>
+</defs>
+
+<ellipse cx="40" cy="78" rx="34" ry="3" fill="url(#shadow)"/>
+
+<g>
+<animateTransform attributeName="transform" type="translate" values="0 0;0 -0.5;0 0" dur="0.5s" repeatCount="indefinite"/>
+
+<rect x="6" y="16" width="66" height="50" rx="6" fill="url(#bodyRed)" stroke="#6e0b14" stroke-width="0.6"/>
+<path d="M8,21 Q39,13 70,21" fill="none" stroke="url(#roofShine)" stroke-width="5" stroke-linecap="round" opacity="0.85"/>
+<rect x="6" y="42.5" width="66" height="3.5" fill="url(#darkRed)"/>
+
+<rect x="13" y="21" width="8" height="18" rx="1.5" fill="#f2f6f7" stroke="#b9c4c6" stroke-width="0.4"/>
+<rect x="14" y="22" width="6" height="16" rx="1" fill="url(#glass)"/>
+
+<rect x="23" y="21" width="8" height="18" rx="1.5" fill="#f2f6f7" stroke="#b9c4c6" stroke-width="0.4"/>
+<rect x="24" y="22" width="6" height="16" rx="1" fill="url(#glass)"/>
+<circle cx="27" cy="27.5" r="1.5" fill="#3a2a20"/>
+<rect x="25.3" y="29.3" width="4.4" height="5" fill="#8a5a30"/>
+
+<rect x="33" y="21" width="8" height="18" rx="1.5" fill="#f2f6f7" stroke="#b9c4c6" stroke-width="0.4"/>
+<rect x="34" y="22" width="6" height="16" rx="1" fill="url(#glass)"/>
+
+<rect x="43" y="21" width="8" height="18" rx="1.5" fill="#f2f6f7" stroke="#b9c4c6" stroke-width="0.4"/>
+<rect x="44" y="22" width="6" height="16" rx="1" fill="url(#glass)"/>
+<circle cx="47" cy="27.5" r="1.5" fill="#202020"/>
+<rect x="45.3" y="29.3" width="4.4" height="5" fill="#406080"/>
+
+<rect x="53" y="21" width="8" height="18" rx="1.5" fill="#f2f6f7" stroke="#b9c4c6" stroke-width="0.4"/>
+<rect x="54" y="22" width="6" height="16" rx="1" fill="url(#glass)"/>
+
+<rect x="9" y="45" width="11" height="17" rx="2" fill="#f2f6f7" stroke="#b9c4c6" stroke-width="0.4"/>
+<rect x="10" y="46" width="9" height="15" rx="1.3" fill="url(#glass)"/>
+
+<rect x="22" y="47" width="12" height="15" rx="1.5" fill="url(#darkRed)" stroke="#4a0a10" stroke-width="0.4"/>
+<line x1="28" y1="48" x2="28" y2="61" stroke="#d8dde0" stroke-width="0.6"/>
+<line x1="22.5" y1="60" x2="33.5" y2="60" stroke="#d8dde0" stroke-width="0.5"/>
+
+<rect x="38" y="49" width="7" height="13" rx="1.3" fill="#f2f6f7" stroke="#b9c4c6" stroke-width="0.4"/>
+<rect x="38.8" y="49.8" width="5.4" height="11.4" rx="0.8" fill="url(#glass)"/>
+
+<rect x="46" y="49" width="7" height="13" rx="1.3" fill="#f2f6f7" stroke="#b9c4c6" stroke-width="0.4"/>
+<rect x="46.8" y="49.8" width="5.4" height="11.4" rx="0.8" fill="url(#glass)"/>
+
+<rect x="54" y="49" width="7" height="13" rx="1.3" fill="#f2f6f7" stroke="#b9c4c6" stroke-width="0.4"/>
+<rect x="54.8" y="49.8" width="5.4" height="11.4" rx="0.8" fill="url(#glass)"/>
+
+<circle cx="9" cy="61" r="1.8" fill="#fff6c0" stroke="#c9a93a" stroke-width="0.4"/>
+<rect x="5" y="63" width="6" height="4" rx="1.2" fill="#575757" stroke="#2b2b2b" stroke-width="0.4"/>
+
+<circle cx="69" cy="51" r="1.6" fill="#ffb14d" stroke="#a65c10" stroke-width="0.4"/>
+<rect x="69" y="63" width="4" height="4" rx="1" fill="#575757" stroke="#2b2b2b" stroke-width="0.4"/>
+
+<line x1="14" y1="16" x2="14" y2="7" stroke="#5a5a5a" stroke-width="0.8"/>
+<rect x="14" y="5.5" width="7" height="4.5" fill="#1a2b6b" stroke="#0d1740" stroke-width="0.3"/>
+<line x1="14" y1="7.75" x2="21" y2="7.75" stroke="#ffffff" stroke-width="1.1"/>
+<line x1="16.3" y1="5.5" x2="16.3" y2="10" stroke="#ffffff" stroke-width="1.1"/>
+<line x1="14" y1="7.75" x2="21" y2="7.75" stroke="#c81e2c" stroke-width="0.5"/>
+<line x1="16.3" y1="5.5" x2="16.3" y2="10" stroke="#c81e2c" stroke-width="0.5"/>
+</g>
+
+<g>
+<circle cx="23" cy="67" r="10" fill="url(#tire)" stroke="#000000" stroke-width="0.5"/>
+<g>
+<animateTransform attributeName="transform" type="rotate" from="0 23 67" to="360 23 67" dur="1s" repeatCount="indefinite"/>
+<circle cx="23" cy="67" r="4" fill="url(#hub)" stroke="#777777" stroke-width="0.3"/>
+<circle cx="25.3" cy="67" r="0.5" fill="#555555"/>
+<circle cx="23" cy="69.3" r="0.5" fill="#555555"/>
+<circle cx="20.7" cy="67" r="0.5" fill="#555555"/>
+<circle cx="23" cy="64.7" r="0.5" fill="#555555"/>
+</g>
+</g>
+
+<g>
+<circle cx="57" cy="67" r="10" fill="url(#tire)" stroke="#000000" stroke-width="0.5"/>
+<g>
+<animateTransform attributeName="transform" type="rotate" from="0 57 67" to="360 57 67" dur="1s" repeatCount="indefinite"/>
+<circle cx="57" cy="67" r="4" fill="url(#hub)" stroke="#777777" stroke-width="0.3"/>
+<circle cx="59.3" cy="67" r="0.5" fill="#555555"/>
+<circle cx="57" cy="69.3" r="0.5" fill="#555555"/>
+<circle cx="54.7" cy="67" r="0.5" fill="#555555"/>
+<circle cx="57" cy="64.7" r="0.5" fill="#555555"/>
+</g>
+</g>
+</svg>

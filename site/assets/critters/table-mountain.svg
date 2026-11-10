@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="tm-rock" x1="0.2" y1="0" x2="0.8" y2="1">
+      <stop offset="0%" stop-color="#8d7a6a"/>
+      <stop offset="55%" stop-color="#6b5a4c"/>
+      <stop offset="100%" stop-color="#453a30"/>
+    </linearGradient>
+    <linearGradient id="tm-shade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#2a221b" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#2a221b" stop-opacity="0.5"/>
+    </linearGradient>
+    <linearGradient id="tm-cloth" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#dfeaf0" stop-opacity="0.3"/>
+    </linearGradient>
+    <linearGradient id="tm-fynbos" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5d7a4a"/>
+      <stop offset="100%" stop-color="#405a32"/>
+    </linearGradient>
+  </defs>
+
+  <!-- flat-topped mountain block, the defining silhouette -->
+  <path d="M8 60 L12 34 Q13 28 19 28 L61 28 Q67 28 68 34 L72 60 Z"
+    fill="url(#tm-rock)" stroke="#2a221b" stroke-width="0.6" stroke-linejoin="round"/>
+
+  <!-- dead-flat summit line -->
+  <rect x="12" y="27" width="56" height="3.4" rx="1" fill="#3d332a"/>
+
+  <!-- vertical cliff fluting -->
+  <g stroke="#2a221b" stroke-width="0.5" opacity="0.4" fill="none">
+    <path d="M20 32 L17 58"/>
+    <path d="M30 31 L28 59"/>
+    <path d="M40 31 L40 60"/>
+    <path d="M50 31 L52 59"/>
+    <path d="M60 32 L63 58"/>
+  </g>
+
+  <!-- right-side shading -->
+  <path d="M40 28 L61 28 Q67 28 68 34 L72 60 L46 60 Z" fill="url(#tm-shade)"/>
+
+  <!-- the famous "tablecloth" cloud spilling over the summit edge -->
+  <g>
+    <path d="M14 29 Q24 22 36 27 Q48 21 60 28 Q66 30 62 35 L18 35 Q10 33 14 29 Z" fill="url(#tm-cloth)" opacity="0.92">
+      <animateTransform attributeName="transform" type="translate" values="0,0;1.5,0.6;0,0" dur="5s" repeatCount="indefinite"/>
+    </path>
+    <path d="M20 33 Q30 38 40 34 Q50 39 58 34 L58 38 Q48 42 40 38 Q30 42 20 38 Z" fill="#ffffff" opacity="0.75">
+      <animateTransform attributeName="transform" type="translate" values="0,0;-1.2,0.4;0,0" dur="6s" repeatCount="indefinite"/>
+    </path>
+  </g>
+
+  <!-- fynbos shrubland foreground -->
+  <path d="M0 62 Q20 57 40 61 Q60 57 80 62 L80 80 L0 80 Z" fill="url(#tm-fynbos)"/>
+  <g fill="#c9d89a" opacity="0.6">
+    <ellipse cx="18" cy="65" rx="3" ry="1.3"/>
+    <ellipse cx="60" cy="66" rx="3.4" ry="1.3"/>
+    <ellipse cx="38" cy="68" rx="3" ry="1.1"/>
+  </g>
+</svg>

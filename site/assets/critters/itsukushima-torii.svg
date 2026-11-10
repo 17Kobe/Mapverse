@@ -29,13 +29,6 @@
     </radialGradient>
   </defs>
 
-  <!-- sky backdrop (not full-canvas, upper area only, stays within composition) -->
-  <rect x="0" y="0" width="80" height="46" fill="url(#sky)"/>
-
-  <!-- distant forested mountain -->
-  <path d="M -2 44 Q 12 24 26 36 Q 38 18 50 34 Q 64 20 82 40 L 82 50 L -2 50 Z" fill="url(#mountain)" opacity="0.85"/>
-  <path d="M -2 47 Q 16 32 34 42 Q 50 28 66 40 Q 74 34 82 42 L 82 52 L -2 52 Z" fill="#2c4430" opacity="0.6"/>
-
   <!-- sea -->
   <rect x="0" y="40" width="80" height="40" fill="url(#water)"/>
 

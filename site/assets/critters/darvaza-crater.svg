@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <radialGradient id="dz-fire" cx="50%" cy="55%" r="55%">
+      <stop offset="0%" stop-color="#fff3b0"/>
+      <stop offset="35%" stop-color="#ffb23a"/>
+      <stop offset="70%" stop-color="#e8542a"/>
+      <stop offset="100%" stop-color="#8a1f12"/>
+    </radialGradient>
+    <radialGradient id="dz-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ff9a3a" stop-opacity="0.65"/>
+      <stop offset="100%" stop-color="#ff9a3a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="dz-rim" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#9c7a46"/>
+      <stop offset="100%" stop-color="#6e5530"/>
+    </linearGradient>
+    <linearGradient id="dz-sand" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#c79a53"/>
+      <stop offset="100%" stop-color="#a97a3c"/>
+    </linearGradient>
+  </defs>
+
+  <!-- outward glow bathing the desert at night -->
+  <ellipse cx="40" cy="52" rx="34" ry="22" fill="url(#dz-glow)">
+    <animate attributeName="opacity" values="0.7;1;0.7" dur="1.8s" repeatCount="indefinite"/>
+  </ellipse>
+
+  <!-- desert floor -->
+  <path d="M0 64 Q20 59 40 63 Q60 59 80 64 L80 80 L0 80 Z" fill="url(#dz-sand)"/>
+
+  <!-- crater rim (near ellipse, pit sits inside it) -->
+  <ellipse cx="40" cy="58" rx="34" ry="13" fill="url(#dz-rim)" stroke="#52402455" stroke-width="0.6"/>
+  <ellipse cx="40" cy="55" rx="34" ry="12.5" fill="#7a5f38"/>
+
+  <!-- rocky rim texture -->
+  <g stroke="#52402a" stroke-width="0.8" opacity="0.5" fill="none">
+    <path d="M10 56 Q14 52 18 55"/>
+    <path d="M58 53 Q64 50 70 54"/>
+    <path d="M30 48 Q36 45 42 48"/>
+  </g>
+
+  <!-- the burning pit itself -->
+  <ellipse cx="40" cy="56" rx="26" ry="9.5" fill="url(#dz-fire)"/>
+
+  <!-- flickering inner flames -->
+  <g>
+    <path d="M26 58 Q24 50 30 44 Q28 52 33 56 Q30 56 26 58Z" fill="#ffd36a" opacity="0.9">
+      <animate attributeName="opacity" values="0.6;1;0.6" dur="0.9s" repeatCount="indefinite"/>
+      <animateTransform attributeName="transform" type="scale" values="1,1;1.08,1.15;1,1" dur="0.9s" repeatCount="indefinite" additive="sum"/>
+    </path>
+    <path d="M44 58 Q42 48 50 42 Q46 50 52 56 Q48 57 44 58Z" fill="#ffb23a" opacity="0.9">
+      <animate attributeName="opacity" values="1;0.55;1" dur="1.2s" repeatCount="indefinite"/>
+      <animateTransform attributeName="transform" type="scale" values="1,1;1.1,1.2;1,1" dur="1.2s" repeatCount="indefinite" additive="sum"/>
+    </path>
+    <path d="M36 59 Q35 50 40 46 Q39 53 44 58 Q40 59 36 59Z" fill="#fff3b0" opacity="0.85">
+      <animate attributeName="opacity" values="0.5;1;0.5" dur="0.7s" repeatCount="indefinite"/>
+    </path>
+  </g>
+
+  <!-- rising embers -->
+  <g fill="#ffb23a">
+    <circle cx="30" cy="46" r="1.1">
+      <animate attributeName="cy" values="50;18" dur="2.4s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="1;0" dur="2.4s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="48" cy="44" r="1" fill="#ffd36a">
+      <animate attributeName="cy" values="48;14" dur="2.8s" begin="0.6s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="1;0" dur="2.8s" begin="0.6s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="40" cy="42" r="0.9">
+      <animate attributeName="cy" values="46;12" dur="2.2s" begin="1.1s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="1;0" dur="2.2s" begin="1.1s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <!-- wisp of smoke drifting off -->
+  <path d="M46 44 Q50 34 44 24 Q52 32 48 44Z" fill="#8a8072" opacity="0.3">
+    <animate attributeName="opacity" values="0.15;0.4;0.15" dur="3.5s" repeatCount="indefinite"/>
+  </path>
+</svg>

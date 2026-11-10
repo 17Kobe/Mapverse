@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="mh-rock" x1="0.2" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#8a8488"/>
+      <stop offset="55%" stop-color="#5f5a60"/>
+      <stop offset="100%" stop-color="#3c383e"/>
+    </linearGradient>
+    <linearGradient id="mh-rock-dark" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#2c2a30" stop-opacity="0.75"/>
+      <stop offset="100%" stop-color="#2c2a30" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="mh-snow" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#cfe0ec"/>
+    </linearGradient>
+    <linearGradient id="mh-ground" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6d7a5c"/>
+      <stop offset="100%" stop-color="#4c5940"/>
+    </linearGradient>
+  </defs>
+
+  <!-- drifting wisp cloud near the peak -->
+  <ellipse cx="34" cy="16" rx="8" ry="2.6" fill="#ffffff" opacity="0.5">
+    <animate attributeName="opacity" values="0.15;0.55;0.15" dur="4.5s" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" values="-3,0;4,0;-3,0" dur="7s" repeatCount="indefinite"/>
+  </ellipse>
+
+  <!-- the iconic asymmetric pyramid horn, slightly twisted silhouette -->
+  <path d="M38 5 L52 34 L66 58 Q70 66 62 70 L18 70 Q10 66 15 58 L26 36 Z"
+    fill="url(#mh-rock)" stroke="#2c2a30" stroke-width="0.6" stroke-linejoin="round"/>
+
+  <!-- shaded east face -->
+  <path d="M38 5 L52 34 L66 58 Q70 66 62 70 L44 70 L40 40 Z" fill="url(#mh-rock-dark)"/>
+
+  <!-- ridge line -->
+  <path d="M38 5 L30 52 L24 70 M38 5 L46 44 L52 70" fill="none" stroke="#242228" stroke-width="0.6" opacity="0.55"/>
+
+  <!-- rock striations -->
+  <path d="M34 30 L28 54 M44 26 L50 56 M30 46 L22 64" stroke="#2c2a30" stroke-width="0.5" opacity="0.4" fill="none" stroke-linecap="round"/>
+
+  <!-- snow cap, wraps the summit asymmetrically -->
+  <path d="M38 5 L45 20 Q40 24 35 20 Q31 24 27 22 Z" fill="url(#mh-snow)" stroke="#bcd0da" stroke-width="0.4"/>
+  <path d="M26 36 Q30 32 35 34 L32 40 Q27 40 24 37 Z" fill="url(#mh-snow)" opacity="0.9"/>
+  <path d="M52 34 Q57 31 61 34 L57 39 Q53 38 50 35 Z" fill="url(#mh-snow)" opacity="0.85"/>
+
+  <!-- snow highlight -->
+  <line x1="38" y1="7" x2="34" y2="18" stroke="#ffffff" stroke-width="0.8" opacity="0.7"/>
+
+  <!-- alpine scree/meadow ground at the base -->
+  <path d="M0 70 Q20 65 40 69 Q60 65 80 70 L80 80 L0 80 Z" fill="url(#mh-ground)"/>
+  <path d="M4 73 Q14 71 24 73 M50 72 Q62 70 74 73" stroke="#3b4632" stroke-width="1" opacity="0.5" fill="none" stroke-linecap="round"/>
+</svg>

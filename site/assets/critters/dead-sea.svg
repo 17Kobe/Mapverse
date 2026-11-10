@@ -93,6 +93,9 @@
     <circle cx="-15" cy="3" r="4.6" fill="url(#skin)" stroke="#9c6a47" stroke-width="0.4"/>
     <!-- hair -->
     <path d="M-19 1 Q -18 -3 -14 -2.5 Q -17 -1 -18.5 2 Z" fill="#3a2a22"/>
+    <!-- sunglasses -->
+    <path d="M-19.3 2.6 Q-17.3 1.2 -15 2.2 Q-12.7 1.2 -10.7 2.6 Q-12.7 3.6 -15 2.9 Q-17.3 3.6 -19.3 2.6 Z" fill="#1c1c1c" opacity="0.92"/>
+    <line x1="-19.3" y1="2.4" x2="-21" y2="2" stroke="#1c1c1c" stroke-width="0.6"/>
     <!-- legs -->
     <path d="M9 2 Q 17 1 23 4 Q 17 5 9 6 Z" fill="url(#skin)" stroke="#9c6a47" stroke-width="0.3"/>
     <path d="M8 6 Q 15 7 20 10 Q 14 9.5 8 8.5 Z" fill="url(#skin)" stroke="#9c6a47" stroke-width="0.3"/>

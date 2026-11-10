@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="bodyGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffd54a"/>
+      <stop offset="0.45" stop-color="#ef5a2e"/>
+      <stop offset="1" stop-color="#b3201a"/>
+    </linearGradient>
+    <radialGradient id="headGrad" cx="0.35" cy="0.3" r="0.9">
+      <stop offset="0" stop-color="#ff9a4d"/>
+      <stop offset="0.55" stop-color="#e8402a"/>
+      <stop offset="1" stop-color="#9c1510"/>
+    </radialGradient>
+    <linearGradient id="poleGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9a6a37"/>
+      <stop offset="1" stop-color="#5c3a18"/>
+    </linearGradient>
+    <linearGradient id="sleeveGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffdd6a"/>
+      <stop offset="1" stop-color="#f2a900"/>
+    </linearGradient>
+    <linearGradient id="hornGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff2b0"/>
+      <stop offset="1" stop-color="#e0a51f"/>
+    </linearGradient>
+  </defs>
+
+  <!-- poles (performers implied only by hands/sleeves) -->
+  <g>
+    <line x1="47" y1="33" x2="47" y2="79" stroke="url(#poleGrad)" stroke-width="2.6" stroke-linecap="round"/>
+    <line x1="21" y1="39" x2="21" y2="79" stroke="url(#poleGrad)" stroke-width="2.6" stroke-linecap="round"/>
+
+    <path d="M41,71 L53,71 L55.5,80 L38.5,80 Z" fill="url(#sleeveGrad)" stroke="#b97a00" stroke-width="0.5"/>
+    <path d="M15,71 L27,71 L29.5,80 L12.5,80 Z" fill="url(#sleeveGrad)" stroke="#b97a00" stroke-width="0.5"/>
+    <path d="M41,73 L53,73 L53.6,76 L40.4,76 Z" fill="#c62828" opacity="0.8"/>
+    <path d="M15,73 L27,73 L27.6,76 L14.4,76 Z" fill="#c62828" opacity="0.8"/>
+
+    <ellipse cx="47" cy="51" rx="4.6" ry="3.8" fill="#e8a97a" stroke="#a36b43" stroke-width="0.4"/>
+    <ellipse cx="21" cy="55" rx="4.6" ry="3.8" fill="#e8a97a" stroke="#a36b43" stroke-width="0.4"/>
+  </g>
+
+  <!-- body outline (sync with main body) -->
+  <path fill="none" stroke="#7a1410" stroke-width="14.6" stroke-linecap="round" stroke-linejoin="round">
+    <animate attributeName="d" dur="2.4s" repeatCount="indefinite"
+      values="M62,28 C50,19 41,40 30,25 C20,10 15,45 8,50;
+               M62,28 C50,38 41,17 30,41 C20,56 15,24 8,50;
+               M62,28 C50,19 41,40 30,25 C20,10 15,45 8,50"/>
+  </path>
+
+  <!-- main body -->
+  <path fill="none" stroke="url(#bodyGrad)" stroke-width="13" stroke-linecap="round" stroke-linejoin="round">
+    <animate attributeName="d" dur="2.4s" repeatCount="indefinite"
+      values="M62,28 C50,19 41,40 30,25 C20,10 15,45 8,50;
+               M62,28 C50,38 41,17 30,41 C20,56 15,24 8,50;
+               M62,28 C50,19 41,40 30,25 C20,10 15,45 8,50"/>
+  </path>
+
+  <!-- scale highlights, synced with body -->
+  <path fill="none" stroke="#ffe08a" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="4 6" opacity="0.85">
+    <animate attributeName="d" dur="2.4s" repeatCount="indefinite"
+      values="M62,28 C50,19 41,40 30,25 C20,10 15,45 8,50;
+               M62,28 C50,38 41,17 30,41 C20,56 15,24 8,50;
+               M62,28 C50,19 41,40 30,25 C20,10 15,45 8,50"/>
+  </path>
+
+  <!-- tail fin -->
+  <path d="M8,50 L2,45 L4,53 L1,58 Z" fill="url(#bodyGrad)" stroke="#7a1410" stroke-width="0.6"/>
+
+  <!-- neck mane tufts -->
+  <path d="M55,24 L50,18 L54,27 Z" fill="url(#hornGrad)" stroke="#b5801a" stroke-width="0.4"/>
+  <path d="M58,20 L54,13 L59,22 Z" fill="url(#hornGrad)" stroke="#b5801a" stroke-width="0.4"/>
+
+  <!-- whiskers -->
+  <g>
+    <animateTransform attributeName="transform" type="rotate" values="-6 60 30; 7 60 30; -6 60 30" dur="2.4s" repeatCount="indefinite"/>
+    <path d="M59,32 C50,34 42,30 34,33" fill="none" stroke="#ffdd6a" stroke-width="1.6" stroke-linecap="round"/>
+    <path d="M60,35 C52,40 44,39 37,44" fill="none" stroke="#ffdd6a" stroke-width="1.6" stroke-linecap="round"/>
+  </g>
+
+  <!-- head -->
+  <g>
+    <path d="M58,31 C57,21 65,12 74,15 C81,18 80,28 75,33 C71,39 60,40 58,31 Z" fill="url(#headGrad)" stroke="#7a1410" stroke-width="0.6"/>
+    <!-- snout -->
+    <path d="M70,24 C76,23 79,27 76,31 C73,34 69,32 69,28 Z" fill="#ff8a3d" stroke="#7a1410" stroke-width="0.5"/>
+    <!-- horns -->
+    <path d="M64,15 C62,9 65,4 69,6 C67,10 67,13 65,17 Z" fill="url(#hornGrad)" stroke="#b5801a" stroke-width="0.4"/>
+    <path d="M70,13 C70,7 74,4 77,7 C74,10 73,13 72,16 Z" fill="url(#hornGrad)" stroke="#b5801a" stroke-width="0.4"/>
+    <!-- eye -->
+    <ellipse cx="69" cy="22" rx="3.4" ry="3" fill="#fff6d6" stroke="#7a1410" stroke-width="0.4"/>
+    <circle cx="70" cy="22" r="1.5" fill="#1a1a1a"/>
+    <!-- brow flame -->
+    <path d="M62,17 C66,13 70,14 72,17" fill="none" stroke="#b3201a" stroke-width="1.3" stroke-linecap="round"/>
+  </g>
+</svg>

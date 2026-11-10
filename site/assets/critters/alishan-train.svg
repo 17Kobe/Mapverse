@@ -52,18 +52,6 @@
     </g>
   </defs>
 
-  <ellipse cx="42" cy="18" rx="30" ry="18" fill="url(#lightGlow)">
-    <animate attributeName="opacity" values="0.5;0.9;0.5" dur="4s" repeatCount="indefinite"/>
-  </ellipse>
-
-  <path d="M0,40 Q12,24 22,30 Q32,20 44,26 Q56,18 68,27 Q76,22 80,26 L80,55 L0,55 Z" fill="url(#farMtn)"/>
-  <path d="M18,32 L21,24 L24,32 Z" fill="#2a4a33"/>
-  <path d="M30,30 L33,21 L36,30 Z" fill="#2a4a33"/>
-  <path d="M50,29 L53,20 L56,29 Z" fill="#2a4a33"/>
-  <path d="M62,31 L65,23 L68,31 Z" fill="#2a4a33"/>
-
-  <path d="M0,52 Q18,34 34,42 Q50,32 66,40 Q74,36 80,40 L80,68 L0,68 Z" fill="url(#midMtn)"/>
-
   <use href="#cypress" transform="translate(44,32) scale(0.45)" opacity="0.8"/>
 
   <g opacity="0.85">

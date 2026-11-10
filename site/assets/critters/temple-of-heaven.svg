@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="roof1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2a5ea8"/>
+      <stop offset="60%" stop-color="#1c4280"/>
+      <stop offset="100%" stop-color="#132f5c"/>
+    </linearGradient>
+    <linearGradient id="roof2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3468b0"/>
+      <stop offset="60%" stop-color="#204a88"/>
+      <stop offset="100%" stop-color="#15356a"/>
+    </linearGradient>
+    <linearGradient id="roof3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3d70b8"/>
+      <stop offset="60%" stop-color="#255290"/>
+      <stop offset="100%" stop-color="#173a70"/>
+    </linearGradient>
+    <linearGradient id="pillar" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#8a1f1f"/>
+      <stop offset="45%" stop-color="#b3372f"/>
+      <stop offset="100%" stop-color="#7a1a1a"/>
+    </linearGradient>
+    <radialGradient id="terrace" cx="50%" cy="25%" r="75%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="55%" stop-color="#e3e2de"/>
+      <stop offset="100%" stop-color="#b9b7b0"/>
+    </radialGradient>
+    <radialGradient id="finialGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff6c8"/>
+      <stop offset="55%" stop-color="#f3c948"/>
+      <stop offset="100%" stop-color="#c9971e"/>
+    </radialGradient>
+    <linearGradient id="step" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#cfcdc6"/>
+      <stop offset="100%" stop-color="#9a978e"/>
+    </linearGradient>
+  </defs>
+
+  <!-- ground / terrace steps -->
+  <ellipse cx="40" cy="77" rx="33" ry="6.5" fill="url(#step)" stroke="#8d8a80" stroke-width="0.4"/>
+  <ellipse cx="40" cy="73" rx="28" ry="5.6" fill="url(#terrace)" stroke="#c9c6bd" stroke-width="0.4"/>
+  <ellipse cx="40" cy="69.3" rx="23" ry="4.8" fill="url(#terrace)" stroke="#d6d4cc" stroke-width="0.4"/>
+  <ellipse cx="40" cy="66" rx="18.5" ry="4" fill="url(#terrace)" stroke="#dedcd4" stroke-width="0.4"/>
+
+  <!-- base platform disc the hall sits on -->
+  <ellipse cx="40" cy="63.5" rx="15.5" ry="3.4" fill="#f1efe9" stroke="#c7c4ba" stroke-width="0.4"/>
+
+  <!-- red pillars ring -->
+  <g>
+    <rect x="16" y="50" width="3" height="14" rx="1" fill="url(#pillar)" stroke="#5e1414" stroke-width="0.3"/>
+    <rect x="23" y="47" width="3" height="16" rx="1" fill="url(#pillar)" stroke="#5e1414" stroke-width="0.3"/>
+    <rect x="31" y="45" width="3.2" height="18" rx="1" fill="url(#pillar)" stroke="#5e1414" stroke-width="0.3"/>
+    <rect x="45.8" y="45" width="3.2" height="18" rx="1" fill="url(#pillar)" stroke="#5e1414" stroke-width="0.3"/>
+    <rect x="54" y="47" width="3" height="16" rx="1" fill="url(#pillar)" stroke="#5e1414" stroke-width="0.3"/>
+    <rect x="61" y="50" width="3" height="14" rx="1" fill="url(#pillar)" stroke="#5e1414" stroke-width="0.3"/>
+  </g>
+
+  <!-- lower (3rd) tier roof -->
+  <path d="M10 51 Q40 34 70 51 L66 56 Q40 44 14 56 Z" fill="url(#roof3)" stroke="#102a52" stroke-width="0.4"/>
+  <ellipse cx="40" cy="51" rx="21" ry="4.4" fill="#f3dca0" opacity="0.9"/>
+  <ellipse cx="40" cy="51" rx="21" ry="4.4" fill="none" stroke="#b3802f" stroke-width="0.5"/>
+
+  <!-- red pillars upper ring (mid hall) -->
+  <g>
+    <rect x="24" y="36" width="2.6" height="12" rx="1" fill="url(#pillar)" stroke="#5e1414" stroke-width="0.3"/>
+    <rect x="30.5" y="34" width="2.6" height="14" rx="1" fill="url(#pillar)" stroke="#5e1414" stroke-width="0.3"/>
+    <rect x="47" y="34" width="2.6" height="14" rx="1" fill="url(#pillar)" stroke="#5e1414" stroke-width="0.3"/>
+    <rect x="53.4" y="36" width="2.6" height="12" rx="1" fill="url(#pillar)" stroke="#5e1414" stroke-width="0.3"/>
+  </g>
+
+  <!-- middle (2nd) tier roof -->
+  <path d="M17 39 Q40 25 63 39 L59 44 Q40 33 21 44 Z" fill="url(#roof2)" stroke="#102a52" stroke-width="0.4"/>
+  <ellipse cx="40" cy="39" rx="15" ry="3.4" fill="#f3dca0" opacity="0.9"/>
+  <ellipse cx="40" cy="39" rx="15" ry="3.4" fill="none" stroke="#b3802f" stroke-width="0.5"/>
+
+  <!-- drum / core under top roof -->
+  <rect x="33" y="27" width="14" height="10" rx="2" fill="url(#pillar)" opacity="0.9" stroke="#5e1414" stroke-width="0.3"/>
+
+  <!-- top (1st) tier conical roof -->
+  <path d="M24 29 Q40 11 56 29 L51 33 Q40 23 29 33 Z" fill="url(#roof1)" stroke="#0e2548" stroke-width="0.4"/>
+
+  <!-- finial -->
+  <g>
+    <rect x="38.6" y="10" width="2.8" height="7" rx="1.3" fill="url(#finialGlow)" stroke="#8a661a" stroke-width="0.3"/>
+    <circle cx="40" cy="9" r="3.1" fill="url(#finialGlow)" stroke="#8a661a" stroke-width="0.4">
+      <animate attributeName="opacity" values="1;0.55;1" dur="2.4s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="40" cy="9" r="5.2" fill="#fff6c8" opacity="0.35">
+      <animate attributeName="opacity" values="0.1;0.5;0.1" dur="2.4s" repeatCount="indefinite"/>
+      <animate attributeName="r" values="4.2;6;4.2" dur="2.4s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+</svg>

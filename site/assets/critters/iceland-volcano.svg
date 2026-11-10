@@ -23,14 +23,6 @@
   <ellipse cx="66" cy="37" rx="9" ry="3.2" fill="#2a1a22"/>
   <path d="M46 56 Q50 50 56 52 M72 46 Q78 44 82 48" stroke="#c8dcf0" stroke-width="2" fill="none" stroke-linecap="round"/>
   <path d="M60 70 Q62 76 60 78 Q58 76 60 70Z" fill="#cfe8fa"><animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite"/></path>
-  <!-- 臉：一隻大眼、一隻眨眼，吐舌頭 -->
-  <circle cx="52" cy="82" r="8" fill="#fff"/><circle cx="54" cy="83" r="3.6" fill="#17171d"/><circle cx="55" cy="81.8" r="1.2" fill="#fff"/>
-  <path d="M70 82 Q76 77 82 82" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/>
-  <path d="M44 72 Q50 68 58 72" stroke="#17171d" stroke-width="2.4" fill="none" stroke-linecap="round"/>
-  <path d="M48 96 Q64 108 80 94" stroke="#17171d" stroke-width="2.6" fill="#17171d" stroke-linecap="round"/>
-  <path d="M62 101 Q62 114 70 112 Q76 108 74 98Z" fill="#ff6a7a" stroke="#17171d" stroke-width="1.4"/>
-  <path d="M68 102 V108" stroke="#e24a5a" stroke-width="1.2"/>
-  <circle cx="40" cy="92" r="4" fill="#e2402c" opacity=".35"/><circle cx="90" cy="90" r="4" fill="#e2402c" opacity=".35"/>
   <!-- 腳邊的冰塊 -->
   <g fill="#dff0fb" stroke="#9fc4de" stroke-width="1"><path d="M4 122 L10 108 L18 122Z"/><path d="M110 122 L118 104 L126 122Z"/><path d="M96 122 L100 112 L106 122Z"/></g>
 </svg>

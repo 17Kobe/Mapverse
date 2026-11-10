@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="kl-mt" x1="0.2" y1="0" x2="0.8" y2="1">
+      <stop offset="0%" stop-color="#8d7a68"/>
+      <stop offset="60%" stop-color="#6b5a4a"/>
+      <stop offset="100%" stop-color="#4a3e32"/>
+    </linearGradient>
+    <linearGradient id="kl-shade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#2e2620" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#2e2620" stop-opacity="0.55"/>
+    </linearGradient>
+    <linearGradient id="kl-snow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#d7e4ee"/>
+    </linearGradient>
+    <linearGradient id="kl-savanna" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#cBa84f" stop-opacity="0"/>
+      <stop offset="0%" stop-color="#d9b65a"/>
+      <stop offset="100%" stop-color="#b2903f"/>
+    </linearGradient>
+  </defs>
+
+  <!-- broad, gently-shouldered volcanic massif (Kibo) -->
+  <path d="M4 68 Q10 52 22 46 L34 28 Q38 20 42 28 L56 50 Q68 55 76 68 Q78 72 72 72 L8 72 Q2 72 4 68 Z"
+    fill="url(#kl-mt)" stroke="#362c22" stroke-width="0.6" stroke-linejoin="round"/>
+
+  <!-- right-side shading -->
+  <path d="M42 28 L56 50 Q68 55 76 68 Q78 72 72 72 L50 72 L44 40 Z" fill="url(#kl-shade)"/>
+
+  <!-- gentle slope contour lines -->
+  <path d="M20 50 L14 68 M30 40 L24 70 M50 44 L58 70 M60 54 L68 70" stroke="#362c22" stroke-width="0.5" opacity="0.35" fill="none" stroke-linecap="round"/>
+
+  <!-- flat-ish snow dome cap, Kilimanjaro's receding ice field -->
+  <path d="M34 28 Q38 20 42 28 L47 36 Q38 32 29 37 Z" fill="url(#kl-snow)" stroke="#bcd0da" stroke-width="0.4"/>
+  <path d="M29 37 Q38 32 47 36 L45 40 Q38 37 31 40 Z" fill="#ffffff" opacity="0.7"/>
+
+  <!-- thin wisp of cloud skirting the mid-slope -->
+  <ellipse cx="46" cy="44" rx="16" ry="2.6" fill="#f5f8fb" opacity="0.55">
+    <animate attributeName="opacity" values="0.25;0.6;0.25" dur="5s" repeatCount="indefinite"/>
+  </ellipse>
+
+  <!-- savanna foreground -->
+  <path d="M0 68 Q20 63 40 67 Q60 63 80 68 L80 80 L0 80 Z" fill="url(#kl-savanna)"/>
+
+  <!-- acacia tree silhouette, flat-topped, classic East-African foreground -->
+  <g>
+    <rect x="62" y="63" width="2.4" height="9" fill="#4a3420"/>
+    <path d="M55 64 Q63 58 72 64 Q66 61 63 63 Q60 61 55 64Z" fill="#45632f"/>
+  </g>
+
+  <!-- small elephant silhouette for scale/context -->
+  <g fill="#4a4540" opacity="0.9">
+    <path d="M10 72 Q9 67 13 65 Q17 62 21 65 Q24 63 25 66 Q27 65 27 68 L26 72 Q25 69 23 70 L22 72 L20 72 L19 69 Q16 70 14 72 L13 69 Q11 70 10 72Z"/>
+  </g>
+</svg>

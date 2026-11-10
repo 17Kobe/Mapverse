@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="hatGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e3c27e"/>
+      <stop offset="100%" stop-color="#a9793c"/>
+    </linearGradient>
+    <linearGradient id="jacketGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#eb4c3f"/>
+      <stop offset="100%" stop-color="#9f221d"/>
+    </linearGradient>
+    <linearGradient id="pantsGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#26355a"/>
+      <stop offset="100%" stop-color="#101827"/>
+    </linearGradient>
+    <linearGradient id="bootGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#53351f"/>
+      <stop offset="100%" stop-color="#241509"/>
+    </linearGradient>
+    <radialGradient id="faceGrad" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#ffdcb3"/>
+      <stop offset="100%" stop-color="#e3a876"/>
+    </radialGradient>
+    <radialGradient id="badgeGrad" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#fff6d0"/>
+      <stop offset="55%" stop-color="#e8c84a"/>
+      <stop offset="100%" stop-color="#9c7a22"/>
+    </radialGradient>
+    <radialGradient id="groundGrad" cx="50%" cy="25%" r="75%">
+      <stop offset="0%" stop-color="#8fc457"/>
+      <stop offset="100%" stop-color="#52842e"/>
+    </radialGradient>
+  </defs>
+
+  <ellipse cx="40" cy="77" rx="16" ry="4" fill="#3c5c22" opacity="0.45"/>
+  <ellipse cx="40" cy="76" rx="23" ry="6.5" fill="url(#groundGrad)"/>
+
+  <g>
+    <animateTransform attributeName="transform" type="rotate" values="-1.5 40 75;1.5 40 75;-1.5 40 75" dur="4.2s" repeatCount="indefinite"/>
+
+    <rect x="26.5" y="63" width="11" height="15" rx="3.5" fill="url(#bootGrad)" stroke="#1a0f06" stroke-width="0.5"/>
+    <rect x="42.5" y="63" width="11" height="15" rx="3.5" fill="url(#bootGrad)" stroke="#1a0f06" stroke-width="0.5"/>
+
+    <path d="M29,49 C24,54 23,60 27,64 L37,64 L37,55 L43,55 L43,64 L53,64 C57,60 56,54 51,49 Z"
+          fill="url(#pantsGrad)" stroke="#070b14" stroke-width="0.5"/>
+    <rect x="30.5" y="50" width="1.6" height="13" fill="#d9b23c"/>
+    <rect x="47.9" y="50" width="1.6" height="13" fill="#d9b23c"/>
+
+    <path d="M28,31 L22,49 L27,51 L32,33 Z" fill="url(#jacketGrad)" stroke="#6e1511" stroke-width="0.5"/>
+    <path d="M52,31 L58,49 L53,51 L48,33 Z" fill="url(#jacketGrad)" stroke="#6e1511" stroke-width="0.5"/>
+    <circle cx="22.5" cy="49.5" r="3" fill="url(#faceGrad)" stroke="#b08354" stroke-width="0.4"/>
+    <circle cx="57.5" cy="49.5" r="3" fill="url(#faceGrad)" stroke="#b08354" stroke-width="0.4"/>
+
+    <path d="M28,30 L52,30 L50,50 L30,50 Z" fill="url(#jacketGrad)" stroke="#6e1511" stroke-width="0.5"/>
+    <path d="M35,30 L45,30 L42,25.5 L38,25.5 Z" fill="#8c1b16" stroke="#5c0f0c" stroke-width="0.4"/>
+
+    <path d="M50,31 L32,48.5" stroke="#241608" stroke-width="2.4" stroke-linecap="round"/>
+    <rect x="28.5" y="46.5" width="23" height="3.2" fill="#241608"/>
+    <rect x="38.2" y="46" width="4" height="4" rx="0.6" fill="url(#badgeGrad)" stroke="#7a5a1a" stroke-width="0.4"/>
+
+    <circle cx="40" cy="33" r="1.2" fill="url(#badgeGrad)"/>
+    <circle cx="40" cy="38" r="1.2" fill="url(#badgeGrad)"/>
+    <circle cx="40" cy="43" r="1.2" fill="url(#badgeGrad)"/>
+
+    <circle cx="34.5" cy="35" r="2.6" fill="url(#badgeGrad)" stroke="#7a5a1a" stroke-width="0.4"/>
+    <circle cx="33.6" cy="34" r="0.9" fill="#fffbe8">
+      <animate attributeName="opacity" values="0.15;0.95;0.15" dur="2.4s" repeatCount="indefinite"/>
+    </circle>
+
+    <rect x="37" y="25" width="6" height="5" fill="url(#faceGrad)"/>
+    <circle cx="40" cy="21" r="7.3" fill="url(#faceGrad)" stroke="#b08354" stroke-width="0.45"/>
+    <path d="M35.5,23.5 Q40,26 44.5,23.5" fill="none" stroke="#9a6a46" stroke-width="0.7" stroke-linecap="round"/>
+
+    <ellipse cx="40" cy="16.5" rx="14.5" ry="4" fill="url(#hatGrad)" stroke="#7a5a2a" stroke-width="0.5"/>
+    <path d="M29.5,17 C29.5,9.5 34,5.2 40,4.3 C46,5.2 50.5,9.5 50.5,17 C47,15 43.5,14.3 40,14.3 C36.5,14.3 33,15 29.5,17 Z"
+          fill="url(#hatGrad)" stroke="#7a5a2a" stroke-width="0.5"/>
+    <path d="M40,5 L40,14.3" stroke="#7a5a2a" stroke-width="0.6" stroke-linecap="round"/>
+    <path d="M33,15.5 C35.5,12 38,9.5 40,5.3" fill="none" stroke="#8a6936" stroke-width="0.4" opacity="0.7"/>
+    <path d="M47,15.5 C44.5,12 42,9.5 40,5.3" fill="none" stroke="#8a6936" stroke-width="0.4" opacity="0.7"/>
+    <rect x="30.5" y="14.8" width="19" height="2.4" fill="#2a1a0c"/>
+  </g>
+</svg>

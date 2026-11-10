@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+<defs>
+<linearGradient id="beer" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="#ffe066"/>
+<stop offset="55%" stop-color="#ffb627"/>
+<stop offset="100%" stop-color="#d47e0f"/>
+</linearGradient>
+<linearGradient id="foot" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="#e8a832"/>
+<stop offset="100%" stop-color="#a86a0f"/>
+</linearGradient>
+<radialGradient id="foam" cx="35%" cy="25%" r="80%">
+<stop offset="0%" stop-color="#ffffff"/>
+<stop offset="100%" stop-color="#eee3c9"/>
+</radialGradient>
+<linearGradient id="handle" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0%" stop-color="#ffcf5c"/>
+<stop offset="100%" stop-color="#c17f16"/>
+</linearGradient>
+<linearGradient id="pretzel" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="#d79a4c"/>
+<stop offset="100%" stop-color="#8f5a1f"/>
+</linearGradient>
+</defs>
+
+<!-- pretzel, sitting beside the stein -->
+<g>
+<path d="M4,78 C2,66 6,56 15,55 C24,54 27,62 21,65 C16,68 11,64 13,58 C15,52 25,51 29,58 C33,65 28,73 19,74 C16,74.5 14,76 13,78" fill="none" stroke="url(#pretzel)" stroke-width="7.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M4,78 C2,66 6,56 15,55 C24,54 27,62 21,65 C16,68 11,64 13,58 C15,52 25,51 29,58 C33,65 28,73 19,74 C16,74.5 14,76 13,78" fill="none" stroke="#6e431a" stroke-width="7.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.18"/>
+<circle cx="10" cy="64" r="0.9" fill="#fff8e6"/>
+<circle cx="18" cy="59" r="0.8" fill="#fff8e6"/>
+<circle cx="24" cy="63" r="0.9" fill="#fff8e6"/>
+<circle cx="15" cy="70" r="0.8" fill="#fff8e6"/>
+<circle cx="25" cy="70" r="0.8" fill="#fff8e6"/>
+</g>
+
+<!-- stein handle -->
+<path d="M60,45 C72,46 73,66 61,70 L61,64 C68,61 67,51 59,50 Z" fill="url(#handle)" stroke="#8a5a0f" stroke-width="0.6"/>
+
+<!-- stein foot -->
+<path d="M29,73 L61,73 L63,78 L27,78 Z" fill="url(#foot)" stroke="#7a4e10" stroke-width="0.6"/>
+
+<!-- stein body (beer) -->
+<path d="M28,40 C28,37 30,35 33,35 L57,35 C60,35 62,37 62,40 L61,73 L29,73 Z" fill="url(#beer)" stroke="#9c6513" stroke-width="0.7"/>
+
+<!-- checkered bavarian band -->
+<g opacity="0.92">
+<rect x="31" y="63.5" width="6" height="6" fill="#2255a4" transform="rotate(45 34 66.5)"/>
+<rect x="38" y="63.5" width="6" height="6" fill="#f2f6fb" transform="rotate(45 41 66.5)"/>
+<rect x="45" y="63.5" width="6" height="6" fill="#2255a4" transform="rotate(45 48 66.5)"/>
+<rect x="52" y="63.5" width="6" height="6" fill="#f2f6fb" transform="rotate(45 55 66.5)"/>
+</g>
+
+<!-- dimple facet lines -->
+<path d="M36,38 C35,50 35,62 37,72" fill="none" stroke="#b9780f" stroke-width="0.6" opacity="0.4"/>
+<path d="M54,38 C55,50 55,62 53,72" fill="none" stroke="#b9780f" stroke-width="0.6" opacity="0.4"/>
+
+<!-- glass shine -->
+<rect x="31" y="39" width="4" height="28" rx="2" fill="#ffffff" opacity="0.22" transform="skewX(-8)"/>
+
+<!-- rim -->
+<ellipse cx="45" cy="35" rx="14.5" ry="3" fill="#f3c23a" stroke="#a9711a" stroke-width="0.5"/>
+
+<!-- foam, overflowing the rim -->
+<path d="M30,34 C28,26 34,21 40,24 C43,19 51,19 53,24 C59,21 64,27 60,34 C62,40 56,45 50,42 C48,47 40,47 38,42 C32,45 27,40 30,34 Z" fill="url(#foam)" stroke="#d8c79f" stroke-width="0.5"/>
+<path d="M30,34 C27,38 28,44 33,46 C32,50 36,53 39,50" fill="url(#foam)" stroke="#d8c79f" stroke-width="0.5"/>
+
+<!-- bubbling foam bubbles -->
+<circle cx="38" cy="29" r="1.6" fill="#ffffff">
+<animate attributeName="r" values="1.6;2.3;1.6" dur="2.6s" repeatCount="indefinite"/>
+</circle>
+<circle cx="47" cy="25" r="1.3" fill="#ffffff">
+<animate attributeName="r" values="1.3;2;1.3" dur="2.1s" begin="0.4s" repeatCount="indefinite"/>
+</circle>
+<circle cx="55" cy="30" r="1.4" fill="#ffffff">
+<animate attributeName="cy" values="30;27;30" dur="2.4s" begin="0.8s" repeatCount="indefinite"/>
+</circle>
+<circle cx="42" cy="38" r="1" fill="#fffdf4" opacity="0.9">
+<animate attributeName="opacity" values="0.9;0.3;0.9" dur="1.8s" repeatCount="indefinite"/>
+</circle>
+
+<!-- sparkle on the glass -->
+<g opacity="0.9">
+<path d="M53,46 L54.2,49 L57,50 L54.2,51 L53,54 L51.8,51 L49,50 L51.8,49 Z" fill="#ffffff">
+<animate attributeName="opacity" values="0.1;1;0.1" dur="2.8s" repeatCount="indefinite"/>
+</path>
+</g>
+</svg>
