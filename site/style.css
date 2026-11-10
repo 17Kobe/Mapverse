@@ -285,11 +285,13 @@ button{font:inherit;color:inherit;cursor:pointer}
 
 /* ---------- 骰子（原「上帝之手」的位置，右下角）：真正的 CSS 3D 立方體，大富翁風格 ---------- */
 #diceBtn{
-  position:absolute;z-index:5;right:14px;bottom:24px;display:flex;align-items:center;justify-content:center;
+  position:absolute;z-index:5;right:14px;bottom:24px;display:none;align-items:center;justify-content:center;
   width:92px;height:92px;border:none;background:none;cursor:pointer;padding:0;
   filter:drop-shadow(0 6px 10px rgba(0,0,0,.45));
   transition:filter .15s,transform .15s;
 }
+/* 骰子只在「遊戲」篩選才有意義（之後桃太郎電鐵式玩法），其他篩選下隱藏，避免佔位置又讓人誤以為是上帝之手 */
+#stage.region-game #diceBtn{display:flex}
 #diceBtn:hover{transform:translateY(-2px) scale(1.04)}
 #diceBtn:active{transform:translateY(1px) scale(.97)}
 #diceBtn:focus{outline:none}

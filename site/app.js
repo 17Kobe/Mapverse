@@ -3100,6 +3100,7 @@
     function applyRegion(animate) {
         if (!projection) return;
         paintLand(); // 國界只顯示目前篩選相關的國家
+        $('#stage')?.classList.toggle('region-game', state.activeRegion === 'game');
         const tr = nearestCopy(regionTransform(state.activeRegion));
         animateTo(tr, animate);
         prefetchChips();
