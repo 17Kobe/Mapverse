@@ -35,6 +35,7 @@
 
   <g id="tailGroup">
     <path d="M51 50 Q65 45 74 55 Q79 61 72 66 Q71 58 60 55 Q53 54 48 51 Z" fill="url(#skin)" stroke="#2c3922" stroke-width="0.5"/>
+    <animateTransform attributeName="transform" type="rotate" values="-5 50 54;7 50 54;-5 50 54" dur="1.7s" repeatCount="indefinite"/>
   </g>
 
   <path d="M45 52 Q48 62 44 70 Q41 77 48 79 Q53 79 51 72 Q54 64 53 54 Z" fill="url(#skinDark)" stroke="#2c3922" stroke-width="0.5"/>
@@ -67,6 +68,4 @@
     <ellipse cx="43" cy="40" rx="2.8" ry="1.8"/>
     <ellipse cx="29" cy="47" rx="2.2" ry="1.4"/>
   </g>
-
-  <animateTransform xlink:href="#tailGroup" attributeName="transform" type="rotate" values="-5 50 54;7 50 54;-5 50 54" dur="1.7s" repeatCount="indefinite"/>
 </svg>

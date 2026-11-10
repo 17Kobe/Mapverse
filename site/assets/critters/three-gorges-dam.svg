@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="tgDam" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e3e6e2"/>
+      <stop offset="55%" stop-color="#b7bcb4"/>
+      <stop offset="100%" stop-color="#7d8277"/>
+    </linearGradient>
+    <linearGradient id="tgCliff" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#9aab86"/>
+      <stop offset="100%" stop-color="#4f5c42"/>
+    </linearGradient>
+    <linearGradient id="tgWaterUp" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#bfe0e6"/>
+      <stop offset="100%" stop-color="#3f7d8c"/>
+    </linearGradient>
+    <linearGradient id="tgSpill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#d8f1f5"/>
+    </linearGradient>
+  </defs>
+
+  <!-- gorge walls either side -->
+  <path d="M0,0 L14,0 L18,40 L10,80 L0,80 Z" fill="url(#tgCliff)" stroke="#333d2a" stroke-width="0.5"/>
+  <path d="M80,0 L66,0 L62,40 L70,80 L80,80 Z" fill="url(#tgCliff)" stroke="#333d2a" stroke-width="0.5"/>
+
+  <!-- upstream reservoir, calm water above the dam -->
+  <path d="M14,30 L66,30 L62,46 L18,46 Z" fill="url(#tgWaterUp)" opacity="0.9"/>
+
+  <!-- the dam wall itself -->
+  <path d="M12,46 L68,46 L66,58 L14,58 Z" fill="url(#tgDam)" stroke="#565b52" stroke-width="0.6"/>
+  <!-- spillway gate piers -->
+  <g fill="#8d9387" stroke="#565b52" stroke-width="0.4">
+    <rect x="20" y="40" width="3.4" height="18"/>
+    <rect x="30" y="40" width="3.4" height="18"/>
+    <rect x="40" y="40" width="3.4" height="18"/>
+    <rect x="50" y="40" width="3.4" height="18"/>
+    <rect x="58" y="40" width="3.4" height="18"/>
+  </g>
+
+  <!-- water discharging through the spillway gates, downstream side -->
+  <g>
+    <path d="M24,58 C23,64 25,70 23,78" fill="none" stroke="url(#tgSpill)" stroke-width="2.6" stroke-linecap="round" opacity="0.85">
+      <animate attributeName="d" values="M24,58 C23,64 25,70 23,78;M24,58 C25,64 23,70 25,78;M24,58 C23,64 25,70 23,78" dur="0.8s" repeatCount="indefinite"/>
+    </path>
+    <path d="M35,58 C34,65 36,72 34,78" fill="none" stroke="url(#tgSpill)" stroke-width="3" stroke-linecap="round" opacity="0.9">
+      <animate attributeName="d" values="M35,58 C34,65 36,72 34,78;M35,58 C36,65 34,72 36,78;M35,58 C34,65 36,72 34,78" dur="0.7s" repeatCount="indefinite"/>
+    </path>
+    <path d="M46,58 C45,64 47,70 45,78" fill="none" stroke="url(#tgSpill)" stroke-width="2.8" stroke-linecap="round" opacity="0.85">
+      <animate attributeName="d" values="M46,58 C45,64 47,70 45,78;M46,58 C47,64 45,70 47,78;M46,58 C45,64 47,70 45,78" dur="0.75s" repeatCount="indefinite"/>
+    </path>
+    <path d="M56,58 C55,65 57,72 55,78" fill="none" stroke="url(#tgSpill)" stroke-width="2.6" stroke-linecap="round" opacity="0.85">
+      <animate attributeName="d" values="M56,58 C55,65 57,72 55,78;M56,58 C57,65 55,72 57,78;M56,58 C55,65 57,72 55,78" dur="0.85s" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <ellipse cx="40" cy="78" rx="26" ry="3.2" fill="#eaf8fb" opacity="0.6"/>
+  <g fill="#ffffff" opacity="0.6">
+    <circle cx="26" cy="74" r="1.2">
+      <animate attributeName="opacity" values="0.3;0.8;0.3" dur="1.2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="44" cy="76" r="1.1">
+      <animate attributeName="opacity" values="0.8;0.3;0.8" dur="1.4s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+</svg>

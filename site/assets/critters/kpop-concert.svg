@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="kpStage" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2a1e4a"/>
+      <stop offset="100%" stop-color="#140b28"/>
+    </linearGradient>
+    <linearGradient id="kpSpot1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ff7ad9" stop-opacity="0.75"/>
+      <stop offset="100%" stop-color="#ff7ad9" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="kpSpot2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6fd6ff" stop-opacity="0.75"/>
+      <stop offset="100%" stop-color="#6fd6ff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- dark stage platform -->
+  <path d="M0,80 L0,66 Q40,60 80,66 L80,80 Z" fill="url(#kpStage)"/>
+
+  <!-- crossing spotlight beams sweeping the stage -->
+  <g opacity="0.8">
+    <polygon points="12,0 30,0 46,68 26,68" fill="url(#kpSpot1)">
+      <animateTransform attributeName="transform" type="rotate" values="-8 20 0;8 20 0;-8 20 0" dur="3.2s" repeatCount="indefinite"/>
+    </polygon>
+    <polygon points="50,0 68,0 56,68 36,68" fill="url(#kpSpot2)">
+      <animateTransform attributeName="transform" type="rotate" values="8 58 0;-8 58 0;8 58 0" dur="2.8s" repeatCount="indefinite"/>
+    </polygon>
+  </g>
+
+  <!-- three idol silhouettes mid-performance -->
+  <g fill="#1a1230">
+    <!-- left dancer, arm raised -->
+    <g>
+      <ellipse cx="22" cy="42" rx="3" ry="3.4"/>
+      <path d="M19,45 Q22,52 20,62 L24,62 Q26,52 25,45 Z"/>
+      <path d="M19,46 L12,38" stroke="#1a1230" stroke-width="2.4" stroke-linecap="round" fill="none">
+        <animateTransform attributeName="transform" type="rotate" values="0 19 46;-15 19 46;0 19 46" dur="1.6s" repeatCount="indefinite"/>
+      </path>
+      <path d="M24,46 L29,55" stroke="#1a1230" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+    </g>
+    <!-- centre lead singer, holding a mic up -->
+    <g>
+      <ellipse cx="40" cy="38" rx="3.4" ry="3.8"/>
+      <path d="M36,42 Q40,50 38,63 L43,63 Q45,50 44,42 Z"/>
+      <path d="M37,42 L30,34" stroke="#1a1230" stroke-width="2.6" stroke-linecap="round" fill="none">
+        <animateTransform attributeName="transform" type="rotate" values="0 37 42;-10 37 42;0 37 42" dur="1.4s" repeatCount="indefinite"/>
+      </path>
+      <circle cx="29" cy="32" r="1.6" fill="#d8d8e0"/>
+      <path d="M43,42 L49,48" stroke="#1a1230" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+    </g>
+    <!-- right dancer -->
+    <g>
+      <ellipse cx="58" cy="42" rx="3" ry="3.4"/>
+      <path d="M55,45 Q58,52 56,62 L60,62 Q62,52 61,45 Z"/>
+      <path d="M61,46 L68,38" stroke="#1a1230" stroke-width="2.4" stroke-linecap="round" fill="none">
+        <animateTransform attributeName="transform" type="rotate" values="0 61 46;15 61 46;0 61 46" dur="1.7s" repeatCount="indefinite"/>
+      </path>
+      <path d="M56,46 L51,55" stroke="#1a1230" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+    </g>
+  </g>
+
+  <!-- sea of glowing fan lightsticks below the stage -->
+  <g>
+    <circle cx="8" cy="72" r="1" fill="#ff7ad9"><animate attributeName="opacity" values="0.3;1;0.3" dur="0.9s" repeatCount="indefinite"/></circle>
+    <circle cx="16" cy="76" r="1" fill="#6fd6ff"><animate attributeName="opacity" values="1;0.3;1" dur="1.1s" repeatCount="indefinite"/></circle>
+    <circle cx="26" cy="73" r="1" fill="#ffe36f"><animate attributeName="opacity" values="0.3;1;0.3" dur="1s" begin="0.3s" repeatCount="indefinite"/></circle>
+    <circle cx="36" cy="77" r="1" fill="#ff7ad9"><animate attributeName="opacity" values="1;0.3;1" dur="0.8s" begin="0.2s" repeatCount="indefinite"/></circle>
+    <circle cx="46" cy="74" r="1" fill="#6fd6ff"><animate attributeName="opacity" values="0.3;1;0.3" dur="1.2s" repeatCount="indefinite"/></circle>
+    <circle cx="56" cy="77" r="1" fill="#ffe36f"><animate attributeName="opacity" values="1;0.3;1" dur="0.9s" begin="0.4s" repeatCount="indefinite"/></circle>
+    <circle cx="65" cy="73" r="1" fill="#ff7ad9"><animate attributeName="opacity" values="0.3;1;0.3" dur="1.1s" begin="0.1s" repeatCount="indefinite"/></circle>
+    <circle cx="73" cy="76" r="1" fill="#6fd6ff"><animate attributeName="opacity" values="1;0.3;1" dur="1s" begin="0.5s" repeatCount="indefinite"/></circle>
+  </g>
+</svg>

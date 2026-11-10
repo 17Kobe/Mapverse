@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="wbBronze" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e0a84f"/>
+      <stop offset="45%" stop-color="#b9842f"/>
+      <stop offset="100%" stop-color="#7a5620"/>
+    </linearGradient>
+    <linearGradient id="wbShine" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fbe3a0" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#fbe3a0" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="wbBase" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#9aa0a4"/>
+      <stop offset="100%" stop-color="#5c6164"/>
+    </linearGradient>
+  </defs>
+
+  <!-- granite plaza base -->
+  <path d="M4,80 L4,72 Q40,67 76,72 L76,80 Z" fill="url(#wbBase)" stroke="#3c4044" stroke-width="0.5"/>
+
+  <!-- bronze bull, lowered head and horns, charging stance -->
+  <!-- hind legs -->
+  <path d="M55,56 C60,60 63,66 62,74 L57,74 C56,67 54,61 51,57 Z" fill="url(#wbBronze)" stroke="#5c3f16" stroke-width="0.5"/>
+  <path d="M46,58 C49,63 50,68 49,74 L44,74 C43,68 42,63 42,58 Z" fill="url(#wbBronze)" stroke="#5c3f16" stroke-width="0.5"/>
+
+  <!-- body -->
+  <path d="M18,48 C18,38 28,32 42,33 C54,34 62,42 60,52 C58,60 48,64 36,63 C25,62 18,56 18,48 Z"
+        fill="url(#wbBronze)" stroke="#5c3f16" stroke-width="0.6"/>
+  <path d="M22,42 C26,38 34,36 40,37 C34,38 28,41 25,46 Z" fill="url(#wbShine)"/>
+
+  <!-- front legs, braced wide and powerful -->
+  <path d="M22,54 C18,59 15,66 16,74 L22,74 C23,66 25,60 27,55 Z" fill="url(#wbBronze)" stroke="#5c3f16" stroke-width="0.5"/>
+  <path d="M30,58 C28,63 27,68 28,74 L33,74 C34,68 34,63 34,58 Z" fill="url(#wbBronze)" stroke="#5c3f16" stroke-width="0.5"/>
+
+  <!-- tail with a curled tuft -->
+  <path d="M60,46 C66,44 70,38 69,32" fill="none" stroke="url(#wbBronze)" stroke-width="2.4" stroke-linecap="round"/>
+  <circle cx="69" cy="31" r="2.2" fill="url(#wbBronze)" stroke="#5c3f16" stroke-width="0.4"/>
+
+  <!-- lowered, muscular neck and head -->
+  <path d="M18,48 C13,46 7,44 4,46 C2,48 3,52 7,54 C11,55 15,52 18,48 Z"
+        fill="url(#wbBronze)" stroke="#5c3f16" stroke-width="0.6"/>
+  <!-- horns, swept forward -->
+  <path d="M5,45 C1,42 -2,38 -1,34 C2,37 5,40 8,43 Z" fill="url(#wbBronze)" stroke="#5c3f16" stroke-width="0.5"/>
+  <path d="M8,47 C5,43 3,38 5,34 C7,38 9,42 10,46 Z" fill="url(#wbBronze)" stroke="#5c3f16" stroke-width="0.5"/>
+  <!-- ear -->
+  <path d="M10,48 L15,45 L13,50 Z" fill="url(#wbBronze)" stroke="#5c3f16" stroke-width="0.4"/>
+  <!-- eye and nostril -->
+  <circle cx="7" cy="49" r="0.8" fill="#3a2810"/>
+  <ellipse cx="5" cy="53" rx="1.1" ry="0.7" fill="#3a2810"/>
+
+  <!-- gleam that slides across the polished bronze -->
+  <ellipse cx="34" cy="44" rx="10" ry="3" fill="url(#wbShine)" opacity="0.7">
+    <animate attributeName="cx" values="22;50;22" dur="4s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.2;0.7;0.2" dur="4s" repeatCount="indefinite"/>
+  </ellipse>
+</svg>

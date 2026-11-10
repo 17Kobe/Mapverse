@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="wlWater" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#bfe4e8"/>
+      <stop offset="100%" stop-color="#4f8f9c"/>
+    </linearGradient>
+    <linearGradient id="wlPagoda" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e9ddc2"/>
+      <stop offset="100%" stop-color="#b8a376"/>
+    </linearGradient>
+    <radialGradient id="wlMoon" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fffdf0"/>
+      <stop offset="100%" stop-color="#f0e8c8"/>
+    </radialGradient>
+  </defs>
+
+  <!-- lake water -->
+  <path d="M0,80 L0,54 Q40,44 80,54 L80,80 Z" fill="url(#wlWater)"/>
+  <g stroke="#e9fbfb" stroke-width="0.6" fill="none" opacity="0.5">
+    <path d="M4,62 Q20,58 36,62"/>
+    <path d="M46,64 Q60,60 76,64"/>
+  </g>
+
+  <!-- moon reflected on the water -->
+  <circle cx="40" cy="20" r="7" fill="url(#wlMoon)">
+    <animate attributeName="opacity" values="0.85;1;0.85" dur="3s" repeatCount="indefinite"/>
+  </circle>
+  <ellipse cx="40" cy="60" rx="6" ry="2.2" fill="#fffdf0" opacity="0.5">
+    <animate attributeName="ry" values="1.6;2.6;1.6" dur="3s" repeatCount="indefinite"/>
+  </ellipse>
+
+  <!-- willow silhouette on the left bank -->
+  <path d="M6,58 C6,46 10,36 14,30" fill="none" stroke="#3c5a3a" stroke-width="2"/>
+  <g stroke="#4f7a4a" stroke-width="1" fill="none" opacity="0.8">
+    <path d="M14,30 C10,38 8,46 6,52"/>
+    <path d="M14,30 C16,38 16,46 15,54"/>
+    <path d="M14,30 C19,37 20,44 19,50"/>
+  </g>
+
+  <!-- three stone pagoda towers rising from the lake (三潭印月) -->
+  <g>
+    <animateTransform attributeName="transform" type="translate" values="0,0; 0,0.6; 0,0" dur="4s" repeatCount="indefinite"/>
+    <g transform="translate(28,0)">
+      <ellipse cx="0" cy="62" rx="6" ry="2" fill="#cdbd94" opacity="0.8"/>
+      <rect x="-5" y="46" width="10" height="16" rx="1.5" fill="url(#wlPagoda)" stroke="#75633f" stroke-width="0.5"/>
+      <ellipse cx="0" cy="46" rx="6.5" ry="2" fill="#9c875a" stroke="#5c4c30" stroke-width="0.4"/>
+      <circle cx="0" cy="40" r="3.4" fill="url(#wlPagoda)" stroke="#75633f" stroke-width="0.4"/>
+      <rect x="-1" y="33" width="2" height="6" fill="#75633f"/>
+      <circle cx="-2.3" cy="50" r="1.1" fill="#4a3d26"/>
+      <circle cx="2.3" cy="50" r="1.1" fill="#4a3d26"/>
+      <circle cx="-2.3" cy="56" r="1.1" fill="#4a3d26"/>
+      <circle cx="2.3" cy="56" r="1.1" fill="#4a3d26"/>
+    </g>
+    <g transform="translate(48,4)">
+      <ellipse cx="0" cy="62" rx="6" ry="2" fill="#cdbd94" opacity="0.8"/>
+      <rect x="-5" y="46" width="10" height="16" rx="1.5" fill="url(#wlPagoda)" stroke="#75633f" stroke-width="0.5"/>
+      <ellipse cx="0" cy="46" rx="6.5" ry="2" fill="#9c875a" stroke="#5c4c30" stroke-width="0.4"/>
+      <circle cx="0" cy="40" r="3.4" fill="url(#wlPagoda)" stroke="#75633f" stroke-width="0.4"/>
+      <rect x="-1" y="33" width="2" height="6" fill="#75633f"/>
+      <circle cx="-2.3" cy="50" r="1.1" fill="#4a3d26"/>
+      <circle cx="2.3" cy="50" r="1.1" fill="#4a3d26"/>
+      <circle cx="-2.3" cy="56" r="1.1" fill="#4a3d26"/>
+      <circle cx="2.3" cy="56" r="1.1" fill="#4a3d26"/>
+    </g>
+    <g transform="translate(38,10)">
+      <ellipse cx="0" cy="62" rx="6.5" ry="2.1" fill="#cdbd94" opacity="0.85"/>
+      <rect x="-5.5" y="45" width="11" height="17" rx="1.5" fill="url(#wlPagoda)" stroke="#75633f" stroke-width="0.5"/>
+      <ellipse cx="0" cy="45" rx="7" ry="2.1" fill="#9c875a" stroke="#5c4c30" stroke-width="0.4"/>
+      <circle cx="0" cy="38.5" r="3.7" fill="url(#wlPagoda)" stroke="#75633f" stroke-width="0.4"/>
+      <rect x="-1" y="31" width="2" height="6.5" fill="#75633f"/>
+      <circle cx="-2.5" cy="50" r="1.2" fill="#4a3d26"/>
+      <circle cx="2.5" cy="50" r="1.2" fill="#4a3d26"/>
+      <circle cx="-2.5" cy="57" r="1.2" fill="#4a3d26"/>
+      <circle cx="2.5" cy="57" r="1.2" fill="#4a3d26"/>
+    </g>
+  </g>
+</svg>

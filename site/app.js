@@ -475,12 +475,12 @@
         { src: 'critters/great-blue-hole.svg', lon: -87.5, lat: 17.3, mode: 'still', face: 'F', s: 1.2, sea: true, deco: true, landmark: true }, // 大藍洞
         { src: 'critters/chernobyl.svg', lon: 30.1, lat: 51.4, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },      // 車諾比
         { src: 'critters/kiyomizudera.svg', lon: 135.8, lat: 34.99, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 清水寺
-        { src: 'critters/osaka-castle.svg', lon: 135.5, lat: 34.6, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },  // 大阪城
+        { src: 'critters/osaka-castle.svg', lon: 134.607, lat: 34.2, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },  // 大阪城
         { src: 'critters/forbidden-city.svg', lon: 116.4, lat: 39.9, mode: 'still', face: 'F', s: 1.2, deco: true, landmark: true }, // 紫禁城
         { src: 'critters/terracotta-army.svg', lon: 109.3, lat: 34.4, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 兵馬俑
         { src: 'critters/zhangjiajie.svg', lon: 110.5, lat: 29.1, mode: 'still', face: 'F', s: 1.2, deco: true, landmark: true },   // 張家界
         { src: 'critters/gyeongbokgung.svg', lon: 126.98, lat: 37.58, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 景福宮
-        { src: 'critters/n-seoul-tower.svg', lon: 126.99, lat: 37.55, mode: 'still', face: 'F', s: 1.0, deco: true, landmark: true }, // 首爾塔（南山）
+        { src: 'critters/n-seoul-tower.svg', lon: 127.542, lat: 36.51, mode: 'still', face: 'F', s: 1.0, deco: true, landmark: true }, // 首爾塔（南山）：原座標和景福宮幾乎重疊（僅差 0.03 度），地標碰撞收起邏輯會讓它幾乎永遠被景福宮蓋住而不顯示，拉開距離修正
         { src: 'critters/varanasi.svg', lon: 83.0, lat: 25.3, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },       // 瓦拉納西
         { src: 'critters/red-fort.svg', lon: 77.24, lat: 28.66, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },     // 紅堡
         // ── 第三批地標 ────────────────────────────────────────────────
@@ -555,17 +555,17 @@
         { src: 'critters/puffin.svg', lon: -14.0, lat: 65.5, mode: 'bob', face: 'F', s: 0.8, sea: true, deco: true }, // 冰島：海鸚
         // ── 第七批補充（用戶列的 12 個世界地標） ──────────────────────
         { src: 'critters/grand-palace.svg', lon: 100.49, lat: 13.75, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 泰國：大皇宮與玉佛寺
-        { src: 'critters/wat-arun.svg', lon: 100.47, lat: 13.74, mode: 'still', face: 'F', s: 1.1, sea: true, deco: true, landmark: true }, // 泰國：鄭王廟（黎明寺）
-        { src: 'critters/brandenburg-gate.svg', lon: 13.35, lat: 52.50, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 德國：布蘭登堡門
+        { src: 'critters/wat-arun.svg', lon: 101.586, lat: 14.593, mode: 'still', face: 'F', s: 1.1, sea: true, deco: true, landmark: true }, // 泰國：鄭王廟（黎明寺）
+        { src: 'critters/brandenburg-gate.svg', lon: 14.1, lat: 53.256, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 德國：布蘭登堡門
         { src: 'critters/tower-bridge.svg', lon: -0.0754, lat: 51.5055, mode: 'still', face: 'F', s: 1.1, sea: true, deco: true, landmark: true }, // 英國：倫敦塔橋
         { src: 'critters/venice-canal.svg', lon: 12.3155, lat: 45.4408, mode: 'still', face: 'F', s: 1.1, sea: true, deco: true, landmark: true }, // 義大利：威尼斯水都
         { src: 'critters/empire-state.svg', lon: -73.9857, lat: 40.7484, mode: 'still', face: 'F', s: 1.2, deco: true, landmark: true }, // 美國：帝國大廈
         { src: 'critters/hollywood-sign.svg', lon: -118.3215, lat: 34.1341, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 美國：好萊塢標誌
         { src: 'critters/alishan-train.svg', lon: 120.8025, lat: 23.5088, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 台灣：阿里山森林小火車
         { src: 'critters/itsukushima-torii.svg', lon: 132.32, lat: 34.296, mode: 'still', face: 'F', s: 1.1, sea: true, deco: true, landmark: true }, // 日本：嚴島神社大鳥居
-        { src: 'critters/burj-al-arab.svg', lon: 55.1853, lat: 25.1412, mode: 'still', face: 'F', s: 1.1, sea: true, deco: true, landmark: true }, // 阿聯：帆船飯店
+        { src: 'critters/burj-al-arab.svg', lon: 53.884, lat: 24.35, mode: 'still', face: 'F', s: 1.1, sea: true, deco: true, landmark: true }, // 阿聯：帆船飯店
         { src: 'critters/hobbiton.svg', lon: 175.6818, lat: -37.8722, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 紐西蘭：哈比村
-        { src: 'critters/dead-sea.svg', lon: 35.5, lat: 31.5, mode: 'still', face: 'F', s: 1.1, sea: true, deco: true, landmark: true }, // 死海
+        { src: 'critters/dead-sea.svg', lon: 36.366, lat: 32, mode: 'still', face: 'F', s: 1.1, sea: true, deco: true, landmark: true }, // 死海
         // ── 第八批補充（用戶列的世界地標） ──────────────────────────
         { src: 'critters/matterhorn.svg', lon: 7.6586, lat: 45.9763, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 瑞士/義大利：馬特洪峰
         { src: 'critters/kilimanjaro.svg', lon: 37.3556, lat: -3.0674, mode: 'still', face: 'F', s: 1.3, deco: true, landmark: true }, // 坦尚尼亞：吉力馬札羅山
@@ -575,19 +575,40 @@
         { src: 'critters/darvaza-crater.svg', lon: 58.4396, lat: 40.2522, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 土庫曼：地獄之門
         // ── 第九批補充（太魯閣、雷門燈籠、雙層巴士、凱旋門） ──────────
         { src: 'critters/taroko-gorge.svg', lon: 121.62, lat: 24.16, mode: 'still', face: 'F', s: 1.1, sea: true, deco: true, landmark: true }, // 台灣：太魯閣峽谷
-        { src: 'critters/kaminarimon-lantern.svg', lon: 139.796, lat: 35.7148, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 日本：淺草寺雷門燈籠
+        { src: 'critters/kaminarimon-lantern.svg', lon: 139.296, lat: 36.581, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 日本：淺草寺雷門燈籠
         { src: 'critters/double-decker-bus.svg', lon: -1.5, lat: 52.3, mode: 'wander', s: 1.0, deco: true, maxDeg: 2 }, // 英國：紅色雙層巴士
         { src: 'critters/arc-de-triomphe.svg', lon: 2.295, lat: 48.8738, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 法國：凱旋門
         // ── 第十批補充（剩下 9 個：黑熊、龜船、天壇、舞龍、海狸、騎警、熱氣球、啤酒節、嘟嘟車） ──
         { src: 'critters/formosan-black-bear.svg', lon: 121.0, lat: 23.7, mode: 'wander', s: 1.0, deco: true, maxDeg: 2 }, // 台灣：台灣黑熊
-        { src: 'critters/turtle-ship.svg', lon: 128.0, lat: 34.8, mode: 'bob', s: 1.1, sea: true, deco: true, landmark: true }, // 南韓：李舜臣龜船
-        { src: 'critters/temple-of-heaven.svg', lon: 116.6, lat: 39.7, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 中國：天壇
+        { src: 'critters/turtle-ship.svg', lon: 128.3, lat: 33.8, mode: 'bob', s: 1.1, sea: true, deco: true, landmark: true }, // 南韓：李舜臣龜船（移到濟州島北側外海，離任何海岸線至少 0.9 度，確實在開闊海面上）
+        { src: 'critters/temple-of-heaven.svg', lon: 114.0, lat: 36.0, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 中國：天壇：上次修正後離紫禁城仍只差 0.64 度，實測要縮放到跟長城/紫禁城同框後再深縮 8 格才會冒出來，再拉大到確實跟兩者都有安全距離（實測一放大就會一起出現）
         { src: 'critters/dragon-dance.svg', lon: 108.0, lat: 30.0, mode: 'still', face: 'F', s: 1.1, deco: true }, // 中國：舞龍
         { src: 'critters/beaver.svg', lon: -95.0, lat: 54.0, mode: 'bob', s: 1.0, sea: true, deco: true }, // 加拿大：海狸
         { src: 'critters/mountie.svg', lon: -106.0, lat: 50.45, mode: 'still', face: 'F', s: 1.0, deco: true }, // 加拿大：皇家騎警
         { src: 'critters/montgolfier-balloon.svg', lon: 2.5, lat: 47.0, mode: 'bob', s: 1.0, deco: true, landmark: true }, // 法國：蒙格菲熱氣球
         { src: 'critters/oktoberfest.svg', lon: 11.55, lat: 48.14, mode: 'still', face: 'F', s: 1.0, deco: true }, // 德國：慕尼黑啤酒節
         { src: 'critters/tuk-tuk.svg', lon: 77.0, lat: 20.5, mode: 'wander', s: 1.0, deco: true, maxDeg: 2 }, // 印度：嘟嘟車
+        // ── 第十一批補充 ──────────────────────────────────────────────
+        { src: 'critters/guilin-karst.svg', lon: 110.3, lat: 25.27, mode: 'bob', s: 1.1, sea: true, deco: true, landmark: true }, // 中國：桂林山水與竹筏
+        // ── 第十二批補充（用戶列的清單：主題樂園、K-pop、中國景點、南北美洲、俄羅斯） ──
+        { src: 'critters/universal-studios-osaka.svg', lon: 134.468, lat: 35.527, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 日本：大阪環球影城：原座標跟大阪城太近，實測要放到 k>=9 才會出現，拉開距離修正
+        { src: 'critters/tokyo-disneyland.svg', lon: 141.669, lat: 36.531, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 日本：東京迪士尼樂園：原座標跟東京鐵塔太近，實測要放到 k>=17.5 才會出現，拉開距離修正
+        { src: 'critters/lotte-world-tower.svg', lon: 128.519, lat: 36.794, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 南韓：樂天世界塔：原座標跟首爾一帶地標太近，實測要放到 k>=9.5 才會出現，拉開距離修正
+        { src: 'critters/kpop-concert.svg', lon: 126.0, lat: 36.2, mode: 'still', face: 'F', s: 1.0, deco: true }, // 南韓：K-pop 演唱會
+        { src: 'critters/mogao-crescent-lake.svg', lon: 94.66, lat: 40.03, mode: 'still', face: 'F', s: 1.1, sea: true, deco: true, landmark: true }, // 中國：敦煌莫高窟及月牙泉
+        { src: 'critters/leshan-buddha.svg', lon: 103.77, lat: 29.54, mode: 'still', face: 'F', s: 1.1, sea: true, deco: true, landmark: true }, // 中國：樂山大佛
+        { src: 'critters/huangshan-pine.svg', lon: 118.17, lat: 30.13, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 中國：黃山迎客松
+        { src: 'critters/hk-junk-boat.svg', lon: 114.3, lat: 22.1, mode: 'bob', s: 1.0, sea: true, deco: true }, // 香港：中式紅帆船
+        { src: 'critters/west-lake-three-pools.svg', lon: 120.13, lat: 30.23, mode: 'bob', s: 1.1, sea: true, deco: true, landmark: true }, // 中國：杭州西湖三潭印月
+        { src: 'critters/three-gorges-dam.svg', lon: 111.0, lat: 30.82, mode: 'still', face: 'F', s: 1.1, sea: true, deco: true, landmark: true }, // 中國：三峽大壩
+        { src: 'critters/wall-street-bull.svg', lon: -74.25, lat: 40.5, mode: 'still', face: 'F', s: 1.0, deco: true, landmark: true }, // 美國：華爾街銅牛
+        { src: 'critters/mississippi-steamboat.svg', lon: -90.07, lat: 29.95, mode: 'bob', s: 1.1, sea: true, deco: true }, // 美國：密西西比河蒸汽船
+        { src: 'critters/american-bison.svg', lon: -101.0, lat: 43.5, mode: 'wander', s: 1.1, deco: true, maxDeg: 2 }, // 美國：美洲野牛
+        { src: 'critters/messi-football.svg', lon: -58.4, lat: -35.0, mode: 'still', face: 'F', s: 1.0, deco: true }, // 阿根廷：梅西足球
+        { src: 'critters/gaucho.svg', lon: -64.5, lat: -37.5, mode: 'still', face: 'F', s: 1.0, deco: true }, // 阿根廷：高卓人
+        { src: 'critters/moscow-red-square.svg', lon: 38.3, lat: 56.6, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 俄羅斯：莫斯科紅場
+        { src: 'critters/russian-matryoshka.svg', lon: 48.0, lat: 57.5, mode: 'still', face: 'F', s: 1.0, deco: true }, // 俄羅斯：傳統套娃
+        { src: 'critters/lake-baikal-ice-railway.svg', lon: 104.3, lat: 53.5, mode: 'still', face: 'F', s: 1.1, sea: true, deco: true, landmark: true }, // 俄羅斯：貝加爾湖與結冰鐵道
     ];
     // 原住民小人（natives.js）：該國主要指數漲就歡呼跳舞、跌就沮喪哭泣，平盤時散步 / 揮手 / 眨眼
     // mode 'folk'；market = 看哪個指數；ox / oy = 相對位置點的偏移（單位：小角色基準大小）；minK = 縮小到這個倍率以下就收起來

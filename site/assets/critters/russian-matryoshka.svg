@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="mdShelf" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#c9a876"/>
+      <stop offset="100%" stop-color="#8a6a3e"/>
+    </linearGradient>
+    <radialGradient id="mdBig" cx="40%" cy="30%" r="80%">
+      <stop offset="0%" stop-color="#fff6ea"/>
+      <stop offset="100%" stop-color="#f0d9b0"/>
+    </radialGradient>
+    <radialGradient id="mdMid" cx="40%" cy="30%" r="80%">
+      <stop offset="0%" stop-color="#fff2e0"/>
+      <stop offset="100%" stop-color="#ecd2a4"/>
+    </radialGradient>
+    <radialGradient id="mdSmall" cx="40%" cy="30%" r="80%">
+      <stop offset="0%" stop-color="#fff0da"/>
+      <stop offset="100%" stop-color="#e8cc9c"/>
+    </radialGradient>
+  </defs>
+
+  <!-- wooden shelf -->
+  <path d="M2,80 L2,70 L78,70 L78,80 Z" fill="url(#mdShelf)" stroke="#5c421e" stroke-width="0.5"/>
+
+  <!-- largest doll, back left -->
+  <g transform="translate(20,0)">
+    <path d="M-13,70 C-14,50 -16,38 -8,28 C-4,24 4,24 8,28 C16,38 14,50 13,70 Z" fill="url(#mdBig)" stroke="#a9772c" stroke-width="0.6"/>
+    <circle cx="0" cy="22" r="11" fill="url(#mdBig)" stroke="#a9772c" stroke-width="0.6"/>
+    <path d="M-11,16 Q0,6 11,16 Q11,22 0,19 Q-11,22 -11,16 Z" fill="#c23b36" stroke="#7c1f1c" stroke-width="0.4"/>
+    <path d="M-10,30 Q0,36 10,30" fill="none" stroke="#c23b36" stroke-width="2.4"/>
+    <circle cx="-4" cy="22" r="1.1" fill="#2a2420"/>
+    <circle cx="4" cy="22" r="1.1" fill="#2a2420"/>
+    <path d="M-3,27 Q0,29 3,27" fill="none" stroke="#9c3a2c" stroke-width="0.8"/>
+    <g fill="#5a8f52" opacity="0.85">
+      <circle cx="-6" cy="42" r="2.4"/><circle cx="6" cy="42" r="2.4"/><circle cx="0" cy="52" r="2.6"/>
+      <circle cx="-7" cy="60" r="2.2"/><circle cx="7" cy="60" r="2.2"/>
+    </g>
+    <g fill="#e2b63a">
+      <circle cx="-6" cy="42" r="0.9"/><circle cx="6" cy="42" r="0.9"/><circle cx="0" cy="52" r="1"/>
+      <circle cx="-7" cy="60" r="0.8"/><circle cx="7" cy="60" r="0.8"/>
+    </g>
+  </g>
+
+  <!-- middle doll -->
+  <g transform="translate(44,6)">
+    <path d="M-10,64 C-11,47 -12,37 -6,29 C-3,26 3,26 6,29 C12,37 11,47 10,64 Z" fill="url(#mdMid)" stroke="#a9772c" stroke-width="0.6"/>
+    <circle cx="0" cy="23" r="8.6" fill="url(#mdMid)" stroke="#a9772c" stroke-width="0.6"/>
+    <path d="M-8.4,18 Q0,9 8.4,18 Q8.4,23 0,20.5 Q-8.4,23 -8.4,18 Z" fill="#3a6fb0" stroke="#1f3f70" stroke-width="0.4"/>
+    <path d="M-7.5,30 Q0,35 7.5,30" fill="none" stroke="#3a6fb0" stroke-width="2"/>
+    <circle cx="-3" cy="23" r="0.9" fill="#2a2420"/>
+    <circle cx="3" cy="23" r="0.9" fill="#2a2420"/>
+    <g fill="#e2673a" opacity="0.9">
+      <circle cx="-5" cy="40" r="2"/><circle cx="5" cy="40" r="2"/><circle cx="0" cy="48" r="2.1"/>
+    </g>
+  </g>
+
+  <!-- smallest doll, front and centre -->
+  <g transform="translate(34,30)">
+    <path d="M-8,40 C-8.5,30 -9.5,24 -5,18 C-2.5,16 2.5,16 5,18 C9.5,24 8.5,30 8,40 Z" fill="url(#mdSmall)" stroke="#a9772c" stroke-width="0.6">
+      <animateTransform attributeName="transform" type="rotate" values="0 0 40;-3 0 40;0 0 40;3 0 40;0 0 40" dur="3.4s" repeatCount="indefinite"/>
+    </path>
+    <circle cx="0" cy="14" r="6.6" fill="url(#mdSmall)" stroke="#a9772c" stroke-width="0.6"/>
+    <path d="M-6.4,10 Q0,3 6.4,10 Q6.4,13.4 0,11.6 Q-6.4,13.4 -6.4,10 Z" fill="#e0a52f" stroke="#8a661c" stroke-width="0.4"/>
+    <path d="M-5.8,18 Q0,21.6 5.8,18" fill="none" stroke="#e0a52f" stroke-width="1.6"/>
+    <circle cx="-2.2" cy="14" r="0.7" fill="#2a2420"/>
+    <circle cx="2.2" cy="14" r="0.7" fill="#2a2420"/>
+    <path d="M-1.6,17 Q0,18.4 1.6,17" fill="none" stroke="#9c3a2c" stroke-width="0.6"/>
+    <g fill="#c23b36" opacity="0.9">
+      <circle cx="-3.5" cy="26" r="1.4"/><circle cx="3.5" cy="26" r="1.4"/>
+    </g>
+  </g>
+</svg>

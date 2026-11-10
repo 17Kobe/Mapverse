@@ -1,0 +1,1392 @@
+[
+ {
+  "src": "critters/jellyfish.svg",
+  "lon": 134.5,
+  "lat": 7.5,
+  "x": "1125.8",
+  "y": "512.4",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/fuji.svg",
+  "lon": 138.3,
+  "lat": 34.4,
+  "x": "1140.6",
+  "y": "399.0",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/great-wall.svg",
+  "lon": 117.2,
+  "lat": 40.7,
+  "x": "1058.6",
+  "y": "368.1",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/opera-house.svg",
+  "lon": 152.5,
+  "lat": -34.8,
+  "x": "1195.8",
+  "y": "686.2",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/statue-liberty.svg",
+  "lon": -73.2,
+  "lat": 40.8,
+  "x": "318.1",
+  "y": "367.6",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/christ-redeemer.svg",
+  "lon": -43.2,
+  "lat": -22.95,
+  "x": "434.8",
+  "y": "633.4",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/machu-picchu.svg",
+  "lon": -72.5,
+  "lat": -13.2,
+  "x": "320.8",
+  "y": "593.5",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/eiffel-tower.svg",
+  "lon": 2.3,
+  "lat": 48.3,
+  "x": "611.7",
+  "y": "326.6",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/big-ben.svg",
+  "lon": 0.8,
+  "lat": 51,
+  "x": "605.9",
+  "y": "310.4",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/leaning-tower.svg",
+  "lon": 10.4,
+  "lat": 42.8,
+  "x": "643.2",
+  "y": "357.2",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/colosseum.svg",
+  "lon": 12.5,
+  "lat": 41.9,
+  "x": "651.4",
+  "y": "361.9",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/greek-house.svg",
+  "lon": 25.4,
+  "lat": 36.4,
+  "x": "701.6",
+  "y": "389.5",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/pyramid.svg",
+  "lon": 31.1,
+  "lat": 29.97,
+  "x": "723.7",
+  "y": "419.4",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/hot-balloon.svg",
+  "lon": 36.6,
+  "lat": 38.2,
+  "x": "745.1",
+  "y": "380.7",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/kremlin-moscow.svg",
+  "lon": 36.4,
+  "lat": 56.1,
+  "x": "744.3",
+  "y": "276.9",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/st-basil.svg",
+  "lon": 39.2,
+  "lat": 55.3,
+  "x": "755.2",
+  "y": "282.4",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/cactus-mexico.svg",
+  "lon": -102,
+  "lat": 24.5,
+  "x": "206.1",
+  "y": "443.3",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/baobab.svg",
+  "lon": 37.5,
+  "lat": -9.5,
+  "x": "748.6",
+  "y": "578.8",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/uluru.svg",
+  "lon": 131,
+  "lat": -25.3,
+  "x": "1112.2",
+  "y": "643.4",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/danxia.svg",
+  "lon": 100,
+  "lat": 38.9,
+  "x": "991.7",
+  "y": "377.2",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/iceland-volcano.svg",
+  "lon": -19,
+  "lat": 64.8,
+  "x": "528.9",
+  "y": "207.8",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/golden-gate.svg",
+  "lon": -122.5,
+  "lat": 37.8,
+  "x": "126.4",
+  "y": "382.7",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/grand-canyon.svg",
+  "lon": -112.1,
+  "lat": 36.2,
+  "x": "166.8",
+  "y": "390.5",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/yellowstone.svg",
+  "lon": -110.6,
+  "lat": 44.5,
+  "x": "172.7",
+  "y": "348.0",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/rushmore.svg",
+  "lon": -103.5,
+  "lat": 43.85,
+  "x": "200.3",
+  "y": "351.5",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/acropolis.svg",
+  "lon": 22.4,
+  "lat": 38.6,
+  "x": "689.9",
+  "y": "378.7",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/milan-cathedral.svg",
+  "lon": 9.19,
+  "lat": 45.46,
+  "x": "638.5",
+  "y": "342.7",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/yosemite.svg",
+  "lon": -119.55,
+  "lat": 37.75,
+  "x": "137.9",
+  "y": "382.9",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/banff.svg",
+  "lon": -115.57,
+  "lat": 51.18,
+  "x": "153.3",
+  "y": "309.2",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/serengeti.svg",
+  "lon": 34.85,
+  "lat": -2.35,
+  "x": "738.3",
+  "y": "550.8",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/torres-del-paine.svg",
+  "lon": -72.95,
+  "lat": -50.95,
+  "x": "319.1",
+  "y": "772.7",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/iguazu.svg",
+  "lon": -54.44,
+  "lat": -25.69,
+  "x": "391.1",
+  "y": "645.1",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/fiordland.svg",
+  "lon": 167.9,
+  "lat": -44.8,
+  "x": "1255.7",
+  "y": "737.0",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/kruger.svg",
+  "lon": 31.5,
+  "lat": -23.9,
+  "x": "725.3",
+  "y": "637.4",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/galapagos.svg",
+  "lon": -90.5,
+  "lat": -0.6,
+  "x": "250.8",
+  "y": "544.0",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/noah-ark.svg",
+  "lon": 44.3,
+  "lat": 39.7,
+  "x": "775.1",
+  "y": "373.2",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/louvre.svg",
+  "lon": 4.6,
+  "lat": 48.7,
+  "x": "620.7",
+  "y": "324.2",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/stonehenge.svg",
+  "lon": -3,
+  "lat": 51.3,
+  "x": "591.1",
+  "y": "308.5",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/minoan-bull.svg",
+  "lon": 25.2,
+  "lat": 35.2,
+  "x": "700.8",
+  "y": "395.3",
+  "outOfView": false,
+  "overlapped": true,
+  "hide": true
+ },
+ {
+  "src": "critters/shanghai.svg",
+  "lon": 121.6,
+  "lat": 31.2,
+  "x": "1075.7",
+  "y": "413.8",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/burj-khalifa.svg",
+  "lon": 55.27,
+  "lat": 25.2,
+  "x": "817.7",
+  "y": "440.3",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/tokyo-tower.svg",
+  "lon": 139.9,
+  "lat": 35.5,
+  "x": "1146.8",
+  "y": "393.8",
+  "outOfView": false,
+  "overlapped": true,
+  "hide": true
+ },
+ {
+  "src": "critters/houston-space.svg",
+  "lon": -95.1,
+  "lat": 29.5,
+  "x": "232.9",
+  "y": "421.5",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/troy-horse.svg",
+  "lon": 26.24,
+  "lat": 39.96,
+  "x": "704.8",
+  "y": "371.9",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/pompeii.svg",
+  "lon": 15.6,
+  "lat": 40.4,
+  "x": "663.4",
+  "y": "369.6",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/western-wall.svg",
+  "lon": 35.23,
+  "lat": 31.78,
+  "x": "739.8",
+  "y": "411.2",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/taipei101.svg",
+  "lon": 121.56,
+  "lat": 25.03,
+  "x": "1075.5",
+  "y": "441.1",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/chichen-itza.svg",
+  "lon": -88.57,
+  "lat": 20.68,
+  "x": "258.3",
+  "y": "459.4",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/cn-tower.svg",
+  "lon": -79.39,
+  "lat": 43.64,
+  "x": "294.0",
+  "y": "352.7",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/hanging-gardens.svg",
+  "lon": 44.42,
+  "lat": 32.54,
+  "x": "775.5",
+  "y": "407.7",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/taj-mahal.svg",
+  "lon": 78.04,
+  "lat": 27.17,
+  "x": "906.3",
+  "y": "431.8",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/petra.svg",
+  "lon": 35.44,
+  "lat": 30.33,
+  "x": "740.6",
+  "y": "417.8",
+  "outOfView": false,
+  "overlapped": true,
+  "hide": true
+ },
+ {
+  "src": "critters/polar-bear-l.svg",
+  "lon": -40,
+  "lat": 72,
+  "x": "447.2",
+  "y": "131.1",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/moai.svg",
+  "lon": -109.4,
+  "lat": -27.1,
+  "x": "177.3",
+  "y": "651.2",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/mongolian-ger.svg",
+  "lon": 106.9,
+  "lat": 47.9,
+  "x": "1018.5",
+  "y": "328.9",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/tipi.svg",
+  "lon": -105,
+  "lat": 45,
+  "x": "194.4",
+  "y": "345.3",
+  "outOfView": false,
+  "overlapped": true,
+  "hide": true
+ },
+ {
+  "src": "critters/gassho-house.svg",
+  "lon": 136.9,
+  "lat": 36.2,
+  "x": "1135.2",
+  "y": "390.5",
+  "outOfView": false,
+  "overlapped": true,
+  "hide": true
+ },
+ {
+  "src": "critters/tulou.svg",
+  "lon": 117.1,
+  "lat": 24.7,
+  "x": "1058.2",
+  "y": "442.5",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/overwater-bungalow.svg",
+  "lon": 73.5,
+  "lat": 4.2,
+  "x": "888.6",
+  "y": "525.3",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/windmill.svg",
+  "lon": 4.9,
+  "lat": 52.3,
+  "x": "621.8",
+  "y": "302.2",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/great-blue-hole.svg",
+  "lon": -87.5,
+  "lat": 17.3,
+  "x": "262.5",
+  "y": "473.3",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/chernobyl.svg",
+  "lon": 30.1,
+  "lat": 51.4,
+  "x": "719.8",
+  "y": "307.9",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/kiyomizudera.svg",
+  "lon": 135.8,
+  "lat": 34.99,
+  "x": "1130.9",
+  "y": "396.3",
+  "outOfView": false,
+  "overlapped": true,
+  "hide": true
+ },
+ {
+  "src": "critters/osaka-castle.svg",
+  "lon": 135.5,
+  "lat": 34.6,
+  "x": "1129.7",
+  "y": "398.1",
+  "outOfView": false,
+  "overlapped": true,
+  "hide": true
+ },
+ {
+  "src": "critters/forbidden-city.svg",
+  "lon": 116.4,
+  "lat": 39.9,
+  "x": "1055.4",
+  "y": "372.2",
+  "outOfView": false,
+  "overlapped": true,
+  "hide": true
+ },
+ {
+  "src": "critters/terracotta-army.svg",
+  "lon": 109.3,
+  "lat": 34.4,
+  "x": "1027.8",
+  "y": "399.0",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/zhangjiajie.svg",
+  "lon": 110.5,
+  "lat": 29.1,
+  "x": "1032.5",
+  "y": "423.3",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/gyeongbokgung.svg",
+  "lon": 126.98,
+  "lat": 37.58,
+  "x": "1096.6",
+  "y": "383.8",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/n-seoul-tower.svg",
+  "lon": 126.99,
+  "lat": 37.55,
+  "x": "1096.6",
+  "y": "383.9",
+  "outOfView": false,
+  "overlapped": true,
+  "hide": true
+ },
+ {
+  "src": "critters/varanasi.svg",
+  "lon": 83,
+  "lat": 25.3,
+  "x": "925.6",
+  "y": "439.9",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/red-fort.svg",
+  "lon": 77.24,
+  "lat": 28.66,
+  "x": "903.2",
+  "y": "425.2",
+  "outOfView": false,
+  "overlapped": true,
+  "hide": true
+ },
+ {
+  "src": "critters/angkor-wat.svg",
+  "lon": 103.87,
+  "lat": 13.41,
+  "x": "1006.7",
+  "y": "489.0",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/victoria-falls.svg",
+  "lon": 25.86,
+  "lat": -17.92,
+  "x": "703.3",
+  "y": "612.5",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/salar-de-uyuni.svg",
+  "lon": -67.5,
+  "lat": -20.1,
+  "x": "340.3",
+  "y": "621.5",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/great-barrier-reef.svg",
+  "lon": 147.7,
+  "lat": -18.3,
+  "x": "1177.2",
+  "y": "614.1",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/everest.svg",
+  "lon": 86.93,
+  "lat": 27.99,
+  "x": "940.8",
+  "y": "428.2",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/bagan.svg",
+  "lon": 94.86,
+  "lat": 21.17,
+  "x": "971.7",
+  "y": "457.4",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/abu-simbel.svg",
+  "lon": 31.63,
+  "lat": 22.34,
+  "x": "725.8",
+  "y": "452.5",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/samarkand.svg",
+  "lon": 66.97,
+  "lat": 39.65,
+  "x": "863.2",
+  "y": "373.4",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/komodo-dragon.svg",
+  "lon": 119.49,
+  "lat": -8.55,
+  "x": "1067.5",
+  "y": "575.0",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/socotra.svg",
+  "lon": 53.87,
+  "lat": 12.47,
+  "x": "812.3",
+  "y": "492.8",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/maasai.svg",
+  "lon": 36.8,
+  "lat": -2.5,
+  "x": "745.9",
+  "y": "551.4",
+  "outOfView": false,
+  "overlapped": true,
+  "hide": true
+ },
+ {
+  "src": "critters/angel-falls.svg",
+  "lon": -62.54,
+  "lat": 5.97,
+  "x": "359.6",
+  "y": "518.4",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/halong-bay.svg",
+  "lon": 107.08,
+  "lat": 20.91,
+  "x": "1019.2",
+  "y": "458.5",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/pamukkale.svg",
+  "lon": 29.12,
+  "lat": 37.92,
+  "x": "716.0",
+  "y": "382.1",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/giants-causeway.svg",
+  "lon": -6.51,
+  "lat": 55.24,
+  "x": "577.5",
+  "y": "282.9",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/pearl-harbor.svg",
+  "lon": -157.95,
+  "lat": 21.37,
+  "x": "-11.5",
+  "y": "456.6",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/normandy.svg",
+  "lon": -0.87,
+  "lat": 49.34,
+  "x": "599.4",
+  "y": "320.4",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/berlin-wall.svg",
+  "lon": 13.39,
+  "lat": 52.52,
+  "x": "654.9",
+  "y": "300.8",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/okavango.svg",
+  "lon": 22.9,
+  "lat": -19.3,
+  "x": "691.8",
+  "y": "618.2",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/waitomo-caves.svg",
+  "lon": 175.1,
+  "lat": -38.26,
+  "x": "1283.7",
+  "y": "702.9",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/lighthouse-alexandria.svg",
+  "lon": 29.885,
+  "lat": 31.214,
+  "x": "719.0",
+  "y": "413.8",
+  "outOfView": false,
+  "overlapped": true,
+  "hide": true
+ },
+ {
+  "src": "critters/colossus-rhodes.svg",
+  "lon": 28.227,
+  "lat": 36.451,
+  "x": "712.5",
+  "y": "389.3",
+  "outOfView": false,
+  "overlapped": true,
+  "hide": true
+ },
+ {
+  "src": "critters/borobudur.svg",
+  "lon": 110.2,
+  "lat": -7.61,
+  "x": "1031.3",
+  "y": "571.3",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/potala-palace.svg",
+  "lon": 91.12,
+  "lat": 29.66,
+  "x": "957.1",
+  "y": "420.8",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/sagrada-familia.svg",
+  "lon": 2.17,
+  "lat": 41.4,
+  "x": "611.2",
+  "y": "364.5",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/neuschwanstein.svg",
+  "lon": 10.75,
+  "lat": 47.56,
+  "x": "644.6",
+  "y": "330.9",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/mont-saint-michel.svg",
+  "lon": -1.51,
+  "lat": 48.64,
+  "x": "596.9",
+  "y": "324.6",
+  "outOfView": false,
+  "overlapped": true,
+  "hide": true
+ },
+ {
+  "src": "critters/alhambra.svg",
+  "lon": -3.59,
+  "lat": 37.18,
+  "x": "588.8",
+  "y": "385.7",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/lalibela.svg",
+  "lon": 39.04,
+  "lat": 12.03,
+  "x": "754.6",
+  "y": "494.5",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/teotihuacan.svg",
+  "lon": -98.84,
+  "lat": 19.69,
+  "x": "218.4",
+  "y": "463.5",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/nazca-lines.svg",
+  "lon": -75.13,
+  "lat": -14.74,
+  "x": "310.6",
+  "y": "599.6",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/niagara-falls.svg",
+  "lon": -79.07,
+  "lat": 43.08,
+  "x": "295.3",
+  "y": "355.7",
+  "outOfView": false,
+  "overlapped": true,
+  "hide": true
+ },
+ {
+  "src": "critters/atlantis.svg",
+  "lon": -24,
+  "lat": 36,
+  "x": "509.4",
+  "y": "391.4",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/chocolate-hills.svg",
+  "lon": 124.14,
+  "lat": 9.83,
+  "x": "1085.5",
+  "y": "503.2",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/panama-canal.svg",
+  "lon": -79.52,
+  "lat": 9.08,
+  "x": "293.5",
+  "y": "506.2",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/barcelos-rooster.svg",
+  "lon": -8.62,
+  "lat": 41.53,
+  "x": "569.3",
+  "y": "363.8",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/eye-of-sahara.svg",
+  "lon": -11.4,
+  "lat": 21.12,
+  "x": "558.4",
+  "y": "457.6",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/grizzly-salmon.svg",
+  "lon": -155.8,
+  "lat": 58.6,
+  "x": "-3.1",
+  "y": "258.9",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/amazon-rainforest.svg",
+  "lon": -71,
+  "lat": -8,
+  "x": "326.7",
+  "y": "572.9",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/merlion.svg",
+  "lon": 103.854,
+  "lat": 1.287,
+  "x": "1006.7",
+  "y": "536.7",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/petronas-towers.svg",
+  "lon": 101.712,
+  "lat": 3.158,
+  "x": "998.3",
+  "y": "529.4",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/bran-castle.svg",
+  "lon": 25.367,
+  "lat": 45.514,
+  "x": "701.4",
+  "y": "342.4",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/djenne-mosque.svg",
+  "lon": -4.555,
+  "lat": 13.906,
+  "x": "585.1",
+  "y": "487.0",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/persepolis.svg",
+  "lon": 52.891,
+  "lat": 29.935,
+  "x": "808.5",
+  "y": "419.6",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/grand-palace.svg",
+  "lon": 100.49,
+  "lat": 13.75,
+  "x": "993.6",
+  "y": "487.7",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/wat-arun.svg",
+  "lon": 100.82,
+  "lat": 13.95,
+  "x": "994.9",
+  "y": "486.9",
+  "outOfView": false,
+  "overlapped": true,
+  "hide": true
+ },
+ {
+  "src": "critters/brandenburg-gate.svg",
+  "lon": 13.75,
+  "lat": 52.65,
+  "x": "656.3",
+  "y": "300.0",
+  "outOfView": false,
+  "overlapped": true,
+  "hide": true
+ },
+ {
+  "src": "critters/tower-bridge.svg",
+  "lon": -0.0754,
+  "lat": 51.5055,
+  "x": "602.5",
+  "y": "307.2",
+  "outOfView": false,
+  "overlapped": true,
+  "hide": true
+ },
+ {
+  "src": "critters/venice-canal.svg",
+  "lon": 12.3155,
+  "lat": 45.4408,
+  "x": "650.7",
+  "y": "342.8",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/empire-state.svg",
+  "lon": -73.9857,
+  "lat": 40.7484,
+  "x": "315.1",
+  "y": "367.9",
+  "outOfView": false,
+  "overlapped": true,
+  "hide": true
+ },
+ {
+  "src": "critters/hollywood-sign.svg",
+  "lon": -118.3215,
+  "lat": 34.1341,
+  "x": "142.6",
+  "y": "400.3",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/alishan-train.svg",
+  "lon": 120.8025,
+  "lat": 23.5088,
+  "x": "1072.6",
+  "y": "447.6",
+  "outOfView": false,
+  "overlapped": true,
+  "hide": true
+ },
+ {
+  "src": "critters/itsukushima-torii.svg",
+  "lon": 132.32,
+  "lat": 34.296,
+  "x": "1117.4",
+  "y": "399.5",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/burj-al-arab.svg",
+  "lon": 54.75,
+  "lat": 24.85,
+  "x": "815.7",
+  "y": "441.8",
+  "outOfView": false,
+  "overlapped": true,
+  "hide": true
+ },
+ {
+  "src": "critters/hobbiton.svg",
+  "lon": 175.6818,
+  "lat": -37.8722,
+  "x": "1286.0",
+  "y": "701.0",
+  "outOfView": false,
+  "overlapped": true,
+  "hide": true
+ },
+ {
+  "src": "critters/dead-sea.svg",
+  "lon": 35.5,
+  "lat": 31.5,
+  "x": "740.8",
+  "y": "412.5",
+  "outOfView": false,
+  "overlapped": true,
+  "hide": true
+ },
+ {
+  "src": "critters/matterhorn.svg",
+  "lon": 7.6586,
+  "lat": 45.9763,
+  "x": "632.6",
+  "y": "339.9",
+  "outOfView": false,
+  "overlapped": true,
+  "hide": true
+ },
+ {
+  "src": "critters/kilimanjaro.svg",
+  "lon": 37.3556,
+  "lat": -3.0674,
+  "x": "748.0",
+  "y": "553.6",
+  "outOfView": false,
+  "overlapped": true,
+  "hide": true
+ },
+ {
+  "src": "critters/monument-valley.svg",
+  "lon": -110.0046,
+  "lat": 36.9983,
+  "x": "175.0",
+  "y": "386.6",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/iceberg.svg",
+  "lon": -30,
+  "lat": -65,
+  "x": "486.1",
+  "y": "877.3",
+  "outOfView": true,
+  "overlapped": false,
+  "hide": true
+ },
+ {
+  "src": "critters/table-mountain.svg",
+  "lon": 18.4232,
+  "lat": -33.9628,
+  "x": "674.4",
+  "y": "682.2",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/darvaza-crater.svg",
+  "lon": 58.4396,
+  "lat": 40.2522,
+  "x": "830.0",
+  "y": "370.4",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/taroko-gorge.svg",
+  "lon": 121.62,
+  "lat": 24.16,
+  "x": "1075.7",
+  "y": "444.8",
+  "outOfView": false,
+  "overlapped": true,
+  "hide": true
+ },
+ {
+  "src": "critters/kaminarimon-lantern.svg",
+  "lon": 139.796,
+  "lat": 35.7148,
+  "x": "1146.4",
+  "y": "392.8",
+  "outOfView": false,
+  "overlapped": true,
+  "hide": true
+ },
+ {
+  "src": "critters/arc-de-triomphe.svg",
+  "lon": 2.295,
+  "lat": 48.8738,
+  "x": "611.7",
+  "y": "323.2",
+  "outOfView": false,
+  "overlapped": true,
+  "hide": true
+ },
+ {
+  "src": "critters/turtle-ship.svg",
+  "lon": 128.3,
+  "lat": 34.3,
+  "x": "1101.7",
+  "y": "399.5",
+  "outOfView": false,
+  "overlapped": false,
+  "hide": false
+ },
+ {
+  "src": "critters/temple-of-heaven.svg",
+  "lon": 117.2,
+  "lat": 39.75,
+  "x": "1058.6",
+  "y": "372.9",
+  "outOfView": false,
+  "overlapped": true,
+  "hide": true
+ },
+ {
+  "src": "critters/montgolfier-balloon.svg",
+  "lon": 2.5,
+  "lat": 47,
+  "x": "612.5",
+  "y": "334.1",
+  "outOfView": false,
+  "overlapped": true,
+  "hide": true
+ }
+]

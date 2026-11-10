@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="rsGUM" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f3ede0"/>
+      <stop offset="100%" stop-color="#c9bda0"/>
+    </linearGradient>
+    <linearGradient id="rsTower" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d8403a"/>
+      <stop offset="100%" stop-color="#8f2420"/>
+    </linearGradient>
+    <linearGradient id="rsRoof" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4a8c5a"/>
+      <stop offset="100%" stop-color="#235c32"/>
+    </linearGradient>
+    <linearGradient id="rsCobble" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#b7afa0"/>
+      <stop offset="100%" stop-color="#857c6c"/>
+    </linearGradient>
+  </defs>
+
+  <!-- cobblestone square -->
+  <ellipse cx="40" cy="76" rx="38" ry="5.5" fill="url(#rsCobble)" stroke="#5c5444" stroke-width="0.5"/>
+  <g fill="none" stroke="#95897076" stroke-width="0.4" opacity="0.5">
+    <path d="M8,76 Q40,80 72,76"/>
+    <path d="M10,72 Q40,76 70,72"/>
+  </g>
+
+  <!-- GUM department store facade, long arcade wing behind -->
+  <rect x="2" y="44" width="30" height="30" fill="url(#rsGUM)" stroke="#8a7f66" stroke-width="0.5"/>
+  <g fill="#7a6c52" opacity="0.7">
+    <rect x="6" y="50" width="4" height="8" rx="2"/>
+    <rect x="13" y="50" width="4" height="8" rx="2"/>
+    <rect x="20" y="50" width="4" height="8" rx="2"/>
+    <rect x="27" y="50" width="4" height="8" rx="2"/>
+  </g>
+  <path d="M2,44 L32,44" stroke="#8a7f66" stroke-width="1.4"/>
+
+  <!-- Spasskaya-style clock tower, centrepiece of the square -->
+  <rect x="42" y="30" width="14" height="30" fill="url(#rsTower)" stroke="#5c1512" stroke-width="0.6"/>
+  <rect x="44" y="18" width="10" height="14" fill="url(#rsTower)" stroke="#5c1512" stroke-width="0.5"/>
+  <!-- clock face -->
+  <circle cx="49" cy="24" r="4" fill="#f3ede0" stroke="#5c1512" stroke-width="0.6"/>
+  <g stroke="#2a1a16" stroke-width="0.7" stroke-linecap="round">
+    <line x1="49" y1="24" x2="49" y2="21.5"/>
+    <line x1="49" y1="24" x2="51" y2="24.5">
+      <animateTransform attributeName="transform" type="rotate" values="0 49 24;360 49 24" dur="8s" repeatCount="indefinite"/>
+    </line>
+  </g>
+  <!-- tented green roof + red star -->
+  <path d="M42,18 L49,6 L56,18 Z" fill="url(#rsRoof)" stroke="#143a20" stroke-width="0.5"/>
+  <path d="M46,7 l1.6,2.6 l3,0.1 l-2.3,2 l0.8,3 l-2.6,-1.7 l-2.6,1.7 l0.8,-3 l-2.3,-2 l3,-0.1 Z" fill="#e23a34">
+    <animate attributeName="opacity" values="1;0.6;1" dur="2.4s" repeatCount="indefinite"/>
+  </path>
+
+  <!-- brick wall segment with a single swallowtail merlon, right side -->
+  <rect x="60" y="48" width="18" height="26" fill="#9c342c" stroke="#5c1512" stroke-width="0.5"/>
+  <path d="M60,48 L63,44 L66,48 L69,44 L72,48 L75,44 L78,48 Z" fill="#9c342c" stroke="#5c1512" stroke-width="0.5"/>
+</svg>

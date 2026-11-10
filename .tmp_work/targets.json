@@ -1,0 +1,5 @@
+[
+  { "src": "critters/tokyo-disneyland.svg", "maxRadius": 2.0 },
+  { "src": "critters/universal-studios-osaka.svg", "maxRadius": 1.5 },
+  { "src": "critters/lotte-world-tower.svg", "maxRadius": 2.0 }
+]

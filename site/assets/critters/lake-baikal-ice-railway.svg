@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="bkIce" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d7f3fb"/>
+      <stop offset="55%" stop-color="#9fd7ea"/>
+      <stop offset="100%" stop-color="#5aa4c4"/>
+    </linearGradient>
+    <linearGradient id="bkShore" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#eef3f0"/>
+      <stop offset="100%" stop-color="#aeb9ae"/>
+    </linearGradient>
+    <linearGradient id="bkTrain" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5a6a78"/>
+      <stop offset="100%" stop-color="#2a3640"/>
+    </linearGradient>
+  </defs>
+
+  <!-- frozen lake surface filling most of the frame -->
+  <rect x="0" y="36" width="80" height="44" fill="url(#bkIce)"/>
+  <!-- characteristic deep cracks in the clear Baikal ice -->
+  <g stroke="#3f7fa0" stroke-width="0.6" opacity="0.5" fill="none">
+    <path d="M6,48 L18,54 L12,64 L24,70"/>
+    <path d="M30,40 L34,52 L28,60"/>
+    <path d="M50,44 L46,56 L54,62 L50,72"/>
+    <path d="M62,50 L70,58 L64,66"/>
+  </g>
+  <g stroke="#dff7ff" stroke-width="1.1" opacity="0.6" fill="none">
+    <path d="M14,52 L22,56"/>
+    <path d="M46,48 L52,54"/>
+  </g>
+
+  <!-- rocky shoreline, upper edge only (not a full backdrop) -->
+  <path d="M0,36 L0,24 Q16,16 30,24 Q40,30 52,22 Q64,14 80,22 L80,36 Z" fill="url(#bkShore)" stroke="#6c766c" stroke-width="0.5"/>
+  <g fill="#eef3f0" opacity="0.7">
+    <path d="M10,26 L14,19 L18,27 Z"/>
+    <path d="M58,20 L63,12 L68,21 Z"/>
+  </g>
+
+  <!-- rail track curving along the frozen shore -->
+  <path d="M0,58 Q30,50 80,60" fill="none" stroke="#6b5a3e" stroke-width="2.4"/>
+  <path d="M0,61 Q30,53 80,63" fill="none" stroke="#6b5a3e" stroke-width="2.4"/>
+  <g stroke="#4a3d28" stroke-width="1.4">
+    <line x1="6" y1="57" x2="6" y2="62"/>
+    <line x1="18" y1="55" x2="18" y2="60"/>
+    <line x1="30" y1="53.5" x2="30" y2="58.5"/>
+    <line x1="44" y1="54" x2="44" y2="59"/>
+    <line x1="58" y1="56" x2="58" y2="61"/>
+    <line x1="70" y1="59" x2="70" y2="64"/>
+  </g>
+
+  <!-- small train chugging along the track -->
+  <g transform="translate(30,54)">
+    <animateTransform attributeName="transform" type="translate" values="30,54; 36,56; 30,54" dur="4s" repeatCount="indefinite"/>
+    <rect x="-10" y="-9" width="22" height="9" rx="1.5" fill="url(#bkTrain)" stroke="#121a20" stroke-width="0.5"/>
+    <circle cx="-5" cy="-11" r="3.4" fill="url(#bkTrain)" stroke="#121a20" stroke-width="0.5"/>
+    <rect x="-7" y="-15" width="3" height="4" fill="#121a20"/>
+    <g fill="#ffd979" opacity="0.9">
+      <rect x="0" y="-6" width="2.6" height="3" rx="0.5"/>
+      <rect x="5" y="-6" width="2.6" height="3" rx="0.5"/>
+    </g>
+    <g fill="#e6eef0" opacity="0.7">
+      <circle cx="-6" cy="-17" r="1.6"><animate attributeName="cy" values="-15;-24" dur="1.8s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.7;0" dur="1.8s" repeatCount="indefinite"/></circle>
+    </g>
+  </g>
+
+  <!-- ice sparkle -->
+  <circle cx="20" cy="70" r="1" fill="#ffffff">
+    <animate attributeName="opacity" values="0.2;1;0.2" dur="2.2s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="60" cy="74" r="0.9" fill="#ffffff">
+    <animate attributeName="opacity" values="1;0.2;1" dur="2.6s" repeatCount="indefinite"/>
+  </circle>
+</svg>

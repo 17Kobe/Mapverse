@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="dlCastle" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fdf6f0"/>
+      <stop offset="55%" stop-color="#f0e2e8"/>
+      <stop offset="100%" stop-color="#cdb9c8"/>
+    </linearGradient>
+    <linearGradient id="dlRoof" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5a7fc9"/>
+      <stop offset="100%" stop-color="#2e4f8c"/>
+    </linearGradient>
+    <linearGradient id="dlGround" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#8fcf7a"/>
+      <stop offset="100%" stop-color="#4a8f42"/>
+    </linearGradient>
+    <radialGradient id="dlGlow" cx="50%" cy="100%" r="80%">
+      <stop offset="0%" stop-color="#fff3b0" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#fff3b0" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- grassy plaza -->
+  <path d="M0,80 L0,70 Q40,65 80,70 L80,80 Z" fill="url(#dlGround)"/>
+  <ellipse cx="40" cy="70" rx="30" ry="6" fill="url(#dlGlow)"/>
+
+  <!-- side towers -->
+  <g>
+    <path d="M10,70 L10,46 L16,46 L16,70 Z" fill="url(#dlCastle)" stroke="#a593a0" stroke-width="0.5"/>
+    <path d="M9,46 L17,46 L13,36 Z" fill="url(#dlRoof)" stroke="#1f3666" stroke-width="0.4"/>
+    <path d="M62,70 L62,48 L68,48 L68,70 Z" fill="url(#dlCastle)" stroke="#a593a0" stroke-width="0.5"/>
+    <path d="M61,48 L69,48 L65,39 Z" fill="url(#dlRoof)" stroke="#1f3666" stroke-width="0.4"/>
+  </g>
+
+  <!-- main central keep with twin tall spires -->
+  <path d="M22,70 L22,38 L30,38 L30,70 Z" fill="url(#dlCastle)" stroke="#a593a0" stroke-width="0.5"/>
+  <path d="M50,70 L50,36 L58,36 L58,70 Z" fill="url(#dlCastle)" stroke="#a593a0" stroke-width="0.5"/>
+  <path d="M30,70 L30,30 Q40,24 50,30 L50,70 Z" fill="url(#dlCastle)" stroke="#a593a0" stroke-width="0.6"/>
+
+  <!-- conical tower roofs -->
+  <path d="M21,38 L31,38 L26,24 Z" fill="url(#dlRoof)" stroke="#1f3666" stroke-width="0.4"/>
+  <path d="M49,36 L59,36 L54,20 Z" fill="url(#dlRoof)" stroke="#1f3666" stroke-width="0.4"/>
+  <path d="M29,30 L51,30 L40,12 Z" fill="url(#dlRoof)" stroke="#1f3666" stroke-width="0.4"/>
+
+  <!-- spire finials -->
+  <g stroke="#2e4f8c" stroke-width="1" fill="#ffd54a">
+    <line x1="26" y1="24" x2="26" y2="18"/>
+    <circle cx="26" cy="17" r="1.3"/>
+    <line x1="54" y1="20" x2="54" y2="13"/>
+    <circle cx="54" cy="12" r="1.5"/>
+    <line x1="40" y1="12" x2="40" y2="4"/>
+    <circle cx="40" cy="3" r="1.8">
+      <animate attributeName="opacity" values="1;0.5;1" dur="2s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <!-- turret trim lines -->
+  <g stroke="#b7a3b4" stroke-width="0.4" opacity="0.7" fill="none">
+    <path d="M22,50 L30,50 M22,60 L30,60"/>
+    <path d="M50,50 L58,50 M50,60 L58,60"/>
+  </g>
+  <!-- arched entrance -->
+  <path d="M36,70 L36,56 Q40,51 44,56 L44,70 Z" fill="#5a4a60" stroke="#3a2e3e" stroke-width="0.5"/>
+
+  <!-- fireworks bursting above the castle -->
+  <g>
+    <circle cx="20" cy="14" r="0.8" fill="#ff6f6f">
+      <animate attributeName="r" values="0.3;3;0.3" dur="2.4s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="1;0;1" dur="2.4s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="62" cy="10" r="0.8" fill="#6fd0ff">
+      <animate attributeName="r" values="0.3;3.4;0.3" dur="2.6s" begin="0.8s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="1;0;1" dur="2.6s" begin="0.8s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="40" cy="6" r="0.8" fill="#ffe36f">
+      <animate attributeName="r" values="0.3;3.2;0.3" dur="2.2s" begin="1.3s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="1;0;1" dur="2.2s" begin="1.3s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+</svg>

@@ -1,0 +1,496 @@
+[
+ {
+  "src": "critters/colosseum.svg",
+  "from": [
+   12.5,
+   41.9
+  ],
+  "to": [
+   12.775743509005418,
+   41.78182421042625
+  ],
+  "ok": true,
+  "blocker": "critters/leaning-tower.svg"
+ },
+ {
+  "src": "critters/st-basil.svg",
+  "from": [
+   39.2,
+   55.3
+  ],
+  "to": [
+   39.48845718429225,
+   55.21758366163078
+  ],
+  "ok": true,
+  "blocker": "critters/kremlin-moscow.svg"
+ },
+ {
+  "src": "critters/yosemite.svg",
+  "from": [
+   -119.55,
+   37.75
+  ],
+  "to": [
+   -119.2500430817838,
+   37.744915984437014
+  ],
+  "ok": true,
+  "blocker": "critters/golden-gate.svg"
+ },
+ {
+  "src": "critters/louvre.svg",
+  "from": [
+   4.6,
+   48.7
+  ],
+  "to": [
+   4.895563526445902,
+   48.75140235242538
+  ],
+  "ok": true,
+  "blocker": "critters/eiffel-tower.svg"
+ },
+ {
+  "src": "critters/minoan-bull.svg",
+  "from": [
+   25.2,
+   35.2
+  ],
+  "to": [
+   24.953401519041964,
+   33.72040911425179
+  ],
+  "ok": true,
+  "blocker": "critters/greek-house.svg"
+ },
+ {
+  "src": "critters/tokyo-tower.svg",
+  "from": [
+   139.9,
+   35.5
+  ],
+  "to": [
+   140.88885030903924,
+   36.179834587464484
+  ],
+  "ok": true,
+  "blocker": "critters/fuji.svg"
+ },
+ {
+  "src": "critters/petra.svg",
+  "from": [
+   35.44,
+   30.33
+  ],
+  "to": [
+   35.654998282837404,
+   28.845488047075076
+  ],
+  "ok": true,
+  "blocker": "critters/western-wall.svg"
+ },
+ {
+  "src": "critters/tipi.svg",
+  "from": [
+   -105,
+   45
+  ],
+  "to": [
+   -105.47616381677516,
+   45.36505892619428
+  ],
+  "ok": true,
+  "blocker": "critters/rushmore.svg"
+ },
+ {
+  "src": "critters/gassho-house.svg",
+  "from": [
+   136.9,
+   36.2
+  ],
+  "to": [
+   136.1632712637821,
+   37.1472226608516
+  ],
+  "ok": true,
+  "blocker": "critters/fuji.svg"
+ },
+ {
+  "src": "critters/kiyomizudera.svg",
+  "from": [
+   135.8,
+   34.99
+  ],
+  "to": [
+   135.45127486751463,
+   32.919156987607934
+  ],
+  "ok": true,
+  "blocker": "critters/gassho-house.svg"
+ },
+ {
+  "src": "critters/osaka-castle.svg",
+  "from": [
+   135.5,
+   34.6
+  ],
+  "to": [
+   135.6564722169858,
+   39.997732528137306
+  ],
+  "ok": true,
+  "blocker": "critters/kiyomizudera.svg"
+ },
+ {
+  "src": "critters/forbidden-city.svg",
+  "from": [
+   116.4,
+   39.9
+  ],
+  "to": [
+   115.12720779386423,
+   38.62720779386421
+  ],
+  "ok": true,
+  "blocker": "critters/great-wall.svg"
+ },
+ {
+  "src": "critters/n-seoul-tower.svg",
+  "from": [
+   126.99,
+   37.55
+  ],
+  "to": [
+   127.84381496824473,
+   34.988555095263365
+  ],
+  "ok": true,
+  "blocker": "critters/gyeongbokgung.svg"
+ },
+ {
+  "src": "critters/red-fort.svg",
+  "from": [
+   77.24,
+   28.66
+  ],
+  "to": [
+   76.67235002371436,
+   29.717248080831986
+  ],
+  "ok": true,
+  "blocker": "critters/taj-mahal.svg"
+ },
+ {
+  "src": "critters/victoria-falls.svg",
+  "from": [
+   25.86,
+   -17.92
+  ],
+  "to": [
+   25.03665208402794,
+   -17.04701763519275
+  ],
+  "ok": true,
+  "blocker": "critters/kruger.svg"
+ },
+ {
+  "src": "critters/maasai.svg",
+  "from": [
+   36.8,
+   -2.5
+  ],
+  "to": [
+   41.585861530407584,
+   -2.868143194646738
+  ],
+  "ok": true,
+  "blocker": "critters/serengeti.svg"
+ },
+ {
+  "src": "critters/lighthouse-alexandria.svg",
+  "from": [
+   29.885,
+   31.214
+  ],
+  "to": [
+   29.046537211046164,
+   32.07247548103586
+  ],
+  "ok": true,
+  "blocker": "critters/pyramid.svg"
+ },
+ {
+  "src": "critters/colossus-rhodes.svg",
+  "from": [
+   28.227,
+   36.451
+  ],
+  "to": [
+   26.824488749197027,
+   34.14384543400944
+  ],
+  "ok": true,
+  "blocker": "critters/pamukkale.svg"
+ },
+ {
+  "src": "critters/mont-saint-michel.svg",
+  "from": [
+   -1.51,
+   48.64
+  ],
+  "to": [
+   -2.522153799317401,
+   47.53295678199659
+  ],
+  "ok": true,
+  "blocker": "critters/normandy.svg"
+ },
+ {
+  "src": "critters/niagara-falls.svg",
+  "from": [
+   -79.07,
+   43.08
+  ],
+  "to": [
+   -78.02810822945062,
+   41.256689401538644
+  ],
+  "ok": true,
+  "blocker": "critters/cn-tower.svg"
+ },
+ {
+  "src": "critters/petronas-towers.svg",
+  "from": [
+   101.712,
+   3.158
+  ],
+  "to": [
+   101.48605718343335,
+   3.3553571474305466
+  ],
+  "ok": true,
+  "blocker": "critters/merlion.svg"
+ },
+ {
+  "src": "critters/wat-arun.svg",
+  "from": [
+   100.82,
+   13.95
+  ],
+  "to": [
+   104.92494959145928,
+   16.437848237248055
+  ],
+  "ok": true,
+  "blocker": "critters/grand-palace.svg"
+ },
+ {
+  "src": "critters/brandenburg-gate.svg",
+  "from": [
+   13.75,
+   52.65
+  ],
+  "to": [
+   16.007329359260076,
+   53.46514671306611
+  ],
+  "ok": true,
+  "blocker": "critters/berlin-wall.svg"
+ },
+ {
+  "src": "critters/tower-bridge.svg",
+  "from": [
+   -0.0754,
+   51.5055
+  ],
+  "to": [
+   -0.8547890994311627,
+   51.955558475853834
+  ],
+  "ok": true,
+  "blocker": "critters/big-ben.svg"
+ },
+ {
+  "src": "critters/venice-canal.svg",
+  "from": [
+   12.3155,
+   45.4408
+  ],
+  "to": [
+   12.67200720267572,
+   44.958200150807805
+  ],
+  "ok": true,
+  "blocker": "critters/neuschwanstein.svg"
+ },
+ {
+  "src": "critters/empire-state.svg",
+  "from": [
+   -73.9857,
+   40.7484
+  ],
+  "to": [
+   -80.87086789105892,
+   40.29622402548218
+  ],
+  "ok": true,
+  "blocker": "critters/statue-liberty.svg"
+ },
+ {
+  "src": "critters/alishan-train.svg",
+  "from": [
+   120.8025,
+   23.5088
+  ],
+  "to": [
+   120.40132172833732,
+   22.70315988534225
+  ],
+  "ok": true,
+  "blocker": "critters/taipei101.svg"
+ },
+ {
+  "src": "critters/burj-al-arab.svg",
+  "from": [
+   54.75,
+   24.85
+  ],
+  "to": [
+   52.261236757141745,
+   23.174870894230043
+  ],
+  "ok": true,
+  "blocker": "critters/burj-khalifa.svg"
+ },
+ {
+  "src": "critters/hobbiton.svg",
+  "from": [
+   175.6818,
+   -37.8722
+  ],
+  "to": [
+   177.42919802597132,
+   -36.707468211633454
+  ],
+  "ok": true,
+  "blocker": "critters/waitomo-caves.svg"
+ },
+ {
+  "src": "critters/dead-sea.svg",
+  "from": [
+   35.5,
+   31.5
+  ],
+  "to": [
+   38.83185073880433,
+   28.044747381980724
+  ],
+  "ok": true,
+  "blocker": "critters/western-wall.svg"
+ },
+ {
+  "src": "critters/matterhorn.svg",
+  "from": [
+   7.6586,
+   45.9763
+  ],
+  "to": [
+   6.237207685280653,
+   46.455511735725224
+  ],
+  "ok": true,
+  "blocker": "critters/milan-cathedral.svg"
+ },
+ {
+  "src": "critters/kilimanjaro.svg",
+  "from": [
+   37.3556,
+   -3.0674
+  ],
+  "to": [
+   28.665235166312602,
+   -3.4767397823439166
+  ],
+  "ok": true,
+  "blocker": "critters/maasai.svg"
+ },
+ {
+  "src": "critters/monument-valley.svg",
+  "from": [
+   -110.0046,
+   36.9983
+  ],
+  "to": [
+   -109.72425601098172,
+   37.10510471816039
+  ],
+  "ok": true,
+  "blocker": "critters/grand-canyon.svg"
+ },
+ {
+  "src": "critters/taroko-gorge.svg",
+  "from": [
+   121.62,
+   24.16
+  ],
+  "to": [
+   121.8883281573,
+   20.26924171915037
+  ],
+  "ok": true,
+  "blocker": "critters/taipei101.svg"
+ },
+ {
+  "src": "critters/kaminarimon-lantern.svg",
+  "from": [
+   139.796,
+   35.7148
+  ],
+  "to": [
+   130.96249191709995,
+   31.955925840183024
+  ],
+  "ok": true,
+  "blocker": "critters/tokyo-tower.svg"
+ },
+ {
+  "src": "critters/arc-de-triomphe.svg",
+  "from": [
+   2.295,
+   48.8738
+  ],
+  "to": [
+   2.2557892195446434,
+   53.37362916505683
+  ],
+  "ok": true,
+  "blocker": "critters/eiffel-tower.svg"
+ },
+ {
+  "src": "critters/temple-of-heaven.svg",
+  "from": [
+   117.2,
+   39.75
+  ],
+  "to": [
+   120.89300405314268,
+   41.75043021959572
+  ],
+  "ok": true,
+  "blocker": "critters/forbidden-city.svg"
+ },
+ {
+  "src": "critters/montgolfier-balloon.svg",
+  "from": [
+   2.5,
+   47
+  ],
+  "to": [
+   2.6368514658285473,
+   46.11046547211444
+  ],
+  "ok": true,
+  "blocker": "critters/eiffel-tower.svg"
+ }
+]

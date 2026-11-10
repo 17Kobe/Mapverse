@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="hsPeak" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#cfd6cf"/>
+      <stop offset="45%" stop-color="#9aa89a"/>
+      <stop offset="100%" stop-color="#5c6b5c"/>
+    </linearGradient>
+    <linearGradient id="hsPeak2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#b7c2b7"/>
+      <stop offset="100%" stop-color="#6b7a6b"/>
+    </linearGradient>
+    <linearGradient id="hsTrunk" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#6b4a2c"/>
+      <stop offset="100%" stop-color="#3c2814"/>
+    </linearGradient>
+    <radialGradient id="hsFoliage" cx="40%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#8fc26a"/>
+      <stop offset="100%" stop-color="#4a7a35"/>
+    </radialGradient>
+  </defs>
+
+  <!-- background granite peaks (local, not full sky) -->
+  <path d="M0,46 L14,20 L28,46 Z" fill="url(#hsPeak2)" opacity="0.85"/>
+  <path d="M46,48 L62,14 L78,48 Z" fill="url(#hsPeak)" opacity="0.9"/>
+
+  <!-- drifting mist across the mid-ground -->
+  <g opacity="0.55">
+    <ellipse cx="18" cy="48" rx="20" ry="5" fill="#f3f7f3">
+      <animate attributeName="cx" values="14;24;14" dur="6s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="60" cy="52" rx="24" ry="5.5" fill="#f3f7f3">
+      <animate attributeName="cx" values="64;54;64" dur="7s" repeatCount="indefinite"/>
+    </ellipse>
+  </g>
+
+  <!-- main granite ledge the pine grows from -->
+  <path d="M8,80 L8,58 Q24,50 40,56 Q56,50 72,58 L72,80 Z" fill="url(#hsPeak)" stroke="#44533f" stroke-width="0.6"/>
+  <g stroke="#44533f" stroke-width="0.4" opacity="0.4" fill="none">
+    <path d="M16,60 L14,78"/>
+    <path d="M64,60 L66,78"/>
+  </g>
+
+  <!-- the Greeting Pine: twisting trunk, iconic wide horizontal branch -->
+  <path d="M38,80 C37,66 36,54 40,42 C41,38 44,36 46,36 C44,40 43,46 44,52"
+        fill="none" stroke="url(#hsTrunk)" stroke-width="4.2" stroke-linecap="round"/>
+  <path d="M42,52 C50,48 62,47 70,51 C62,50 52,53 46,58"
+        fill="none" stroke="url(#hsTrunk)" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M40,46 C32,42 22,42 15,46 C23,44 32,46 37,50"
+        fill="none" stroke="url(#hsTrunk)" stroke-width="2.2" stroke-linecap="round"/>
+
+  <!-- layered pine foliage clusters along the branches -->
+  <g fill="url(#hsFoliage)" stroke="#355a26" stroke-width="0.4">
+    <ellipse cx="44" cy="35" rx="9" ry="3.6"/>
+    <ellipse cx="54" cy="42" rx="8" ry="3.2"/>
+    <ellipse cx="64" cy="48" rx="9" ry="3.4"/>
+    <ellipse cx="14" cy="43" rx="7.5" ry="3"/>
+    <ellipse cx="24" cy="46" rx="7" ry="2.8"/>
+    <ellipse cx="36" cy="40" rx="8" ry="3.2"/>
+  </g>
+  <g fill="#aee083" opacity="0.6">
+    <ellipse cx="44" cy="34" rx="5" ry="1.8"/>
+    <ellipse cx="60" cy="47" rx="5" ry="1.8"/>
+    <ellipse cx="18" cy="42" rx="4" ry="1.5"/>
+  </g>
+</svg>

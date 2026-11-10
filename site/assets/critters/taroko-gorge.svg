@@ -1,75 +1,62 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
-  <defs>
-    <linearGradient id="cliffLeft" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#eeeae3"/>
-      <stop offset="45%" stop-color="#cdc6bc"/>
-      <stop offset="100%" stop-color="#8d847a"/>
-    </linearGradient>
-    <linearGradient id="cliffRight" x1="100%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#e3ddd3"/>
-      <stop offset="45%" stop-color="#bfb6ab"/>
-      <stop offset="100%" stop-color="#7a7067"/>
-    </linearGradient>
-    <linearGradient id="river" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#8fe8df"/>
-      <stop offset="55%" stop-color="#2fa7a3"/>
-      <stop offset="100%" stop-color="#157175"/>
-    </linearGradient>
-    <linearGradient id="pavRoof" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#e2654a"/>
-      <stop offset="100%" stop-color="#9c3522"/>
-    </linearGradient>
-    <linearGradient id="pavBody" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#c9503a"/>
-      <stop offset="100%" stop-color="#7c2a1c"/>
-    </linearGradient>
-  </defs>
+<defs>
+<linearGradient id="leftCliff" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0" stop-color="#f8f5f0"/>
+<stop offset="0.55" stop-color="#ddd6cb"/>
+<stop offset="1" stop-color="#a39b92"/>
+</linearGradient>
+<linearGradient id="rightCliff" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0" stop-color="#a39b92"/>
+<stop offset="0.45" stop-color="#ddd6cb"/>
+<stop offset="1" stop-color="#f8f5f0"/>
+</linearGradient>
+<linearGradient id="river" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#8fe6df"/>
+<stop offset="0.5" stop-color="#28aea6"/>
+<stop offset="1" stop-color="#0d7873"/>
+</linearGradient>
+<linearGradient id="roof" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#e3573f"/>
+<stop offset="1" stop-color="#9a2b1c"/>
+</linearGradient>
+<linearGradient id="ledge" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0" stop-color="#d2cbc0"/>
+<stop offset="1" stop-color="#998f84"/>
+</linearGradient>
+</defs>
 
-  <!-- left cliff wall -->
-  <path d="M0,0 L22,0 L27,16 L24,30 L31,45 L36,62 L34,80 L0,80 Z"
-        fill="url(#cliffLeft)" stroke="#746b61" stroke-width="0.6"/>
-  <!-- left cliff texture cracks -->
-  <path d="M8,2 L10,24 L6,46 L10,70" fill="none" stroke="#746b61" stroke-width="0.6" opacity="0.35"/>
-  <path d="M18,0 L20,20 L16,38 L22,58 L20,80" fill="none" stroke="#5f564c" stroke-width="0.5" opacity="0.3"/>
-  <path d="M26,10 L29,30 L25,50" fill="none" stroke="#5f564c" stroke-width="0.5" opacity="0.3"/>
+<path d="M36,0 L31,12 L34,26 L28,40 L32,54 L27,68 L30,80 L51,80 L55,68 L49,54 L54,40 L47,26 L51,12 L46,0 Z" fill="url(#river)"/>
 
-  <!-- right cliff wall -->
-  <path d="M80,0 L58,0 L53,16 L56,30 L49,45 L44,62 L46,80 L80,80 Z"
-        fill="url(#cliffRight)" stroke="#625a51" stroke-width="0.6"/>
-  <!-- right cliff texture cracks -->
-  <path d="M72,2 L70,24 L74,46 L70,70" fill="none" stroke="#5f564c" stroke-width="0.6" opacity="0.35"/>
-  <path d="M62,0 L60,20 L64,38 L58,58 L60,80" fill="none" stroke="#4e463e" stroke-width="0.5" opacity="0.3"/>
-  <path d="M54,10 L51,30 L55,50" fill="none" stroke="#4e463e" stroke-width="0.5" opacity="0.3"/>
+<g stroke-linecap="round" fill="none">
+<path d="M34,18 C32,28 33,38 31,48" stroke="#d6fbf5" stroke-width="1.1" opacity="0.5">
+<animate attributeName="opacity" values="0.15;0.6;0.15" dur="2.2s" repeatCount="indefinite"/>
+</path>
+<path d="M47,24 C49,34 47,44 49,56" stroke="#d6fbf5" stroke-width="1" opacity="0.4">
+<animate attributeName="opacity" values="0.55;0.1;0.55" dur="2.6s" repeatCount="indefinite"/>
+</path>
+<path d="M38,58 C37,66 39,72 38,80" stroke="#e9fffa" stroke-width="1" opacity="0.5">
+<animate attributeName="opacity" values="0.2;0.6;0.2" dur="1.9s" repeatCount="indefinite"/>
+</path>
+</g>
 
-  <!-- small waterfall trickling down left cliff -->
-  <path d="M24,22 C25,34 23,46 25,58" fill="none" stroke="#eaf8f6" stroke-width="2" opacity="0.55" stroke-linecap="round" stroke-dasharray="3 5">
-    <animate attributeName="stroke-dashoffset" values="0;16" dur="1.1s" repeatCount="indefinite"/>
-  </path>
+<path d="M0,0 L36,0 L31,12 L34,26 L28,40 L32,54 L27,68 L30,80 L0,80 Z" fill="url(#leftCliff)" stroke="#8a837a" stroke-width="0.5"/>
+<path d="M80,0 L46,0 L51,12 L47,26 L54,40 L49,54 L55,68 L51,80 L80,80 Z" fill="url(#rightCliff)" stroke="#8a837a" stroke-width="0.5"/>
 
-  <!-- red pavilion tucked into left cliff ledge -->
-  <g transform="translate(14,34)">
-    <path d="M-2,14 L14,14 L14,18 L-2,18 Z" fill="url(#pavBody)" stroke="#5c2013" stroke-width="0.5"/>
-    <path d="M-4,10 L16,10 L12,14 L0,14 Z" fill="url(#pavRoof)" stroke="#6e2416" stroke-width="0.5"/>
-    <path d="M4,14 L4,18 M8,14 L8,18" stroke="#5c2013" stroke-width="0.6"/>
-  </g>
+<g stroke="#8c857b" stroke-width="0.6" fill="none" opacity="0.4" stroke-linecap="round">
+<path d="M6,4 C4,16 9,28 5,42 C8,56 4,68 7,80"/>
+<path d="M18,2 C16,14 20,24 16,36 C19,48 15,60 18,76"/>
+<path d="M74,4 C76,16 71,28 75,42 C72,56 76,68 73,80"/>
+<path d="M62,2 C64,14 60,24 64,36 C61,48 65,60 62,76"/>
+</g>
 
-  <!-- river at canyon base -->
-  <path d="M34,80 L36,62 L31,45 L37,50 L43,50 L49,45 L44,62 L46,80 Z"
-        fill="url(#river)" stroke="#0f5a5d" stroke-width="0.6"/>
+<path d="M45,35 L62,30 L63,35 L46,40 Z" fill="#716a62" opacity="0.3"/>
+<path d="M46,33 L61,28 L62,32 L47,37 Z" fill="url(#ledge)" stroke="#7d766d" stroke-width="0.4"/>
 
-  <!-- shimmering highlight streaks on the river -->
-  <g opacity="0.65">
-    <path d="M36,52 L40,54 L38,60" fill="none" stroke="#dffffb" stroke-width="1.1" stroke-linecap="round">
-      <animateTransform attributeName="transform" type="translate" values="0,0;1.5,2;0,0" dur="2.4s" repeatCount="indefinite"/>
-      <animate attributeName="opacity" values="0.3;0.8;0.3" dur="2.4s" repeatCount="indefinite"/>
-    </path>
-    <path d="M40,66 L43,68 L41,74" fill="none" stroke="#eafffc" stroke-width="1" stroke-linecap="round">
-      <animateTransform attributeName="transform" type="translate" values="0,0;-1.5,1.5;0,0" dur="2s" repeatCount="indefinite"/>
-      <animate attributeName="opacity" values="0.7;0.25;0.7" dur="2s" repeatCount="indefinite"/>
-    </path>
-    <path d="M37,70 L40,72 L38,78" fill="none" stroke="#c9f5f0" stroke-width="0.9" stroke-linecap="round">
-      <animateTransform attributeName="transform" type="translate" values="0,0;1,1;0,0" dur="2.8s" repeatCount="indefinite"/>
-      <animate attributeName="opacity" values="0.5;0.9;0.5" dur="2.8s" repeatCount="indefinite"/>
-    </path>
-  </g>
+<rect x="50" y="26" width="1.6" height="8" fill="#5a1b12"/>
+<rect x="58" y="24" width="1.6" height="8" fill="#5a1b12"/>
+<rect x="48" y="25" width="12" height="1.6" fill="#7a2416"/>
+
+<path d="M47,25 L55,17 L63,24 L60,25.5 L55,20.5 L50,26 Z" fill="url(#roof)" stroke="#6c1c10" stroke-width="0.4"/>
+<path d="M47,25 L44,23 L47,27 Z" fill="url(#roof)" stroke="#6c1c10" stroke-width="0.3"/>
+<path d="M63,24 L66,22 L63,28 Z" fill="url(#roof)" stroke="#6c1c10" stroke-width="0.3"/>
 </svg>

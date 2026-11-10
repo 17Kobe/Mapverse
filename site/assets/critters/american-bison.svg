@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="bsBody" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7a5c3e"/>
+      <stop offset="100%" stop-color="#43301c"/>
+    </linearGradient>
+    <linearGradient id="bsMane" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4a3824"/>
+      <stop offset="100%" stop-color="#241a0e"/>
+    </linearGradient>
+    <linearGradient id="bsGrass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#c4a85f"/>
+      <stop offset="100%" stop-color="#8a703a"/>
+    </linearGradient>
+  </defs>
+
+  <!-- dry prairie grass tuft -->
+  <path d="M0,80 L0,70 Q40,65 80,70 L80,80 Z" fill="url(#bsGrass)"/>
+  <g stroke="#9c8248" stroke-width="0.7" opacity="0.6">
+    <line x1="6" y1="70" x2="4" y2="63"/>
+    <line x1="12" y1="71" x2="11" y2="64"/>
+    <line x1="68" y1="71" x2="70" y2="64"/>
+  </g>
+
+  <!-- tail -->
+  <path d="M60,46 C66,50 68,58 65,66" fill="none" stroke="url(#bsBody)" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M63,62 L68,68" stroke="#241a0e" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- hind legs -->
+  <path d="M55,56 C53,62 53,68 54,74 L59,74 C60,68 60,62 59,56 Z" fill="url(#bsBody)" stroke="#2e2113" stroke-width="0.4"/>
+  <path d="M47,58 C46,64 46,70 47,76 L52,76 C53,70 53,64 52,58 Z" fill="url(#bsBody)" stroke="#2e2113" stroke-width="0.4"/>
+
+  <!-- large sloped body, higher at the shoulder than the hip (signature bison silhouette) -->
+  <path d="M26,52 C27,42 36,34 48,35 C56,36 60,42 59,50 C58,58 50,62 40,62 C32,62 26,59 26,52 Z"
+        fill="url(#bsBody)" stroke="#2e2113" stroke-width="0.5"/>
+
+  <!-- front legs, stocky -->
+  <path d="M22,56 C20,62 20,69 21,76 L27,76 C28,69 28,62 27,56 Z" fill="url(#bsBody)" stroke="#2e2113" stroke-width="0.4"/>
+  <path d="M31,58 C30,64 30,70 31,77 L36,77 C37,70 37,64 36,58 Z" fill="url(#bsBody)" stroke="#2e2113" stroke-width="0.4"/>
+
+  <!-- massive shaggy shoulder hump -->
+  <path d="M25,52 C23,44 26,34 36,30 C34,36 33,42 34,48 Z" fill="url(#bsMane)" opacity="0.9"/>
+  <path d="M24,50 C20,48 15,48 11,51 C14,46 20,44 26,46 Z" fill="url(#bsMane)"/>
+
+  <!-- head, low-slung with a shaggy beard -->
+  <path d="M7,46 C6,40 10,35 16,34 C22,33 27,37 27,43 C27,48 23,52 17,52 C12,52 8,50 7,46 Z"
+        fill="url(#bsBody)" stroke="#2e2113" stroke-width="0.5"/>
+  <!-- beard -->
+  <path d="M9,48 C7,52 7,58 10,61 C13,58 14,53 13,48 Z" fill="url(#bsMane)"/>
+  <!-- horns, short and curved -->
+  <path d="M10,38 C7,36 5,33 6,30 C9,32 11,35 12,38 Z" fill="#2a2015" stroke="#120d08" stroke-width="0.3"/>
+  <path d="M22,36 C25,33 27,30 26,27 C23,29 21,33 20,37 Z" fill="#2a2015" stroke="#120d08" stroke-width="0.3"/>
+  <!-- ear -->
+  <path d="M22,40 L27,38 L25,44 Z" fill="url(#bsBody)" stroke="#2e2113" stroke-width="0.3"/>
+  <!-- eye and muzzle -->
+  <circle cx="19" cy="42" r="1" fill="#1a1208"/>
+  <ellipse cx="9" cy="46" rx="2" ry="1.4" fill="#1a1208"/>
+
+  <!-- shaggy mane texture tufts along neck/shoulder -->
+  <g stroke="#241a0e" stroke-width="0.9" stroke-linecap="round" opacity="0.7">
+    <line x1="13" y1="34" x2="12" y2="31"/>
+    <line x1="17" y1="33" x2="17" y2="30"/>
+    <line x1="21" y1="34" x2="22" y2="31"/>
+  </g>
+</svg>
