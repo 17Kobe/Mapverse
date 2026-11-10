@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <ellipse cx="40" cy="68" rx="30" ry="7" fill="#1565C0" opacity="0.5">
+    <animate attributeName="opacity" values="0.4;0.6;0.4" dur="3s" repeatCount="indefinite"/>
+  </ellipse>
+
+  <g>
+    <animateTransform attributeName="transform" type="translate" values="0,0; 0,-1.5; 0,0" dur="3.4s" repeatCount="indefinite"/>
+    <ellipse cx="16" cy="48" rx="15" ry="14" fill="#2E7D32" stroke="white" stroke-width="2"/>
+    <ellipse cx="16" cy="48" rx="8" ry="7.5" fill="#43A047" stroke="white" stroke-width="1.6"/>
+  </g>
+
+  <g>
+    <animateTransform attributeName="transform" type="translate" values="0,0; 0,-2; 0,0" dur="2.8s" repeatCount="indefinite"/>
+    <ellipse cx="62" cy="46" rx="16" ry="15" fill="#2E7D32" stroke="white" stroke-width="2"/>
+    <ellipse cx="62" cy="46" rx="8.5" ry="8" fill="#66BB6A" stroke="white" stroke-width="1.6"/>
+  </g>
+
+  <g>
+    <animateTransform attributeName="transform" type="translate" values="0,0; 0,-2.2; 0,0" dur="3.1s" repeatCount="indefinite"/>
+    <ellipse cx="40" cy="30" rx="20" ry="18" fill="#388E3C" stroke="white" stroke-width="2.2"/>
+    <ellipse cx="32" cy="27" rx="9" ry="8" fill="#4CAF50" stroke="white" stroke-width="1.6"/>
+    <ellipse cx="48" cy="29" rx="9.5" ry="8.5" fill="#1B5E20" stroke="white" stroke-width="1.6"/>
+    <ellipse cx="40" cy="20" rx="8" ry="7" fill="#66BB6A" stroke="white" stroke-width="1.6"/>
+  </g>
+
+  <path d="M30 60 Q28 65 32 70" fill="none" stroke="#1565C0" stroke-width="3" stroke-linecap="round" opacity="0.6">
+    <animate attributeName="opacity" values="0.4;0.7;0.4" dur="2.5s" repeatCount="indefinite"/>
+  </path>
+
+  <g>
+    <animateTransform attributeName="transform" type="translate" values="0,0; -1,-2; 0,0" dur="2.2s" repeatCount="indefinite"/>
+    <ellipse cx="42" cy="42" rx="7" ry="5.5" fill="#D32F2F" stroke="white" stroke-width="1.8"/>
+    <path d="M35 42 Q29 40 31 46 Q33 44 36 44 Z" fill="#1976D2" stroke="white" stroke-width="1.6">
+      <animateTransform attributeName="transform" type="rotate" values="0 33 43; -22 33 43; 0 33 43" dur="0.7s" repeatCount="indefinite"/>
+    </path>
+    <path d="M48 41 Q48 36 51 38 Q50 40 49 42 Z" fill="#FBC02D" stroke="white" stroke-width="1.4"/>
+    <circle cx="47" cy="40" r="1.3" fill="#212121"/>
+  </g>
+</svg>

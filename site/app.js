@@ -89,7 +89,7 @@
     // sea：在海上（影子改成水波）
     const CRITTERS = [
         { src: 'critters/whale-spout.png', alt: 'critters/whale.png', lon: -38, lat: 38, mode: 'whale', s: 1.15, sea: true },
-        { src: 'critters/dolphin.png', lon: 72, lat: -12, mode: 'dolphin', s: 0.85, sea: true },
+        { src: 'critters/dolphin.png', lon: 113.2, lat: -25.8, mode: 'dolphin', s: 0.85, sea: true }, // 澳洲：猴子米亞野生海豚
         { src: 'critters/shark.png', lon: 62, lat: -36, mode: 'dolphin', s: 0.9, sea: true },
         { src: 'critters/seal.png', lon: -27, lat: 66, mode: 'bob', s: 0.75, sea: true },
         // 南島民族（由台灣出發往太平洋、印度洋拓展）：蘭嶼達悟族拼板舟，和往太平洋、馬達加斯加遠航的拼板舟
@@ -530,6 +530,16 @@
         { src: 'critters/golden-monkey.svg', lon: 103.0, lat: 31.0, mode: 'wander', face: 'R', s: 0.9, deco: true, maxDeg: 2 }, // 中國：金絲猴森林跳躍（素材朝右畫）
         { src: 'critters/chameleon.svg', lon: 49.0, lat: -17.0, mode: 'still', face: 'F', s: 0.85, deco: true },      // 馬達加斯加：變色龍伸舌頭
         { src: 'critters/piranha.svg', lon: -60.0, lat: -2.0, mode: 'swim', face: 'R', s: 0.8, sea: true, deco: true }, // 南美：食人魚群游（素材朝右畫）
+        // ── 第五批補充（地標 + 動物） ──────────────────────────────────
+        { src: 'critters/atlantis.svg', lon: -24.0, lat: 36.0, mode: 'still', face: 'F', s: 1.2, sea: true, deco: true, landmark: true, noShadow: true }, // 亞特蘭提斯
+        { src: 'critters/chocolate-hills.svg', lon: 124.14, lat: 9.83, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 菲律賓：巧克力山
+        { src: 'critters/panama-canal.svg', lon: -79.52, lat: 9.08, mode: 'still', face: 'F', s: 1.1, sea: true, deco: true, landmark: true }, // 巴拿馬運河
+        { src: 'critters/proboscis-monkey.svg', lon: 114.0, lat: 0.5, mode: 'wander', s: 0.95, deco: true, maxDeg: 2 }, // 婆羅洲：長鼻猴
+        { src: 'critters/barcelos-rooster.svg', lon: -8.62, lat: 41.53, mode: 'still', face: 'F', s: 1.0, deco: true, landmark: true }, // 葡萄牙：巴塞盧什公雞
+        { src: 'critters/eye-of-sahara.svg', lon: -11.4, lat: 21.12, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 撒哈拉之眼
+        { src: 'critters/fennec-fox.svg', lon: 5.0, lat: 25.0, mode: 'wander', s: 0.8, deco: true, maxDeg: 2 }, // 撒哈拉：耳廓狐
+        { src: 'critters/grizzly-salmon.svg', lon: -155.8, lat: 58.6, mode: 'still', face: 'F', s: 1.1, sea: true, deco: true, landmark: true }, // 阿拉斯加：灰熊抓鮭魚
+        { src: 'critters/amazon-rainforest.svg', lon: -71.0, lat: -8.0, mode: 'still', face: 'F', s: 1.8, deco: true, landmark: true }, // 亞馬遜雨林
     ];
     // 原住民小人（natives.js）：該國主要指數漲就歡呼跳舞、跌就沮喪哭泣，平盤時散步 / 揮手 / 眨眼
     // mode 'folk'；market = 看哪個指數；ox / oy = 相對位置點的偏移（單位：小角色基準大小）；minK = 縮小到這個倍率以下就收起來

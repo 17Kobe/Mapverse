@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <!-- Top hills -->
+  <path d="M0,26 C8,14 14,22 22,10 C30,20 36,8 46,16 C54,6 62,18 70,10 C76,6 80,12 80,12 L80,0 L0,0 Z" fill="#4caf50" stroke="white" stroke-width="2"/>
+  <path d="M0,24 C10,16 20,22 30,14 C40,20 50,12 60,18 C68,12 76,18 80,16 L80,24 L0,24 Z" fill="#388e3c" stroke="white" stroke-width="2"/>
+  <circle cx="12" cy="12" r="4" fill="#2e7d32" stroke="white" stroke-width="1.5"/>
+  <circle cx="34" cy="10" r="3.5" fill="#2e7d32" stroke="white" stroke-width="1.5"/>
+  <circle cx="68" cy="9" r="3.5" fill="#2e7d32" stroke="white" stroke-width="1.5"/>
+
+  <!-- Bottom hills -->
+  <path d="M0,54 C8,66 14,58 22,70 C30,60 36,72 46,64 C54,74 62,62 70,70 C76,74 80,68 80,68 L80,80 L0,80 Z" fill="#4caf50" stroke="white" stroke-width="2"/>
+  <path d="M0,56 C10,64 20,58 30,66 C40,60 50,68 60,62 C68,68 76,62 80,64 L80,56 L0,56 Z" fill="#388e3c" stroke="white" stroke-width="2"/>
+  <circle cx="14" cy="70" r="3.5" fill="#2e7d32" stroke="white" stroke-width="1.5"/>
+  <circle cx="66" cy="71" r="3.5" fill="#2e7d32" stroke="white" stroke-width="1.5"/>
+
+  <!-- Canal water -->
+  <rect x="0" y="24" width="80" height="32" fill="#29b6f6" stroke="white" stroke-width="2"/>
+
+  <!-- Ripples -->
+  <path d="M0,32 Q10,28 20,32 T40,32 T60,32 T80,32" fill="none" stroke="#e1f5fe" stroke-width="1.6" opacity="0.5">
+    <animate attributeName="opacity" values="0.25;0.7;0.25" dur="2.6s" repeatCount="indefinite"/>
+  </path>
+  <path d="M0,48 Q10,44 20,48 T40,48 T60,48 T80,48" fill="none" stroke="#e1f5fe" stroke-width="1.6" opacity="0.5">
+    <animate attributeName="opacity" values="0.6;0.25;0.6" dur="2.6s" begin="0.8s" repeatCount="indefinite"/>
+  </path>
+
+  <!-- Lock gate towers -->
+  <rect x="12" y="12" width="10" height="7" rx="1.5" fill="#607d8b" stroke="white" stroke-width="2"/>
+  <rect x="58" y="12" width="10" height="7" rx="1.5" fill="#607d8b" stroke="white" stroke-width="2"/>
+
+  <!-- Lock gate piers -->
+  <rect x="14" y="18" width="7" height="44" rx="2" fill="#90a4ae" stroke="white" stroke-width="2"/>
+  <rect x="59" y="18" width="7" height="44" rx="2" fill="#90a4ae" stroke="white" stroke-width="2"/>
+  <line x1="17.5" y1="22" x2="17.5" y2="58" stroke="white" stroke-width="1.5" opacity="0.5"/>
+  <line x1="62.5" y1="22" x2="62.5" y2="58" stroke="white" stroke-width="1.5" opacity="0.5"/>
+
+  <!-- Ship (drifts gently through the lock) -->
+  <g>
+    <animateTransform attributeName="transform" type="translate" values="0,0; 2.5,0; 0,0" dur="5s" repeatCount="indefinite"/>
+
+    <!-- hull -->
+    <path d="M19,48 Q24,44 30,48 L55,48 L52,57 Q40,61 27,57 Z" fill="#ef5350" stroke="white" stroke-width="2"/>
+
+    <!-- cabin -->
+    <rect x="49" y="36" width="9" height="11" rx="1.5" fill="#cfd8dc" stroke="white" stroke-width="2"/>
+
+    <!-- containers row 1 -->
+    <rect x="23" y="38" width="6" height="8" rx="1" fill="#fdd835" stroke="white" stroke-width="1.8"/>
+    <rect x="30" y="38" width="6" height="8" rx="1" fill="#43a047" stroke="white" stroke-width="1.8"/>
+    <rect x="37" y="38" width="6" height="8" rx="1" fill="#1e88e5" stroke="white" stroke-width="1.8"/>
+    <rect x="44" y="38" width="6" height="8" rx="1" fill="#8e24aa" stroke="white" stroke-width="1.8"/>
+
+    <!-- containers row 2 -->
+    <rect x="26" y="30" width="6" height="8" rx="1" fill="#e53935" stroke="white" stroke-width="1.8"/>
+    <rect x="33" y="30" width="6" height="8" rx="1" fill="#fb8c00" stroke="white" stroke-width="1.8"/>
+    <rect x="40" y="30" width="6" height="8" rx="1" fill="#00acc1" stroke="white" stroke-width="1.8"/>
+  </g>
+</svg>

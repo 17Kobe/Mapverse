@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <rect x="2" y="4" width="76" height="30" fill="#4FC3F7" stroke="white" stroke-width="2"/>
+  <g>
+    <ellipse cx="18" cy="14" rx="9" ry="4.5" fill="#FFFFFF" stroke="white" stroke-width="1.5" opacity="0.95">
+      <animate attributeName="cx" values="18;24;18" dur="9s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="24" cy="12" rx="6" ry="3.5" fill="#FFFFFF" stroke="white" stroke-width="1.5" opacity="0.95">
+      <animate attributeName="cx" values="24;30;24" dur="9s" repeatCount="indefinite"/>
+    </ellipse>
+  </g>
+  <g>
+    <ellipse cx="58" cy="10" rx="7" ry="3.5" fill="#FFFFFF" stroke="white" stroke-width="1.5" opacity="0.9">
+      <animate attributeName="cx" values="58;52;58" dur="12s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="63" cy="12" rx="5" ry="3" fill="#FFFFFF" stroke="white" stroke-width="1.5" opacity="0.9">
+      <animate attributeName="cx" values="63;57;63" dur="12s" repeatCount="indefinite"/>
+    </ellipse>
+  </g>
+
+  <ellipse cx="15" cy="38" rx="11" ry="7" fill="#8D6E63" stroke="white" stroke-width="1.8"/>
+  <ellipse cx="68" cy="40" rx="9" ry="6" fill="#A1887F" stroke="white" stroke-width="1.8"/>
+
+  <ellipse cx="38" cy="34" rx="12" ry="7" fill="#66BB6A" stroke="white" stroke-width="1.8"/>
+  <ellipse cx="58" cy="30" rx="9" ry="5.5" fill="#81C784" stroke="white" stroke-width="1.8"/>
+
+  <path d="M 2 62 Q 10 42 20 60 Q 28 46 38 60 Q 46 44 56 61 Q 64 47 72 59 Q 76 50 78 62 L 78 76 L 2 76 Z"
+        fill="#4CAF50" stroke="white" stroke-width="2"/>
+
+  <path d="M 2 62 Q 10 42 20 60 Q 28 46 38 60" fill="none" stroke="white" stroke-width="0" opacity="0"/>
+
+  <ellipse cx="10" cy="60" rx="10" ry="12" fill="#66BB6A" stroke="white" stroke-width="2"/>
+  <ellipse cx="22" cy="58" rx="9" ry="11" fill="#7CB342" stroke="white" stroke-width="2"/>
+  <ellipse cx="34" cy="61" rx="11" ry="13" fill="#558B2F" stroke="white" stroke-width="2"/>
+  <ellipse cx="47" cy="57" rx="9" ry="11" fill="#7CB342" stroke="white" stroke-width="2"/>
+  <ellipse cx="59" cy="60" rx="10" ry="12" fill="#66BB6A" stroke="white" stroke-width="2"/>
+  <ellipse cx="71" cy="58" rx="8" ry="10" fill="#558B2F" stroke="white" stroke-width="2"/>
+
+  <ellipse cx="10" cy="54" rx="4" ry="2.2" fill="#A5D6A7" opacity="0.8"/>
+  <ellipse cx="34" cy="53" rx="4.5" ry="2.4" fill="#A5D6A7" opacity="0.8"/>
+  <ellipse cx="59" cy="53" rx="4" ry="2.2" fill="#A5D6A7" opacity="0.8"/>
+
+  <g opacity="0.9">
+    <ellipse cx="68" cy="52" rx="3" ry="4" fill="#8D6E63"/>
+    <ellipse cx="16" cy="51" rx="2.6" ry="3.5" fill="#6D4C41"/>
+  </g>
+
+  <ellipse cx="40" cy="74" rx="39" ry="4" fill="#43A047" stroke="white" stroke-width="1.5"/>
+</svg>

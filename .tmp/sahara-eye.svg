@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <circle cx="40" cy="40" r="34" fill="#e8c179" stroke="white" stroke-width="2"/>
+  <circle cx="40" cy="40" r="29" fill="#d9632a" stroke="white" stroke-width="2"/>
+  <circle cx="40" cy="40" r="24" fill="#f0d89a" stroke="white" stroke-width="2"/>
+  <circle cx="40" cy="40" r="19" fill="#a8562c" stroke="white" stroke-width="2"/>
+  <circle cx="40" cy="40" r="14" fill="#e6792f" stroke="white" stroke-width="2"/>
+  <circle cx="40" cy="40" r="9" fill="#6b3a1f" stroke="white" stroke-width="1.8"/>
+  <circle cx="40" cy="40" r="4" fill="#3d2112" stroke="white" stroke-width="1.5"/>
+  <circle cx="40" cy="40" r="34" fill="#fff6d2" stroke="white" stroke-width="1.8" opacity="0.15">
+    <animate attributeName="opacity" values="0.1;0.3;0.1" dur="3.2s" repeatCount="indefinite"/>
+  </circle>
+</svg>
