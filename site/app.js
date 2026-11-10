@@ -492,7 +492,7 @@
         { src: 'critters/bagan.svg', lon: 94.86, lat: 21.17, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },             // 蒲甘
         { src: 'critters/abu-simbel.svg', lon: 31.63, lat: 22.34, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },        // 阿布辛貝
         { src: 'critters/samarkand.svg', lon: 66.97, lat: 39.65, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },         // 撒馬爾罕
-        { src: 'critters/komodo-dragon.svg', lon: 119.49, lat: -8.55, mode: 'wander', gait: 'heavy', s: 1.0, deco: true, landmark: true }, // 科莫多巨蜥
+        { src: 'critters/komodo-dragon.svg', lon: 119.49, lat: -8.55, mode: 'wander', face: 'R', gait: 'heavy', s: 1.0, deco: true, landmark: true }, // 科莫多巨蜥（素材朝右畫）
         { src: 'critters/socotra.svg', lon: 53.87, lat: 12.47, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },           // 索科特拉島
         { src: 'critters/maasai.svg', lon: 36.8, lat: -2.5, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },              // 馬賽族
         { src: 'critters/angel-falls.svg', lon: -62.54, lat: 5.97, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },       // 安赫爾瀑布
@@ -519,9 +519,9 @@
         { src: 'critters/nazca-lines.svg', lon: -75.13, lat: -14.74, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },     // 納斯卡線
         { src: 'critters/niagara-falls.svg', lon: -79.07, lat: 43.08, mode: 'still', face: 'F', s: 1.1, sea: true, deco: true, landmark: true }, // 尼加拉瀑布
         // ── 新增動物（世界各地代表物種） ──────────────────────────────
-        { src: 'animals/tiger.png', lon: 79.0, lat: 21.0, mode: 'wander', face: 'R', s: 1.0, deco: true, maxDeg: 2 },  // 印度：老虎在森林漫步（素材朝右畫）
+        { src: 'animals/tiger.png', lon: 79.0, lat: 21.0, mode: 'wander', s: 1.0, deco: true, maxDeg: 2 },  // 印度：老虎在森林漫步
         { src: 'critters/wombat.svg', lon: 146.0, lat: -42.0, mode: 'still', face: 'F', s: 0.9, deco: true },         // 澳洲：袋熊鑽洞
-        { src: 'critters/jaguar.svg', lon: -65.0, lat: -6.0, mode: 'wander', face: 'R', s: 1.0, deco: true, maxDeg: 2 }, // 南美：美洲豹穿越雨林（素材朝右畫）
+        { src: 'critters/jaguar.svg', lon: -65.0, lat: -6.0, mode: 'wander', s: 1.0, deco: true, maxDeg: 2 }, // 南美：美洲豹穿越雨林（素材已重畫為朝左）
         { src: 'critters/toucan.svg', lon: -58.0, lat: -10.0, mode: 'still', face: 'F', s: 0.85, deco: true },        // 南美：巨嘴鳥跳動
         { src: 'critters/hippo.svg', lon: 31.0, lat: 1.0, mode: 'bob', s: 1.0, sea: true, deco: true },               // 非洲：河馬探頭
         { src: 'animals/elephant.png', lon: 37.5, lat: -3.0, mode: 'wander', gait: 'heavy', s: 1.05, deco: true, maxDeg: 2 }, // 非洲：象群遷徙
@@ -3007,7 +3007,8 @@
                 panExtent(),
             );
         // 手機版全球：縮到最小，經度置中在太平洋（日本到美國西部）；下方兩欄旗幟列十大市值
-        if (key === 'all' && !desktopMQ.matches)
+        // 遊戲 filter 沒有自己對應的國家/主題，視角要跟全球一致，不然會掉回去下面沒特別調過的 world()
+        if ((key === 'all' || key === 'game') && !desktopMQ.matches)
             return zoomB.constrain()(
                 d3.zoomIdentity.translate(W / 2 - projection([GLOBAL_LON, 0])[0], 0),
                 [
@@ -3019,7 +3020,7 @@
         // 桌機版全球：世界縮到最小，畫面貼著南界（南緯 58 度）。市場集中在北緯 20～50 度，
         // 這樣美國、中國會落在畫面中上段，南半球（澳洲、智利、阿根廷）完整看得到，上方不會空出一大片北極。
         // 左邊界從日期變更線再往東移一點（西經 155 度），美洲不會貼著左緣，右邊的日本、紐西蘭也放得下
-        if (key === 'all')
+        if (key === 'all' || key === 'game')
             return zoomB.constrain()(
                 d3.zoomIdentity.translate(-projection([GLOBAL_LEFT_LON, 0])[0], H - projection([0, VIEW_S])[1]),
                 [
