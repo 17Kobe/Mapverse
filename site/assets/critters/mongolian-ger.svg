@@ -1,26 +1,37 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+<defs>
+  <linearGradient id="mg-ground" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#6fae46"/><stop offset="1" stop-color="#4a7e2c"/>
+  </linearGradient>
+  <radialGradient id="mg-dome1" cx="35%" cy="25%" r="85%">
+    <stop offset="0" stop-color="#fdf8ec"/><stop offset="1" stop-color="#d8cba4"/>
+  </radialGradient>
+  <radialGradient id="mg-dome2" cx="35%" cy="20%" r="85%">
+    <stop offset="0" stop-color="#fbf4e2"/><stop offset="1" stop-color="#cdbf96"/>
+  </radialGradient>
+</defs>
 <!-- Ground -->
-<ellipse cx="40" cy="68" rx="30" ry="7" fill="#5a9e3a" stroke="white" stroke-width="1.5"/>
+<ellipse cx="40" cy="68" rx="30" ry="7" fill="url(#mg-ground)" stroke="#355f1e" stroke-width="0.5"/>
 
 <!-- Main dome body -->
-<ellipse cx="40" cy="52" rx="26" ry="14" fill="#f5f0e8" stroke="white" stroke-width="1.5"/>
+<ellipse cx="40" cy="52" rx="26" ry="14" fill="url(#mg-dome1)" stroke="#9c8a62" stroke-width="0.5"/>
 
 <!-- Decorative band - orange/blue traditional pattern -->
-<path d="M14 52 Q14 60 40 63 Q66 60 66 52" fill="#e07820" stroke="white" stroke-width="1"/>
+<path d="M14 52 Q14 60 40 63 Q66 60 66 52" fill="#e07820" stroke="#a3550f" stroke-width="0.5"/>
 <!-- Blue pattern dots on band -->
-<circle cx="25" cy="57" r="2" fill="#2a7abf" stroke="white" stroke-width="0.8"/>
-<circle cx="33" cy="58.5" r="2" fill="#2a7abf" stroke="white" stroke-width="0.8"/>
-<circle cx="41" cy="59" r="2" fill="#2a7abf" stroke="white" stroke-width="0.8"/>
-<circle cx="49" cy="58.5" r="2" fill="#2a7abf" stroke="white" stroke-width="0.8"/>
-<circle cx="57" cy="57" r="2" fill="#2a7abf" stroke="white" stroke-width="0.8"/>
+<circle cx="25" cy="57" r="2" fill="#2a7abf" stroke="#15466f" stroke-width="0.4"/>
+<circle cx="33" cy="58.5" r="2" fill="#2a7abf" stroke="#15466f" stroke-width="0.4"/>
+<circle cx="41" cy="59" r="2" fill="#2a7abf" stroke="#15466f" stroke-width="0.4"/>
+<circle cx="49" cy="58.5" r="2" fill="#2a7abf" stroke="#15466f" stroke-width="0.4"/>
+<circle cx="57" cy="57" r="2" fill="#2a7abf" stroke="#15466f" stroke-width="0.4"/>
 
 <!-- Upper dome -->
-<ellipse cx="40" cy="47" rx="20" ry="10" fill="#f5f0e8" stroke="white" stroke-width="1.5"/>
+<ellipse cx="40" cy="47" rx="20" ry="10" fill="url(#mg-dome2)" stroke="#9c8a62" stroke-width="0.5"/>
 
 <!-- Dome top cap / skylight ring -->
-<ellipse cx="40" cy="38" rx="8" ry="4" fill="#ddd0b8" stroke="white" stroke-width="1.2"/>
+<ellipse cx="40" cy="38" rx="8" ry="4" fill="#ddd0b8" stroke="#9c8a62" stroke-width="0.5"/>
 <!-- Skylight center -->
-<ellipse cx="40" cy="38" rx="4" ry="2" fill="#a0b8d0" stroke="white" stroke-width="1"/>
+<ellipse cx="40" cy="38" rx="4" ry="2" fill="#a0b8d0" stroke="#5c7898" stroke-width="0.4"/>
 
 <!-- Vertical ribs on dome -->
 <path d="M40 37 L40 52" stroke="#c8b89a" stroke-width="0.8" fill="none"/>
@@ -28,7 +39,7 @@
 <path d="M48 39 L52 52" stroke="#c8b89a" stroke-width="0.8" fill="none"/>
 
 <!-- Door frame -->
-<rect x="35" y="51" width="10" height="12" rx="1" fill="#c0392b" stroke="white" stroke-width="1.2"/>
+<rect x="35" y="51" width="10" height="12" rx="1" fill="#c0392b" stroke="#7a1f14" stroke-width="0.5"/>
 <!-- Door panel lines -->
 <line x1="40" y1="51" x2="40" y2="63" stroke="#a03020" stroke-width="0.8"/>
 <line x1="35" y1="57" x2="45" y2="57" stroke="#a03020" stroke-width="0.8"/>

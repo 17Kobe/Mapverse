@@ -8,7 +8,7 @@
     <animateTransform attributeName="transform" type="rotate" values="0 64 70;360 64 70" dur="7s" repeatCount="indefinite"/>
     <path d="M64 70 Q78 58 90 70 Q96 92 64 96 Q30 92 30 64 Q32 36 64 32 Q100 34 104 68" stroke="#7fe8ff" stroke-width="3" fill="none" stroke-linecap="round" opacity=".85"/>
     <path d="M64 70 Q50 82 38 70 Q32 48 64 44 Q96 46 98 72 Q94 100 60 104" stroke="#b58cff" stroke-width="2.4" fill="none" stroke-linecap="round" opacity=".8"/>
-    <path d="M64 70 Q70 64 76 70 Q74 80 64 80 Q54 78 54 68" stroke="#fff" stroke-width="2" fill="none" opacity=".8"/>
+    <path d="M64 70 Q70 64 76 70 Q74 80 64 80 Q54 78 54 68" stroke="#bdf0ff" stroke-width="1.6" fill="none" opacity=".8"/>
   </g>
   <!-- 發光的三角形邊界 -->
   <path d="M64 14 L116 110 L12 110Z" fill="none" stroke="#5dffb0" stroke-width="2.2" stroke-dasharray="6 4" opacity=".9"><animate attributeName="stroke-dashoffset" values="0;20" dur="1.6s" repeatCount="indefinite"/></path>

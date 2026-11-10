@@ -1,10 +1,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="gh-wall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f7efd8"/>
+      <stop offset="1" stop-color="#d9c89e"/>
+    </linearGradient>
+    <linearGradient id="gh-roof" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6b5a46"/>
+      <stop offset="1" stop-color="#453a2c"/>
+    </linearGradient>
+  </defs>
 
   <!-- Ground -->
-  <ellipse cx="40" cy="74" rx="28" ry="5" fill="#7ab648" stroke="white" stroke-width="1.5"/>
+  <ellipse cx="40" cy="74" rx="28" ry="5" fill="#7ab648" stroke="#4f8a30" stroke-width="0.6"/>
 
   <!-- Main wall body -->
-  <rect x="18" y="46" width="44" height="22" rx="1" fill="#f0e8d0" stroke="white" stroke-width="1.5"/>
+  <rect x="18" y="46" width="44" height="22" rx="1" fill="url(#gh-wall)" stroke="#9c8a62" stroke-width="0.6"/>
 
   <!-- Wood beam details on wall -->
   <line x1="18" y1="52" x2="62" y2="52" stroke="#8b6914" stroke-width="1"/>
@@ -21,7 +31,7 @@
   <rect x="34" y="58" width="12" height="10" rx="1" fill="#7a5c3a" stroke="#5a3a1a" stroke-width="1"/>
 
   <!-- Main steep thatched roof -->
-  <polygon points="40,8 10,48 70,48" fill="#5a4a3a" stroke="white" stroke-width="1.5"/>
+  <polygon points="40,8 10,48 70,48" fill="url(#gh-roof)" stroke="#2e2318" stroke-width="0.6"/>
 
   <!-- Thatch texture lines -->
   <line x1="17" y1="42" x2="63" y2="42" stroke="#7a6a5a" stroke-width="1" opacity="0.6"/>
@@ -32,9 +42,9 @@
   <line x1="35" y1="13" x2="45" y2="13" stroke="#7a6a5a" stroke-width="1" opacity="0.6"/>
 
   <!-- Snow on roof top -->
-  <polygon points="40,8 28,22 52,22" fill="white" stroke="white" stroke-width="1" opacity="0.9"/>
+  <polygon points="40,8 28,22 52,22" fill="#ffffff" opacity="0.92"/>
   <!-- Snow ridge cap -->
-  <ellipse cx="40" cy="8" rx="3" ry="2" fill="white" stroke="white" stroke-width="0.5"/>
+  <ellipse cx="40" cy="8" rx="3" ry="2" fill="#ffffff" opacity="0.92"/>
 
   <!-- Snowflake 1 -->
   <circle cx="15" cy="10" r="1.5" fill="white" opacity="0.85">

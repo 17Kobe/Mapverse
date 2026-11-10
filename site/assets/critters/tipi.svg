@@ -1,15 +1,21 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+<defs>
+  <linearGradient id="tipiG" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#e0c58c"/>
+    <stop offset="1" stop-color="#a8835a"/>
+  </linearGradient>
+</defs>
 <!-- Ground shadow -->
-<ellipse cx="40" cy="74" rx="22" ry="5" fill="#5a8a3a" stroke="white" stroke-width="1.5"/>
+<ellipse cx="40" cy="74" rx="22" ry="5" fill="#5a8a3a"/>
 
 <!-- Campfire base logs -->
-<ellipse cx="40" cy="70" rx="7" ry="2.5" fill="#8B4513" stroke="white" stroke-width="1"/>
+<ellipse cx="40" cy="70" rx="7" ry="2.5" fill="#8B4513" stroke="#4a2308" stroke-width="0.4"/>
 
 <!-- Campfire flames - animated -->
 <g>
   <!-- Main flame -->
-  <polygon points="40,57 36,70 44,70" fill="#FF8C00" stroke="white" stroke-width="0.5">
-    <animate attributeName="points" 
+  <polygon points="40,57 36,70 44,70" fill="#FF8C00" stroke="#b34a00" stroke-width="0.3">
+    <animate attributeName="points"
       values="40,57 36,70 44,70; 39,55 35,70 44,70; 41,56 36,70 45,70; 40,57 36,70 44,70"
       dur="0.8s" repeatCount="indefinite"/>
     <animate attributeName="fill" values="#FF8C00;#FFD700;#FF4500;#FF8C00" dur="0.8s" repeatCount="indefinite"/>
@@ -30,7 +36,7 @@
 </g>
 
 <!-- Tipi main body -->
-<polygon points="40,8 18,68 62,68" fill="#c8a870" stroke="white" stroke-width="1.5"/>
+<polygon points="40,8 18,68 62,68" fill="url(#tipiG)" stroke="#6b4e22" stroke-width="0.6"/>
 
 <!-- Tipi vertical stripe decorations -->
 <line x1="33" y1="20" x2="24" y2="68" stroke="#7a5c2a" stroke-width="1.2"/>

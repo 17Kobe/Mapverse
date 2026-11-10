@@ -1,16 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
 <defs>
+<linearGradient id="bg-ground" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c8d060"/><stop offset="1" stop-color="#93a038"/></linearGradient>
+<linearGradient id="bg-pg-dark" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a8502e"/><stop offset="1" stop-color="#7a341c"/></linearGradient>
+<linearGradient id="bg-pg-light" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d4703f"/><stop offset="1" stop-color="#9a4f2c"/></linearGradient>
+<linearGradient id="bg-pg-gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0c860"/><stop offset="1" stop-color="#b8841f"/></linearGradient>
+<radialGradient id="bg-balloon-red" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#ef6a6a"/><stop offset="1" stop-color="#b52f2f"/></radialGradient>
+<radialGradient id="bg-balloon-blue" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#6a98e0"/><stop offset="1" stop-color="#2f5aa0"/></radialGradient>
+<radialGradient id="bg-balloon-yellow" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#f5d070"/><stop offset="1" stop-color="#c08a1f"/></radialGradient>
 <g id="pagoda">
-<polygon points="1,30 19,30 16,23 4,23" fill="#8f4228" stroke="white" stroke-width="1.8" vector-effect="non-scaling-stroke"/>
-<polygon points="4,23 16,23 13,16 7,16" fill="#b85838" stroke="white" stroke-width="1.8" vector-effect="non-scaling-stroke"/>
-<ellipse cx="10" cy="14" rx="6" ry="5.5" fill="#b85838" stroke="white" stroke-width="1.8" vector-effect="non-scaling-stroke"/>
-<ellipse cx="10" cy="10.5" rx="3.3" ry="1.4" fill="#d4a830" stroke="white" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
-<rect x="9" y="4" width="2" height="6.5" fill="#d4a830" stroke="white" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
-<circle cx="10" cy="3" r="2" fill="#d4a830" stroke="white" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+<polygon points="1,30 19,30 16,23 4,23" fill="url(#bg-pg-dark)" stroke="#5a2412" stroke-width="0.5" vector-effect="non-scaling-stroke"/>
+<polygon points="4,23 16,23 13,16 7,16" fill="url(#bg-pg-light)" stroke="#6b3018" stroke-width="0.5" vector-effect="non-scaling-stroke"/>
+<ellipse cx="10" cy="14" rx="6" ry="5.5" fill="url(#bg-pg-light)" stroke="#6b3018" stroke-width="0.5" vector-effect="non-scaling-stroke"/>
+<ellipse cx="10" cy="10.5" rx="3.3" ry="1.4" fill="url(#bg-pg-gold)" stroke="#7a5212" stroke-width="0.4" vector-effect="non-scaling-stroke"/>
+<rect x="9" y="4" width="2" height="6.5" fill="url(#bg-pg-gold)" stroke="#7a5212" stroke-width="0.4" vector-effect="non-scaling-stroke"/>
+<circle cx="10" cy="3" r="2" fill="url(#bg-pg-gold)" stroke="#7a5212" stroke-width="0.4" vector-effect="non-scaling-stroke"/>
 </g>
 </defs>
 
-<ellipse cx="40" cy="70" rx="36" ry="9" fill="#b8c04a" stroke="white" stroke-width="2.2"/>
+<ellipse cx="40" cy="70" rx="36" ry="9" fill="url(#bg-ground)" stroke="#6b7a28" stroke-width="0.6"/>
 
 <use href="#pagoda" transform="translate(2,35.4) scale(0.42)"/>
 <use href="#pagoda" transform="translate(16,33.6) scale(0.48)"/>
@@ -24,28 +31,28 @@
 
 <g>
 <animateTransform attributeName="transform" type="translate" values="0,0; 0,-3; 0,0" dur="3s" repeatCount="indefinite"/>
-<line x1="14" y1="16" x2="11" y2="20.5" stroke="white" stroke-width="1"/>
-<line x1="14" y1="16" x2="17" y2="20.5" stroke="white" stroke-width="1"/>
-<rect x="11.5" y="20.5" width="5" height="3.5" rx="0.6" fill="#8a5a2e" stroke="white" stroke-width="1.3"/>
-<ellipse cx="14" cy="10" rx="6" ry="7" fill="#d84848" stroke="white" stroke-width="1.8"/>
-<path d="M 8,10 Q 14,8 20,10" fill="none" stroke="white" stroke-width="1"/>
-<path d="M 9,14 Q 14,16 19,14" fill="none" stroke="white" stroke-width="1"/>
+<line x1="14" y1="16" x2="11" y2="20.5" stroke="#4a3018" stroke-width="1"/>
+<line x1="14" y1="16" x2="17" y2="20.5" stroke="#4a3018" stroke-width="1"/>
+<rect x="11.5" y="20.5" width="5" height="3.5" rx="0.6" fill="#8a5a2e" stroke="#4a3018" stroke-width="0.6"/>
+<ellipse cx="14" cy="10" rx="6" ry="7" fill="url(#bg-balloon-red)" stroke="#7a1f1f" stroke-width="0.6"/>
+<path d="M 8,10 Q 14,8 20,10" fill="none" stroke="#8a2a2a" stroke-width="0.8" opacity="0.8"/>
+<path d="M 9,14 Q 14,16 19,14" fill="none" stroke="#8a2a2a" stroke-width="0.8" opacity="0.8"/>
 </g>
 
 <g>
 <animateTransform attributeName="transform" type="translate" values="0,0; 0,-3; 0,0" dur="3.5s" repeatCount="indefinite"/>
-<line x1="64" y1="20" x2="61.5" y2="24" stroke="white" stroke-width="0.9"/>
-<line x1="64" y1="20" x2="66.5" y2="24" stroke="white" stroke-width="0.9"/>
-<rect x="61.8" y="24" width="4.4" height="3" rx="0.5" fill="#8a5a2e" stroke="white" stroke-width="1.2"/>
-<ellipse cx="64" cy="15" rx="4.5" ry="5.5" fill="#4878c8" stroke="white" stroke-width="1.6"/>
-<path d="M 59.5,15 Q 64,13.3 68.5,15" fill="none" stroke="white" stroke-width="0.9"/>
+<line x1="64" y1="20" x2="61.5" y2="24" stroke="#1a2a4a" stroke-width="0.9"/>
+<line x1="64" y1="20" x2="66.5" y2="24" stroke="#1a2a4a" stroke-width="0.9"/>
+<rect x="61.8" y="24" width="4.4" height="3" rx="0.5" fill="#8a5a2e" stroke="#4a3018" stroke-width="0.5"/>
+<ellipse cx="64" cy="15" rx="4.5" ry="5.5" fill="url(#bg-balloon-blue)" stroke="#1f3a70" stroke-width="0.6"/>
+<path d="M 59.5,15 Q 64,13.3 68.5,15" fill="none" stroke="#2a4a8a" stroke-width="0.7" opacity="0.8"/>
 </g>
 
 <g>
 <animateTransform attributeName="transform" type="translate" values="0,0; 0,-2; 0,0" dur="4s" repeatCount="indefinite"/>
-<line x1="40" y1="11.2" x2="38.3" y2="14" stroke="white" stroke-width="0.8"/>
-<line x1="40" y1="11.2" x2="41.7" y2="14" stroke="white" stroke-width="0.8"/>
-<rect x="38.3" y="14" width="3.4" height="2.3" rx="0.4" fill="#8a5a2e" stroke="white" stroke-width="1"/>
-<ellipse cx="40" cy="8" rx="3.5" ry="4.2" fill="#e8b840" stroke="white" stroke-width="1.5"/>
+<line x1="40" y1="11.2" x2="38.3" y2="14" stroke="#4a3018" stroke-width="0.8"/>
+<line x1="40" y1="11.2" x2="41.7" y2="14" stroke="#4a3018" stroke-width="0.8"/>
+<rect x="38.3" y="14" width="3.4" height="2.3" rx="0.4" fill="#8a5a2e" stroke="#4a3018" stroke-width="0.5"/>
+<ellipse cx="40" cy="8" rx="3.5" ry="4.2" fill="url(#bg-balloon-yellow)" stroke="#7a5212" stroke-width="0.5"/>
 </g>
 </svg>

@@ -1,28 +1,33 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
-<ellipse cx="40" cy="75" rx="34" ry="5" fill="#9c5a3c" stroke="white" stroke-width="2"/>
-<ellipse cx="12" cy="74" rx="6" ry="2.5" fill="#7a4530" stroke="white" stroke-width="1.5"/>
-<ellipse cx="68" cy="75" rx="7" ry="2.5" fill="#7a4530" stroke="white" stroke-width="1.5"/>
+<defs>
+  <linearGradient id="soGround" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b97a52"/><stop offset="1" stop-color="#7a4530"/></linearGradient>
+  <linearGradient id="soTrunk" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#a08b76"/><stop offset="1" stop-color="#6b5a4a"/></linearGradient>
+  <radialGradient id="soCanopy" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="#3f8a52"/><stop offset="1" stop-color="#163a1e"/></radialGradient>
+</defs>
+<ellipse cx="40" cy="75" rx="34" ry="5" fill="url(#soGround)" stroke="#5a331f" stroke-width="0.6"/>
+<ellipse cx="12" cy="74" rx="6" ry="2.5" fill="#7a4530" stroke="#4f2c1c" stroke-width="0.5"/>
+<ellipse cx="68" cy="75" rx="7" ry="2.5" fill="#7a4530" stroke="#4f2c1c" stroke-width="0.5"/>
 
 <g>
-  <path d="M15,74 L15.3,54 L17.3,54 L17,74 Z" fill="#8a7563" stroke="white" stroke-width="1.8"/>
+  <path d="M15,74 L15.3,54 L17.3,54 L17,74 Z" fill="url(#soTrunk)" stroke="#4a3b2f" stroke-width="0.5"/>
   <g>
-    <path d="M7,54 C10,38 22,38 25,54 L22,60 L19,54 L16,60 L13,54 L10,60 Z" fill="#2a6a3a" stroke="white" stroke-width="2"/>
+    <path d="M7,54 C10,38 22,38 25,54 L22,60 L19,54 L16,60 L13,54 L10,60 Z" fill="url(#soCanopy)" stroke="#102c16" stroke-width="0.6"/>
     <animateTransform attributeName="transform" type="rotate" values="-3 16 54;3 16 54;-3 16 54" dur="4.5s" repeatCount="indefinite"/>
   </g>
 </g>
 
 <g>
-  <path d="M58.5,74 L59.5,54 L62.5,54 L61.5,74 Z" fill="#8a7563" stroke="white" stroke-width="1.8"/>
+  <path d="M58.5,74 L59.5,54 L62.5,54 L61.5,74 Z" fill="url(#soTrunk)" stroke="#4a3b2f" stroke-width="0.5"/>
   <g>
-    <path d="M48,50 C51,34 69,34 72,50 L68,58 L65,50 L62,58 L59,50 L56,58 L53,50 L50,58 Z" fill="#2a6a3a" stroke="white" stroke-width="2"/>
+    <path d="M48,50 C51,34 69,34 72,50 L68,58 L65,50 L62,58 L59,50 L56,58 L53,50 L50,58 Z" fill="url(#soCanopy)" stroke="#102c16" stroke-width="0.6"/>
     <animateTransform attributeName="transform" type="rotate" values="3 60 54;-3 60 54;3 60 54" dur="3.8s" repeatCount="indefinite"/>
   </g>
 </g>
 
 <g>
-  <path d="M38,74 L37,47 L43,47 L42,74 Z" fill="#8a7563" stroke="white" stroke-width="2"/>
+  <path d="M38,74 L37,47 L43,47 L42,74 Z" fill="url(#soTrunk)" stroke="#4a3b2f" stroke-width="0.6"/>
   <g>
-    <path d="M23,42 C27,24 53,24 57,42 L53,50 L50,42 L47,50 L44,42 L41,50 L38,42 L35,50 L32,42 L29,50 L26,42 Z" fill="#2a6a3a" stroke="white" stroke-width="2.2"/>
+    <path d="M23,42 C27,24 53,24 57,42 L53,50 L50,42 L47,50 L44,42 L41,50 L38,42 L35,50 L32,42 L29,50 L26,42 Z" fill="url(#soCanopy)" stroke="#102c16" stroke-width="0.7"/>
     <animateTransform attributeName="transform" type="rotate" values="-2.5 40 47;2.5 40 47;-2.5 40 47" dur="4s" repeatCount="indefinite"/>
   </g>
 </g>

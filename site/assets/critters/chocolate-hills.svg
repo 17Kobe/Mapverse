@@ -1,39 +1,48 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
-  <rect x="2" y="4" width="76" height="30" fill="#4FC3F7" stroke="white" stroke-width="2"/>
+  <defs>
+    <linearGradient id="chSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7cd0f5"/><stop offset="1" stop-color="#bfe9fb"/></linearGradient>
+    <radialGradient id="chBrownA" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="#bea596"/><stop offset="1" stop-color="#6b5046"/></radialGradient>
+    <radialGradient id="chBrownB" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="#cdb9af"/><stop offset="1" stop-color="#78625a"/></radialGradient>
+    <radialGradient id="chGreenA" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="#a0dea3"/><stop offset="1" stop-color="#468c4b"/></radialGradient>
+    <radialGradient id="chGreenB" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="#b2e4b4"/><stop offset="1" stop-color="#5a965d"/></radialGradient>
+    <radialGradient id="chGreenC" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="#aad278"/><stop offset="1" stop-color="#558228"/></radialGradient>
+    <radialGradient id="chGreenD" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="#82af5a"/><stop offset="1" stop-color="#376419"/></radialGradient>
+    <linearGradient id="chGrass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#82d282"/><stop offset="1" stop-color="#2d8232"/></linearGradient>
+    <linearGradient id="chStrip" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#73c373"/><stop offset="1" stop-color="#237328"/></linearGradient>
+  </defs>
+  <rect x="2" y="4" width="76" height="30" fill="url(#chSky)"/>
   <g>
-    <ellipse cx="18" cy="14" rx="9" ry="4.5" fill="#FFFFFF" stroke="white" stroke-width="1.5" opacity="0.95">
+    <ellipse cx="18" cy="14" rx="9" ry="4.5" fill="#FFFFFF" opacity="0.95">
       <animate attributeName="cx" values="18;24;18" dur="9s" repeatCount="indefinite"/>
     </ellipse>
-    <ellipse cx="24" cy="12" rx="6" ry="3.5" fill="#FFFFFF" stroke="white" stroke-width="1.5" opacity="0.95">
+    <ellipse cx="24" cy="12" rx="6" ry="3.5" fill="#FFFFFF" opacity="0.95">
       <animate attributeName="cx" values="24;30;24" dur="9s" repeatCount="indefinite"/>
     </ellipse>
   </g>
   <g>
-    <ellipse cx="58" cy="10" rx="7" ry="3.5" fill="#FFFFFF" stroke="white" stroke-width="1.5" opacity="0.9">
+    <ellipse cx="58" cy="10" rx="7" ry="3.5" fill="#FFFFFF" opacity="0.9">
       <animate attributeName="cx" values="58;52;58" dur="12s" repeatCount="indefinite"/>
     </ellipse>
-    <ellipse cx="63" cy="12" rx="5" ry="3" fill="#FFFFFF" stroke="white" stroke-width="1.5" opacity="0.9">
+    <ellipse cx="63" cy="12" rx="5" ry="3" fill="#FFFFFF" opacity="0.9">
       <animate attributeName="cx" values="63;57;63" dur="12s" repeatCount="indefinite"/>
     </ellipse>
   </g>
 
-  <ellipse cx="15" cy="38" rx="11" ry="7" fill="#8D6E63" stroke="white" stroke-width="1.8"/>
-  <ellipse cx="68" cy="40" rx="9" ry="6" fill="#A1887F" stroke="white" stroke-width="1.8"/>
+  <ellipse cx="15" cy="38" rx="11" ry="7" fill="url(#chBrownA)" stroke="#5c453d" stroke-width="0.5"/>
+  <ellipse cx="68" cy="40" rx="9" ry="6" fill="url(#chBrownB)" stroke="#7a645c" stroke-width="0.5"/>
 
-  <ellipse cx="38" cy="34" rx="12" ry="7" fill="#66BB6A" stroke="white" stroke-width="1.8"/>
-  <ellipse cx="58" cy="30" rx="9" ry="5.5" fill="#81C784" stroke="white" stroke-width="1.8"/>
+  <ellipse cx="38" cy="34" rx="12" ry="7" fill="url(#chGreenA)" stroke="#3f8a45" stroke-width="0.5"/>
+  <ellipse cx="58" cy="30" rx="9" ry="5.5" fill="url(#chGreenB)" stroke="#5aa860" stroke-width="0.5"/>
 
   <path d="M 2 62 Q 10 42 20 60 Q 28 46 38 60 Q 46 44 56 61 Q 64 47 72 59 Q 76 50 78 62 L 78 76 L 2 76 Z"
-        fill="#4CAF50" stroke="white" stroke-width="2"/>
+        fill="url(#chGrass)" stroke="#2e7d32" stroke-width="0.6"/>
 
-  <path d="M 2 62 Q 10 42 20 60 Q 28 46 38 60" fill="none" stroke="white" stroke-width="0" opacity="0"/>
-
-  <ellipse cx="10" cy="60" rx="10" ry="12" fill="#66BB6A" stroke="white" stroke-width="2"/>
-  <ellipse cx="22" cy="58" rx="9" ry="11" fill="#7CB342" stroke="white" stroke-width="2"/>
-  <ellipse cx="34" cy="61" rx="11" ry="13" fill="#558B2F" stroke="white" stroke-width="2"/>
-  <ellipse cx="47" cy="57" rx="9" ry="11" fill="#7CB342" stroke="white" stroke-width="2"/>
-  <ellipse cx="59" cy="60" rx="10" ry="12" fill="#66BB6A" stroke="white" stroke-width="2"/>
-  <ellipse cx="71" cy="58" rx="8" ry="10" fill="#558B2F" stroke="white" stroke-width="2"/>
+  <ellipse cx="10" cy="60" rx="10" ry="12" fill="url(#chGreenA)" stroke="#3f8a45" stroke-width="0.6"/>
+  <ellipse cx="22" cy="58" rx="9" ry="11" fill="url(#chGreenC)" stroke="#557f2e" stroke-width="0.6"/>
+  <ellipse cx="34" cy="61" rx="11" ry="13" fill="url(#chGreenD)" stroke="#3b6220" stroke-width="0.6"/>
+  <ellipse cx="47" cy="57" rx="9" ry="11" fill="url(#chGreenC)" stroke="#557f2e" stroke-width="0.6"/>
+  <ellipse cx="59" cy="60" rx="10" ry="12" fill="url(#chGreenA)" stroke="#3f8a45" stroke-width="0.6"/>
+  <ellipse cx="71" cy="58" rx="8" ry="10" fill="url(#chGreenD)" stroke="#3b6220" stroke-width="0.6"/>
 
   <ellipse cx="10" cy="54" rx="4" ry="2.2" fill="#A5D6A7" opacity="0.8"/>
   <ellipse cx="34" cy="53" rx="4.5" ry="2.4" fill="#A5D6A7" opacity="0.8"/>
@@ -44,5 +53,5 @@
     <ellipse cx="16" cy="51" rx="2.6" ry="3.5" fill="#6D4C41"/>
   </g>
 
-  <ellipse cx="40" cy="74" rx="39" ry="4" fill="#43A047" stroke="white" stroke-width="1.5"/>
+  <ellipse cx="40" cy="74" rx="39" ry="4" fill="url(#chStrip)" stroke="#237328" stroke-width="0.5"/>
 </svg>

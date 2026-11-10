@@ -1,11 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+<defs>
+<linearGradient id="et-dark" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#565a62"/><stop offset="1" stop-color="#2a2d32"/></linearGradient>
+<linearGradient id="et-mid" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5f6678"/><stop offset="1" stop-color="#363b48"/></linearGradient>
+<linearGradient id="et-spire" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6e7588"/><stop offset="1" stop-color="#3f4552"/></linearGradient>
+<linearGradient id="et-ground" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6aab3a"/><stop offset="1" stop-color="#35661c"/></linearGradient>
+</defs>
+
 <!-- ── Left leg (外八大腳) ── -->
 <polygon points="10,72 22,72 30,44 18,44"
-  fill="#3d4045" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+  fill="url(#et-dark)" stroke="#24262a" stroke-width="0.6" stroke-linejoin="round"/>
 
 <!-- ── Right leg (外八大腳) ── -->
 <polygon points="70,72 58,72 50,44 62,44"
-  fill="#3d4045" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+  fill="url(#et-dark)" stroke="#24262a" stroke-width="0.6" stroke-linejoin="round"/>
 
 <!-- ── Left leg lattice ── -->
 <g stroke="#8090a8" stroke-width="0.7" opacity="0.9">
@@ -24,7 +31,7 @@
 
 <!-- ── First platform (底部橫台) ── -->
 <rect x="15" y="41" width="50" height="6" rx="1.5"
-  fill="#4a5060" stroke="white" stroke-width="1.5"/>
+  fill="url(#et-mid)" stroke="#2a2e38" stroke-width="0.5"/>
 <!-- Platform arch details -->
 <g fill="none" stroke="#8090b0" stroke-width="0.8">
   <path d="M20,47 Q23,44 26,47"/>
@@ -35,7 +42,7 @@
 
 <!-- ── Mid tower body (中段收腰) ── -->
 <polygon points="24,41 56,41 50,22 30,22"
-  fill="#3d4045" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+  fill="url(#et-dark)" stroke="#1f2126" stroke-width="0.6" stroke-linejoin="round"/>
 
 <!-- ── Mid body lattice detail ── -->
 <g stroke="#7080a0" stroke-width="0.7" opacity="0.85">
@@ -51,7 +58,7 @@
 
 <!-- ── Second platform (中段橫台) ── -->
 <rect x="27" y="20" width="26" height="5" rx="1"
-  fill="#4a5060" stroke="white" stroke-width="1.5"/>
+  fill="url(#et-mid)" stroke="#2a2e38" stroke-width="0.5"/>
 <g fill="none" stroke="#8090b0" stroke-width="0.7">
   <path d="M30,25 Q32,22 34,25"/>
   <path d="M38,25 Q40,22 42,25"/>
@@ -60,7 +67,7 @@
 
 <!-- ── Upper tower (頂段收窄) ── -->
 <polygon points="31,20 49,20 44,10 36,10"
-  fill="#3d4045" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+  fill="url(#et-dark)" stroke="#1f2126" stroke-width="0.6" stroke-linejoin="round"/>
 <!-- Upper lattice -->
 <g stroke="#7080a0" stroke-width="0.6" opacity="0.8">
   <line x1="33" y1="20" x2="37" y2="11"/>
@@ -71,17 +78,17 @@
 
 <!-- ── Spire base ── -->
 <polygon points="36,10 44,10 41,5 39,5"
-  fill="#5a6070" stroke="white" stroke-width="1.2" stroke-linejoin="round"/>
+  fill="url(#et-spire)" stroke="#2a303c" stroke-width="0.5" stroke-linejoin="round"/>
 
 <!-- ── Needle spire ── -->
 <polygon points="39,5 41,5 40.3,1.5 39.7,1.5"
-  fill="#6a7080" stroke="white" stroke-width="0.8" stroke-linejoin="round"/>
+  fill="url(#et-spire)" stroke="#2a303c" stroke-width="0.4" stroke-linejoin="round"/>
 
 <!-- ── Antenna tip ── -->
-<line x1="40" y1="1.5" x2="40" y2="0" stroke="white" stroke-width="1"/>
-<circle cx="40" cy="0.5" r="1.2" fill="#e8c84a" stroke="white" stroke-width="0.5"/>
+<line x1="40" y1="1.5" x2="40" y2="0" stroke="#3a3d42" stroke-width="0.7"/>
+<circle cx="40" cy="0.5" r="1.2" fill="#e8c84a" stroke="#9a7a1f" stroke-width="0.3"/>
 
 <!-- ── Ground ellipse (小半橢圓草地) ── -->
 <ellipse cx="40" cy="74" rx="28" ry="4.5"
-  fill="#4a8a2a" stroke="white" stroke-width="1.2"/>
+  fill="url(#et-ground)" stroke="#2f5a1a" stroke-width="0.5"/>
 </svg>

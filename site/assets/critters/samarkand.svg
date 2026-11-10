@@ -1,38 +1,59 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+<defs>
+  <linearGradient id="smBase" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#d4b578"/><stop offset="1" stop-color="#a3814a"/>
+  </linearGradient>
+  <linearGradient id="smWall" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#ecd49c"/><stop offset="1" stop-color="#c2a362"/>
+  </linearGradient>
+  <radialGradient id="smDomeSmall" cx="38%" cy="30%" r="65%">
+    <stop offset="0" stop-color="#5aa5e0"/><stop offset="1" stop-color="#1d5a8c"/>
+  </radialGradient>
+  <radialGradient id="smDomeMain" cx="40%" cy="30%" r="70%">
+    <stop offset="0" stop-color="#4f99d2"/><stop offset="1" stop-color="#163a5c"/>
+  </radialGradient>
+  <linearGradient id="smWindow" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#4a98d8"/><stop offset="1" stop-color="#1a5a92"/>
+  </linearGradient>
+  <linearGradient id="smGold" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#f9de6c"/><stop offset="1" stop-color="#c9a020"/>
+  </linearGradient>
+</defs>
+
 <ellipse cx="40" cy="70" rx="30" ry="5" fill="#000000" opacity="0.15"/>
 
-<rect x="8" y="58" width="64" height="10" rx="2" fill="#c9a86a" stroke="white" stroke-width="2"/>
+<rect x="8" y="58" width="64" height="10" rx="2" fill="url(#smBase)" stroke="#7c5f33" stroke-width="0.5"/>
 
-<rect x="10" y="28" width="8" height="30" rx="1.5" fill="#e0c888" stroke="white" stroke-width="2"/>
-<ellipse cx="14" cy="27" rx="5" ry="6" fill="#2a7ab8" stroke="white" stroke-width="1.8"/>
-<line x1="14" y1="21" x2="14" y2="17" stroke="#f4d03f" stroke-width="2" stroke-linecap="round"/>
-<circle cx="14" cy="16" r="2" fill="#f4d03f" stroke="white" stroke-width="1.5"/>
+<rect x="10" y="28" width="8" height="30" rx="1.5" fill="url(#smWall)" stroke="#a3824c" stroke-width="0.5"/>
+<ellipse cx="14" cy="27" rx="5" ry="6" fill="url(#smDomeSmall)" stroke="#123f63" stroke-width="0.5"/>
+<line x1="14" y1="21" x2="14" y2="17" stroke="#c9a020" stroke-width="1.4" stroke-linecap="round"/>
+<circle cx="14" cy="16" r="2" fill="url(#smGold)" stroke="#a3801a" stroke-width="0.4"/>
 
-<rect x="62" y="28" width="8" height="30" rx="1.5" fill="#e0c888" stroke="white" stroke-width="2"/>
-<ellipse cx="66" cy="27" rx="5" ry="6" fill="#2a7ab8" stroke="white" stroke-width="1.8"/>
-<line x1="66" y1="21" x2="66" y2="17" stroke="#f4d03f" stroke-width="2" stroke-linecap="round"/>
-<circle cx="66" cy="16" r="2" fill="#f4d03f" stroke="white" stroke-width="1.5"/>
+<rect x="62" y="28" width="8" height="30" rx="1.5" fill="url(#smWall)" stroke="#a3824c" stroke-width="0.5"/>
+<ellipse cx="66" cy="27" rx="5" ry="6" fill="url(#smDomeSmall)" stroke="#123f63" stroke-width="0.5"/>
+<line x1="66" y1="21" x2="66" y2="17" stroke="#c9a020" stroke-width="1.4" stroke-linecap="round"/>
+<circle cx="66" cy="16" r="2" fill="url(#smGold)" stroke="#a3801a" stroke-width="0.4"/>
 
-<rect x="24" y="22" width="32" height="36" rx="2" fill="#e0c888" stroke="white" stroke-width="2"/>
+<rect x="24" y="22" width="32" height="36" rx="2" fill="url(#smWall)" stroke="#a3824c" stroke-width="0.5"/>
 
-<rect x="24" y="36" width="4" height="4" fill="#2a7ab8" stroke="white" stroke-width="1.5" transform="rotate(45 26 38)"/>
-<rect x="24" y="44" width="4" height="4" fill="#2a7ab8" stroke="white" stroke-width="1.5" transform="rotate(45 26 46)"/>
-<rect x="24" y="52" width="4" height="4" fill="#2a7ab8" stroke="white" stroke-width="1.5" transform="rotate(45 26 54)"/>
-<rect x="52" y="36" width="4" height="4" fill="#2a7ab8" stroke="white" stroke-width="1.5" transform="rotate(45 54 38)"/>
-<rect x="52" y="44" width="4" height="4" fill="#2a7ab8" stroke="white" stroke-width="1.5" transform="rotate(45 54 46)"/>
-<rect x="52" y="52" width="4" height="4" fill="#2a7ab8" stroke="white" stroke-width="1.5" transform="rotate(45 54 54)"/>
+<rect x="24" y="36" width="4" height="4" fill="url(#smWindow)" stroke="#123f63" stroke-width="0.4" transform="rotate(45 26 38)"/>
+<rect x="24" y="44" width="4" height="4" fill="url(#smWindow)" stroke="#123f63" stroke-width="0.4" transform="rotate(45 26 46)"/>
+<rect x="24" y="52" width="4" height="4" fill="url(#smWindow)" stroke="#123f63" stroke-width="0.4" transform="rotate(45 26 54)"/>
+<rect x="52" y="36" width="4" height="4" fill="url(#smWindow)" stroke="#123f63" stroke-width="0.4" transform="rotate(45 54 38)"/>
+<rect x="52" y="44" width="4" height="4" fill="url(#smWindow)" stroke="#123f63" stroke-width="0.4" transform="rotate(45 54 46)"/>
+<rect x="52" y="52" width="4" height="4" fill="url(#smWindow)" stroke="#123f63" stroke-width="0.4" transform="rotate(45 54 54)"/>
 
-<path d="M31,58 L31,40 Q31,28 40,28 Q49,28 49,40 L49,58 Z" fill="#163442" stroke="white" stroke-width="1.8"/>
+<path d="M31,58 L31,40 Q31,28 40,28 Q49,28 49,40 L49,58 Z" fill="#163442" stroke="#0a1f29" stroke-width="0.5"/>
 
-<path d="M24,22 C24,15 29,10 40,9 C51,10 56,15 56,22 Z" fill="#2a7ab8" stroke="white" stroke-width="2.2"/>
-<path d="M40,9 L40,22" stroke="white" stroke-width="1" opacity="0.5" fill="none"/>
-<path d="M33,11 C31,15 30,19 31,22" stroke="white" stroke-width="1" opacity="0.5" fill="none"/>
-<path d="M47,11 C49,15 50,19 49,22" stroke="white" stroke-width="1" opacity="0.5" fill="none"/>
+<path d="M24,22 C24,15 29,10 40,9 C51,10 56,15 56,22 Z" fill="url(#smDomeMain)" stroke="#102c45" stroke-width="0.6"/>
+<path d="M40,9 L40,22" stroke="#9fc4e0" stroke-width="0.8" opacity="0.5" fill="none"/>
+<path d="M33,11 C31,15 30,19 31,22" stroke="#9fc4e0" stroke-width="0.8" opacity="0.5" fill="none"/>
+<path d="M47,11 C49,15 50,19 49,22" stroke="#9fc4e0" stroke-width="0.8" opacity="0.5" fill="none"/>
 
-<line x1="40" y1="9" x2="40" y2="5" stroke="#f4d03f" stroke-width="2" stroke-linecap="round"/>
-<circle cx="40" cy="4" r="2.2" fill="#f4d03f" stroke="white" stroke-width="1.5"/>
+<line x1="40" y1="9" x2="40" y2="5" stroke="#c9a020" stroke-width="1.4" stroke-linecap="round"/>
+<circle cx="40" cy="4" r="2.2" fill="url(#smGold)" stroke="#a3801a" stroke-width="0.4"/>
 
-<circle cx="47" cy="15" r="1.6" fill="white">
+<circle cx="47" cy="15" r="1.6" fill="#eaf4ff">
   <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite"/>
 </circle>
 </svg>

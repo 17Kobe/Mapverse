@@ -1,26 +1,52 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <radialGradient id="canopyL" cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#5BAE5E"/>
+      <stop offset="100%" stop-color="#1B5E20"/>
+    </radialGradient>
+    <radialGradient id="canopyLi" cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#8BC34A"/>
+      <stop offset="100%" stop-color="#2E7D32"/>
+    </radialGradient>
+    <radialGradient id="canopyR" cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#5BAE5E"/>
+      <stop offset="100%" stop-color="#1B5E20"/>
+    </radialGradient>
+    <radialGradient id="canopyRi" cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#9CCC65"/>
+      <stop offset="100%" stop-color="#2E7D32"/>
+    </radialGradient>
+    <radialGradient id="canopyC" cx="35%" cy="25%" r="80%">
+      <stop offset="0%" stop-color="#66BB6A"/>
+      <stop offset="100%" stop-color="#1B5E20"/>
+    </radialGradient>
+  </defs>
+
   <ellipse cx="40" cy="68" rx="30" ry="7" fill="#1565C0" opacity="0.5">
     <animate attributeName="opacity" values="0.4;0.6;0.4" dur="3s" repeatCount="indefinite"/>
   </ellipse>
 
   <g>
     <animateTransform attributeName="transform" type="translate" values="0,0; 0,-1.5; 0,0" dur="3.4s" repeatCount="indefinite"/>
-    <ellipse cx="16" cy="48" rx="15" ry="14" fill="#2E7D32" stroke="white" stroke-width="2"/>
-    <ellipse cx="16" cy="48" rx="8" ry="7.5" fill="#43A047" stroke="white" stroke-width="1.6"/>
+    <ellipse cx="16" cy="48" rx="15" ry="14" fill="url(#canopyL)" stroke="#123d16" stroke-width="0.5"/>
+    <ellipse cx="16" cy="48" rx="8" ry="7.5" fill="url(#canopyLi)" stroke="#1b5e20" stroke-width="0.4"/>
+    <ellipse cx="12" cy="43" rx="3" ry="2" fill="#2e7d32" opacity="0.5"/>
   </g>
 
   <g>
     <animateTransform attributeName="transform" type="translate" values="0,0; 0,-2; 0,0" dur="2.8s" repeatCount="indefinite"/>
-    <ellipse cx="62" cy="46" rx="16" ry="15" fill="#2E7D32" stroke="white" stroke-width="2"/>
-    <ellipse cx="62" cy="46" rx="8.5" ry="8" fill="#66BB6A" stroke="white" stroke-width="1.6"/>
+    <ellipse cx="62" cy="46" rx="16" ry="15" fill="url(#canopyR)" stroke="#123d16" stroke-width="0.5"/>
+    <ellipse cx="62" cy="46" rx="8.5" ry="8" fill="url(#canopyRi)" stroke="#2e7d32" stroke-width="0.4"/>
+    <ellipse cx="58" cy="40" rx="3.2" ry="2.2" fill="#388e3c" opacity="0.5"/>
   </g>
 
   <g>
     <animateTransform attributeName="transform" type="translate" values="0,0; 0,-2.2; 0,0" dur="3.1s" repeatCount="indefinite"/>
-    <ellipse cx="40" cy="30" rx="20" ry="18" fill="#388E3C" stroke="white" stroke-width="2.2"/>
-    <ellipse cx="32" cy="27" rx="9" ry="8" fill="#4CAF50" stroke="white" stroke-width="1.6"/>
-    <ellipse cx="48" cy="29" rx="9.5" ry="8.5" fill="#1B5E20" stroke="white" stroke-width="1.6"/>
-    <ellipse cx="40" cy="20" rx="8" ry="7" fill="#66BB6A" stroke="white" stroke-width="1.6"/>
+    <ellipse cx="40" cy="30" rx="20" ry="18" fill="url(#canopyC)" stroke="#123d16" stroke-width="0.6"/>
+    <ellipse cx="32" cy="27" rx="9" ry="8" fill="#4CAF50" stroke="#1b5e20" stroke-width="0.4"/>
+    <ellipse cx="48" cy="29" rx="9.5" ry="8.5" fill="#1B5E20" stroke="#0e3d12" stroke-width="0.4"/>
+    <ellipse cx="40" cy="20" rx="8" ry="7" fill="#66BB6A" stroke="#2e7d32" stroke-width="0.4"/>
+    <ellipse cx="36" cy="23" rx="2.8" ry="2" fill="#81c784" opacity="0.55"/>
   </g>
 
   <path d="M30 60 Q28 65 32 70" fill="none" stroke="#1565C0" stroke-width="3" stroke-linecap="round" opacity="0.6">
@@ -29,11 +55,11 @@
 
   <g>
     <animateTransform attributeName="transform" type="translate" values="0,0; -1,-2; 0,0" dur="2.2s" repeatCount="indefinite"/>
-    <ellipse cx="42" cy="42" rx="7" ry="5.5" fill="#D32F2F" stroke="white" stroke-width="1.8"/>
-    <path d="M35 42 Q29 40 31 46 Q33 44 36 44 Z" fill="#1976D2" stroke="white" stroke-width="1.6">
+    <ellipse cx="42" cy="42" rx="7" ry="5.5" fill="#D32F2F" stroke="#7f1313" stroke-width="0.5"/>
+    <path d="M35 42 Q29 40 31 46 Q33 44 36 44 Z" fill="#1976D2" stroke="#0d3a6b" stroke-width="0.4">
       <animateTransform attributeName="transform" type="rotate" values="0 33 43; -22 33 43; 0 33 43" dur="0.7s" repeatCount="indefinite"/>
     </path>
-    <path d="M48 41 Q48 36 51 38 Q50 40 49 42 Z" fill="#FBC02D" stroke="white" stroke-width="1.4"/>
+    <path d="M48 41 Q48 36 51 38 Q50 40 49 42 Z" fill="#FBC02D" stroke="#8a6200" stroke-width="0.4"/>
     <circle cx="47" cy="40" r="1.3" fill="#212121"/>
   </g>
 </svg>

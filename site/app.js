@@ -89,8 +89,8 @@
     // sea：在海上（影子改成水波）
     const CRITTERS = [
         { src: 'critters/whale-spout.png', alt: 'critters/whale.png', lon: -38, lat: 38, mode: 'whale', s: 1.15, sea: true },
-        { src: 'critters/dolphin.png', lon: 113.2, lat: -25.8, mode: 'dolphin', s: 0.85, sea: true }, // 澳洲：猴子米亞野生海豚
-        { src: 'critters/shark.png', lon: 62, lat: -36, mode: 'dolphin', s: 0.9, sea: true },
+        { src: 'critters/dolphin.png', lon: 112.7, lat: -26.0, mode: 'dolphin', s: 0.85, sea: true, maxDeg: 1.1 }, // 澳洲：猴子米亞野生海豚
+        { src: 'critters/shark.png', lon: 19.42, lat: -34.75, mode: 'dolphin', s: 0.9, sea: true, maxDeg: 1.1 }, // 南非甘斯拜：大白鯊之都
         { src: 'critters/seal.png', lon: -27, lat: 66, mode: 'bob', s: 0.75, sea: true },
         // 南島民族（由台灣出發往太平洋、印度洋拓展）：蘭嶼達悟族拼板舟，和往太平洋、馬達加斯加遠航的拼板舟
         { src: 'critters/tatara-yami.svg', lon: 122.4, lat: 20.8, mode: 'boat', face: 'F', s: 1.2, sea: true, maxDeg: 1.2 },
@@ -672,11 +672,11 @@
         '🦜': ['parrot', 'L', 'bird'],
         '🦎': ['lizard', 'F'],
         '🐧': ['penguin', 'F', 'waddle'],
-        '🦙': ['llama'],
+        '🦙': ['alpaca', 'L', 'walk', 'svg'],
     };
     const animalOf = (e) => {
         const a = ANIMALS[e];
-        return a ? { src: `assets/animals/${a[0]}.png`, face: a[1] || 'L', gait: a[2] || 'walk' } : null;
+        return a ? { src: `assets/animals/${a[0]}.${a[3] || 'png'}`, face: a[1] || 'L', gait: a[2] || 'walk' } : null;
     };
     // Windows 不會把國旗 emoji 畫成國旗（只顯示「TW」字母），所以改用 assets/flags/ 的國旗圖
     const flagCode = (e) => {
@@ -1698,9 +1698,10 @@
                 rot = Math.sin(t * 1.1 + c.ph) * 4.5;
             } else if (m === 'dolphin') {
                 // 來回游，每 3.6 秒跳出水面畫一道弧線，其餘時間在水面下
+                // 游動範圍要用「地理距離」(ppd) 限制，不然縮小地圖時會游到岸上
                 const w = (t + c.ph) * 0.22,
                     vx = Math.cos(w);
-                c.x = Math.sin(w) * B * 2;
+                c.x = Math.sin(w) * Math.min(B * 2, (c.ppd || 9999) * (c.d.maxDeg || 1.3));
                 c.y = 0;
                 c.dir = faceDir(c, vx);
                 const u = ((t + c.ph) % 3.6) / 3.6;
@@ -4742,7 +4743,7 @@
                 wk.size = o.size;
             }
             const an = s.select('.an').attrQ('class', 'an ' + st);
-            const z = o.size;
+            const z = o.size * (m.aScale || 1);
             sizeFigure(an, an.select('.beast'), z);
             an.select('.emoji')
                 .attrQ('y', -z * 0.45)

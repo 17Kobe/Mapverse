@@ -1,25 +1,31 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+<defs>
+<linearGradient id="py-sand" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e8c468"/><stop offset="1" stop-color="#b8863a"/></linearGradient>
+<linearGradient id="py-face" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#eccb70"/><stop offset="1" stop-color="#c49a3e"/></linearGradient>
+<linearGradient id="py-shadow" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c79a44"/><stop offset="1" stop-color="#8f6a22"/></linearGradient>
+<linearGradient id="py-sphinx" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dcb158"/><stop offset="1" stop-color="#a97f30"/></linearGradient>
+</defs>
 <!-- 沙地底部橢圓 -->
-<ellipse cx="40" cy="72" rx="36" ry="7" fill="#d4a843" stroke="white" stroke-width="1.5"/>
+<ellipse cx="40" cy="72" rx="36" ry="7" fill="url(#py-sand)" stroke="#8a662a" stroke-width="0.6"/>
 
 <!-- 小金字塔（右） -->
-<polygon points="57,62 67,62 62,50" fill="#d4a843" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
-<polygon points="57,62 62,62 62,50" fill="#b88e30" stroke="none"/>
+<polygon points="57,62 67,62 62,50" fill="url(#py-face)" stroke="#7a5a1f" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="57,62 62,62 62,50" fill="url(#py-shadow)" stroke="none"/>
 
 <!-- 中金字塔 -->
-<polygon points="42,62 59,62 50.5,41" fill="#d4a843" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
-<polygon points="50.5,62 59,62 50.5,41" fill="#b88e30" stroke="none"/>
+<polygon points="42,62 59,62 50.5,41" fill="url(#py-face)" stroke="#7a5a1f" stroke-width="0.5" stroke-linejoin="round"/>
+<polygon points="50.5,62 59,62 50.5,41" fill="url(#py-shadow)" stroke="none"/>
 
 <!-- 大金字塔（最左，最高） -->
-<polygon points="13,65 50,65 31.5,22" fill="#d4a843" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
-<polygon points="31.5,65 50,65 31.5,22" fill="#b88e30" stroke="none"/>
+<polygon points="13,65 50,65 31.5,22" fill="url(#py-face)" stroke="#7a5a1f" stroke-width="0.6" stroke-linejoin="round"/>
+<polygon points="31.5,65 50,65 31.5,22" fill="url(#py-shadow)" stroke="none"/>
 
 <!-- 獅身人面像（最右） -->
-<rect x="64" y="58" width="13" height="7" rx="2" fill="#c49b3a" stroke="white" stroke-width="1.2"/>
-<rect x="64" y="62" width="4" height="5" rx="1" fill="#c49b3a" stroke="white" stroke-width="1"/>
-<ellipse cx="70" cy="55" rx="5" ry="5.5" fill="#d4a843" stroke="white" stroke-width="1.2"/>
-<rect x="67" y="49" width="6" height="4" rx="1" fill="#b88e30" stroke="white" stroke-width="1"/>
-<circle cx="69" cy="55.5" r="0.6" fill="#7a5a20"/>
-<circle cx="71" cy="55.5" r="0.6" fill="#7a5a20"/>
-<line x1="68.5" y1="53.5" x2="71.5" y2="53.5" stroke="white" stroke-width="0.8" stroke-linecap="round"/>
+<rect x="64" y="58" width="13" height="7" rx="2" fill="url(#py-sphinx)" stroke="#6b4e1c" stroke-width="0.5"/>
+<rect x="64" y="62" width="4" height="5" rx="1" fill="url(#py-sphinx)" stroke="#6b4e1c" stroke-width="0.4"/>
+<ellipse cx="70" cy="55" rx="5" ry="5.5" fill="url(#py-face)" stroke="#7a5a1f" stroke-width="0.5"/>
+<rect x="67" y="49" width="6" height="4" rx="1" fill="url(#py-shadow)" stroke="#6b4e1c" stroke-width="0.4"/>
+<circle cx="69" cy="55.5" r="0.6" fill="#5a4015"/>
+<circle cx="71" cy="55.5" r="0.6" fill="#5a4015"/>
+<line x1="68.5" y1="53.5" x2="71.5" y2="53.5" stroke="#5a4218" stroke-width="0.6" stroke-linecap="round"/>
 </svg>

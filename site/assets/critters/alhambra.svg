@@ -1,59 +1,90 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+<defs>
+  <linearGradient id="skyHill" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#9ab0c8"/>
+    <stop offset="1" stop-color="#7991ac"/>
+  </linearGradient>
+  <linearGradient id="groundGrad" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#a3c179"/>
+    <stop offset="1" stop-color="#7a9c52"/>
+  </linearGradient>
+  <linearGradient id="connectGrad" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#b06f52"/>
+    <stop offset="1" stop-color="#7f4430"/>
+  </linearGradient>
+  <linearGradient id="towerGrad" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#cf9676"/>
+    <stop offset=".55" stop-color="#b8745a"/>
+    <stop offset="1" stop-color="#93513a"/>
+  </linearGradient>
+  <linearGradient id="merlonGrad" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#ecc3ac"/>
+    <stop offset="1" stop-color="#c3906f"/>
+  </linearGradient>
+</defs>
+
 <!-- 背景遠山剪影（內華達山脈意象，非全版面矩形，僅佔上方約一半高度） -->
 <path d="M0,36 L9,23 L17,31 L27,17 L37,29 L47,15 L57,27 L67,19 L80,33 L80,42 L0,42 Z"
-      fill="#8fa3bb" opacity="0.55" stroke="white" stroke-width="1" stroke-opacity="0.4"/>
+      fill="url(#skyHill)" opacity="0.55"/>
 
 <!-- 地面/台基（半橢圓，非矩形） -->
-<ellipse cx="40" cy="76" rx="35" ry="5.5" fill="#8fae5e" stroke="white" stroke-width="1.8"/>
+<ellipse cx="40" cy="76" rx="35" ry="5.5" fill="url(#groundGrad)" stroke="#5f7d3e" stroke-width="0.5"/>
 
 <!-- 左右連接城牆（較低矮，連接左右塔樓與中央塔樓） -->
-<rect x="21" y="52" width="6" height="18" fill="#a35f45" stroke="white" stroke-width="1.6"/>
-<rect x="53" y="52" width="6" height="18" fill="#a35f45" stroke="white" stroke-width="1.6"/>
+<rect x="21" y="52" width="6" height="18" fill="url(#connectGrad)" stroke="#5c2f20" stroke-width="0.5"/>
+<rect x="53" y="52" width="6" height="18" fill="url(#connectGrad)" stroke="#5c2f20" stroke-width="0.5"/>
 
 <!-- 左側方形塔樓 -->
-<rect x="8" y="36" width="14" height="34" fill="#b8745a" stroke="white" stroke-width="2"/>
+<rect x="8" y="36" width="14" height="34" fill="url(#towerGrad)" stroke="#6b3b28" stroke-width="0.5"/>
+<rect x="8" y="36" width="3" height="34" fill="#000000" opacity="0.08"/>
 <!-- 左塔城垛 -->
-<rect x="9"  y="30" width="3" height="6" fill="#d9a893" stroke="white" stroke-width="1.5"/>
-<rect x="13" y="30" width="3" height="6" fill="#d9a893" stroke="white" stroke-width="1.5"/>
-<rect x="17" y="30" width="3" height="6" fill="#d9a893" stroke="white" stroke-width="1.5"/>
+<rect x="9"  y="30" width="3" height="6" fill="url(#merlonGrad)" stroke="#9c6f52" stroke-width="0.4"/>
+<rect x="13" y="30" width="3" height="6" fill="url(#merlonGrad)" stroke="#9c6f52" stroke-width="0.4"/>
+<rect x="17" y="30" width="3" height="6" fill="url(#merlonGrad)" stroke="#9c6f52" stroke-width="0.4"/>
 <!-- 左塔馬蹄形拱窗 -->
-<path d="M11,58 L11,48 A5,5 0 1 1 19,48 L19,58 Z" fill="#4a2a1c" stroke="white" stroke-width="1.5"/>
+<path d="M11,58 L11,48 A5,5 0 1 1 19,48 L19,58 Z" fill="#3c2114" stroke="#1f100a" stroke-width="0.4"/>
 
 <!-- 右側方形塔樓 -->
-<rect x="58" y="36" width="14" height="34" fill="#b8745a" stroke="white" stroke-width="2"/>
+<rect x="58" y="36" width="14" height="34" fill="url(#towerGrad)" stroke="#6b3b28" stroke-width="0.5"/>
+<rect x="58" y="36" width="3" height="34" fill="#000000" opacity="0.08"/>
 <!-- 右塔城垛 -->
-<rect x="59" y="30" width="3" height="6" fill="#d9a893" stroke="white" stroke-width="1.5"/>
-<rect x="63" y="30" width="3" height="6" fill="#d9a893" stroke="white" stroke-width="1.5"/>
-<rect x="67" y="30" width="3" height="6" fill="#d9a893" stroke="white" stroke-width="1.5"/>
+<rect x="59" y="30" width="3" height="6" fill="url(#merlonGrad)" stroke="#9c6f52" stroke-width="0.4"/>
+<rect x="63" y="30" width="3" height="6" fill="url(#merlonGrad)" stroke="#9c6f52" stroke-width="0.4"/>
+<rect x="67" y="30" width="3" height="6" fill="url(#merlonGrad)" stroke="#9c6f52" stroke-width="0.4"/>
 <!-- 右塔馬蹄形拱窗 -->
-<path d="M61,58 L61,48 A5,5 0 1 1 69,48 L69,58 Z" fill="#4a2a1c" stroke="white" stroke-width="1.5"/>
+<path d="M61,58 L61,48 A5,5 0 1 1 69,48 L69,58 Z" fill="#3c2114" stroke="#1f100a" stroke-width="0.4"/>
 
 <!-- 中央主塔（紅堡） -->
-<rect x="26" y="20" width="28" height="50" fill="#b8745a" stroke="white" stroke-width="2.2"/>
+<rect x="26" y="20" width="28" height="50" fill="url(#towerGrad)" stroke="#6b3b28" stroke-width="0.6"/>
+<rect x="26" y="20" width="5" height="50" fill="#000000" opacity="0.1"/>
+<g stroke="#7a4631" stroke-width="0.4" opacity="0.6">
+  <line x1="26" y1="34" x2="54" y2="34"/>
+  <line x1="26" y1="50" x2="54" y2="50"/>
+</g>
 
 <!-- 中央塔城垛 -->
-<rect x="27" y="14" width="3.5" height="6" fill="#d9a893" stroke="white" stroke-width="1.5"/>
-<rect x="33" y="14" width="3.5" height="6" fill="#d9a893" stroke="white" stroke-width="1.5"/>
-<rect x="39" y="14" width="3.5" height="6" fill="#d9a893" stroke="white" stroke-width="1.5"/>
-<rect x="45" y="14" width="3.5" height="6" fill="#d9a893" stroke="white" stroke-width="1.5"/>
-<rect x="51" y="14" width="3.5" height="6" fill="#d9a893" stroke="white" stroke-width="1.5"/>
+<rect x="27" y="14" width="3.5" height="6" fill="url(#merlonGrad)" stroke="#9c6f52" stroke-width="0.4"/>
+<rect x="33" y="14" width="3.5" height="6" fill="url(#merlonGrad)" stroke="#9c6f52" stroke-width="0.4"/>
+<rect x="39" y="14" width="3.5" height="6" fill="url(#merlonGrad)" stroke="#9c6f52" stroke-width="0.4"/>
+<rect x="45" y="14" width="3.5" height="6" fill="url(#merlonGrad)" stroke="#9c6f52" stroke-width="0.4"/>
+<rect x="51" y="14" width="3.5" height="6" fill="url(#merlonGrad)" stroke="#9c6f52" stroke-width="0.4"/>
 
 <!-- 金色裝飾橫帶 -->
 <line x1="27" y1="24" x2="53" y2="24" stroke="#e8c468" stroke-width="1.3"/>
 
 <!-- 伊斯蘭幾何花紋（菱形鑲嵌裝飾） -->
-<polygon points="32,43 35,46 32,49 29,46" fill="none" stroke="#e8c468" stroke-width="1.3"/>
-<polygon points="48,43 51,46 48,49 45,46" fill="none" stroke="#e8c468" stroke-width="1.3"/>
+<polygon points="32,43 35,46 32,49 29,46" fill="none" stroke="#e8c468" stroke-width="1"/>
+<polygon points="48,43 51,46 48,49 45,46" fill="none" stroke="#e8c468" stroke-width="1"/>
 
 <!-- 中央塔上方馬蹄形拱窗 -->
-<path d="M35,46 L35,34 A6.5,6.5 0 1 1 45,34 L45,46 Z" fill="#4a2a1c" stroke="white" stroke-width="1.5"/>
+<path d="M35,46 L35,34 A6.5,6.5 0 1 1 45,34 L45,46 Z" fill="#3c2114" stroke="#1f100a" stroke-width="0.4"/>
 
 <!-- 中央塔馬蹄形拱門（主入口） -->
-<path d="M34,70 L34,56 A7,7 0 1 1 46,56 L46,70 Z" fill="#4a2a1c" stroke="white" stroke-width="1.8"/>
+<path d="M34,70 L34,56 A7,7 0 1 1 46,56 L46,70 Z" fill="#3c2114" stroke="#1f100a" stroke-width="0.5"/>
 
 <!-- 旗桿與飄揚旗幟（動畫） -->
 <line x1="40" y1="14" x2="40" y2="7" stroke="#5a3425" stroke-width="1.6"/>
-<polygon points="40,8 48,10 40,13" fill="#d1473f" stroke="white" stroke-width="1">
+<polygon points="40,8 48,10 40,13" fill="#d1473f" stroke="#7a2a24" stroke-width="0.4">
   <animate attributeName="points"
            values="40,8 48,10 40,13;40,8 46.5,11.5 40,14;40,8 48,10 40,13"
            dur="1.8s" repeatCount="indefinite"/>

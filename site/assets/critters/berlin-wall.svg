@@ -1,7 +1,21 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+<defs>
+  <linearGradient id="groundGrad" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#7a7a7a"/>
+    <stop offset="1" stop-color="#565656"/>
+  </linearGradient>
+  <linearGradient id="panelGradA" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#9b9ba1"/>
+    <stop offset="1" stop-color="#75757b"/>
+  </linearGradient>
+  <linearGradient id="panelGradB" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#a5a5ab"/>
+    <stop offset="1" stop-color="#7f7f86"/>
+  </linearGradient>
+</defs>
 <g>
   <!-- 地面 -->
-  <ellipse cx="40" cy="71" rx="35" ry="7" fill="#6b6b6b" stroke="#ffffff" stroke-width="1.5"/>
+  <ellipse cx="40" cy="71" rx="35" ry="7" fill="url(#groundGrad)" stroke="#3f3f3f" stroke-width="0.5"/>
 
   <!-- 鐵絲網支柱 -->
   <line x1="12" y1="27" x2="12" y2="14" stroke="#4a4a4a" stroke-width="2.2" stroke-linecap="round"/>
@@ -19,16 +33,19 @@
   </g>
 
   <!-- 圍牆區塊 A -->
-  <path d="M9,68 L9,27 A9,9 0 0 1 27,27 L27,68 Z" fill="#8a8a90" stroke="#ffffff" stroke-width="2"/>
-  <line x1="18" y1="30" x2="18" y2="65" stroke="#9c9ca2" stroke-width="1"/>
+  <path d="M9,68 L9,27 A9,9 0 0 1 27,27 L27,68 Z" fill="url(#panelGradA)" stroke="#3f3f3f" stroke-width="0.6"/>
+  <line x1="18" y1="30" x2="18" y2="65" stroke="#b4b4ba" stroke-width="1" opacity="0.6"/>
+  <path d="M13,40 L16,52 M22,36 L20,50" stroke="#55555b" stroke-width="0.6" opacity="0.5" stroke-linecap="round"/>
 
   <!-- 圍牆區塊 B -->
-  <path d="M31,68 L31,27 A9,9 0 0 1 49,27 L49,68 Z" fill="#94949a" stroke="#ffffff" stroke-width="2"/>
-  <line x1="40" y1="30" x2="40" y2="65" stroke="#a6a6ac" stroke-width="1"/>
+  <path d="M31,68 L31,27 A9,9 0 0 1 49,27 L49,68 Z" fill="url(#panelGradB)" stroke="#3f3f3f" stroke-width="0.6"/>
+  <line x1="40" y1="30" x2="40" y2="65" stroke="#bebec4" stroke-width="1" opacity="0.6"/>
+  <path d="M35,44 L38,58 M45,38 L43,54" stroke="#5f5f65" stroke-width="0.6" opacity="0.5" stroke-linecap="round"/>
 
   <!-- 圍牆區塊 C -->
-  <path d="M53,68 L53,27 A9,9 0 0 1 71,27 L71,68 Z" fill="#8a8a90" stroke="#ffffff" stroke-width="2"/>
-  <line x1="62" y1="30" x2="62" y2="65" stroke="#9c9ca2" stroke-width="1"/>
+  <path d="M53,68 L53,27 A9,9 0 0 1 71,27 L71,68 Z" fill="url(#panelGradA)" stroke="#3f3f3f" stroke-width="0.6"/>
+  <line x1="62" y1="30" x2="62" y2="65" stroke="#b4b4ba" stroke-width="1" opacity="0.6"/>
+  <path d="M57,42 L60,55 M66,36 L64,50" stroke="#55555b" stroke-width="0.6" opacity="0.5" stroke-linecap="round"/>
 
   <!-- 塗鴉 A：紅色鋸齒線 + 黃色色塊 -->
   <polyline points="12,38 16,33 14,45 20,40 16,52 22,47" fill="none" stroke="#e63946" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>

@@ -1,11 +1,53 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+<defs>
+  <linearGradient id="hillDarkGrad" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#5a9a4a"/>
+    <stop offset="100%" stop-color="#28521f"/>
+  </linearGradient>
+  <linearGradient id="hillLightGrad" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#8ac96a"/>
+    <stop offset="100%" stop-color="#4a8a34"/>
+  </linearGradient>
+  <linearGradient id="oceanGrad" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#5aa3e0"/>
+    <stop offset="100%" stop-color="#1d5a94"/>
+  </linearGradient>
+  <linearGradient id="memorialGrad" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#ffffff"/>
+    <stop offset="100%" stop-color="#d8dde0"/>
+  </linearGradient>
+  <linearGradient id="platformGrad" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#f2f5f6"/>
+    <stop offset="100%" stop-color="#c7ccd0"/>
+  </linearGradient>
+  <linearGradient id="hullGrad" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#9298a0"/>
+    <stop offset="100%" stop-color="#5c6168"/>
+  </linearGradient>
+  <linearGradient id="hullShadowGrad" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#767a80"/>
+    <stop offset="100%" stop-color="#3f4348"/>
+  </linearGradient>
+  <linearGradient id="bridgeGrad" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#b4b8c0"/>
+    <stop offset="100%" stop-color="#7a8088"/>
+  </linearGradient>
+  <linearGradient id="funnelGrad" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#848a90"/>
+    <stop offset="100%" stop-color="#4f5458"/>
+  </linearGradient>
+  <linearGradient id="flagGrad" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0%" stop-color="#e85a5a"/>
+    <stop offset="100%" stop-color="#9c1f1f"/>
+  </linearGradient>
+</defs>
 <!-- 背景山丘（深綠） -->
-<path d="M8,34 Q16,16 26,28 Q34,18 44,27 Q52,17 62,27 Q68,20 72,30 L72,46 L8,46 Z" fill="#3f7a32" stroke="white" stroke-width="1.8"/>
+<path d="M8,34 Q16,16 26,28 Q34,18 44,27 Q52,17 62,27 Q68,20 72,30 L72,46 L8,46 Z" fill="url(#hillDarkGrad)" stroke="#1f3f18" stroke-width="0.5"/>
 <!-- 背景山丘（淺綠，前景層） -->
-<path d="M8,38 Q18,24 30,34 Q40,25 50,34 Q60,25 72,36 L72,50 L8,50 Z" fill="#6ab04c" stroke="white" stroke-width="1.8"/>
+<path d="M8,38 Q18,24 30,34 Q40,25 50,34 Q60,25 72,36 L72,50 L8,50 Z" fill="url(#hillLightGrad)" stroke="#305f22" stroke-width="0.5"/>
 
 <!-- 港灣海水 -->
-<ellipse cx="40" cy="55" rx="32" ry="18" fill="#2f80c9" stroke="white" stroke-width="2"/>
+<ellipse cx="40" cy="55" rx="32" ry="18" fill="url(#oceanGrad)" stroke="#123f66" stroke-width="0.6"/>
 
 <!-- 海面波浪紋 -->
 <path d="M12,62 Q18,59 24,62 Q30,65 36,62" fill="none" stroke="white" stroke-width="1.3" opacity="0.5"/>
@@ -14,11 +56,11 @@
 
 <!-- 亞利桑那紀念館風格白色建築（漂浮於水面） -->
 <g>
-  <path d="M15,54 L15,47 Q17,43 20,44.5 Q23,46.5 26,44.5 Q29,43 32,47 L32,54 Z" fill="#ffffff" stroke="white" stroke-width="1.6"/>
+  <path d="M15,54 L15,47 Q17,43 20,44.5 Q23,46.5 26,44.5 Q29,43 32,47 L32,54 Z" fill="url(#memorialGrad)" stroke="#aab2b8" stroke-width="0.5"/>
   <rect x="18.5" y="46" width="1.8" height="7" fill="#2f80c9"/>
   <rect x="22.5" y="46" width="1.8" height="7" fill="#2f80c9"/>
   <rect x="26.5" y="46" width="1.8" height="7" fill="#2f80c9"/>
-  <rect x="13" y="54" width="21" height="2.2" fill="#e3e8ea" stroke="white" stroke-width="1.5"/>
+  <rect x="13" y="54" width="21" height="2.2" fill="url(#platformGrad)" stroke="#a7acb0" stroke-width="0.5"/>
 </g>
 
 <!-- 戰艦主體群組：整體上下微幅漂浮動畫 -->
@@ -26,20 +68,20 @@
   <animateTransform attributeName="transform" type="translate" values="0,0; 0,-1.6; 0,0" dur="2.6s" repeatCount="indefinite"/>
 
   <!-- 船體（戰艦灰） -->
-  <path d="M34,58 L41,49 L62,49 L68,54 L68,61 L34,61 Z" fill="#7a8088" stroke="white" stroke-width="2"/>
+  <path d="M34,58 L41,49 L62,49 L68,54 L68,61 L34,61 Z" fill="url(#hullGrad)" stroke="#434850" stroke-width="0.6"/>
   <!-- 船體吃水線陰影 -->
-  <path d="M34,61 L68,61 L68,58.5 L34,58.5 Z" fill="#5f6369" stroke="white" stroke-width="1.5"/>
+  <path d="M34,61 L68,61 L68,58.5 L34,58.5 Z" fill="url(#hullShadowGrad)" stroke="#2c2f33" stroke-width="0.5"/>
 
   <!-- 艦橋塔 -->
-  <rect x="47" y="36" width="10" height="13" rx="1.5" fill="#9aa0a8" stroke="white" stroke-width="1.8"/>
+  <rect x="47" y="36" width="10" height="13" rx="1.5" fill="url(#bridgeGrad)" stroke="#5c6168" stroke-width="0.5"/>
   <!-- 煙囪 -->
-  <rect x="58" y="33" width="4" height="7" rx="0.8" fill="#6b7177" stroke="white" stroke-width="1.5"/>
+  <rect x="58" y="33" width="4" height="7" rx="0.8" fill="url(#funnelGrad)" stroke="#3a3e42" stroke-width="0.4"/>
 
   <!-- 主炮塔 -->
-  <circle cx="40" cy="47" r="3.6" fill="#5f6369" stroke="white" stroke-width="1.6"/>
-  <rect x="34.5" y="45.6" width="6" height="2.6" fill="#5f6369" stroke="white" stroke-width="1.3"/>
-  <circle cx="63" cy="47" r="3.6" fill="#5f6369" stroke="white" stroke-width="1.6"/>
-  <rect x="61.5" y="45.6" width="6" height="2.6" fill="#5f6369" stroke="white" stroke-width="1.3"/>
+  <circle cx="40" cy="47" r="3.6" fill="url(#hullShadowGrad)" stroke="#2c2f33" stroke-width="0.5"/>
+  <rect x="34.5" y="45.6" width="6" height="2.6" fill="url(#hullShadowGrad)" stroke="#2c2f33" stroke-width="0.4"/>
+  <circle cx="63" cy="47" r="3.6" fill="url(#hullShadowGrad)" stroke="#2c2f33" stroke-width="0.5"/>
+  <rect x="61.5" y="45.6" width="6" height="2.6" fill="url(#hullShadowGrad)" stroke="#2c2f33" stroke-width="0.4"/>
 
   <!-- 船桅 -->
   <line x1="52" y1="36" x2="52" y2="24" stroke="#5f6369" stroke-width="1.8"/>
@@ -47,7 +89,7 @@
   <!-- 旗子：以船桅頂點為軸心小幅擺動 -->
   <g transform-origin="52 24">
     <animateTransform attributeName="transform" type="rotate" values="-6 52 24; 10 52 24; -6 52 24" dur="1.8s" repeatCount="indefinite"/>
-    <path d="M52,24 L60,26.5 L52,29 Z" fill="#d32f2f" stroke="white" stroke-width="1.4"/>
+    <path d="M52,24 L60,26.5 L52,29 Z" fill="url(#flagGrad)" stroke="#6e1414" stroke-width="0.5"/>
   </g>
 </g>
 </svg>

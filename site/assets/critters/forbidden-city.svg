@@ -1,46 +1,55 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
 
+  <defs>
+    <linearGradient id="wallGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d8402e"/><stop offset="1" stop-color="#8f1f14"/></linearGradient>
+    <radialGradient id="roofGrad" cx="35%" cy="25%" r="85%"><stop offset="0" stop-color="#f0c040"/><stop offset="1" stop-color="#b8860b"/></radialGradient>
+    <linearGradient id="gateGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7a1818"/><stop offset="1" stop-color="#3a0a0a"/></linearGradient>
+    <linearGradient id="windowGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a81818"/><stop offset="1" stop-color="#5a0000"/></linearGradient>
+  </defs>
+
   <!-- Ground shadow -->
   <ellipse cx="40" cy="74" rx="28" ry="5" fill="#8B1010" opacity="0.3"/>
 
   <!-- City wall base -->
-  <rect x="8" y="50" width="64" height="22" rx="2" fill="#c03020" stroke="white" stroke-width="1.5"/>
+  <rect x="8" y="50" width="64" height="22" rx="2" fill="url(#wallGrad)" stroke="#6e130d" stroke-width="0.6"/>
+  <rect x="8" y="50" width="64" height="4" fill="#fff" opacity="0.08"/>
 
   <!-- 5 arch gate holes in wall -->
-  <ellipse cx="18" cy="72" rx="4.5" ry="6" fill="#5a1010" stroke="white" stroke-width="1"/>
-  <ellipse cx="27" cy="72" rx="3.5" ry="5" fill="#5a1010" stroke="white" stroke-width="1"/>
-  <ellipse cx="40" cy="72" rx="5.5" ry="7" fill="#5a1010" stroke="white" stroke-width="1"/>
-  <ellipse cx="53" cy="72" rx="3.5" ry="5" fill="#5a1010" stroke="white" stroke-width="1"/>
-  <ellipse cx="62" cy="72" rx="4.5" ry="6" fill="#5a1010" stroke="white" stroke-width="1"/>
+  <ellipse cx="18" cy="72" rx="4.5" ry="6" fill="url(#gateGrad)" stroke="#260707" stroke-width="0.5"/>
+  <ellipse cx="27" cy="72" rx="3.5" ry="5" fill="url(#gateGrad)" stroke="#260707" stroke-width="0.5"/>
+  <ellipse cx="40" cy="72" rx="5.5" ry="7" fill="url(#gateGrad)" stroke="#260707" stroke-width="0.5"/>
+  <ellipse cx="53" cy="72" rx="3.5" ry="5" fill="url(#gateGrad)" stroke="#260707" stroke-width="0.5"/>
+  <ellipse cx="62" cy="72" rx="4.5" ry="6" fill="url(#gateGrad)" stroke="#260707" stroke-width="0.5"/>
 
   <!-- Main gate arch (center, larger) -->
-  <rect x="33" y="55" width="14" height="17" rx="7" fill="#3a0a0a" stroke="white" stroke-width="1.2"/>
+  <rect x="33" y="55" width="14" height="17" rx="7" fill="#2c0808" stroke="#180404" stroke-width="0.5"/>
 
   <!-- Wall battlements -->
-  <rect x="8" y="46" width="6" height="6" rx="1" fill="#c03020" stroke="white" stroke-width="1"/>
-  <rect x="18" y="46" width="6" height="6" rx="1" fill="#c03020" stroke="white" stroke-width="1"/>
-  <rect x="28" y="46" width="6" height="6" rx="1" fill="#c03020" stroke="white" stroke-width="1"/>
-  <rect x="38" y="46" width="6" height="6" rx="1" fill="#c03020" stroke="white" stroke-width="1"/>
-  <rect x="48" y="46" width="6" height="6" rx="1" fill="#c03020" stroke="white" stroke-width="1"/>
-  <rect x="58" y="46" width="6" height="6" rx="1" fill="#c03020" stroke="white" stroke-width="1"/>
-  <rect x="66" y="46" width="6" height="6" rx="1" fill="#c03020" stroke="white" stroke-width="1"/>
+  <rect x="8" y="46" width="6" height="6" rx="1" fill="url(#wallGrad)" stroke="#6e130d" stroke-width="0.5"/>
+  <rect x="18" y="46" width="6" height="6" rx="1" fill="url(#wallGrad)" stroke="#6e130d" stroke-width="0.5"/>
+  <rect x="28" y="46" width="6" height="6" rx="1" fill="url(#wallGrad)" stroke="#6e130d" stroke-width="0.5"/>
+  <rect x="38" y="46" width="6" height="6" rx="1" fill="url(#wallGrad)" stroke="#6e130d" stroke-width="0.5"/>
+  <rect x="48" y="46" width="6" height="6" rx="1" fill="url(#wallGrad)" stroke="#6e130d" stroke-width="0.5"/>
+  <rect x="58" y="46" width="6" height="6" rx="1" fill="url(#wallGrad)" stroke="#6e130d" stroke-width="0.5"/>
+  <rect x="66" y="46" width="6" height="6" rx="1" fill="url(#wallGrad)" stroke="#6e130d" stroke-width="0.5"/>
 
   <!-- Tower body (main building) -->
-  <rect x="16" y="32" width="48" height="20" rx="2" fill="#c03020" stroke="white" stroke-width="1.5"/>
+  <rect x="16" y="32" width="48" height="20" rx="2" fill="url(#wallGrad)" stroke="#6e130d" stroke-width="0.6"/>
+  <rect x="16" y="32" width="48" height="3" fill="#fff" opacity="0.08"/>
 
   <!-- Windows on tower -->
-  <rect x="22" y="36" width="8" height="10" rx="3" fill="#8B0000" stroke="white" stroke-width="1"/>
-  <rect x="36" y="35" width="8" height="11" rx="3" fill="#8B0000" stroke="white" stroke-width="1"/>
-  <rect x="50" y="36" width="8" height="10" rx="3" fill="#8B0000" stroke="white" stroke-width="1"/>
+  <rect x="22" y="36" width="8" height="10" rx="3" fill="url(#windowGrad)" stroke="#380000" stroke-width="0.5"/>
+  <rect x="36" y="35" width="8" height="11" rx="3" fill="url(#windowGrad)" stroke="#380000" stroke-width="0.5"/>
+  <rect x="50" y="36" width="8" height="10" rx="3" fill="url(#windowGrad)" stroke="#380000" stroke-width="0.5"/>
 
   <!-- Lower roof eave (first tier) -->
-  <polygon points="12,32 68,32 72,36 8,36" fill="#d4a020" stroke="white" stroke-width="1.5"/>
+  <polygon points="12,32 68,32 72,36 8,36" fill="url(#roofGrad)" stroke="#96700a" stroke-width="0.6"/>
   <!-- Lower roof eave tips curl up -->
   <path d="M12,32 Q7,29 9,26" fill="none" stroke="#d4a020" stroke-width="2.5" stroke-linecap="round"/>
   <path d="M68,32 Q73,29 71,26" fill="none" stroke="#d4a020" stroke-width="2.5" stroke-linecap="round"/>
 
   <!-- Upper roof body -->
-  <polygon points="18,32 62,32 58,18 22,18" fill="#d4a020" stroke="white" stroke-width="1.5"/>
+  <polygon points="18,32 62,32 58,18 22,18" fill="url(#roofGrad)" stroke="#96700a" stroke-width="0.6"/>
 
   <!-- Upper roof ridge line -->
   <line x1="22" y1="18" x2="58" y2="18" stroke="#b8860b" stroke-width="2"/>
@@ -50,10 +59,10 @@
   <path d="M62,32 Q67,29 65,25" fill="none" stroke="#d4a020" stroke-width="2.5" stroke-linecap="round"/>
 
   <!-- Top small upper story -->
-  <rect x="26" y="12" width="28" height="8" rx="1" fill="#c03020" stroke="white" stroke-width="1.5"/>
+  <rect x="26" y="12" width="28" height="8" rx="1" fill="url(#wallGrad)" stroke="#6e130d" stroke-width="0.6"/>
 
   <!-- Top mini roof -->
-  <polygon points="22,12 58,12 54,6 26,6" fill="#d4a020" stroke="white" stroke-width="1.5"/>
+  <polygon points="22,12 58,12 54,6 26,6" fill="url(#roofGrad)" stroke="#96700a" stroke-width="0.6"/>
   <line x1="26" y1="6" x2="54" y2="6" stroke="#b8860b" stroke-width="1.5"/>
 
   <!-- Top roof eave tips -->
@@ -61,11 +70,11 @@
   <path d="M58,12 Q62,9 60,6" fill="none" stroke="#d4a020" stroke-width="2" stroke-linecap="round"/>
 
   <!-- Flag pole -->
-  <line x1="40" y1="2" x2="40" y2="7" stroke="white" stroke-width="1.5"/>
+  <line x1="40" y1="2" x2="40" y2="7" stroke="#6e130d" stroke-width="1"/>
 
   <!-- Flag (waving animation) -->
   <g>
-    <path d="M40,2 Q46,3 45,5 Q46,7 40,7 Z" fill="#e8201a" stroke="white" stroke-width="0.8">
+    <path d="M40,2 Q46,3 45,5 Q46,7 40,7 Z" fill="#e8201a" stroke="#7a1010" stroke-width="0.5">
       <animate attributeName="d"
         values="M40,2 Q46,3 45,5 Q46,7 40,7 Z;M40,2 Q47,2.5 46,5 Q47,7.5 40,7 Z;M40,2 Q46,3 45,5 Q46,7 40,7 Z"
         dur="1.5s" repeatCount="indefinite"/>
@@ -82,23 +91,23 @@
   <g>
     <!-- Left lantern -->
     <line x1="20" y1="32" x2="20" y2="34" stroke="#8B1010" stroke-width="0.8"/>
-    <ellipse cx="20" cy="36" rx="2.5" ry="3.5" fill="#e8201a" stroke="white" stroke-width="0.8">
+    <ellipse cx="20" cy="36" rx="2.5" ry="3.5" fill="#e8201a" stroke="#7a1010" stroke-width="0.5">
       <animate attributeName="cx" values="20;20.5;20;19.5;20" dur="2s" repeatCount="indefinite"/>
     </ellipse>
     <!-- Right lantern -->
     <line x1="60" y1="32" x2="60" y2="34" stroke="#8B1010" stroke-width="0.8"/>
-    <ellipse cx="60" cy="36" rx="2.5" ry="3.5" fill="#e8201a" stroke="white" stroke-width="0.8">
+    <ellipse cx="60" cy="36" rx="2.5" ry="3.5" fill="#e8201a" stroke="#7a1010" stroke-width="0.5">
       <animate attributeName="cx" values="60;59.5;60;60.5;60" dur="2s" repeatCount="indefinite"/>
     </ellipse>
   </g>
 
   <!-- Golden roof ornament (zhengwen) top center -->
-  <polygon points="40,3 41.2,6 40,5.5 38.8,6" fill="#FFD700" stroke="white" stroke-width="0.5"/>
+  <polygon points="40,3 41.2,6 40,5.5 38.8,6" fill="#FFD700" stroke="#96700a" stroke-width="0.4"/>
 
   <!-- Ridge end ornaments (chiwen) -->
-  <circle cx="22" cy="6" r="1.5" fill="#d4a020" stroke="white" stroke-width="0.8"/>
-  <circle cx="58" cy="6" r="1.5" fill="#d4a020" stroke="white" stroke-width="0.8"/>
-  <circle cx="18" cy="12" r="1.8" fill="#d4a020" stroke="white" stroke-width="0.8"/>
-  <circle cx="62" cy="12" r="1.8" fill="#d4a020" stroke="white" stroke-width="0.8"/>
+  <circle cx="22" cy="6" r="1.5" fill="url(#roofGrad)" stroke="#96700a" stroke-width="0.5"/>
+  <circle cx="58" cy="6" r="1.5" fill="url(#roofGrad)" stroke="#96700a" stroke-width="0.5"/>
+  <circle cx="18" cy="12" r="1.8" fill="url(#roofGrad)" stroke="#96700a" stroke-width="0.5"/>
+  <circle cx="62" cy="12" r="1.8" fill="url(#roofGrad)" stroke="#96700a" stroke-width="0.5"/>
 
 </svg>

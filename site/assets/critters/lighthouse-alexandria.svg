@@ -1,24 +1,29 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="stoneG1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ece2c4"/><stop offset="1" stop-color="#c2b690"/></linearGradient>
+    <linearGradient id="stoneG2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f2e8ce"/><stop offset="1" stop-color="#cfc29c"/></linearGradient>
+    <linearGradient id="stoneG3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f8f0da"/><stop offset="1" stop-color="#d8cca8"/></linearGradient>
+  </defs>
   <!-- 海面 -->
-  <ellipse cx="40" cy="73" rx="34" ry="5" fill="#2a7ab8" stroke="white" stroke-width="1.5"/>
+  <ellipse cx="40" cy="73" rx="34" ry="5" fill="#2a7ab8" stroke="#1a4f78" stroke-width="0.6"/>
   <ellipse cx="40" cy="73" rx="30" ry="3.5" fill="#4a9ad8" opacity="0.6"/>
 
   <!-- 燈塔底座（最寬，方形） -->
-  <path d="M20,70 L22,52 L58,52 L60,70 Z" fill="#dcd2b4" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M20,70 L22,52 L58,52 L60,70 Z" fill="url(#stoneG1)" stroke="#9a8c64" stroke-width="0.6" stroke-linejoin="round"/>
   <!-- 底座裝飾線 -->
   <line x1="24" y1="60" x2="56" y2="60" stroke="#b8ac8a" stroke-width="1.2"/>
   <!-- 底座窗洞 -->
-  <rect x="36" y="56" width="8" height="10" rx="1" fill="#5a4a30" stroke="white" stroke-width="1"/>
+  <rect x="36" y="56" width="8" height="10" rx="1" fill="#5a4a30" stroke="#2e2414" stroke-width="0.4"/>
 
   <!-- 中段（八角形輪廓，稍窄） -->
-  <path d="M27,52 L29,34 L51,34 L53,52 Z" fill="#e8dec2" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M27,52 L29,34 L51,34 L53,52 Z" fill="url(#stoneG2)" stroke="#a89a74" stroke-width="0.6" stroke-linejoin="round"/>
   <line x1="32" y1="42" x2="48" y2="42" stroke="#c0b490" stroke-width="1"/>
 
   <!-- 上段（圓柱形，最窄） -->
-  <path d="M33,34 L34,20 L46,20 L47,34 Z" fill="#f0e8d0" stroke="white" stroke-width="1.8" stroke-linejoin="round"/>
+  <path d="M33,34 L34,20 L46,20 L47,34 Z" fill="url(#stoneG3)" stroke="#b8aa80" stroke-width="0.5" stroke-linejoin="round"/>
 
   <!-- 燈塔頂部平台 -->
-  <ellipse cx="40" cy="20" rx="8" ry="2.5" fill="#c8bc9a" stroke="white" stroke-width="1.5"/>
+  <ellipse cx="40" cy="20" rx="8" ry="2.5" fill="#c8bc9a" stroke="#8a7c58" stroke-width="0.5"/>
 
   <!-- 火焰信號燈 -->
   <g>
@@ -40,7 +45,7 @@
   </ellipse>
 
   <!-- 遠處小船 -->
-  <path d="M8,68 L14,68 L12,64 Z" fill="#8a7050" stroke="white" stroke-width="1"/>
+  <path d="M8,68 L14,68 L12,64 Z" fill="#8a7050" stroke="#4a3a24" stroke-width="0.4"/>
   <line x1="12" y1="64" x2="12" y2="60" stroke="#8a7050" stroke-width="1"/>
   <path d="M12,61 L17,63 L12,64 Z" fill="#e8e0c8"/>
 </svg>

@@ -1,75 +1,104 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
-<path d="M4,8 Q14,0 24,9 Q14,17 4,8 Z" fill="#2e7d32" stroke="white" stroke-width="1.3" opacity="0.5"/>
-<path d="M58,6 Q70,-1 77,9 Q67,15 58,6 Z" fill="#388e3c" stroke="white" stroke-width="1.3" opacity="0.5"/>
-<path d="M6,70 Q16,62 27,70 Q17,78 6,70 Z" fill="#2e7d32" stroke="white" stroke-width="1.3" opacity="0.4"/>
+<defs>
+  <linearGradient id="jagFur" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#d9a53e"/>
+    <stop offset="55%" stop-color="#cf9830"/>
+    <stop offset="100%" stop-color="#f3e0ac"/>
+  </linearGradient>
+  <linearGradient id="jagFurDark" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#ad7c20"/>
+    <stop offset="100%" stop-color="#d9a53e"/>
+  </linearGradient>
+  <symbol id="jagRosette">
+    <ellipse cx="-2.2" cy="-1" rx="2" ry="1.3" fill="#5a3b14" opacity="0.75" transform="rotate(10)"/>
+    <ellipse cx="2.4" cy="-0.6" rx="1.9" ry="1.3" fill="#5a3b14" opacity="0.75" transform="rotate(-25)"/>
+    <ellipse cx="0.2" cy="2.4" rx="2" ry="1.3" fill="#5a3b14" opacity="0.75" transform="rotate(95)"/>
+    <ellipse cx="0" cy="0.1" rx="1" ry="0.7" fill="#a9762a" opacity="0.5"/>
+  </symbol>
+</defs>
 
-<g id="jaguarBody">
-  <animateTransform attributeName="transform" type="translate" values="0,0; 0,-2; 0,0; 0,2; 0,0" dur="0.5s" repeatCount="indefinite"/>
+<!-- 地面陰影 -->
+<ellipse cx="40" cy="70" rx="32" ry="4" fill="#4a3318" opacity="0.22"/>
 
+<g id="jagRun">
+  <animateTransform attributeName="transform" type="translate" values="0,0; 0,-1.6; 0,0.3; 0,0" dur="0.55s" repeatCount="indefinite"/>
+
+  <!-- 尾巴 -->
   <g>
-    <animateTransform attributeName="transform" type="rotate" values="-8 24 45; 10 24 45; -8 24 45" dur="1s" repeatCount="indefinite"/>
-    <path d="M24,46 C10,47 1,39 3,24 C4,14 10,8 17,6 C19,6 20,8 18,10 C12,12 8,17 7,25 C6,36 12,43 25,42 C26,42 27,44 24,46 Z" fill="#d4a030" stroke="white" stroke-width="1.6"/>
-    <circle cx="10" cy="20" r="2.6" fill="none" stroke="#5c3a1a" stroke-width="2.4"/>
-    <circle cx="16" cy="12" r="2.2" fill="none" stroke="#5c3a1a" stroke-width="2.2"/>
-    <circle cx="8" cy="32" r="2.4" fill="none" stroke="#5c3a1a" stroke-width="2.3"/>
+    <animateTransform attributeName="transform" type="rotate" values="-6 64 42; 9 64 42; -6 64 42" dur="1.1s" repeatCount="indefinite"/>
+    <path d="M64,43 C73,41 79,34 77,24 C76,16 70,13 67,19 C65,23 68,26 71,23" fill="url(#jagFur)" stroke="#7a521c" stroke-width="0.6" stroke-linejoin="round"/>
+    <use href="#jagRosette" transform="translate(69,32) scale(0.6) rotate(20)"/>
+    <use href="#jagRosette" transform="translate(74,23) scale(0.55) rotate(-10)"/>
   </g>
 
+  <!-- 後腿(遠) -->
   <g>
-    <rect x="20.5" y="48" width="7" height="19" rx="3.5" fill="#c9962a" stroke="white" stroke-width="1.5"/>
-    <ellipse cx="24" cy="66" rx="4" ry="2.3" fill="#5c3a1a"/>
-    <animateTransform attributeName="transform" type="rotate" values="22 24 48; -22 24 48; 22 24 48" dur="0.5s" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" values="14 58 46; -16 58 46; 14 58 46" dur="0.55s" repeatCount="indefinite"/>
+    <path d="M53,46 C50,54 50,60 47,68 L55,69 C58,61 60,54 61,46 Z" fill="url(#jagFurDark)" stroke="#7a521c" stroke-width="0.6"/>
+    <ellipse cx="50" cy="68" rx="4.2" ry="2.4" fill="#3a2614"/>
   </g>
+
+  <!-- 身體 -->
+  <ellipse cx="42" cy="38" rx="26" ry="13" fill="url(#jagFur)" stroke="#7a521c" stroke-width="0.7"/>
+  <ellipse cx="40" cy="47" rx="20" ry="5" fill="#f6e7bd" opacity="0.5"/>
+  <ellipse cx="56" cy="34" rx="11" ry="10" fill="url(#jagFurDark)" opacity="0.35"/>
+  <ellipse cx="42" cy="30" rx="22" ry="3.2" fill="#a97a22" opacity="0.4"/>
+
+  <use href="#jagRosette" transform="translate(22,32) scale(1.1) rotate(8)"/>
+  <use href="#jagRosette" transform="translate(30,45) scale(1.0) rotate(-16)"/>
+  <use href="#jagRosette" transform="translate(38,30) scale(1.2) rotate(5)"/>
+  <use href="#jagRosette" transform="translate(46,43) scale(1.0) rotate(18)"/>
+  <use href="#jagRosette" transform="translate(54,32) scale(1.1) rotate(-12)"/>
+  <use href="#jagRosette" transform="translate(61,41) scale(0.85) rotate(15)"/>
+  <use href="#jagRosette" transform="translate(35,38) scale(0.8) rotate(-5)"/>
+
+  <!-- 後腿(近) -->
   <g>
-    <rect x="29.5" y="48" width="7" height="19" rx="3.5" fill="#d4a030" stroke="white" stroke-width="1.5"/>
-    <ellipse cx="33" cy="66" rx="4" ry="2.3" fill="#5c3a1a"/>
-    <animateTransform attributeName="transform" type="rotate" values="-22 33 48; 22 33 48; -22 33 48" dur="0.5s" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" values="-16 58 46; 14 58 46; -16 58 46" dur="0.55s" repeatCount="indefinite"/>
+    <path d="M56,46 C54,54 53,60 50,68 L58,69 C60,61 62,54 63,46 Z" fill="url(#jagFur)" stroke="#7a521c" stroke-width="0.6"/>
+    <ellipse cx="53" cy="68" rx="4.2" ry="2.4" fill="#3a2614"/>
+    <use href="#jagRosette" transform="translate(57,52) scale(0.55) rotate(10)"/>
   </g>
 
+  <!-- 前腿(遠) -->
   <g>
-    <rect x="46.5" y="48" width="7" height="19" rx="3.5" fill="#c9962a" stroke="white" stroke-width="1.5"/>
-    <ellipse cx="50" cy="66" rx="4" ry="2.3" fill="#5c3a1a"/>
-    <animateTransform attributeName="transform" type="rotate" values="-22 50 48; 22 50 48; -22 50 48" dur="0.5s" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" values="-18 26 46; 16 26 46; -18 26 46" dur="0.55s" repeatCount="indefinite"/>
+    <path d="M22,46 C20,52 18,58 15,66 L21,67 C24,60 25,53 25,46 Z" fill="url(#jagFurDark)" stroke="#7a521c" stroke-width="0.6"/>
+    <ellipse cx="18" cy="66" rx="4" ry="2.3" fill="#3a2614"/>
   </g>
+
+  <!-- 頭(朝左) -->
   <g>
-    <rect x="55.5" y="48" width="7" height="19" rx="3.5" fill="#d4a030" stroke="white" stroke-width="1.5"/>
-    <ellipse cx="59" cy="66" rx="4" ry="2.3" fill="#5c3a1a"/>
-    <animateTransform attributeName="transform" type="rotate" values="22 59 48; -22 59 48; 22 59 48" dur="0.5s" repeatCount="indefinite"/>
+    <path d="M30,22 C31,14 24,9 16,10 C8,11 2,17 2,26 C2,33 6,39 13,41 C18,42 23,40 26,35 C29,31 30,27 30,22 Z"
+          fill="url(#jagFur)" stroke="#7a521c" stroke-width="0.7"/>
+    <path d="M24,13 L20,2 L30,9 Z" fill="url(#jagFur)" stroke="#7a521c" stroke-width="0.6"/>
+    <path d="M24,11.5 L22,5.5 L27,9 Z" fill="#7a521c" opacity="0.5"/>
+    <ellipse cx="11" cy="31" rx="8" ry="7" fill="#f6e7bd" opacity="0.55"/>
+
+    <use href="#jagRosette" transform="translate(21,20) scale(0.5) rotate(-10)"/>
+    <use href="#jagRosette" transform="translate(9,16) scale(0.45) rotate(15)"/>
+
+    <ellipse cx="14" cy="20" rx="5" ry="4.3" fill="none" stroke="#6b4518" stroke-width="1" opacity="0.4"/>
+    <ellipse cx="14" cy="20" rx="3.4" ry="3" fill="#f6ecd2" stroke="#6b4518" stroke-width="0.5"/>
+    <ellipse cx="14.8" cy="20" rx="1.1" ry="2.6" fill="#1a1208">
+      <animate attributeName="ry" values="2.6;2.6;0.3;2.6;2.6" keyTimes="0;0.85;0.9;0.95;1" dur="4s" repeatCount="indefinite"/>
+    </ellipse>
+
+    <path d="M2,24 L5,26.3 L2,29 Z" fill="#2a1b0d"/>
+    <path d="M5,30 Q10,34.5 17,32" fill="none" stroke="#4a2f12" stroke-width="0.7" stroke-linecap="round"/>
+
+    <line x1="3" y1="25" x2="-6" y2="22" stroke="#f3e0ac" stroke-width="0.5" opacity="0.6"/>
+    <line x1="3" y1="28" x2="-7" y2="28" stroke="#f3e0ac" stroke-width="0.5" opacity="0.6"/>
+    <line x1="3" y1="31" x2="-6" y2="34" stroke="#f3e0ac" stroke-width="0.5" opacity="0.6"/>
   </g>
 
-  <ellipse cx="42" cy="42" rx="25" ry="14" fill="#d4a030" stroke="white" stroke-width="2"/>
-
-  <g fill="none" stroke="#5c3a1a">
-    <circle cx="24" cy="38" r="3" stroke-width="2.6"/>
-    <circle cx="30" cy="48" r="2.6" stroke-width="2.3"/>
-    <circle cx="36" cy="36" r="3.2" stroke-width="2.6"/>
-    <circle cx="40" cy="47" r="2.8" stroke-width="2.4"/>
-    <circle cx="46" cy="38" r="3" stroke-width="2.6"/>
-    <circle cx="52" cy="46" r="2.6" stroke-width="2.3"/>
-    <circle cx="56" cy="36" r="2.8" stroke-width="2.4"/>
-    <circle cx="33" cy="40" r="1.8" stroke-width="1.8"/>
-    <circle cx="48" cy="32" r="2" stroke-width="2"/>
+  <!-- 前腿(近) -->
+  <g>
+    <animateTransform attributeName="transform" type="rotate" values="16 26 46; -18 26 46; 16 26 46" dur="0.55s" repeatCount="indefinite"/>
+    <path d="M25,46 C23,52 22,58 19,67 L25,68 C27,61 28,53 28,46 Z" fill="url(#jagFur)" stroke="#7a521c" stroke-width="0.6"/>
+    <ellipse cx="22" cy="67" rx="4" ry="2.3" fill="#3a2614"/>
+    <use href="#jagRosette" transform="translate(24,53) scale(0.5) rotate(-8)"/>
   </g>
 
-  <ellipse cx="60" cy="33" rx="12" ry="10.5" fill="#d4a030" stroke="white" stroke-width="2"/>
-
-  <path d="M52,25 L55,14 L59,25 Z" fill="#d4a030" stroke="white" stroke-width="1.5"/>
-  <path d="M60,23 L65,13 L68,24 Z" fill="#d4a030" stroke="white" stroke-width="1.5"/>
-  <path d="M53.5,23 L55,17 L57,23 Z" fill="#c9962a"/>
-  <path d="M62,21 L65,15 L66.5,21 Z" fill="#c9962a"/>
-
-  <g fill="none" stroke="#5c3a1a">
-    <circle cx="56" cy="30" r="1.8" stroke-width="1.8"/>
-    <circle cx="63" cy="27" r="1.6" stroke-width="1.6"/>
-    <circle cx="58" cy="38" r="1.7" stroke-width="1.7"/>
-  </g>
-
-  <ellipse cx="70" cy="37" rx="6" ry="5" fill="#f3e0ad" stroke="white" stroke-width="1.5"/>
-
-  <circle cx="64" cy="30" r="2.6" fill="white"/>
-  <circle cx="64.6" cy="30" r="1.4" fill="#1a1208"/>
-
-  <path d="M74,35 Q76,36 74,37.5 Q72,36.5 72,35.5 Z" fill="#3a2317"/>
-
-  <path d="M71,39 Q73,41 76,39.5" fill="none" stroke="#3a2317" stroke-width="1.3" stroke-linecap="round"/>
 </g>
 </svg>

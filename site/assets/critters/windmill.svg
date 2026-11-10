@@ -3,8 +3,21 @@
   <!-- Ground shadow -->
   <ellipse cx="40" cy="72" rx="22" ry="5" fill="#4a7a2a" opacity="0.5"/>
 
+  <defs>
+    <linearGradient id="wmWater" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#86c6f2"/><stop offset="1" stop-color="#2f6fae"/></linearGradient>
+    <linearGradient id="wmTower" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#f7f2e4"/><stop offset="1" stop-color="#d4c6a0"/></linearGradient>
+    <linearGradient id="wmCap" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7a4420"/><stop offset="1" stop-color="#3a1c08"/></linearGradient>
+    <linearGradient id="wmBlade" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ad6c42"/><stop offset="1" stop-color="#6b3c1c"/></linearGradient>
+    <linearGradient id="wmWindow" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#bfe8fb"/><stop offset="1" stop-color="#5fa8c8"/></linearGradient>
+    <linearGradient id="wmStem" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6ab03a"/><stop offset="1" stop-color="#2e5c18"/></linearGradient>
+    <linearGradient id="wmStrip" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#86c850"/><stop offset="1" stop-color="#3f7a1c"/></linearGradient>
+    <radialGradient id="wmRed" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="#ff6b80"/><stop offset="1" stop-color="#c21f38"/></radialGradient>
+    <radialGradient id="wmPink" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="#ffb3d1"/><stop offset="1" stop-color="#d0569a"/></radialGradient>
+    <radialGradient id="wmYellow" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="#ffe27a"/><stop offset="1" stop-color="#c89a1a"/></radialGradient>
+  </defs>
+
   <!-- Water canal (blue horizontal band) -->
-  <rect x="5" y="60" width="70" height="7" rx="2" fill="#4a90d9" stroke="white" stroke-width="1"/>
+  <rect x="5" y="60" width="70" height="7" rx="2" fill="url(#wmWater)" stroke="#1f4f7a" stroke-width="0.5"/>
   <!-- Water shimmer -->
   <line x1="10" y1="62" x2="20" y2="62" stroke="white" stroke-width="0.8" opacity="0.6">
     <animate attributeName="opacity" values="0.6;0.2;0.6" dur="2s" repeatCount="indefinite"/>
@@ -17,7 +30,7 @@
   </line>
 
   <!-- Mill tower body (trapezoid: wider at bottom) -->
-  <polygon points="28,60 52,60 48,18 32,18" fill="#f0ece0" stroke="white" stroke-width="1.5"/>
+  <polygon points="28,60 52,60 48,18 32,18" fill="url(#wmTower)" stroke="#b8a87c" stroke-width="0.5"/>
   <!-- Brick grid lines on tower -->
   <line x1="30" y1="26" x2="50" y2="26" stroke="#c8b8a0" stroke-width="0.8"/>
   <line x1="29" y1="34" x2="51" y2="34" stroke="#c8b8a0" stroke-width="0.8"/>
@@ -27,44 +40,44 @@
   <line x1="40" y1="18" x2="40" y2="60" stroke="#c8b8a0" stroke-width="0.6"/>
 
   <!-- Tower door -->
-  <rect x="36" y="50" width="8" height="10" rx="4" fill="#8a5030" stroke="white" stroke-width="1"/>
+  <rect x="36" y="50" width="8" height="10" rx="4" fill="#8a5030" stroke="#4a2010" stroke-width="0.4"/>
 
   <!-- Tower cap (dark brown conical top) -->
-  <polygon points="32,18 48,18 45,10 35,10" fill="#5a3010" stroke="white" stroke-width="1.5"/>
+  <polygon points="32,18 48,18 45,10 35,10" fill="url(#wmCap)" stroke="#2a1406" stroke-width="0.5"/>
 
   <!-- Window on tower -->
-  <rect x="37" y="38" width="6" height="5" rx="1" fill="#87ceeb" stroke="white" stroke-width="1"/>
+  <rect x="37" y="38" width="6" height="5" rx="1" fill="url(#wmWindow)" stroke="#4a8aa0" stroke-width="0.4"/>
 
   <!-- Windmill blades group with rotation animation centered at top of tower ~(40,14) -->
   <g>
     <animateTransform attributeName="transform" type="rotate" from="0,40,14" to="360,40,14" dur="8s" repeatCount="indefinite" additive="sum"/>
     <!-- Blade 1: Up -->
-    <rect x="37" y="2" width="6" height="16" rx="2" fill="#8a5030" stroke="white" stroke-width="1.2"/>
+    <rect x="37" y="2" width="6" height="16" rx="2" fill="url(#wmBlade)" stroke="#4a2010" stroke-width="0.4"/>
     <!-- Blade 2: Right -->
-    <rect x="42" y="11" width="16" height="6" rx="2" fill="#8a5030" stroke="white" stroke-width="1.2"/>
+    <rect x="42" y="11" width="16" height="6" rx="2" fill="url(#wmBlade)" stroke="#4a2010" stroke-width="0.4"/>
     <!-- Blade 3: Down -->
-    <rect x="37" y="10" width="6" height="16" rx="2" fill="#8a5030" stroke="white" stroke-width="1.2"/>
+    <rect x="37" y="10" width="6" height="16" rx="2" fill="url(#wmBlade)" stroke="#4a2010" stroke-width="0.4"/>
     <!-- Blade 4: Left -->
-    <rect x="22" y="11" width="16" height="6" rx="2" fill="#8a5030" stroke="white" stroke-width="1.2"/>
+    <rect x="22" y="11" width="16" height="6" rx="2" fill="url(#wmBlade)" stroke="#4a2010" stroke-width="0.4"/>
     <!-- Center hub -->
-    <circle cx="40" cy="14" r="3" fill="#5a3010" stroke="white" stroke-width="1.2"/>
+    <circle cx="40" cy="14" r="3" fill="url(#wmCap)" stroke="#2a1406" stroke-width="0.4"/>
   </g>
 
   <!-- Tulips on the ground -->
   <!-- Tulip 1 -->
-  <rect x="9" y="54" width="2.5" height="8" fill="#4a8a2a" stroke="white" stroke-width="0.8"/>
-  <ellipse cx="10.25" cy="53" rx="4" ry="3.5" fill="#e8324a" stroke="white" stroke-width="1"/>
+  <rect x="9" y="54" width="2.5" height="8" fill="url(#wmStem)" stroke="#234a14" stroke-width="0.3"/>
+  <ellipse cx="10.25" cy="53" rx="4" ry="3.5" fill="url(#wmRed)" stroke="#8a1526" stroke-width="0.4"/>
   <!-- Tulip 2 -->
-  <rect x="15" y="53" width="2.5" height="9" fill="#4a8a2a" stroke="white" stroke-width="0.8"/>
-  <ellipse cx="16.25" cy="52" rx="4" ry="3.5" fill="#f080b0" stroke="white" stroke-width="1"/>
+  <rect x="15" y="53" width="2.5" height="9" fill="url(#wmStem)" stroke="#234a14" stroke-width="0.3"/>
+  <ellipse cx="16.25" cy="52" rx="4" ry="3.5" fill="url(#wmPink)" stroke="#a03870" stroke-width="0.4"/>
   <!-- Tulip 3 -->
-  <rect x="57" y="54" width="2.5" height="8" fill="#4a8a2a" stroke="white" stroke-width="0.8"/>
-  <ellipse cx="58.25" cy="53" rx="4" ry="3.5" fill="#e8324a" stroke="white" stroke-width="1"/>
+  <rect x="57" y="54" width="2.5" height="8" fill="url(#wmStem)" stroke="#234a14" stroke-width="0.3"/>
+  <ellipse cx="58.25" cy="53" rx="4" ry="3.5" fill="url(#wmRed)" stroke="#8a1526" stroke-width="0.4"/>
   <!-- Tulip 4 -->
-  <rect x="63" y="53" width="2.5" height="9" fill="#4a8a2a" stroke="white" stroke-width="0.8"/>
-  <ellipse cx="64.25" cy="52" rx="4" ry="3.5" fill="#f0c030" stroke="white" stroke-width="1"/>
+  <rect x="63" y="53" width="2.5" height="9" fill="url(#wmStem)" stroke="#234a14" stroke-width="0.3"/>
+  <ellipse cx="64.25" cy="52" rx="4" ry="3.5" fill="url(#wmYellow)" stroke="#96711a" stroke-width="0.4"/>
 
   <!-- Ground strip -->
-  <rect x="5" y="58" width="70" height="4" rx="1" fill="#6ab030" stroke="white" stroke-width="0.8"/>
+  <rect x="5" y="58" width="70" height="4" rx="1" fill="url(#wmStrip)" stroke="#2e5c18" stroke-width="0.4"/>
 
 </svg>

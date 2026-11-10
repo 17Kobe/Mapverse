@@ -8,7 +8,7 @@
   <path d="M4 82 H124" stroke="#2f5fb0" stroke-width="3"/>
   <g fill="#2f5fb0"><rect x="10" y="92" width="10" height="8"/><rect x="26" y="92" width="10" height="8"/><rect x="42" y="92" width="10" height="8"/><rect x="58" y="92" width="10" height="8"/><rect x="74" y="92" width="10" height="8"/><rect x="90" y="92" width="10" height="8"/><rect x="106" y="92" width="10" height="8"/><rect x="22" y="70" width="8" height="8"/><rect x="36" y="70" width="8" height="8"/><rect x="50" y="70" width="8" height="8"/><rect x="64" y="70" width="8" height="8"/></g>
   <!-- NASA 圓徽 -->
-  <circle cx="100" cy="68" r="14" fill="#1c3f94" stroke="#fff" stroke-width="1.4"/>
+  <circle cx="100" cy="68" r="14" fill="#1c3f94" stroke="#0f2460" stroke-width="0.6"/>
   <path d="M90 74 Q100 58 110 66" stroke="#e0342f" stroke-width="2.6" fill="none"/>
   <circle cx="94" cy="62" r="1" fill="#fff"/><circle cx="104" cy="60" r="1" fill="#fff"/><circle cx="108" cy="74" r="1" fill="#fff"/>
   <path d="M92 70 L106 70" stroke="#fff" stroke-width="1"/>

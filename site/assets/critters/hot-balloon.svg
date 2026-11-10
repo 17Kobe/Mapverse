@@ -1,5 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
-<!-- Cappadocia Hot Air Balloon Icon — transparent bg, white strokes, animated -->
+<!-- Cappadocia Hot Air Balloon Icon — soft fabric shading, no white outline, animated -->
+<defs>
+  <linearGradient id="panelShade" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#000000" stop-opacity="0"/>
+    <stop offset="0.6" stop-color="#000000" stop-opacity="0.08"/>
+    <stop offset="1" stop-color="#000000" stop-opacity="0.28"/>
+  </linearGradient>
+</defs>
+
 <!-- Main balloon group with float animation -->
 <g id="balloon-main">
   <animateTransform
@@ -12,7 +20,7 @@
     keySplines="0.4 0 0.6 1; 0.4 0 0.6 1"/>
 
   <!-- Main balloon body (circle) -->
-  <ellipse cx="38" cy="28" rx="18" ry="20" fill="#E8E8E8" stroke="white" stroke-width="1.2"/>
+  <ellipse cx="38" cy="28" rx="18" ry="20" fill="#d8d8d8" stroke="#8c8c8c" stroke-width="0.5"/>
 
   <!-- Balloon color stripes via clipping -->
   <clipPath id="balloon-clip">
@@ -20,81 +28,84 @@
   </clipPath>
 
   <!-- Stripe 1: Red -->
-  <rect x="20" y="8" width="7.2" height="40" fill="#E53535" clip-path="url(#balloon-clip)"/>
+  <rect x="20" y="8" width="7.2" height="40" fill="#d43a3a" clip-path="url(#balloon-clip)"/>
   <!-- Stripe 2: Yellow -->
-  <rect x="27.2" y="8" width="7.2" height="40" fill="#F5C518" clip-path="url(#balloon-clip)"/>
+  <rect x="27.2" y="8" width="7.2" height="40" fill="#e0b414" clip-path="url(#balloon-clip)"/>
   <!-- Stripe 3: Blue -->
-  <rect x="34.4" y="8" width="7.2" height="40" fill="#2B7FD4" clip-path="url(#balloon-clip)"/>
+  <rect x="34.4" y="8" width="7.2" height="40" fill="#2370bc" clip-path="url(#balloon-clip)"/>
   <!-- Stripe 4: Orange -->
-  <rect x="41.6" y="8" width="7.2" height="40" fill="#F57A18" clip-path="url(#balloon-clip)"/>
+  <rect x="41.6" y="8" width="7.2" height="40" fill="#e06d10" clip-path="url(#balloon-clip)"/>
   <!-- Stripe 5: Red -->
-  <rect x="48.8" y="8" width="7.2" height="40" fill="#E53535" clip-path="url(#balloon-clip)"/>
+  <rect x="48.8" y="8" width="7.2" height="40" fill="#d43a3a" clip-path="url(#balloon-clip)"/>
+  <!-- Fabric fold shading -->
+  <ellipse cx="38" cy="28" rx="18" ry="20" fill="url(#panelShade)" clip-path="url(#balloon-clip)"/>
 
   <!-- Balloon outline on top -->
-  <ellipse cx="38" cy="28" rx="18" ry="20" fill="none" stroke="white" stroke-width="1.5"/>
+  <ellipse cx="38" cy="28" rx="18" ry="20" fill="none" stroke="#5a4028" stroke-width="0.6"/>
 
   <!-- Highlight -->
   <ellipse cx="32" cy="20" rx="5" ry="6" fill="white" opacity="0.18"/>
 
   <!-- Ropes from balloon to basket -->
-  <line x1="30" y1="46" x2="32" y2="53" stroke="white" stroke-width="1.0"/>
-  <line x1="38" y1="48" x2="38" y2="53" stroke="white" stroke-width="1.0"/>
-  <line x1="46" y1="46" x2="44" y2="53" stroke="white" stroke-width="1.0"/>
+  <line x1="30" y1="46" x2="32" y2="53" stroke="#5a4028" stroke-width="0.8"/>
+  <line x1="38" y1="48" x2="38" y2="53" stroke="#5a4028" stroke-width="0.8"/>
+  <line x1="46" y1="46" x2="44" y2="53" stroke="#5a4028" stroke-width="0.8"/>
 
   <!-- Basket -->
-  <rect x="31" y="53" width="14" height="8" rx="1.5" fill="#8B5E2A" stroke="white" stroke-width="1.2"/>
+  <rect x="31" y="53" width="14" height="8" rx="1.5" fill="#8B5E2A" stroke="#4a3312" stroke-width="0.5"/>
   <!-- Basket weave lines -->
-  <line x1="35" y1="53" x2="35" y2="61" stroke="white" stroke-width="0.6" opacity="0.5"/>
-  <line x1="39" y1="53" x2="39" y2="61" stroke="white" stroke-width="0.6" opacity="0.5"/>
-  <line x1="43" y1="53" x2="43" y2="61" stroke="white" stroke-width="0.6" opacity="0.5"/>
-  <line x1="31" y1="57" x2="45" y2="57" stroke="white" stroke-width="0.6" opacity="0.5"/>
+  <line x1="35" y1="53" x2="35" y2="61" stroke="#c89860" stroke-width="0.5" opacity="0.5"/>
+  <line x1="39" y1="53" x2="39" y2="61" stroke="#c89860" stroke-width="0.5" opacity="0.5"/>
+  <line x1="43" y1="53" x2="43" y2="61" stroke="#c89860" stroke-width="0.5" opacity="0.5"/>
+  <line x1="31" y1="57" x2="45" y2="57" stroke="#c89860" stroke-width="0.5" opacity="0.5"/>
   <!-- Tiny passenger heads -->
-  <circle cx="35" cy="52" r="1.5" fill="#FDDAA8" stroke="white" stroke-width="0.8"/>
-  <circle cx="41" cy="52" r="1.5" fill="#FDDAA8" stroke="white" stroke-width="0.8"/>
+  <circle cx="35" cy="52" r="1.5" fill="#FDDAA8" stroke="#a87c50" stroke-width="0.4"/>
+  <circle cx="41" cy="52" r="1.5" fill="#FDDAA8" stroke="#a87c50" stroke-width="0.4"/>
 </g>
 
 <!-- Small balloon (no animation, offset) -->
 <g transform="translate(58, 14) scale(0.42)">
-  <ellipse cx="0" cy="0" rx="18" ry="20" fill="#E8E8E8" stroke="white" stroke-width="1.8"/>
+  <ellipse cx="0" cy="0" rx="18" ry="20" fill="#d8d8d8" stroke="#8c8c8c" stroke-width="0.7"/>
   <clipPath id="balloon-clip-sm">
     <ellipse cx="0" cy="0" rx="18" ry="20"/>
   </clipPath>
-  <rect x="-18" y="-20" width="7.2" height="40" fill="#9B2DE8" clip-path="url(#balloon-clip-sm)"/>
-  <rect x="-10.8" y="-20" width="7.2" height="40" fill="#F5C518" clip-path="url(#balloon-clip-sm)"/>
-  <rect x="-3.6" y="-20" width="7.2" height="40" fill="#2BD47A" clip-path="url(#balloon-clip-sm)"/>
-  <rect x="3.6" y="-20" width="7.2" height="40" fill="#F57A18" clip-path="url(#balloon-clip-sm)"/>
-  <rect x="10.8" y="-20" width="7.2" height="40" fill="#9B2DE8" clip-path="url(#balloon-clip-sm)"/>
-  <ellipse cx="0" cy="0" rx="18" ry="20" fill="none" stroke="white" stroke-width="1.8"/>
+  <rect x="-18" y="-20" width="7.2" height="40" fill="#8a2ad4" clip-path="url(#balloon-clip-sm)"/>
+  <rect x="-10.8" y="-20" width="7.2" height="40" fill="#e0b414" clip-path="url(#balloon-clip-sm)"/>
+  <rect x="-3.6" y="-20" width="7.2" height="40" fill="#28b06a" clip-path="url(#balloon-clip-sm)"/>
+  <rect x="3.6" y="-20" width="7.2" height="40" fill="#e06d10" clip-path="url(#balloon-clip-sm)"/>
+  <rect x="10.8" y="-20" width="7.2" height="40" fill="#8a2ad4" clip-path="url(#balloon-clip-sm)"/>
+  <ellipse cx="0" cy="0" rx="18" ry="20" fill="url(#panelShade)" clip-path="url(#balloon-clip-sm)"/>
+  <ellipse cx="0" cy="0" rx="18" ry="20" fill="none" stroke="#5a4028" stroke-width="0.7"/>
   <!-- small rope + basket -->
-  <line x1="-6" y1="20" x2="-5" y2="27" stroke="white" stroke-width="1.2"/>
-  <line x1="0" y1="20" x2="0" y2="27" stroke="white" stroke-width="1.2"/>
-  <line x1="6" y1="20" x2="5" y2="27" stroke="white" stroke-width="1.2"/>
-  <rect x="-7" y="27" width="14" height="7" rx="1.5" fill="#8B5E2A" stroke="white" stroke-width="1.5"/>
+  <line x1="-6" y1="20" x2="-5" y2="27" stroke="#5a4028" stroke-width="0.9"/>
+  <line x1="0" y1="20" x2="0" y2="27" stroke="#5a4028" stroke-width="0.9"/>
+  <line x1="6" y1="20" x2="5" y2="27" stroke="#5a4028" stroke-width="0.9"/>
+  <rect x="-7" y="27" width="14" height="7" rx="1.5" fill="#8B5E2A" stroke="#4a3312" stroke-width="0.6"/>
 </g>
 
 <!-- Cappadocia mushroom rock pillars at bottom -->
 <!-- Rock 1 (left) -->
 <g>
   <!-- cap -->
-  <ellipse cx="14" cy="68" rx="9" ry="5" fill="#7A4F28" stroke="white" stroke-width="1.1"/>
+  <ellipse cx="14" cy="68" rx="9" ry="5" fill="#7A4F28" stroke="#3f2810" stroke-width="0.5"/>
   <!-- stem -->
-  <rect x="11" y="68" width="6" height="8" rx="1" fill="#9B6B3A" stroke="white" stroke-width="1.0"/>
+  <rect x="11" y="68" width="6" height="8" rx="1" fill="#9B6B3A" stroke="#4f3518" stroke-width="0.4"/>
   <!-- ground base ellipse -->
-  <ellipse cx="14" cy="76" rx="5" ry="2" fill="#9B6B3A" stroke="white" stroke-width="0.8"/>
+  <ellipse cx="14" cy="76" rx="5" ry="2" fill="#9B6B3A" stroke="#4f3518" stroke-width="0.4"/>
 </g>
 <!-- Rock 2 (center-left) -->
 <g>
-  <ellipse cx="27" cy="65" rx="7" ry="4" fill="#6D4420" stroke="white" stroke-width="1.1"/>
-  <rect x="24.5" y="65" width="5" height="10" rx="1" fill="#8B5A2E" stroke="white" stroke-width="1.0"/>
-  <ellipse cx="27" cy="75" rx="4" ry="1.8" fill="#8B5A2E" stroke="white" stroke-width="0.8"/>
+  <ellipse cx="27" cy="65" rx="7" ry="4" fill="#6D4420" stroke="#381f0c" stroke-width="0.5"/>
+  <rect x="24.5" y="65" width="5" height="10" rx="1" fill="#8B5A2E" stroke="#452c16" stroke-width="0.4"/>
+  <ellipse cx="27" cy="75" rx="4" ry="1.8" fill="#8B5A2E" stroke="#452c16" stroke-width="0.4"/>
 </g>
 <!-- Rock 3 (right) -->
 <g>
-  <ellipse cx="62" cy="67" rx="8" ry="4.5" fill="#7A4F28" stroke="white" stroke-width="1.1"/>
-  <rect x="59" y="67" width="6" height="9" rx="1" fill="#9B6B3A" stroke="white" stroke-width="1.0"/>
-  <ellipse cx="62" cy="76" rx="4.5" ry="1.8" fill="#9B6B3A" stroke="white" stroke-width="0.8"/>
+  <ellipse cx="62" cy="67" rx="8" ry="4.5" fill="#7A4F28" stroke="#3f2810" stroke-width="0.5"/>
+  <rect x="59" y="67" width="6" height="9" rx="1" fill="#9B6B3A" stroke="#4f3518" stroke-width="0.4"/>
+  <ellipse cx="62" cy="76" rx="4.5" ry="1.8" fill="#9B6B3A" stroke="#4f3518" stroke-width="0.4"/>
 </g>
 <!-- Small decorative pebble -->
-<ellipse cx="45" cy="76" rx="4" ry="2" fill="#8B6040" stroke="white" stroke-width="0.8"/>
-<ellipse cx="52" cy="77" rx="3" ry="1.5" fill="#7A5030" stroke="white" stroke-width="0.7"/>
+<ellipse cx="45" cy="76" rx="4" ry="2" fill="#8B6040" stroke="#452c16" stroke-width="0.4"/>
+<ellipse cx="52" cy="77" rx="3" ry="1.5" fill="#7A5030" stroke="#3a260f" stroke-width="0.4"/>
 </svg>

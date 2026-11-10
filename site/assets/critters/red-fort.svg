@@ -1,90 +1,100 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
 
+  <defs>
+    <linearGradient id="rf-wall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#b2402c"/><stop offset="1" stop-color="#7a1f12"/>
+    </linearGradient>
+    <linearGradient id="rf-tower" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#c2503a"/><stop offset="1" stop-color="#8a2816"/>
+    </linearGradient>
+    <linearGradient id="rf-gate" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7a1a10"/><stop offset="1" stop-color="#4c0f08"/>
+    </linearGradient>
+  </defs>
+
   <!-- Ground shadow -->
   <ellipse cx="40" cy="74" rx="28" ry="5" fill="#8B1A1A" opacity="0.35"/>
 
   <!-- Main wall base -->
-  <rect x="8" y="38" width="64" height="30" rx="1" fill="#9a3020" stroke="white" stroke-width="1.5"/>
+  <rect x="8" y="38" width="64" height="30" rx="1" fill="url(#rf-wall)" stroke="#5c170d" stroke-width="0.5"/>
 
   <!-- Wall battlements (merlons) along top of main wall -->
-  <rect x="10" y="32" width="6" height="8" rx="0.5" fill="#9a3020" stroke="white" stroke-width="1.2"/>
-  <rect x="19" y="32" width="6" height="8" rx="0.5" fill="#9a3020" stroke="white" stroke-width="1.2"/>
-  <rect x="28" y="32" width="6" height="8" rx="0.5" fill="#9a3020" stroke="white" stroke-width="1.2"/>
-  <rect x="37" y="32" width="6" height="8" rx="0.5" fill="#9a3020" stroke="white" stroke-width="1.2"/>
-  <rect x="46" y="32" width="6" height="8" rx="0.5" fill="#9a3020" stroke="white" stroke-width="1.2"/>
-  <rect x="55" y="32" width="6" height="8" rx="0.5" fill="#9a3020" stroke="white" stroke-width="1.2"/>
-  <rect x="64" y="32" width="6" height="8" rx="0.5" fill="#9a3020" stroke="white" stroke-width="1.2"/>
+  <rect x="10" y="32" width="6" height="8" rx="0.5" fill="url(#rf-wall)" stroke="#5c170d" stroke-width="0.5"/>
+  <rect x="19" y="32" width="6" height="8" rx="0.5" fill="url(#rf-wall)" stroke="#5c170d" stroke-width="0.5"/>
+  <rect x="28" y="32" width="6" height="8" rx="0.5" fill="url(#rf-wall)" stroke="#5c170d" stroke-width="0.5"/>
+  <rect x="37" y="32" width="6" height="8" rx="0.5" fill="url(#rf-wall)" stroke="#5c170d" stroke-width="0.5"/>
+  <rect x="46" y="32" width="6" height="8" rx="0.5" fill="url(#rf-wall)" stroke="#5c170d" stroke-width="0.5"/>
+  <rect x="55" y="32" width="6" height="8" rx="0.5" fill="url(#rf-wall)" stroke="#5c170d" stroke-width="0.5"/>
+  <rect x="64" y="32" width="6" height="8" rx="0.5" fill="url(#rf-wall)" stroke="#5c170d" stroke-width="0.5"/>
 
   <!-- Left octagonal tower -->
-  <rect x="6" y="24" width="14" height="44" rx="2" fill="#b03828" stroke="white" stroke-width="1.5"/>
+  <rect x="6" y="24" width="14" height="44" rx="2" fill="url(#rf-tower)" stroke="#5c170d" stroke-width="0.5"/>
   <!-- Left tower battlements -->
-  <rect x="6" y="20" width="4" height="6" rx="0.5" fill="#b03828" stroke="white" stroke-width="1.2"/>
-  <rect x="12" y="20" width="4" height="6" rx="0.5" fill="#b03828" stroke="white" stroke-width="1.2"/>
+  <rect x="6" y="20" width="4" height="6" rx="0.5" fill="url(#rf-tower)" stroke="#5c170d" stroke-width="0.5"/>
+  <rect x="12" y="20" width="4" height="6" rx="0.5" fill="url(#rf-tower)" stroke="#5c170d" stroke-width="0.5"/>
 
   <!-- Right octagonal tower -->
-  <rect x="60" y="24" width="14" height="44" rx="2" fill="#b03828" stroke="white" stroke-width="1.5"/>
+  <rect x="60" y="24" width="14" height="44" rx="2" fill="url(#rf-tower)" stroke="#5c170d" stroke-width="0.5"/>
   <!-- Right tower battlements -->
-  <rect x="60" y="20" width="4" height="6" rx="0.5" fill="#b03828" stroke="white" stroke-width="1.2"/>
-  <rect x="66" y="20" width="4" height="6" rx="0.5" fill="#b03828" stroke="white" stroke-width="1.2"/>
+  <rect x="60" y="20" width="4" height="6" rx="0.5" fill="url(#rf-tower)" stroke="#5c170d" stroke-width="0.5"/>
+  <rect x="66" y="20" width="4" height="6" rx="0.5" fill="url(#rf-tower)" stroke="#5c170d" stroke-width="0.5"/>
 
   <!-- Left tower chattri (small dome) -->
-  <rect x="9" y="14" width="8" height="8" rx="1" fill="#c04030" stroke="white" stroke-width="1.2"/>
-  <ellipse cx="13" cy="14" rx="5" ry="3.5" fill="white" stroke="white" stroke-width="1"/>
-  <ellipse cx="13" cy="12" rx="2.5" ry="2" fill="#f0f0f0" stroke="#ccc" stroke-width="0.8"/>
+  <rect x="9" y="14" width="8" height="8" rx="1" fill="url(#rf-tower)" stroke="#5c170d" stroke-width="0.5"/>
+  <ellipse cx="13" cy="14" rx="5" ry="3.5" fill="#f0ebe0" stroke="#c9bfa8" stroke-width="0.5"/>
+  <ellipse cx="13" cy="12" rx="2.5" ry="2" fill="#e4dcc8" stroke="#b5aa8e" stroke-width="0.5"/>
 
   <!-- Right tower chattri -->
-  <rect x="63" y="14" width="8" height="8" rx="1" fill="#c04030" stroke="white" stroke-width="1.2"/>
-  <ellipse cx="67" cy="14" rx="5" ry="3.5" fill="white" stroke="white" stroke-width="1"/>
-  <ellipse cx="67" cy="12" rx="2.5" ry="2" fill="#f0f0f0" stroke="#ccc" stroke-width="0.8"/>
+  <rect x="63" y="14" width="8" height="8" rx="1" fill="url(#rf-tower)" stroke="#5c170d" stroke-width="0.5"/>
+  <ellipse cx="67" cy="14" rx="5" ry="3.5" fill="#f0ebe0" stroke="#c9bfa8" stroke-width="0.5"/>
+  <ellipse cx="67" cy="12" rx="2.5" ry="2" fill="#e4dcc8" stroke="#b5aa8e" stroke-width="0.5"/>
 
   <!-- Center tower / gateway block -->
-  <rect x="24" y="20" width="32" height="48" rx="1" fill="#b03828" stroke="white" stroke-width="1.5"/>
+  <rect x="24" y="20" width="32" height="48" rx="1" fill="url(#rf-tower)" stroke="#5c170d" stroke-width="0.5"/>
 
   <!-- Center gate battlements -->
-  <rect x="26" y="15" width="5" height="7" rx="0.5" fill="#b03828" stroke="white" stroke-width="1.2"/>
-  <rect x="33" y="15" width="5" height="7" rx="0.5" fill="#b03828" stroke="white" stroke-width="1.2"/>
-  <rect x="40" y="15" width="5" height="7" rx="0.5" fill="#b03828" stroke="white" stroke-width="1.2"/>
-  <rect x="47" y="15" width="5" height="7" rx="0.5" fill="#b03828" stroke="white" stroke-width="1.2"/>
+  <rect x="26" y="15" width="5" height="7" rx="0.5" fill="url(#rf-tower)" stroke="#5c170d" stroke-width="0.5"/>
+  <rect x="33" y="15" width="5" height="7" rx="0.5" fill="url(#rf-tower)" stroke="#5c170d" stroke-width="0.5"/>
+  <rect x="40" y="15" width="5" height="7" rx="0.5" fill="url(#rf-tower)" stroke="#5c170d" stroke-width="0.5"/>
+  <rect x="47" y="15" width="5" height="7" rx="0.5" fill="url(#rf-tower)" stroke="#5c170d" stroke-width="0.5"/>
 
   <!-- Lahori Gate arch (main entrance) -->
-  <path d="M31 68 L31 46 Q31 36 40 36 Q49 36 49 46 L49 68 Z" fill="#7a1a10" stroke="white" stroke-width="1.5"/>
+  <path d="M31 68 L31 46 Q31 36 40 36 Q49 36 49 46 L49 68 Z" fill="url(#rf-gate)" stroke="#3a0a08" stroke-width="0.5"/>
   <!-- Arch inner shadow -->
-  <path d="M34 68 L34 47 Q34 40 40 40 Q46 40 46 47 L46 68 Z" fill="#3a0a08"/>
+  <path d="M34 68 L34 47 Q34 40 40 40 Q46 40 46 47 L46 68 Z" fill="#2c0906"/>
 
   <!-- Decorative arch border -->
-  <path d="M31 46 Q31 36 40 36 Q49 36 49 46" fill="none" stroke="#f5c842" stroke-width="1.5"/>
+  <path d="M31 46 Q31 36 40 36 Q49 36 49 46" fill="none" stroke="#f5c842" stroke-width="1.2"/>
 
   <!-- Left side smaller arch / window -->
-  <path d="M26 55 L26 45 Q29.5 40 33 45 L33 55 Z" fill="#7a1a10" stroke="white" stroke-width="1"/>
-  <path d="M26 45 Q29.5 40 33 45" fill="none" stroke="#f5c842" stroke-width="1"/>
+  <path d="M26 55 L26 45 Q29.5 40 33 45 L33 55 Z" fill="url(#rf-gate)" stroke="#3a0a08" stroke-width="0.5"/>
+  <path d="M26 45 Q29.5 40 33 45" fill="none" stroke="#f5c842" stroke-width="0.8"/>
 
   <!-- Right side smaller arch / window -->
-  <path d="M47 55 L47 45 Q50.5 40 54 45 L54 55 Z" fill="#7a1a10" stroke="white" stroke-width="1"/>
-  <path d="M47 45 Q50.5 40 54 45" fill="none" stroke="#f5c842" stroke-width="1"/>
+  <path d="M47 55 L47 45 Q50.5 40 54 45 L54 55 Z" fill="url(#rf-gate)" stroke="#3a0a08" stroke-width="0.5"/>
+  <path d="M47 45 Q50.5 40 54 45" fill="none" stroke="#f5c842" stroke-width="0.8"/>
 
   <!-- Center top chattri (main) -->
-  <rect x="35" y="8" width="10" height="9" rx="1" fill="#c04030" stroke="white" stroke-width="1.2"/>
-  <ellipse cx="40" cy="8" rx="6.5" ry="4" fill="white" stroke="white" stroke-width="1"/>
-  <ellipse cx="40" cy="5.5" rx="3.5" ry="2.5" fill="#f0f0f0" stroke="#ccc" stroke-width="0.8"/>
+  <rect x="35" y="8" width="10" height="9" rx="1" fill="url(#rf-tower)" stroke="#5c170d" stroke-width="0.5"/>
+  <ellipse cx="40" cy="8" rx="6.5" ry="4" fill="#f0ebe0" stroke="#c9bfa8" stroke-width="0.5"/>
+  <ellipse cx="40" cy="5.5" rx="3.5" ry="2.5" fill="#e4dcc8" stroke="#b5aa8e" stroke-width="0.5"/>
   <!-- Top finial -->
-  <line x1="40" y1="5" x2="40" y2="2" stroke="white" stroke-width="1.2"/>
-  <circle cx="40" cy="1.5" r="1" fill="#f5c842" stroke="white" stroke-width="0.8"/>
+  <line x1="40" y1="5" x2="40" y2="2" stroke="#8a6a3a" stroke-width="1"/>
+  <circle cx="40" cy="1.5" r="1" fill="#f5c842" stroke="#a3850a" stroke-width="0.5"/>
 
   <!-- Two side chattris on center block -->
-  <ellipse cx="29" cy="19" rx="4" ry="2.5" fill="white" stroke="white" stroke-width="0.8"/>
-  <ellipse cx="29" cy="17.5" rx="2" ry="1.5" fill="#f0f0f0" stroke="#ddd" stroke-width="0.6"/>
-  <ellipse cx="51" cy="19" rx="4" ry="2.5" fill="white" stroke="white" stroke-width="0.8"/>
-  <ellipse cx="51" cy="17.5" rx="2" ry="1.5" fill="#f0f0f0" stroke="#ddd" stroke-width="0.6"/>
+  <ellipse cx="29" cy="19" rx="4" ry="2.5" fill="#f0ebe0" stroke="#c9bfa8" stroke-width="0.4"/>
+  <ellipse cx="29" cy="17.5" rx="2" ry="1.5" fill="#e4dcc8" stroke="#b5aa8e" stroke-width="0.4"/>
+  <ellipse cx="51" cy="19" rx="4" ry="2.5" fill="#f0ebe0" stroke="#c9bfa8" stroke-width="0.4"/>
+  <ellipse cx="51" cy="17.5" rx="2" ry="1.5" fill="#e4dcc8" stroke="#b5aa8e" stroke-width="0.4"/>
 
   <!-- Decorative stripe / band on main wall -->
-  <rect x="8" y="52" width="64" height="2.5" rx="0.5" fill="#7a1a10" stroke="none" opacity="0.6"/>
+  <rect x="8" y="52" width="64" height="2.5" rx="0.5" fill="#5c170d" stroke="none" opacity="0.6"/>
 
   <!-- Tower decorative windows -->
-  <rect x="10" y="32" width="6" height="5" rx="1" fill="#7a1a10" stroke="white" stroke-width="0.8"/>
-  <rect x="64" y="32" width="6" height="5" rx="1" fill="#7a1a10" stroke="white" stroke-width="0.8"/>
+  <rect x="10" y="32" width="6" height="5" rx="1" fill="#5c170d" stroke="#3a0a08" stroke-width="0.4"/>
+  <rect x="64" y="32" width="6" height="5" rx="1" fill="#5c170d" stroke="#3a0a08" stroke-width="0.4"/>
 
-  <!-- Flag on top -->
-  <line x1="40" y1="1" x2="40" y2="1" stroke="white" stroke-width="1"/> 
   <!-- Indian flag waving on top -->
   <g>
     <rect x="40" y="-1" width="1" height="10" fill="#888" stroke="none"/>

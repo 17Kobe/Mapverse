@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <radialGradient id="wool" cx="38%" cy="28%" r="75%">
+      <stop offset="0%" stop-color="#f6e8d6"/>
+      <stop offset="55%" stop-color="#e0c19a"/>
+      <stop offset="100%" stop-color="#b8895c"/>
+    </radialGradient>
+    <linearGradient id="leg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#cfa877"/>
+      <stop offset="100%" stop-color="#8a5f3a"/>
+    </linearGradient>
+    <radialGradient id="ear" cx="50%" cy="15%" r="90%">
+      <stop offset="0%" stop-color="#ead0a8"/>
+      <stop offset="100%" stop-color="#a97c4f"/>
+    </radialGradient>
+    <radialGradient id="innerEar" cx="50%" cy="40%" r="70%">
+      <stop offset="0%" stop-color="#d98f72"/>
+      <stop offset="100%" stop-color="#a85f49"/>
+    </radialGradient>
+    <radialGradient id="face" cx="42%" cy="35%" r="70%">
+      <stop offset="0%" stop-color="#f8eedd"/>
+      <stop offset="100%" stop-color="#d4ad7c"/>
+    </radialGradient>
+    <radialGradient id="muzzle" cx="45%" cy="35%" r="70%">
+      <stop offset="0%" stop-color="#fbf1e4"/>
+      <stop offset="100%" stop-color="#dcb98c"/>
+    </radialGradient>
+  </defs>
+
+  <g fill="url(#wool)" stroke="#8a5f3a" stroke-width="0.4">
+    <circle cx="66" cy="44" r="5.5"/>
+    <circle cx="70" cy="48" r="4.5"/>
+    <circle cx="67" cy="51" r="4"/>
+  </g>
+
+  <g fill="url(#leg)" opacity="0.75">
+    <rect x="37" y="55" width="5" height="20" rx="2.3"/>
+    <rect x="55" y="57" width="5" height="19" rx="2.3"/>
+  </g>
+
+  <g stroke="#8a5f3a" stroke-width="0.5">
+    <ellipse cx="46" cy="49" rx="19" ry="14" fill="url(#wool)"/>
+    <circle cx="31" cy="38" r="5" fill="url(#wool)"/>
+    <circle cx="39" cy="34" r="6" fill="url(#wool)"/>
+    <circle cx="48" cy="32" r="6.3" fill="url(#wool)"/>
+    <circle cx="57" cy="34" r="5.8" fill="url(#wool)"/>
+    <circle cx="63" cy="39" r="5" fill="url(#wool)"/>
+    <circle cx="64" cy="47" r="4.8" fill="url(#wool)"/>
+    <circle cx="59" cy="59" r="4.3" fill="url(#wool)"/>
+    <circle cx="34" cy="61" r="4" fill="url(#wool)"/>
+  </g>
+
+  <g fill="url(#leg)" stroke="#6b4a2f" stroke-width="0.4">
+    <rect x="31" y="57" width="6" height="23" rx="2.6"/>
+    <rect x="59" y="59" width="6" height="21" rx="2.6"/>
+    <ellipse cx="34" cy="80" rx="3.6" ry="1.8" fill="#5a3b24" stroke="none"/>
+    <ellipse cx="62" cy="80" rx="3.6" ry="1.8" fill="#5a3b24" stroke="none"/>
+  </g>
+
+  <g>
+    <animateTransform attributeName="transform" type="rotate" values="-1.5 29 40; 2 29 40; -1.5 29 40" dur="4s" repeatCount="indefinite"/>
+
+    <ellipse cx="27" cy="35" rx="10" ry="12" transform="rotate(-25 27 35)" fill="url(#wool)" stroke="#8a5f3a" stroke-width="0.5"/>
+
+    <polygon points="21,17 27,4 25,19" fill="url(#ear)" stroke="#8a5f3a" stroke-width="0.4" opacity="0.8"/>
+
+    <ellipse cx="16" cy="24" rx="11" ry="10.5" fill="url(#face)" stroke="#8a5f3a" stroke-width="0.5"/>
+
+    <ellipse cx="7" cy="28" rx="6.3" ry="5.2" fill="url(#muzzle)" stroke="#a9794c" stroke-width="0.4"/>
+    <ellipse cx="3.5" cy="28" rx="1.1" ry="1.6" fill="#6b4530"/>
+    <path d="M3,32 Q7,34.5 10,32.5" fill="none" stroke="#8a5f3a" stroke-width="0.6" stroke-linecap="round"/>
+
+    <circle cx="13" cy="21" r="3.1" fill="#3a2a1f"/>
+    <ellipse cx="12" cy="20" rx="1" ry="0.8" fill="#fbf1e4"/>
+
+    <g>
+      <animateTransform attributeName="transform" type="rotate" values="0 16 16; -8 16 16; 0 16 16; 0 16 16" dur="5s" repeatCount="indefinite"/>
+      <polygon points="12,15 17,2 20,16" fill="url(#ear)" stroke="#8a5f3a" stroke-width="0.4"/>
+      <polygon points="13,13 16,5 18,13" fill="url(#innerEar)" opacity="0.85"/>
+    </g>
+  </g>
+</svg>

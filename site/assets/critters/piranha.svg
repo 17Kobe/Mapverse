@@ -1,14 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
 <defs>
+  <radialGradient id="prBody" cx="40%" cy="30%" r="80%">
+    <stop offset="0" stop-color="#d4dce2"/>
+    <stop offset="0.6" stop-color="#aab4bc"/>
+    <stop offset="1" stop-color="#848e96"/>
+  </radialGradient>
+  <linearGradient id="prBelly" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#e06b3e"/>
+    <stop offset="1" stop-color="#b5401f"/>
+  </linearGradient>
   <g id="piranha">
     <!-- tail fin -->
-    <path d="M -18,0 L -32,-11 L -21,0 L -32,11 Z" fill="#4a4a4a" stroke="white" stroke-width="1.5"/>
+    <path d="M -18,0 L -32,-11 L -21,0 L -32,11 Z" fill="#4a4a4a" stroke="#242424" stroke-width="0.4"/>
     <!-- dorsal fin -->
-    <path d="M -3,-10 L 3,-21 L 10,-9 Z" fill="#4a4a4a" stroke="white" stroke-width="1.5"/>
+    <path d="M -3,-10 L 3,-21 L 10,-9 Z" fill="#4a4a4a" stroke="#242424" stroke-width="0.4"/>
     <!-- body -->
-    <ellipse cx="0" cy="0" rx="20" ry="11" fill="#b8c0c8" stroke="white" stroke-width="1.6"/>
+    <ellipse cx="0" cy="0" rx="20" ry="11" fill="url(#prBody)" stroke="#5e6a72" stroke-width="0.4"/>
     <!-- belly -->
-    <path d="M -11,3 C -3,13 9,13 16,4 C 9,10 -4,10 -11,3 Z" fill="#d4502a" stroke="white" stroke-width="1.3"/>
+    <path d="M -11,3 C -3,13 9,13 16,4 C 9,10 -4,10 -11,3 Z" fill="url(#prBelly)" stroke="#7a2c14" stroke-width="0.4"/>
     <!-- eye -->
     <circle cx="11" cy="-3" r="2.6" fill="white" stroke="#333333" stroke-width="0.5"/>
     <circle cx="12" cy="-3" r="1.2" fill="#1a1a1a"/>

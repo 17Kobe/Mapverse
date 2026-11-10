@@ -1,4 +1,26 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+<defs>
+  <radialGradient id="stoneGrad" cx="35%" cy="30%" r="80%">
+    <stop offset="0%" stop-color="#c2c2c2"/>
+    <stop offset="100%" stop-color="#7a7a7a"/>
+  </radialGradient>
+  <radialGradient id="stoneGradSm" cx="35%" cy="30%" r="80%">
+    <stop offset="0%" stop-color="#c6c6c6"/>
+    <stop offset="100%" stop-color="#84847e"/>
+  </radialGradient>
+  <radialGradient id="waterGrad" cx="40%" cy="30%" r="80%">
+    <stop offset="0%" stop-color="#eaf7fa"/>
+    <stop offset="100%" stop-color="#a9d8e2"/>
+  </radialGradient>
+  <radialGradient id="furGrad" cx="35%" cy="25%" r="80%">
+    <stop offset="0%" stop-color="#b3a386"/>
+    <stop offset="100%" stop-color="#6e5e45"/>
+  </radialGradient>
+  <radialGradient id="skinGrad" cx="40%" cy="30%" r="75%">
+    <stop offset="0%" stop-color="#f3bcc3"/>
+    <stop offset="100%" stop-color="#d3808a"/>
+  </radialGradient>
+</defs>
 <!-- 雪地點綴（不填滿畫布） -->
 <circle cx="10" cy="10" r="2" fill="#ffffff" opacity="0.8"/>
 <circle cx="70" cy="8" r="1.6" fill="#ffffff" opacity="0.7"/>
@@ -9,38 +31,38 @@
 
 <!-- 溫泉池：石砌外緣 -->
 <g>
-  <circle cx="40" cy="50" r="29" fill="#9e9e9e" stroke="white" stroke-width="2"/>
-  <circle cx="14" cy="42" r="5" fill="#a8a8a8" stroke="white" stroke-width="1.5"/>
-  <circle cx="20" cy="26" r="5" fill="#a8a8a8" stroke="white" stroke-width="1.5"/>
-  <circle cx="36" cy="20" r="5" fill="#a8a8a8" stroke="white" stroke-width="1.5"/>
-  <circle cx="54" cy="21" r="5" fill="#a8a8a8" stroke="white" stroke-width="1.5"/>
-  <circle cx="66" cy="34" r="5" fill="#a8a8a8" stroke="white" stroke-width="1.5"/>
-  <circle cx="68" cy="54" r="5" fill="#a8a8a8" stroke="white" stroke-width="1.5"/>
-  <circle cx="58" cy="70" r="5" fill="#a8a8a8" stroke="white" stroke-width="1.5"/>
-  <circle cx="38" cy="75" r="5" fill="#a8a8a8" stroke="white" stroke-width="1.5"/>
-  <circle cx="18" cy="68" r="5" fill="#a8a8a8" stroke="white" stroke-width="1.5"/>
-  <circle cx="9" cy="54" r="5" fill="#a8a8a8" stroke="white" stroke-width="1.5"/>
+  <circle cx="40" cy="50" r="29" fill="url(#stoneGrad)" stroke="#565656" stroke-width="0.6"/>
+  <circle cx="14" cy="42" r="5" fill="url(#stoneGradSm)" stroke="#5c5c58" stroke-width="0.5"/>
+  <circle cx="20" cy="26" r="5" fill="url(#stoneGradSm)" stroke="#5c5c58" stroke-width="0.5"/>
+  <circle cx="36" cy="20" r="5" fill="url(#stoneGradSm)" stroke="#5c5c58" stroke-width="0.5"/>
+  <circle cx="54" cy="21" r="5" fill="url(#stoneGradSm)" stroke="#5c5c58" stroke-width="0.5"/>
+  <circle cx="66" cy="34" r="5" fill="url(#stoneGradSm)" stroke="#5c5c58" stroke-width="0.5"/>
+  <circle cx="68" cy="54" r="5" fill="url(#stoneGradSm)" stroke="#5c5c58" stroke-width="0.5"/>
+  <circle cx="58" cy="70" r="5" fill="url(#stoneGradSm)" stroke="#5c5c58" stroke-width="0.5"/>
+  <circle cx="38" cy="75" r="5" fill="url(#stoneGradSm)" stroke="#5c5c58" stroke-width="0.5"/>
+  <circle cx="18" cy="68" r="5" fill="url(#stoneGradSm)" stroke="#5c5c58" stroke-width="0.5"/>
+  <circle cx="9" cy="54" r="5" fill="url(#stoneGradSm)" stroke="#5c5c58" stroke-width="0.5"/>
 </g>
 
 <!-- 溫泉水面 -->
-<circle cx="40" cy="50" r="24" fill="#d6edf2" stroke="white" stroke-width="1.5"/>
+<circle cx="40" cy="50" r="24" fill="url(#waterGrad)" stroke="#8fc3d1" stroke-width="0.5"/>
 <ellipse cx="32" cy="46" rx="6" ry="2.5" fill="#ffffff" opacity="0.5"/>
 <ellipse cx="50" cy="56" rx="7" ry="2.5" fill="#ffffff" opacity="0.4"/>
 
 <!-- 猴子肩膀（浸在水中） -->
-<ellipse cx="40" cy="58" rx="17" ry="11" fill="#9a8a70" stroke="white" stroke-width="2"/>
+<ellipse cx="40" cy="58" rx="17" ry="11" fill="url(#furGrad)" stroke="#4a3d2a" stroke-width="0.6"/>
 
 <!-- 猴子耳朵 -->
-<circle cx="27" cy="34" r="5.5" fill="#9a8a70" stroke="white" stroke-width="1.5"/>
-<circle cx="53" cy="34" r="5.5" fill="#9a8a70" stroke="white" stroke-width="1.5"/>
+<circle cx="27" cy="34" r="5.5" fill="url(#furGrad)" stroke="#4a3d2a" stroke-width="0.5"/>
+<circle cx="53" cy="34" r="5.5" fill="url(#furGrad)" stroke="#4a3d2a" stroke-width="0.5"/>
 <circle cx="27" cy="34" r="2.6" fill="#e8a0a8"/>
 <circle cx="53" cy="34" r="2.6" fill="#e8a0a8"/>
 
 <!-- 猴子頭 -->
-<circle cx="40" cy="39" r="13" fill="#9a8a70" stroke="white" stroke-width="2"/>
+<circle cx="40" cy="39" r="13" fill="url(#furGrad)" stroke="#4a3d2a" stroke-width="0.6"/>
 
 <!-- 粉紅臉部 -->
-<ellipse cx="40" cy="42" rx="9" ry="8" fill="#e8a0a8" stroke="white" stroke-width="1.5"/>
+<ellipse cx="40" cy="42" rx="9" ry="8" fill="url(#skinGrad)" stroke="#b8616c" stroke-width="0.5"/>
 
 <!-- 腮紅 -->
 <ellipse cx="33" cy="45" rx="2.6" ry="1.8" fill="#f3b8be" opacity="0.9"/>
@@ -55,7 +77,7 @@
 <path d="M 36 48 Q 40 50 44 48" fill="none" stroke="#6b4a30" stroke-width="1.1" stroke-linecap="round"/>
 
 <!-- 頭頂毛髮小尖角 -->
-<path d="M 35 27 Q 40 22 45 27" fill="#9a8a70" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+<path d="M 35 27 Q 40 22 45 27" fill="url(#furGrad)" stroke="#4a3d2a" stroke-width="0.5" stroke-linejoin="round"/>
 
 <!-- 蒸氣：三股半透明白色橢圓，緩慢飄動 -->
 <g>

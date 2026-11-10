@@ -8,7 +8,7 @@
   <path d="M76 40 H88 M76 70 H88" stroke="#c0392b" stroke-width="3"/>
   <path d="M52 112 V34 Q52 12 64 2 Q76 12 76 34 V112Z" fill="url(#rk)" stroke="#9aa5b6" stroke-width="1.2"/>
   <path d="M52 34 Q52 12 64 2 Q76 12 76 34Z" fill="#e0342f"/>
-  <circle cx="64" cy="46" r="5.5" fill="#2f6fd1" stroke="#fff" stroke-width="1.6"/>
+  <circle cx="64" cy="46" r="5.5" fill="#2f6fd1" stroke="#1c4a8a" stroke-width="0.6"/>
   <rect x="52" y="64" width="24" height="5" fill="#1c3f94"/>
   <path d="M52 92 L40 114 L52 112Z M76 92 L88 114 L76 112Z" fill="#e0342f" stroke="#9a1f1a" stroke-width="1"/>
   <rect x="40" y="116" width="48" height="6" fill="#8a97a8"/>

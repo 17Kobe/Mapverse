@@ -1,12 +1,21 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
-  <circle cx="40" cy="40" r="34" fill="#e8c179" stroke="white" stroke-width="2"/>
-  <circle cx="40" cy="40" r="29" fill="#d9632a" stroke="white" stroke-width="2"/>
-  <circle cx="40" cy="40" r="24" fill="#f0d89a" stroke="white" stroke-width="2"/>
-  <circle cx="40" cy="40" r="19" fill="#a8562c" stroke="white" stroke-width="2"/>
-  <circle cx="40" cy="40" r="14" fill="#e6792f" stroke="white" stroke-width="2"/>
-  <circle cx="40" cy="40" r="9" fill="#6b3a1f" stroke="white" stroke-width="1.8"/>
-  <circle cx="40" cy="40" r="4" fill="#3d2112" stroke="white" stroke-width="1.5"/>
-  <circle cx="40" cy="40" r="34" fill="#fff6d2" stroke="white" stroke-width="1.8" opacity="0.15">
+  <defs>
+    <radialGradient id="ring1" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#f3d9a0"/><stop offset="1" stop-color="#c89f5a"/></radialGradient>
+    <radialGradient id="ring2" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#e8835a"/><stop offset="1" stop-color="#a84418"/></radialGradient>
+    <radialGradient id="ring3" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#faeab8"/><stop offset="1" stop-color="#d9bb74"/></radialGradient>
+    <radialGradient id="ring4" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#c47a4e"/><stop offset="1" stop-color="#7a3a1c"/></radialGradient>
+    <radialGradient id="ring5" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#f29850"/><stop offset="1" stop-color="#b85a1a"/></radialGradient>
+    <radialGradient id="ring6" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#8a5636"/><stop offset="1" stop-color="#4a2210"/></radialGradient>
+    <radialGradient id="ring7" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#5a3420"/><stop offset="1" stop-color="#241008"/></radialGradient>
+  </defs>
+  <circle cx="40" cy="40" r="34" fill="url(#ring1)" stroke="#a8824a" stroke-width="0.6"/>
+  <circle cx="40" cy="40" r="29" fill="url(#ring2)" stroke="#7a3010" stroke-width="0.6"/>
+  <circle cx="40" cy="40" r="24" fill="url(#ring3)" stroke="#b89a5c" stroke-width="0.5"/>
+  <circle cx="40" cy="40" r="19" fill="url(#ring4)" stroke="#6a3418" stroke-width="0.5"/>
+  <circle cx="40" cy="40" r="14" fill="url(#ring5)" stroke="#8a4414" stroke-width="0.5"/>
+  <circle cx="40" cy="40" r="9" fill="url(#ring6)" stroke="#3a2010" stroke-width="0.4"/>
+  <circle cx="40" cy="40" r="4" fill="url(#ring7)" stroke="#180a04" stroke-width="0.4"/>
+  <circle cx="40" cy="40" r="34" fill="#fff6d2" stroke="#e8d8a0" stroke-width="0.6" opacity="0.15">
     <animate attributeName="opacity" values="0.1;0.3;0.1" dur="3.2s" repeatCount="indefinite"/>
   </circle>
 </svg>

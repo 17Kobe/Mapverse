@@ -1,6 +1,29 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+<defs>
+  <linearGradient id="hbWater" x1="0%" y1="0%" x2="0%" y2="100%">
+    <stop offset="0%" stop-color="#4FC2A0"/>
+    <stop offset="100%" stop-color="#1F7A61"/>
+  </linearGradient>
+  <linearGradient id="hbRock" x1="0%" y1="0%" x2="0%" y2="100%">
+    <stop offset="0%" stop-color="#8CA178"/>
+    <stop offset="100%" stop-color="#425A36"/>
+  </linearGradient>
+  <linearGradient id="hbFoliage" x1="0%" y1="0%" x2="0%" y2="100%">
+    <stop offset="0%" stop-color="#4F7A3A"/>
+    <stop offset="100%" stop-color="#263A1C"/>
+  </linearGradient>
+  <linearGradient id="hbHull" x1="0%" y1="0%" x2="0%" y2="100%">
+    <stop offset="0%" stop-color="#DCB984"/>
+    <stop offset="100%" stop-color="#A5804E"/>
+  </linearGradient>
+  <linearGradient id="hbSail" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#F2E9D2"/>
+    <stop offset="100%" stop-color="#D2C29A"/>
+  </linearGradient>
+</defs>
+
 <!-- 海水 -->
-<ellipse cx="40" cy="69" rx="35" ry="11" fill="#3aa88a" stroke="#ffffff" stroke-width="2"/>
+<ellipse cx="40" cy="69" rx="35" ry="11" fill="url(#hbWater)" stroke="#145640" stroke-width="0.5"/>
 
 <!-- 水波紋 -->
 <path d="M9,65 Q19,62 29,65 T49,65 T69,65" fill="none" stroke="#ffffff" stroke-width="1.2" opacity="0.4">
@@ -9,22 +32,25 @@
 <path d="M8,74 Q18,72 28,74 T48,74 T68,74" fill="none" stroke="#ffffff" stroke-width="1" opacity="0.3"/>
 
 <!-- 左後方中型石灰岩島 -->
-<path d="M14,64 C10,58 8,50 10,42 C12,35 16,30 22,30 C28,30 32,36 32,44 C33,52 28,60 22,64 Z" fill="#5a7050" stroke="#ffffff" stroke-width="2"/>
-<path d="M10,38 C9,32 14,27 20,27 C26,27 30,32 30,38 C30,42 26,44 20,43 C15,42 10,42 10,38 Z" fill="#3a4d30" stroke="#ffffff" stroke-width="1.5"/>
+<path d="M14,64 C10,58 8,50 10,42 C12,35 16,30 22,30 C28,30 32,36 32,44 C33,52 28,60 22,64 Z" fill="url(#hbRock)" stroke="#2E3D26" stroke-width="0.5"/>
+<path d="M10,38 C9,32 14,27 20,27 C26,27 30,32 30,38 C30,42 26,44 20,43 C15,42 10,42 10,38 Z" fill="url(#hbFoliage)" stroke="#1C2A14" stroke-width="0.4"/>
 <ellipse cx="15" cy="48" rx="4" ry="8" fill="#7a9468" opacity="0.5"/>
+<path d="M18,42 C17,48 16,55 17,61" stroke="#2E3D26" stroke-width="0.5" opacity="0.5" fill="none"/>
 
 <!-- 右後方小型石灰岩島 -->
-<path d="M58,62 C55,56 55,48 58,42 C60,38 64,36 68,37 C72,38 74,44 73,50 C72,56 68,60 63,62 Z" fill="#5a7050" stroke="#ffffff" stroke-width="2"/>
-<path d="M56,44 C55,39 59,35 64,35 C69,35 72,39 71,44 C70,47 66,48 62,47 C58,46 56,46 56,44 Z" fill="#3a4d30" stroke="#ffffff" stroke-width="1.5"/>
+<path d="M58,62 C55,56 55,48 58,42 C60,38 64,36 68,37 C72,38 74,44 73,50 C72,56 68,60 63,62 Z" fill="url(#hbRock)" stroke="#2E3D26" stroke-width="0.5"/>
+<path d="M56,44 C55,39 59,35 64,35 C69,35 72,39 71,44 C70,47 66,48 62,47 C58,46 56,46 56,44 Z" fill="url(#hbFoliage)" stroke="#1C2A14" stroke-width="0.4"/>
 <ellipse cx="62" cy="50" rx="3" ry="6" fill="#7a9468" opacity="0.5"/>
+<path d="M65,41 C64,47 63,53 64,58" stroke="#2E3D26" stroke-width="0.5" opacity="0.5" fill="none"/>
 
 <!-- 前方小礁岩 -->
-<path d="M16,70 C15,65 18,61 22,61 C26,61 28,65 27,70 C26,73 18,73 16,70 Z" fill="#5a7050" stroke="#ffffff" stroke-width="1.8"/>
+<path d="M16,70 C15,65 18,61 22,61 C26,61 28,65 27,70 C26,73 18,73 16,70 Z" fill="url(#hbRock)" stroke="#2E3D26" stroke-width="0.5"/>
 
 <!-- 中央最高石灰岩塔（主體） -->
-<path d="M38,66 C30,60 24,50 26,40 C28,30 30,20 38,15 C42,13 46,13 50,15 C56,20 58,30 58,40 C58,50 54,60 48,66 Z" fill="#5a7050" stroke="#ffffff" stroke-width="2.2"/>
-<path d="M30,30 C28,24 32,16 40,14 C48,13 54,18 56,28 C57,33 54,37 48,36 C40,35 34,36 30,30 Z" fill="#3a4d30" stroke="#ffffff" stroke-width="1.8"/>
+<path d="M38,66 C30,60 24,50 26,40 C28,30 30,20 38,15 C42,13 46,13 50,15 C56,20 58,30 58,40 C58,50 54,60 48,66 Z" fill="url(#hbRock)" stroke="#2E3D26" stroke-width="0.6"/>
+<path d="M30,30 C28,24 32,16 40,14 C48,13 54,18 56,28 C57,33 54,37 48,36 C40,35 34,36 30,30 Z" fill="url(#hbFoliage)" stroke="#1C2A14" stroke-width="0.5"/>
 <ellipse cx="34" cy="44" rx="5" ry="10" fill="#7a9468" opacity="0.5"/>
+<path d="M34,40 C32,47 31,54 33,61 M44,38 C45,46 46,54 44,62" stroke="#2E3D26" stroke-width="0.5" opacity="0.5" fill="none"/>
 
 <!-- 岸邊白色浪花點 -->
 <ellipse cx="22" cy="64" rx="3" ry="1.4" fill="#ffffff" opacity="0.6"/>
@@ -35,8 +61,8 @@
 <!-- 小帆船 -->
 <g>
   <animateTransform attributeName="transform" type="translate" values="0,0; 0,-2; 0,0" dur="2s" repeatCount="indefinite"/>
-  <path d="M34,69 C34,67 46,67 46,69 C46,72 34,72 34,69 Z" fill="#c9a66b" stroke="#ffffff" stroke-width="1.5"/>
+  <path d="M34,69 C34,67 46,67 46,69 C46,72 34,72 34,69 Z" fill="url(#hbHull)" stroke="#6E5230" stroke-width="0.5"/>
   <line x1="40" y1="69" x2="40" y2="57" stroke="#5a4328" stroke-width="1.2"/>
-  <path d="M40,57 L47,67 L40,67 Z" fill="#e8dcc0" stroke="#ffffff" stroke-width="1.2"/>
+  <path d="M40,57 L47,67 L40,67 Z" fill="url(#hbSail)" stroke="#A89566" stroke-width="0.5"/>
 </g>
 </svg>

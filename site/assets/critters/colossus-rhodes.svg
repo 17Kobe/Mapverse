@@ -1,43 +1,55 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a9ad8"/><stop offset="1" stop-color="#1f5f93"/></linearGradient>
+    <radialGradient id="stone" cx="35%" cy="25%" r="85%"><stop offset="0" stop-color="#b8a888"/><stop offset="1" stop-color="#7a6a50"/></radialGradient>
+    <linearGradient id="bronzeLeg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#a0b082"/><stop offset="1" stop-color="#6a7a4e"/></linearGradient>
+    <linearGradient id="robe" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#aec28a"/><stop offset="1" stop-color="#7a8a5a"/></linearGradient>
+    <radialGradient id="skin" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#dcc090"/><stop offset="1" stop-color="#a88450"/></radialGradient>
+  </defs>
+
   <!-- 海面與港口 -->
-  <ellipse cx="40" cy="73" rx="34" ry="5" fill="#2a7ab8" stroke="white" stroke-width="1.5"/>
-  <ellipse cx="40" cy="73" rx="30" ry="3.5" fill="#4a9ad8" opacity="0.6"/>
+  <ellipse cx="40" cy="73" rx="34" ry="5" fill="url(#sea)" stroke="#1f4a70" stroke-width="0.6"/>
+  <ellipse cx="40" cy="73" rx="30" ry="3.5" fill="#7cc4ec" opacity="0.5"/>
 
   <!-- 兩座石砌基座（巨像雙腳各踩一座，傳說橫跨港口入口） -->
-  <path d="M10,70 L12,58 L24,58 L26,70 Z" fill="#9a8a70" stroke="white" stroke-width="1.8" stroke-linejoin="round"/>
-  <path d="M54,70 L56,58 L68,58 L70,70 Z" fill="#9a8a70" stroke="white" stroke-width="1.8" stroke-linejoin="round"/>
-  <line x1="14" y1="64" x2="22" y2="64" stroke="#7a6a50" stroke-width="1"/>
-  <line x1="58" y1="64" x2="66" y2="64" stroke="#7a6a50" stroke-width="1"/>
+  <path d="M10,70 L12,58 L24,58 L26,70 Z" fill="url(#stone)" stroke="#5a4c38" stroke-width="0.6" stroke-linejoin="round"/>
+  <path d="M54,70 L56,58 L68,58 L70,70 Z" fill="url(#stone)" stroke="#5a4c38" stroke-width="0.6" stroke-linejoin="round"/>
+  <line x1="14" y1="64" x2="22" y2="64" stroke="#5a4c38" stroke-width="0.8" opacity="0.8"/>
+  <line x1="58" y1="64" x2="66" y2="64" stroke="#5a4c38" stroke-width="0.8" opacity="0.8"/>
+  <path d="M12,58 L11,66 L14,67Z" fill="#fff" opacity="0.12"/>
+  <path d="M56,58 L55,66 L58,67Z" fill="#fff" opacity="0.12"/>
 
   <!-- 青銅巨人雙腿（跨站在兩座基座上） -->
-  <path d="M16,58 L19,34 L25,34 L24,58 Z" fill="#8a9a6a" stroke="white" stroke-width="2" stroke-linejoin="round"/>
-  <path d="M56,58 L55,34 L61,34 L64,58 Z" fill="#8a9a6a" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M16,58 L19,34 L25,34 L24,58 Z" fill="url(#bronzeLeg)" stroke="#4a5a34" stroke-width="0.6" stroke-linejoin="round"/>
+  <path d="M56,58 L55,34 L61,34 L64,58 Z" fill="url(#bronzeLeg)" stroke="#4a5a34" stroke-width="0.6" stroke-linejoin="round"/>
 
   <!-- 腿部陰影紋路 -->
-  <line x1="20" y1="40" x2="20" y2="56" stroke="#6a7a4e" stroke-width="1" opacity="0.6"/>
-  <line x1="59" y1="40" x2="59" y2="56" stroke="#6a7a4e" stroke-width="1" opacity="0.6"/>
+  <line x1="20" y1="40" x2="20" y2="56" stroke="#4e5e34" stroke-width="1" opacity="0.5"/>
+  <line x1="59" y1="40" x2="59" y2="56" stroke="#4e5e34" stroke-width="1" opacity="0.5"/>
+  <path d="M19,34 L21,42 L19,50" stroke="#c4d4a0" stroke-width="0.8" fill="none" opacity="0.4"/>
 
   <!-- 身體（長袍/托加） -->
-  <path d="M19,34 Q17,24 22,16 Q40,8 58,16 Q63,24 61,34 Z" fill="#9aaa7a" stroke="white" stroke-width="2.2" stroke-linejoin="round"/>
+  <path d="M19,34 Q17,24 22,16 Q40,8 58,16 Q63,24 61,34 Z" fill="url(#robe)" stroke="#5e6e40" stroke-width="0.7" stroke-linejoin="round"/>
   <!-- 袍子皺褶線 -->
-  <line x1="28" y1="18" x2="26" y2="33" stroke="#7a8a5a" stroke-width="0.9" opacity="0.6"/>
-  <line x1="40" y1="14" x2="40" y2="33" stroke="#7a8a5a" stroke-width="0.9" opacity="0.6"/>
-  <line x1="52" y1="18" x2="54" y2="33" stroke="#7a8a5a" stroke-width="0.9" opacity="0.6"/>
+  <line x1="28" y1="18" x2="26" y2="33" stroke="#647646" stroke-width="0.9" opacity="0.6"/>
+  <line x1="40" y1="14" x2="40" y2="33" stroke="#647646" stroke-width="0.9" opacity="0.6"/>
+  <line x1="52" y1="18" x2="54" y2="33" stroke="#647646" stroke-width="0.9" opacity="0.6"/>
+  <path d="M24,16 Q34,10 44,11" stroke="#d0dcb0" stroke-width="0.9" fill="none" opacity="0.4"/>
 
   <!-- 左臂（下垂） -->
-  <path d="M20,18 Q15,22 15,30 L19,31 Q20,24 24,19 Z" fill="#8a9a6a" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M20,18 Q15,22 15,30 L19,31 Q20,24 24,19 Z" fill="url(#bronzeLeg)" stroke="#4a5a34" stroke-width="0.5" stroke-linejoin="round"/>
 
   <!-- 右臂（上舉持火炬） -->
-  <path d="M56,17 Q62,12 64,4 L60,2 Q58,9 54,15 Z" fill="#8a9a6a" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M56,17 Q62,12 64,4 L60,2 Q58,9 54,15 Z" fill="url(#bronzeLeg)" stroke="#4a5a34" stroke-width="0.5" stroke-linejoin="round"/>
 
   <!-- 火炬 -->
-  <rect x="61" y="1" width="3" height="5" fill="#6a5a40" stroke="white" stroke-width="0.8"/>
+  <rect x="61" y="1" width="3" height="5" fill="#6a5a40" stroke="#3a3020" stroke-width="0.5"/>
   <path d="M60,2 Q59,-3 62,-6 Q63,-2 63,-6 Q65,-3 64,2 Z" fill="#ff9c40" stroke="#e06a10" stroke-width="0.7">
     <animate attributeName="opacity" values="1;0.75;1" dur="1.1s" repeatCount="indefinite"/>
   </path>
 
   <!-- 頭部（太陽神赫利俄斯，頭戴放射光冠） -->
-  <circle cx="40" cy="10" r="6" fill="#c8a870" stroke="white" stroke-width="1.8"/>
+  <circle cx="40" cy="10" r="6" fill="url(#skin)" stroke="#8a6a40" stroke-width="0.6"/>
   <!-- 放射狀光冠 -->
   <g stroke="#e8c060" stroke-width="1.3" stroke-linecap="round">
     <line x1="40" y1="3" x2="40" y2="-2"/>
@@ -51,7 +63,7 @@
   <circle cx="42" cy="10" r="0.7" fill="#4a3a28"/>
 
   <!-- 遠處小船從巨像雙腿間通過 -->
-  <path d="M34,69 L46,69 L44,66 L36,66 Z" fill="#8a7050" stroke="white" stroke-width="1"/>
+  <path d="M34,69 L46,69 L44,66 L36,66 Z" fill="#8a7050" stroke="#4a3a28" stroke-width="0.5"/>
   <line x1="40" y1="66" x2="40" y2="61" stroke="#8a7050" stroke-width="1"/>
   <path d="M40,62 L46,64 L40,65 Z" fill="#e8e0c8"/>
 </svg>

@@ -1,16 +1,42 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="stoneBase" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e6ded0"/>
+      <stop offset="100%" stop-color="#c7bda8"/>
+    </linearGradient>
+    <linearGradient id="stoneBody" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e9e4d8"/>
+      <stop offset="100%" stop-color="#cac4b4"/>
+    </linearGradient>
+    <linearGradient id="stoneBelfry" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ede9dd"/>
+      <stop offset="100%" stop-color="#cfc9ba"/>
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e8c856"/>
+      <stop offset="100%" stop-color="#a6861c"/>
+    </linearGradient>
+    <linearGradient id="spireGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#6a6a6a"/>
+      <stop offset="100%" stop-color="#3a3a3a"/>
+    </linearGradient>
+    <linearGradient id="glassGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#a6c6d6"/>
+      <stop offset="100%" stop-color="#6e94a6"/>
+    </linearGradient>
+  </defs>
 
   <!-- 底座：比塔身略寬 -->
   <rect x="22" y="68" width="36" height="6" rx="1.5"
-        fill="#d8d0c0" stroke="white" stroke-width="1.5"/>
+        fill="url(#stoneBase)" stroke="#9c9280" stroke-width="0.6"/>
 
   <!-- 底座二層 -->
   <rect x="26" y="63" width="28" height="6" rx="1"
-        fill="#d0c8b8" stroke="white" stroke-width="1.5"/>
+        fill="url(#stoneBase)" stroke="#9c9280" stroke-width="0.6"/>
 
   <!-- 塔身主體 -->
   <rect x="29" y="18" width="22" height="46" rx="1"
-        fill="#ddd8cc" stroke="white" stroke-width="1.5"/>
+        fill="url(#stoneBody)" stroke="#a39880" stroke-width="0.6"/>
 
   <!-- 塔身橫向分層線 -->
   <line x1="29" y1="26" x2="51" y2="26" stroke="#b8b0a0" stroke-width="0.9"/>
@@ -20,30 +46,30 @@
 
   <!-- 塔身側窗（上段） -->
   <rect x="31" y="20" width="4" height="5.5" rx="1"
-        fill="#8aacbe" stroke="white" stroke-width="1"/>
+        fill="url(#glassGrad)" stroke="#4f6b7a" stroke-width="0.4"/>
   <rect x="45" y="20" width="4" height="5.5" rx="1"
-        fill="#8aacbe" stroke="white" stroke-width="1"/>
+        fill="url(#glassGrad)" stroke="#4f6b7a" stroke-width="0.4"/>
   <!-- 塔身側窗（中上段） -->
   <rect x="31" y="28" width="4" height="5.5" rx="1"
-        fill="#8aacbe" stroke="white" stroke-width="1"/>
+        fill="url(#glassGrad)" stroke="#4f6b7a" stroke-width="0.4"/>
   <rect x="45" y="28" width="4" height="5.5" rx="1"
-        fill="#8aacbe" stroke="white" stroke-width="1"/>
+        fill="url(#glassGrad)" stroke="#4f6b7a" stroke-width="0.4"/>
   <!-- 塔身側窗（中下段） -->
   <rect x="31" y="58" width="4" height="5" rx="1"
-        fill="#8aacbe" stroke="white" stroke-width="1"/>
+        fill="url(#glassGrad)" stroke="#4f6b7a" stroke-width="0.4"/>
   <rect x="45" y="58" width="4" height="5" rx="1"
-        fill="#8aacbe" stroke="white" stroke-width="1"/>
+        fill="url(#glassGrad)" stroke="#4f6b7a" stroke-width="0.4"/>
 
   <!-- 鐘樓層：略突出 -->
   <rect x="26" y="34" width="28" height="22" rx="1"
-        fill="#e4e0d4" stroke="white" stroke-width="1.5"/>
+        fill="url(#stoneBelfry)" stroke="#a39880" stroke-width="0.6"/>
 
   <!-- 鐘面：金色外框 -->
   <circle cx="40" cy="45" r="10"
-          fill="#c9a828" stroke="white" stroke-width="1.5"/>
+          fill="url(#goldGrad)" stroke="#8a7418" stroke-width="0.6"/>
   <!-- 鐘面：白底 -->
   <circle cx="40" cy="45" r="8.2"
-          fill="#f8f6ee" stroke="#c9a828" stroke-width="0.8"/>
+          fill="#f8f6ee" stroke="#c9a828" stroke-width="0.6"/>
 
   <!-- 刻度線（12/3/6/9 四個方向） -->
   <line x1="40" y1="37.2" x2="40" y2="39.4" stroke="#1a1a1a" stroke-width="1.4" stroke-linecap="round"/>
@@ -59,21 +85,21 @@
 
   <!-- 鐘樓頂部突出平台 -->
   <rect x="25" y="14" width="30" height="5" rx="0.8"
-        fill="#ccc8b8" stroke="white" stroke-width="1.5"/>
+        fill="url(#stoneBelfry)" stroke="#a39880" stroke-width="0.6"/>
 
   <!-- 左右小尖頂（哥德式角塔） -->
   <polygon points="28,14 24,8 32,8"
-           fill="#525252" stroke="white" stroke-width="1.2"/>
+           fill="url(#spireGrad)" stroke="#262626" stroke-width="0.5"/>
   <polygon points="52,14 48,8 56,8"
-           fill="#525252" stroke="white" stroke-width="1.2"/>
+           fill="url(#spireGrad)" stroke="#262626" stroke-width="0.5"/>
 
   <!-- 主尖塔 -->
   <polygon points="40,2 47,14 33,14"
-           fill="#4e4e4e" stroke="white" stroke-width="1.5"/>
-  <!-- 尖塔中線細節 -->
-  <line x1="40" y1="2" x2="40" y2="14" stroke="white" stroke-width="0.5" stroke-dasharray="1.5,1.5" opacity="0.5"/>
+           fill="url(#spireGrad)" stroke="#262626" stroke-width="0.6"/>
+  <!-- 尖塔中線細節（風化刻線） -->
+  <line x1="40" y1="2" x2="40" y2="14" stroke="#262626" stroke-width="0.4" stroke-dasharray="1.5,1.5" opacity="0.5"/>
   <!-- 尖塔頂端金球 -->
   <circle cx="40" cy="2.5" r="2"
-          fill="#c9a828" stroke="white" stroke-width="1"/>
+          fill="url(#goldGrad)" stroke="#8a7418" stroke-width="0.5"/>
 
 </svg>

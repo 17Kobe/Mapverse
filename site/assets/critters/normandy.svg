@@ -1,19 +1,26 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
-<path d="M0,18 Q20,24 40,19 T80,20 L80,56 Q40,62 0,55 Z" fill="#3f7fb0" stroke="white" stroke-width="2"/>
-<path d="M0,26 L0,6 L5,12 L9,2 L14,9 L19,3 L24,13 L24,26 Z" fill="#9c8a6b" stroke="white" stroke-width="2"/>
+<defs>
+  <linearGradient id="nd-sea" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#6fa8d0"/><stop offset="100%" stop-color="#2f5f88"/></linearGradient>
+  <linearGradient id="nd-cliff" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#b19d7c"/><stop offset="100%" stop-color="#7c6848"/></linearGradient>
+  <linearGradient id="nd-sand" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f2e6bd"/><stop offset="100%" stop-color="#d2b878"/></linearGradient>
+  <linearGradient id="nd-camo" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#5c6c4c"/><stop offset="100%" stop-color="#303a24"/></linearGradient>
+  <linearGradient id="nd-hull" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#6e8056"/><stop offset="100%" stop-color="#3a4a2c"/></linearGradient>
+</defs>
+<path d="M0,18 Q20,24 40,19 T80,20 L80,56 Q40,62 0,55 Z" fill="url(#nd-sea)" stroke="#1f3f58" stroke-width="0.5"/>
+<path d="M0,26 L0,6 L5,12 L9,2 L14,9 L19,3 L24,13 L24,26 Z" fill="url(#nd-cliff)" stroke="#5a4a32" stroke-width="0.5"/>
 <g>
   <animateTransform attributeName="transform" type="translate" values="0,0;6,0;0,0" dur="3s" repeatCount="indefinite"/>
-  <path d="M2,34 Q10,30 18,34 T34,34 T50,34 T66,34 T82,34" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" opacity="0.85"/>
+  <path d="M2,34 Q10,30 18,34 T34,34 T50,34 T66,34 T82,34" fill="none" stroke="#eef6fb" stroke-width="2.2" stroke-linecap="round" opacity="0.85"/>
   <path d="M-6,42 Q4,38 14,42 T34,42 T54,42 T74,42 T94,42" fill="none" stroke="#dff0ff" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
 </g>
-<path d="M-5,80 Q-5,54 40,58 Q85,54 85,80 Z" fill="#e8d9a6" stroke="white" stroke-width="2"/>
+<path d="M-5,80 Q-5,54 40,58 Q85,54 85,80 Z" fill="url(#nd-sand)" stroke="#9c874c" stroke-width="0.5"/>
 <g>
   <animateTransform attributeName="transform" type="translate" values="0,0;0,-1.5;0,0" dur="2.4s" repeatCount="indefinite"/>
-  <path d="M26,44 L14,60 L28,58 Z" fill="#46543a" stroke="white" stroke-width="1.8"/>
-  <path d="M20,58 L20,50 L26,44 L56,44 L62,50 L62,58 Z" fill="#5a6a48" stroke="white" stroke-width="2"/>
-  <rect x="50" y="36" width="10" height="10" rx="1.5" fill="#46543a" stroke="white" stroke-width="1.8"/>
+  <path d="M26,44 L14,60 L28,58 Z" fill="url(#nd-camo)" stroke="#232b1d" stroke-width="0.5"/>
+  <path d="M20,58 L20,50 L26,44 L56,44 L62,50 L62,58 Z" fill="url(#nd-hull)" stroke="#2c3620" stroke-width="0.5"/>
+  <rect x="50" y="36" width="10" height="10" rx="1.5" fill="url(#nd-camo)" stroke="#232b1d" stroke-width="0.5"/>
   <line x1="55" y1="36" x2="55" y2="28" stroke="#333333" stroke-width="1.5" stroke-linecap="round"/>
-  <polygon points="55,28 62,31 55,34" fill="#c0392b" stroke="white" stroke-width="1.2">
+  <polygon points="55,28 62,31 55,34" fill="#c0392b" stroke="#6e150a" stroke-width="0.4">
     <animateTransform attributeName="transform" type="rotate" values="-8 55 31;8 55 31;-8 55 31" dur="1s" repeatCount="indefinite"/>
   </polygon>
 </g>

@@ -1,5 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
-<ellipse cx="40" cy="44" rx="30" ry="26" fill="#a8845a" stroke="#ffffff" stroke-width="2"/>
+<defs>
+  <radialGradient id="sandGrad" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="#c9a876"/><stop offset=".6" stop-color="#a8845a"/><stop offset="1" stop-color="#876840"/></radialGradient>
+</defs>
+<ellipse cx="40" cy="44" rx="30" ry="26" fill="url(#sandGrad)" stroke="#5c4527" stroke-width="0.6"/>
 
 <path d="M 14 50 Q 40 60 66 50" fill="none" stroke="#8f6c45" stroke-width="1" opacity="0.4"/>
 <path d="M 16 34 Q 40 26 64 34" fill="none" stroke="#8f6c45" stroke-width="1" opacity="0.3"/>

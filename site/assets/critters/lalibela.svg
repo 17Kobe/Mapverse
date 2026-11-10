@@ -1,12 +1,26 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
-<rect x="8" y="8" width="64" height="64" rx="8" fill="#9a5a3a" stroke="white" stroke-width="2"/>
-<line x1="11" y1="11" x2="14" y2="14" stroke="#7a4428" stroke-width="1" stroke-linecap="round"/>
-<line x1="69" y1="11" x2="66" y2="14" stroke="#7a4428" stroke-width="1" stroke-linecap="round"/>
-<rect x="16" y="16" width="48" height="48" rx="4" fill="#6b3a22" stroke="white" stroke-width="1.8"/>
-<rect x="17" y="51" width="12" height="4" rx="1" fill="#c9875f" stroke="white" stroke-width="1.2"/>
-<rect x="19" y="56" width="9" height="4" rx="1" fill="#c9875f" stroke="white" stroke-width="1.2"/>
-<rect x="21" y="61" width="6" height="3" rx="1" fill="#c9875f" stroke="white" stroke-width="1.2"/>
-<polygon points="31,16 49,16 49,31 64,31 64,49 49,49 49,64 31,64 31,49 16,49 16,31 31,31" fill="#b87050" stroke="white" stroke-width="2"/>
+<defs>
+  <radialGradient id="lb-stone" cx="35%" cy="30%" r="85%">
+    <stop offset="0" stop-color="#b06c48"/>
+    <stop offset="1" stop-color="#7a4228"/>
+  </radialGradient>
+  <linearGradient id="lb-cut" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#7a4228"/>
+    <stop offset="1" stop-color="#4a2514"/>
+  </linearGradient>
+  <linearGradient id="lb-cross" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#d08860"/>
+    <stop offset="1" stop-color="#9c5c3a"/>
+  </linearGradient>
+</defs>
+<rect x="8" y="8" width="64" height="64" rx="8" fill="url(#lb-stone)" stroke="#5c3018" stroke-width="0.6"/>
+<line x1="11" y1="11" x2="14" y2="14" stroke="#5c3018" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
+<line x1="69" y1="11" x2="66" y2="14" stroke="#5c3018" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
+<rect x="16" y="16" width="48" height="48" rx="4" fill="url(#lb-cut)" stroke="#3a1c0e" stroke-width="0.5"/>
+<rect x="17" y="51" width="12" height="4" rx="1" fill="#c9875f" stroke="#7a4228" stroke-width="0.5"/>
+<rect x="19" y="56" width="9" height="4" rx="1" fill="#c9875f" stroke="#7a4228" stroke-width="0.5"/>
+<rect x="21" y="61" width="6" height="3" rx="1" fill="#c9875f" stroke="#7a4228" stroke-width="0.5"/>
+<polygon points="31,16 49,16 49,31 64,31 64,49 49,49 49,64 31,64 31,49 16,49 16,31 31,31" fill="url(#lb-cross)" stroke="#5c3018" stroke-width="0.6"/>
 <line x1="40" y1="16" x2="40" y2="31" stroke="#8a5540" stroke-width="1.5" stroke-linecap="round"/>
 <line x1="40" y1="49" x2="40" y2="64" stroke="#8a5540" stroke-width="1.5" stroke-linecap="round"/>
 <line x1="16" y1="40" x2="31" y2="40" stroke="#8a5540" stroke-width="1.5" stroke-linecap="round"/>
@@ -14,7 +28,7 @@
 <circle cx="40" cy="40" r="7" fill="#ffd27f" opacity="0.4">
 <animate attributeName="opacity" values="0.25;0.75;0.25" dur="2.5s" repeatCount="indefinite"/>
 </circle>
-<g stroke="white" stroke-width="2" stroke-linecap="round">
+<g stroke="#fff4d6" stroke-width="1.2" stroke-linecap="round" opacity="0.85">
 <line x1="40" y1="35" x2="40" y2="45"/>
 <line x1="35" y1="40" x2="45" y2="40"/>
 </g>

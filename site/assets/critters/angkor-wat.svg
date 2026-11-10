@@ -1,31 +1,46 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+<defs>
+  <linearGradient id="awWater" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#c3e6f2"/>
+    <stop offset="1" stop-color="#7fb8d2"/>
+  </linearGradient>
+  <linearGradient id="awPlatform" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#8c7458"/>
+    <stop offset="1" stop-color="#6a5742"/>
+  </linearGradient>
+  <linearGradient id="awStone" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#ad9570"/>
+    <stop offset="0.55" stop-color="#93805f"/>
+    <stop offset="1" stop-color="#7a6a4e"/>
+  </linearGradient>
+</defs>
 <g>
   <!-- 護城河（反光水面，半橢圓，被平台遮住上半部分，只露出下緣弧形水帶） -->
-  <path d="M6,65 A34,8 0 1,0 74,65 Z" fill="#a8d8ea" stroke="white" stroke-width="1.8">
+  <path d="M6,65 A34,8 0 1,0 74,65 Z" fill="url(#awWater)" stroke="#5a8aa0" stroke-width="0.5">
     <animate attributeName="opacity" values="1;0.75;1" dur="3s" repeatCount="indefinite"/>
   </path>
 
   <!-- 石砌迴廊平台 -->
-  <path d="M9,58 L71,58 L74,67 L6,67 Z" fill="#7a6650" stroke="white" stroke-width="2"/>
+  <path d="M9,58 L71,58 L74,67 L6,67 Z" fill="url(#awPlatform)" stroke="#4a3c2c" stroke-width="0.6"/>
 
   <!-- 最外側角塔（左） -->
-  <path d="M19,58 L19,50 L17,50 L17,42 L14,40 L11,42 L11,50 L9,50 L9,58 Z" fill="#9a8468" stroke="white" stroke-width="1.8"/>
-  <circle cx="14" cy="40" r="1.8" fill="#9a8468" stroke="white" stroke-width="1.5"/>
+  <path d="M19,58 L19,50 L17,50 L17,42 L14,40 L11,42 L11,50 L9,50 L9,58 Z" fill="url(#awStone)" stroke="#6a5842" stroke-width="0.5"/>
+  <circle cx="14" cy="40" r="1.8" fill="url(#awStone)" stroke="#6a5842" stroke-width="0.4"/>
 
   <!-- 次外側角塔（左） -->
-  <path d="M32,58 L32,48 L30,48 L30,38 L28,38 L28,32 L26,30 L24,32 L24,38 L22,38 L22,48 L20,48 L20,58 Z" fill="#9a8468" stroke="white" stroke-width="2"/>
-  <circle cx="26" cy="30" r="2.2" fill="#9a8468" stroke="white" stroke-width="1.5"/>
+  <path d="M32,58 L32,48 L30,48 L30,38 L28,38 L28,32 L26,30 L24,32 L24,38 L22,38 L22,48 L20,48 L20,58 Z" fill="url(#awStone)" stroke="#6a5842" stroke-width="0.5"/>
+  <circle cx="26" cy="30" r="2.2" fill="url(#awStone)" stroke="#6a5842" stroke-width="0.4"/>
 
   <!-- 中央主塔（蓮花狀尖塔，最高） -->
-  <path d="M48,58 L48,48 L46,48 L46,38 L44,38 L44,28 L42,28 L42,18 L40,16 L38,18 L38,28 L36,28 L36,38 L34,38 L34,48 L32,48 L32,58 Z" fill="#9a8468" stroke="white" stroke-width="2.2"/>
-  <circle cx="40" cy="14" r="3" fill="#9a8468" stroke="white" stroke-width="1.8"/>
+  <path d="M48,58 L48,48 L46,48 L46,38 L44,38 L44,28 L42,28 L42,18 L40,16 L38,18 L38,28 L36,28 L36,38 L34,38 L34,48 L32,48 L32,58 Z" fill="url(#awStone)" stroke="#5e4e38" stroke-width="0.6"/>
+  <circle cx="40" cy="14" r="3" fill="url(#awStone)" stroke="#5e4e38" stroke-width="0.5"/>
 
   <!-- 次外側角塔（右） -->
-  <path d="M60,58 L60,48 L58,48 L58,38 L56,38 L56,32 L54,30 L52,32 L52,38 L50,38 L50,48 L48,48 L48,58 Z" fill="#9a8468" stroke="white" stroke-width="2"/>
-  <circle cx="54" cy="30" r="2.2" fill="#9a8468" stroke="white" stroke-width="1.5"/>
+  <path d="M60,58 L60,48 L58,48 L58,38 L56,38 L56,32 L54,30 L52,32 L52,38 L50,38 L50,48 L48,48 L48,58 Z" fill="url(#awStone)" stroke="#6a5842" stroke-width="0.5"/>
+  <circle cx="54" cy="30" r="2.2" fill="url(#awStone)" stroke="#6a5842" stroke-width="0.4"/>
 
   <!-- 最外側角塔（右） -->
-  <path d="M71,58 L71,50 L69,50 L69,42 L66,40 L63,42 L63,50 L61,50 L61,58 Z" fill="#9a8468" stroke="white" stroke-width="1.8"/>
-  <circle cx="66" cy="40" r="1.8" fill="#9a8468" stroke="white" stroke-width="1.5"/>
+  <path d="M71,58 L71,50 L69,50 L69,42 L66,40 L63,42 L63,50 L61,50 L61,58 Z" fill="url(#awStone)" stroke="#6a5842" stroke-width="0.5"/>
+  <circle cx="66" cy="40" r="1.8" fill="url(#awStone)" stroke="#6a5842" stroke-width="0.4"/>
 </g>
 </svg>

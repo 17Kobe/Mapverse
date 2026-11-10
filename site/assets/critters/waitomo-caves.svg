@@ -8,19 +8,23 @@
       <stop offset="0%" stop-color="#4affdc" stop-opacity="0.9"/>
       <stop offset="100%" stop-color="#4affdc" stop-opacity="0"/>
     </radialGradient>
+    <linearGradient id="riverG" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#a6e0f0"/>
+      <stop offset="1" stop-color="#3a7a96"/>
+    </linearGradient>
   </defs>
 
   <!-- 洞穴剪影（拱形岩洞） -->
   <path d="M10,74 C8,52 10,28 25,15 C35,8 45,8 55,15 C70,28 72,52 70,74 Z"
-        fill="url(#caveGrad)" stroke="#ffffff" stroke-width="2.2" stroke-linejoin="round"/>
+        fill="url(#caveGrad)" stroke="#0d1822" stroke-width="0.6" stroke-linejoin="round"/>
 
   <!-- 鐘乳石裝飾 -->
-  <path d="M29,14 L32,29 L26,29 Z" fill="#0f1e2b" stroke="#ffffff" stroke-width="1.5" stroke-linejoin="round"/>
-  <path d="M49,16 L52,26 L46,26 Z" fill="#0f1e2b" stroke="#ffffff" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M29,14 L32,29 L26,29 Z" fill="#0f1e2b" stroke="#04090f" stroke-width="0.5" stroke-linejoin="round"/>
+  <path d="M49,16 L52,26 L46,26 Z" fill="#0f1e2b" stroke="#04090f" stroke-width="0.5" stroke-linejoin="round"/>
 
   <!-- 地下河流反光 -->
-  <path d="M16,71 Q40,64 64,71 L64,76 Q40,70 16,76 Z" fill="#7ec8e3" stroke="#ffffff" stroke-width="1.5" opacity="0.8"/>
-  <path d="M20,69 Q40,64 60,69" fill="none" stroke="#ffffff" stroke-width="1.2" opacity="0.4">
+  <path d="M16,71 Q40,64 64,71 L64,76 Q40,70 16,76 Z" fill="url(#riverG)" stroke="#3a7a96" stroke-width="0.5" opacity="0.8"/>
+  <path d="M20,69 Q40,64 60,69" fill="none" stroke="#cdf3ff" stroke-width="0.8" opacity="0.4">
     <animate attributeName="opacity" values="0.2;0.6;0.2" dur="3s" repeatCount="indefinite"/>
   </path>
 

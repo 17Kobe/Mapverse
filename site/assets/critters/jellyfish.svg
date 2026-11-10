@@ -117,13 +117,13 @@
            Q39,52 40,50 Q41,52 43,48 Q46,50 48,46
            Q51,48 53,44 Q56,46 58,42"
         fill="url(#frillGrad)"
-        stroke="white" stroke-width="1"
+        stroke="#5b21b6" stroke-width="0.4"
         stroke-linejoin="round" stroke-linecap="round"/>
 
   <!-- ===== 水母傘主體（半球形橢圓） ===== -->
   <ellipse cx="40" cy="28" rx="20" ry="18"
            fill="url(#jellyGrad)"
-           stroke="white" stroke-width="1.8"/>
+           stroke="#5b21b6" stroke-width="0.6"/>
 
   <!-- 傘下半部連接至裙邊的填充區 -->
   <path d="M20,28 Q20,44 22,44 Q31,50 40,50 Q49,50 58,44 Q60,44 60,28"

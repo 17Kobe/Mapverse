@@ -1,76 +1,81 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
 <!-- 羅馬競技場 Colosseum 卡通地標圖示 -->
-<!-- 無背景矩形，透明底，所有形狀有白色描邊，可融入地景 -->
+<!-- 無背景矩形，透明底，淡色石材漸層＋細深色邊線，可融入地景 -->
+
+<defs>
+  <linearGradient id="colStone" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#ddcd96"/>
+    <stop offset="1" stop-color="#b6a260"/>
+  </linearGradient>
+  <linearGradient id="colStoneTop" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#c8b87c"/>
+    <stop offset="1" stop-color="#a6964e"/>
+  </linearGradient>
+</defs>
 
 <!-- 底部地面小半橢圓 -->
-<ellipse cx="40" cy="70" rx="30" ry="5" fill="#9a8040" stroke="white" stroke-width="1.2"/>
+<ellipse cx="40" cy="70" rx="30" ry="5" fill="#9a8040" stroke="#6e5a28" stroke-width="0.4"/>
 
 <!-- 第一層（最底層）主體橢圓弧形牆 -->
 <path d="M10 65 Q10 52 18 48 Q26 44 40 43 Q54 44 62 48 Q70 52 70 65 Z"
-      fill="#c8b87a" stroke="white" stroke-width="1.2"/>
+      fill="url(#colStone)" stroke="#8a7840" stroke-width="0.5"/>
 
 <!-- 第一層拱洞（6個） -->
-<ellipse cx="18" cy="59" rx="3.5" ry="5" fill="#3a2a10" stroke="white" stroke-width="0.8"/>
-<ellipse cx="26" cy="56" rx="3.5" ry="5.5" fill="#3a2a10" stroke="white" stroke-width="0.8"/>
-<ellipse cx="34" cy="55" rx="3.5" ry="5.5" fill="#3a2a10" stroke="white" stroke-width="0.8"/>
-<ellipse cx="46" cy="55" rx="3.5" ry="5.5" fill="#3a2a10" stroke="white" stroke-width="0.8"/>
-<ellipse cx="54" cy="56" rx="3.5" ry="5.5" fill="#3a2a10" stroke="white" stroke-width="0.8"/>
-<ellipse cx="62" cy="59" rx="3.5" ry="5" fill="#3a2a10" stroke="white" stroke-width="0.8"/>
+<ellipse cx="18" cy="59" rx="3.5" ry="5" fill="#3a2a10" stroke="#1f150a" stroke-width="0.4"/>
+<ellipse cx="26" cy="56" rx="3.5" ry="5.5" fill="#3a2a10" stroke="#1f150a" stroke-width="0.4"/>
+<ellipse cx="34" cy="55" rx="3.5" ry="5.5" fill="#3a2a10" stroke="#1f150a" stroke-width="0.4"/>
+<ellipse cx="46" cy="55" rx="3.5" ry="5.5" fill="#3a2a10" stroke="#1f150a" stroke-width="0.4"/>
+<ellipse cx="54" cy="56" rx="3.5" ry="5.5" fill="#3a2a10" stroke="#1f150a" stroke-width="0.4"/>
+<ellipse cx="62" cy="59" rx="3.5" ry="5" fill="#3a2a10" stroke="#1f150a" stroke-width="0.4"/>
 
 <!-- 第一層頂部水平線（層間分隔） -->
-<path d="M11 50 Q25 46 40 45 Q55 46 69 50" fill="none" stroke="#a09050" stroke-width="2"/>
-<path d="M11 50 Q25 46 40 45 Q55 46 69 50" fill="none" stroke="white" stroke-width="0.8"/>
+<path d="M11 50 Q25 46 40 45 Q55 46 69 50" fill="none" stroke="#8a7840" stroke-width="1"/>
 
 <!-- 第二層主體 -->
 <path d="M13 50 Q14 39 22 36 Q31 33 40 32 Q49 33 58 36 Q66 39 67 50 Z"
-      fill="#c8b87a" stroke="white" stroke-width="1.2"/>
+      fill="url(#colStone)" stroke="#8a7840" stroke-width="0.5"/>
 
 <!-- 第二層拱洞（5個） -->
-<ellipse cx="21" cy="44" rx="3.2" ry="4.8" fill="#3a2a10" stroke="white" stroke-width="0.8"/>
-<ellipse cx="29" cy="42" rx="3.2" ry="5" fill="#3a2a10" stroke="white" stroke-width="0.8"/>
-<ellipse cx="40" cy="41" rx="3.2" ry="5" fill="#3a2a10" stroke="white" stroke-width="0.8"/>
-<ellipse cx="51" cy="42" rx="3.2" ry="5" fill="#3a2a10" stroke="white" stroke-width="0.8"/>
-<ellipse cx="59" cy="44" rx="3.2" ry="4.8" fill="#3a2a10" stroke="white" stroke-width="0.8"/>
+<ellipse cx="21" cy="44" rx="3.2" ry="4.8" fill="#3a2a10" stroke="#1f150a" stroke-width="0.4"/>
+<ellipse cx="29" cy="42" rx="3.2" ry="5" fill="#3a2a10" stroke="#1f150a" stroke-width="0.4"/>
+<ellipse cx="40" cy="41" rx="3.2" ry="5" fill="#3a2a10" stroke="#1f150a" stroke-width="0.4"/>
+<ellipse cx="51" cy="42" rx="3.2" ry="5" fill="#3a2a10" stroke="#1f150a" stroke-width="0.4"/>
+<ellipse cx="59" cy="44" rx="3.2" ry="4.8" fill="#3a2a10" stroke="#1f150a" stroke-width="0.4"/>
 
 <!-- 第二層頂部分隔 -->
-<path d="M14 36 Q27 31 40 30 Q53 31 66 36" fill="none" stroke="#a09050" stroke-width="2"/>
-<path d="M14 36 Q27 31 40 30 Q53 31 66 36" fill="none" stroke="white" stroke-width="0.8"/>
+<path d="M14 36 Q27 31 40 30 Q53 31 66 36" fill="none" stroke="#8a7840" stroke-width="1"/>
 
 <!-- 第三層主體 -->
 <path d="M17 36 Q18 26 26 23 Q33 20 40 20 Q47 20 54 23 Q62 26 63 36 Z"
-      fill="#c8b87a" stroke="white" stroke-width="1.2"/>
+      fill="url(#colStone)" stroke="#8a7840" stroke-width="0.5"/>
 
 <!-- 第三層拱洞（4個） -->
-<ellipse cx="26" cy="30" rx="3" ry="4.5" fill="#3a2a10" stroke="white" stroke-width="0.8"/>
-<ellipse cx="35" cy="28" rx="3" ry="4.8" fill="#3a2a10" stroke="white" stroke-width="0.8"/>
-<ellipse cx="45" cy="28" rx="3" ry="4.8" fill="#3a2a10" stroke="white" stroke-width="0.8"/>
-<ellipse cx="54" cy="30" rx="3" ry="4.5" fill="#3a2a10" stroke="white" stroke-width="0.8"/>
+<ellipse cx="26" cy="30" rx="3" ry="4.5" fill="#3a2a10" stroke="#1f150a" stroke-width="0.4"/>
+<ellipse cx="35" cy="28" rx="3" ry="4.8" fill="#3a2a10" stroke="#1f150a" stroke-width="0.4"/>
+<ellipse cx="45" cy="28" rx="3" ry="4.8" fill="#3a2a10" stroke="#1f150a" stroke-width="0.4"/>
+<ellipse cx="54" cy="30" rx="3" ry="4.5" fill="#3a2a10" stroke="#1f150a" stroke-width="0.4"/>
 
 <!-- 第三層頂部分隔 -->
-<path d="M18 22 Q29 18 40 17 Q51 18 62 22" fill="none" stroke="#a09050" stroke-width="2"/>
-<path d="M18 22 Q29 18 40 17 Q51 18 62 22" fill="none" stroke="white" stroke-width="0.8"/>
+<path d="M18 22 Q29 18 40 17 Q51 18 62 22" fill="none" stroke="#8a7840" stroke-width="1"/>
 
 <!-- 第四層（殘缺頂層）——只有右半段，呈現歷史損毀感 -->
 <path d="M28 22 Q29 16 35 14 Q40 12 47 13 Q55 14 59 18 Q62 20 62 22 Z"
-      fill="#b8a86a" stroke="white" stroke-width="1.2"/>
+      fill="url(#colStoneTop)" stroke="#7a6a36" stroke-width="0.5"/>
 
 <!-- 第四層殘缺小拱洞（3個） -->
-<ellipse cx="35" cy="18" rx="2.5" ry="3.5" fill="#3a2a10" stroke="white" stroke-width="0.7"/>
-<ellipse cx="43" cy="17" rx="2.5" ry="3.8" fill="#3a2a10" stroke="white" stroke-width="0.7"/>
-<ellipse cx="53" cy="18" rx="2.5" ry="3.5" fill="#3a2a10" stroke="white" stroke-width="0.7"/>
+<ellipse cx="35" cy="18" rx="2.5" ry="3.5" fill="#3a2a10" stroke="#1f150a" stroke-width="0.35"/>
+<ellipse cx="43" cy="17" rx="2.5" ry="3.8" fill="#3a2a10" stroke="#1f150a" stroke-width="0.35"/>
+<ellipse cx="53" cy="18" rx="2.5" ry="3.5" fill="#3a2a10" stroke="#1f150a" stroke-width="0.35"/>
 
 <!-- 殘缺裂縫（左側斷裂感） -->
-<path d="M28 22 L26 18 L29 14 L27 11" fill="none" stroke="#a09050" stroke-width="1.5"/>
-<path d="M28 22 L26 18 L29 14 L27 11" fill="none" stroke="white" stroke-width="0.6"/>
+<path d="M28 22 L26 18 L29 14 L27 11" fill="none" stroke="#7a6a36" stroke-width="0.8"/>
 
 <!-- 第四層頂部不完整邊緣（鋸齒殘缺） -->
 <path d="M28 13 Q33 10 40 10 Q46 10 53 11 Q57 12 59 14"
-      fill="none" stroke="#a09050" stroke-width="2"/>
-<path d="M28 13 Q33 10 40 10 Q46 10 53 11 Q57 12 59 14"
-      fill="none" stroke="white" stroke-width="0.8"/>
+      fill="none" stroke="#7a6a36" stroke-width="1"/>
 
-<!-- 整體外輪廓補強（前景視覺 pop） -->
+<!-- 整體外輪廓補強（前景視覺 pop，細緻陰影描邊） -->
 <path d="M10 65 Q10 52 18 48 Q26 44 40 43 Q54 44 62 48 Q70 52 70 65"
-      fill="none" stroke="white" stroke-width="1.5"/>
+      fill="none" stroke="#7a6a36" stroke-width="0.6"/>
 
 </svg>
