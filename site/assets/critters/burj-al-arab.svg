@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="skyGlow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffe9b8" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#ffe9b8" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="waterGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3fe0d8"/>
+      <stop offset="45%" stop-color="#12b4c4"/>
+      <stop offset="100%" stop-color="#046b82"/>
+    </linearGradient>
+    <linearGradient id="islandGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f7ecd2"/>
+      <stop offset="100%" stop-color="#d9c494"/>
+    </linearGradient>
+    <linearGradient id="sailGrad" x1="0.1" y1="0" x2="1" y2="0.9">
+      <stop offset="0%" stop-color="#fffdf6"/>
+      <stop offset="55%" stop-color="#f3e8c9"/>
+      <stop offset="100%" stop-color="#dcb968"/>
+    </linearGradient>
+    <linearGradient id="spineGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#e7d7a8"/>
+      <stop offset="100%" stop-color="#b98f4a"/>
+    </linearGradient>
+    <linearGradient id="glassGrad" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0%" stop-color="#fbe3a0"/>
+      <stop offset="50%" stop-color="#e2a84f"/>
+      <stop offset="100%" stop-color="#9c6d2e"/>
+    </linearGradient>
+    <radialGradient id="glint" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fffef0" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#fffef0" stop-opacity="0"/>
+    </radialGradient>
+    <clipPath id="sailClip">
+      <path d="M33 10 C33 10 54 13 57.5 32 C59.5 44 57 55 51 59 L33 59 Z"/>
+    </clipPath>
+  </defs>
+
+  <ellipse cx="40" cy="30" rx="30" ry="24" fill="url(#skyGlow)"/>
+
+  <!-- causeway bridge to shore -->
+  <path d="M51 62 L80 68 L80 72 L51 66 Z" fill="url(#islandGrad)" opacity="0.85"/>
+
+  <!-- water -->
+  <rect x="0" y="57" width="80" height="23" fill="url(#waterGrad)"/>
+  <g stroke="#dff7f5" stroke-width="0.6" stroke-linecap="round" opacity="0.5">
+    <path d="M4 64 Q10 62 16 64 T28 64">
+      <animate attributeName="opacity" values="0.5;0.15;0.5" dur="3s" repeatCount="indefinite"/>
+    </path>
+    <path d="M46 70 Q54 68 62 70 T76 70">
+      <animate attributeName="opacity" values="0.2;0.55;0.2" dur="2.6s" repeatCount="indefinite"/>
+    </path>
+    <path d="M10 75 Q20 73 30 75 T50 75">
+      <animate attributeName="opacity" values="0.55;0.2;0.55" dur="3.4s" repeatCount="indefinite"/>
+    </path>
+  </g>
+
+  <!-- reflection of hotel -->
+  <path d="M33 60 C40 63 46 63 51 60 L49 76 C43 78 38 78 34 76 Z" fill="#f3e8c9" opacity="0.18"/>
+
+  <!-- artificial island -->
+  <ellipse cx="41" cy="61" rx="22" ry="6.5" fill="url(#islandGrad)"/>
+  <ellipse cx="41" cy="60" rx="20" ry="5.2" fill="#fff8e6" opacity="0.4"/>
+
+  <!-- spine / mast (left straight edge, built behind sail) -->
+  <path d="M32 12 L36 12 L36 59 L32 59 Z" fill="url(#spineGrad)" stroke="#8a6a32" stroke-width="0.4"/>
+
+  <!-- main sail silhouette -->
+  <path d="M33 10 C33 10 54 13 57.5 32 C59.5 44 57 55 51 59 L33 59 Z"
+        fill="url(#sailGrad)" stroke="#b9975a" stroke-width="0.6"/>
+
+  <!-- helipad disk -->
+  <ellipse cx="55" cy="27" rx="8.5" ry="2.6" fill="#f7ecd2" stroke="#b9975a" stroke-width="0.4"/>
+  <ellipse cx="55" cy="26.3" rx="5.4" ry="1.4" fill="#e2a84f" opacity="0.6"/>
+
+  <!-- glass atrium facade -->
+  <path d="M38 16 C50 20 54 30 54 44 C54 50 51.5 55 47 58 L38 58 Z" fill="url(#glassGrad)" opacity="0.9"/>
+
+  <!-- floor banding lines -->
+  <g stroke="#c9a85a" stroke-width="0.35" opacity="0.55" clip-path="url(#sailClip)">
+    <line x1="30" y1="20" x2="60" y2="20"/>
+    <line x1="30" y1="28" x2="60" y2="28"/>
+    <line x1="30" y1="36" x2="60" y2="36"/>
+    <line x1="30" y1="44" x2="60" y2="44"/>
+    <line x1="30" y1="52" x2="60" y2="52"/>
+  </g>
+
+  <!-- moving glint across glass facade -->
+  <g clip-path="url(#sailClip)">
+    <ellipse cx="34" cy="15" rx="4" ry="26" fill="url(#glint)" transform="rotate(20 34 15)">
+      <animateTransform attributeName="transform" type="translate"
+        values="0 0; 30 0; 0 0" dur="4s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;0.9;0" dur="4s" repeatCount="indefinite"/>
+    </ellipse>
+  </g>
+</svg>

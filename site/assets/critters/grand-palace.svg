@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="terraceGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e2c07e"/>
+      <stop offset="100%" stop-color="#8a6a2e"/>
+    </linearGradient>
+    <linearGradient id="wallGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fffaf0"/>
+      <stop offset="100%" stop-color="#f0dfa0"/>
+    </linearGradient>
+    <linearGradient id="pillarGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffe9a8"/>
+      <stop offset="100%" stop-color="#caa43c"/>
+    </linearGradient>
+    <linearGradient id="roofGreenGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#36b682"/>
+      <stop offset="100%" stop-color="#0b5c3a"/>
+    </linearGradient>
+    <linearGradient id="roofRedGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e2583a"/>
+      <stop offset="100%" stop-color="#8e2415"/>
+    </linearGradient>
+    <linearGradient id="roofGoldGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffe28a"/>
+      <stop offset="100%" stop-color="#caa43c"/>
+    </linearGradient>
+    <linearGradient id="spireGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fff6cf"/>
+      <stop offset="100%" stop-color="#caa43c"/>
+    </linearGradient>
+    <radialGradient id="glintGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fffdf0" stop-opacity="0.95"/>
+      <stop offset="55%" stop-color="#ffe9a8" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#ffe9a8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- base terrace steps -->
+  <path d="M8,74 L72,74 L78,80 L2,80 Z" fill="url(#terraceGrad)" stroke="#6b4a1f" stroke-width="0.6"/>
+  <path d="M14,68 L66,68 L72,74 L8,74 Z" fill="url(#terraceGrad)" stroke="#6b4a1f" stroke-width="0.6"/>
+  <path d="M20,62 L60,62 L66,68 L14,68 Z" fill="url(#terraceGrad)" stroke="#6b4a1f" stroke-width="0.5"/>
+
+  <!-- wall body -->
+  <rect x="26" y="44" width="28" height="18" fill="url(#wallGrad)" stroke="#c9a227" stroke-width="0.5"/>
+  <rect x="29" y="46" width="1.6" height="14" fill="url(#pillarGrad)"/>
+  <rect x="34.5" y="46" width="1.6" height="14" fill="url(#pillarGrad)"/>
+  <rect x="45.5" y="46" width="1.6" height="14" fill="url(#pillarGrad)"/>
+  <rect x="51" y="46" width="1.6" height="14" fill="url(#pillarGrad)"/>
+  <path d="M34,62 L34,54 Q40,48 46,54 L46,62 Z" fill="#5a120d" stroke="#8a2a12" stroke-width="0.5"/>
+  <path d="M34,54 Q40,48 46,54" fill="none" stroke="#e8c468" stroke-width="0.8"/>
+
+  <!-- roof tier 1 (bottom, widest) -->
+  <path d="M8,38 L18,44 L62,44 L72,38 L52,34 L28,34 Z" fill="url(#roofGreenGrad)" stroke="#0b4a30" stroke-width="0.6"/>
+  <path d="M18,44 L62,44" fill="none" stroke="#e8c468" stroke-width="1.2"/>
+
+  <!-- roof tier 2 (middle) -->
+  <path d="M16,28 L24,34 L56,34 L64,28 L49,24 L31,24 Z" fill="url(#roofRedGrad)" stroke="#6e1f10" stroke-width="0.6"/>
+  <path d="M24,34 L56,34" fill="none" stroke="#e8c468" stroke-width="1"/>
+
+  <!-- roof tier 3 (top, smallest) -->
+  <path d="M23,19 L29,24 L51,24 L57,19 L46,16 L34,16 Z" fill="url(#roofGoldGrad)" stroke="#7a5a12" stroke-width="0.6"/>
+  <path d="M29,24 L51,24" fill="none" stroke="#fff3cf" stroke-width="0.8"/>
+
+  <!-- gilded chedi spire -->
+  <path d="M36,16 C33,13 34,9 37,6 L40,3 L43,6 C46,9 47,13 44,16 Z" fill="url(#spireGrad)" stroke="#7a5a12" stroke-width="0.5"/>
+  <ellipse cx="40" cy="13.2" rx="5" ry="1" fill="none" stroke="#9a7a24" stroke-width="0.4"/>
+  <ellipse cx="40" cy="10.2" rx="4" ry="0.9" fill="none" stroke="#9a7a24" stroke-width="0.4"/>
+  <ellipse cx="40" cy="7.4" rx="3" ry="0.7" fill="none" stroke="#9a7a24" stroke-width="0.4"/>
+
+  <!-- shimmering glint on spire -->
+  <ellipse cx="40" cy="9" rx="5" ry="6" fill="url(#glintGrad)">
+    <animate attributeName="opacity" values="0.15;0.8;0.15" dur="2.4s" repeatCount="indefinite"/>
+    <animate attributeName="cx" values="37.5;42.5;37.5" dur="2.4s" repeatCount="indefinite"/>
+  </ellipse>
+</svg>

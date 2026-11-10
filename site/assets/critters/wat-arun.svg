@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <radialGradient id="dawnGlow" cx="50%" cy="38%" r="55%">
+      <stop offset="0%" stop-color="#ffe0a8" stop-opacity="0.9"/>
+      <stop offset="45%" stop-color="#ff9e6d" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#ff9e6d" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="prangBody" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f6ddc4"/>
+      <stop offset="50%" stop-color="#e3b48a"/>
+      <stop offset="100%" stop-color="#b9824f"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffe9a8"/>
+      <stop offset="100%" stop-color="#d79a35"/>
+    </linearGradient>
+    <linearGradient id="riverGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7fb6d6"/>
+      <stop offset="100%" stop-color="#2d6c8c"/>
+    </linearGradient>
+  </defs>
+
+  <ellipse cx="40" cy="30" rx="36" ry="30" fill="url(#dawnGlow)">
+    <animate attributeName="opacity" values="0.65;1;0.65" dur="4.5s" repeatCount="indefinite"/>
+  </ellipse>
+
+  <g id="miniPrang" stroke="#8a5a36" stroke-width="0.4">
+    <polygon points="2,64 17,64 15,59 4,59" fill="url(#prangBody)"/>
+    <polygon points="4,59 15,59 13,54 6,54" fill="url(#prangBody)"/>
+    <path d="M6,54 C5,49 6,44 9.5,37 C13,44 14,49 13,54 Z" fill="url(#prangBody)"/>
+    <line x1="9.5" y1="37" x2="9.5" y2="33" stroke="url(#gold)" stroke-width="1"/>
+    <circle cx="9.5" cy="33" r="1" fill="url(#gold)"/>
+  </g>
+  <use href="#miniPrang"/>
+  <g transform="translate(80,0) scale(-1,1)">
+    <use href="#miniPrang"/>
+  </g>
+
+  <g stroke="#8a5a36" stroke-width="0.5">
+    <polygon points="18,64 62,64 55,53 25,53" fill="url(#prangBody)"/>
+    <polygon points="18,55 24,55 21,47" fill="url(#prangBody)"/>
+    <polygon points="62,55 56,55 59,47" fill="url(#prangBody)"/>
+    <polygon points="25,53 55,53 48,43 32,43" fill="url(#prangBody)"/>
+    <path d="M32,43 C29,37 29,30 33,22 C35,18 38,14 40,9 C42,14 45,18 47,22 C51,30 51,37 48,43 Z" fill="url(#prangBody)"/>
+  </g>
+
+  <circle cx="21" cy="50" r="1.1" fill="#fef6ec"/>
+  <circle cx="59" cy="50" r="1" fill="#f5c268"/>
+  <circle cx="30" cy="48" r="1" fill="#f08a6c"/>
+  <circle cx="50" cy="48" r="1.1" fill="#4fa8a0"/>
+  <circle cx="36" cy="38" r="1" fill="#fef6ec"/>
+  <circle cx="44" cy="38" r="1" fill="#f5c268"/>
+  <circle cx="38" cy="30" r="0.9" fill="#f08a6c"/>
+  <circle cx="42" cy="30" r="0.9" fill="#4fa8a0"/>
+  <circle cx="39" cy="22" r="0.8" fill="#fef6ec"/>
+  <circle cx="34" cy="59" r="1.1" fill="#f5c268"/>
+  <circle cx="46" cy="59" r="1.1" fill="#fef6ec"/>
+  <circle cx="40" cy="60" r="1" fill="#f08a6c"/>
+
+  <line x1="40" y1="9" x2="40" y2="3" stroke="url(#gold)" stroke-width="1.2"/>
+  <circle cx="40" cy="3" r="1.6" fill="url(#gold)">
+    <animate attributeName="opacity" values="0.7;1;0.7" dur="2.2s" repeatCount="indefinite"/>
+  </circle>
+
+  <rect x="0" y="62" width="80" height="18" fill="url(#riverGrad)"/>
+  <ellipse cx="40" cy="68" rx="26" ry="6" fill="url(#prangBody)" opacity="0.22"/>
+
+  <path d="M8,67 h12" stroke="#ffffff" stroke-opacity="0.35" stroke-width="0.8">
+    <animate attributeName="opacity" values="0.1;0.5;0.1" dur="2.6s" repeatCount="indefinite"/>
+  </path>
+  <path d="M30,71 h20" stroke="#ffffff" stroke-opacity="0.35" stroke-width="0.8">
+    <animate attributeName="opacity" values="0.4;0.1;0.4" dur="3.1s" begin="0.4s" repeatCount="indefinite"/>
+  </path>
+  <path d="M58,66 h14" stroke="#ffffff" stroke-opacity="0.3" stroke-width="0.7">
+    <animate attributeName="opacity" values="0.15;0.45;0.15" dur="2.8s" begin="0.9s" repeatCount="indefinite"/>
+  </path>
+  <path d="M20,75 h18" stroke="#ffffff" stroke-opacity="0.25" stroke-width="0.7">
+    <animate attributeName="opacity" values="0.3;0.05;0.3" dur="3.4s" begin="1.3s" repeatCount="indefinite"/>
+  </path>
+  <path d="M46,77 h16" stroke="#ffffff" stroke-opacity="0.25" stroke-width="0.7">
+    <animate attributeName="opacity" values="0.1;0.4;0.1" dur="2.4s" begin="0.6s" repeatCount="indefinite"/>
+  </path>
+</svg>

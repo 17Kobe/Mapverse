@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="furMain" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#a07c54"/>
+      <stop offset="0.55" stop-color="#6d4e32"/>
+      <stop offset="1" stop-color="#3a2717"/>
+    </linearGradient>
+    <linearGradient id="furDark" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6e5338"/>
+      <stop offset="1" stop-color="#2c1d10"/>
+    </linearGradient>
+    <linearGradient id="furHead" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8a6a46"/>
+      <stop offset="1" stop-color="#4a3420"/>
+    </linearGradient>
+    <linearGradient id="grass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5f8f3e"/>
+      <stop offset="1" stop-color="#3c6327"/>
+    </linearGradient>
+    <linearGradient id="pine" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2f5c38"/>
+      <stop offset="1" stop-color="#1b3a22"/>
+    </linearGradient>
+    <linearGradient id="fernG" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7fae4d"/>
+      <stop offset="1" stop-color="#4c7a30"/>
+    </linearGradient>
+  </defs>
+
+  <path d="M0,74 Q15,68 30,71 Q45,74 60,70 Q70,68 80,72 L80,80 L0,80 Z" fill="url(#grass)"/>
+
+  <g opacity="0.9">
+    <polygon points="64,42 58,58 70,58" fill="url(#pine)" stroke="#142a18" stroke-width="0.5"/>
+    <polygon points="64,50 59,64 69,64" fill="url(#pine)" stroke="#142a18" stroke-width="0.5"/>
+    <polygon points="64,58 60,70 68,70" fill="url(#pine)" stroke="#142a18" stroke-width="0.5"/>
+    <rect x="62.5" y="68" width="3" height="10" fill="#3a2c1c"/>
+  </g>
+  <g opacity="0.7">
+    <polygon points="72,50 67,64 77,64" fill="url(#pine)" stroke="#142a18" stroke-width="0.5"/>
+    <polygon points="72,58 68,70 76,70" fill="url(#pine)" stroke="#142a18" stroke-width="0.5"/>
+    <rect x="70.5" y="68" width="2.5" height="9" fill="#3a2c1c"/>
+  </g>
+
+  <g id="walkGroup">
+    <animateTransform attributeName="transform" type="rotate" values="-1.5 38 78;1.5 38 78;-1.5 38 78" dur="2.4s" repeatCount="indefinite"/>
+
+    <path d="M48,49 C54,52 59,60 57,68 C56,74 59,76 61,78 L47,79 C44,75 43,67 44,60 C45,55 46,51 48,49 Z" fill="url(#furDark)" stroke="#231509" stroke-width="0.6"/>
+    <path d="M47,76 C50,75 55,75 61,77 L61,79 L47,79 Z" fill="#241708" opacity="0.5"/>
+
+    <path d="M47,29 C52,33 54,42 51,50 C49,54 46,54 45,51 C44,45 45,37 46,31 Z" fill="url(#furDark)" stroke="#231509" stroke-width="0.5"/>
+
+    <path d="M19,43 C16,34 20,23 29,19 C39,14 53,16 57,25 C60,32 58,41 53,47 C48,53 41,57 33,57 C26,57 21,51 19,43 Z" fill="url(#furMain)" stroke="#2a1b0e" stroke-width="0.7"/>
+
+    <g stroke="#2a1b0e" stroke-width="0.7" fill="none" stroke-linecap="round" opacity="0.55">
+      <path d="M25,22 l-2,-3"/>
+      <path d="M31,18 l-1,-3"/>
+      <path d="M38,16 l0,-3"/>
+      <path d="M45,18 l2,-3"/>
+      <path d="M51,22 l3,-2"/>
+      <path d="M55,30 l3,-1"/>
+    </g>
+
+    <path d="M35,51 C31,54 27,61 26,67 C25,72 23,75 17,78 L31,79 C33,74 34,66 35,60 C36,56 36,53 35,51 Z" fill="url(#furMain)" stroke="#2a1b0e" stroke-width="0.6"/>
+
+    <g id="nearArm">
+      <animateTransform attributeName="transform" type="rotate" values="-8 25 29;8 25 29;-8 25 29" dur="2.4s" repeatCount="indefinite"/>
+      <path d="M26,27 C22,34 19,45 19,55 C19,60 21,63 25,63 C27,63 28,60 27,56 C26,47 28,37 30,30 Z" fill="url(#furMain)" stroke="#2a1b0e" stroke-width="0.6"/>
+      <ellipse cx="22" cy="62" rx="4" ry="3" fill="url(#furMain)" stroke="#2a1b0e" stroke-width="0.5"/>
+    </g>
+
+    <g id="headGroup">
+      <animateTransform attributeName="transform" type="rotate" values="0 21 24;0 21 24;-12 21 24;0 21 24;0 21 24" dur="6s" repeatCount="indefinite"/>
+      <path d="M7,25 C6,18 12,12 20,11 C27,10 32,15 32,22 C32,28 28,33 22,34 C15,35 9,31 7,25 Z" fill="url(#furHead)" stroke="#2a1b0e" stroke-width="0.6"/>
+      <path d="M10,20 C14,17 19,17 23,19" fill="none" stroke="#1f1308" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
+      <circle cx="13" cy="23" r="2.1" fill="#f3c969"/>
+      <circle cx="12.3" cy="23.2" r="1" fill="#1b1006"/>
+      <path d="M7,27 C9,30 13,31 16,30" fill="none" stroke="#1f1308" stroke-width="0.8" stroke-linecap="round" opacity="0.5"/>
+    </g>
+
+    <ellipse cx="18" cy="78" rx="7" ry="2.4" fill="url(#furMain)" stroke="#2a1b0e" stroke-width="0.5"/>
+    <ellipse cx="59" cy="78" rx="6" ry="2.2" fill="url(#furDark)" stroke="#231509" stroke-width="0.5"/>
+  </g>
+
+  <g>
+    <animateTransform attributeName="transform" type="rotate" values="-3 6 78;3 6 78;-3 6 78" dur="3s" repeatCount="indefinite"/>
+    <path d="M8,78 C6,72 4,66 7,60 C8,67 9,72 10,78 Z" fill="url(#fernG)" stroke="#2f4d1d" stroke-width="0.4"/>
+    <path d="M11,78 C11,71 14,65 18,62 C16,69 14,74 13,78 Z" fill="url(#fernG)" stroke="#2f4d1d" stroke-width="0.4"/>
+    <path d="M5,78 C3,73 2,68 4,63 C5,69 5,74 6,78 Z" fill="url(#fernG)" stroke="#2f4d1d" stroke-width="0.4"/>
+  </g>
+</svg>

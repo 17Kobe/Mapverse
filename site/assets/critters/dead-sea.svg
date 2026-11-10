@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f3dcae"/>
+      <stop offset="1" stop-color="#f6e6c2"/>
+    </linearGradient>
+    <linearGradient id="hills" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#cBA77c" stop-opacity="0"/>
+      <stop offset="0" stop-color="#c9a877"/>
+      <stop offset="1" stop-color="#b08f5e"/>
+    </linearGradient>
+    <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7fd8d2"/>
+      <stop offset="0.45" stop-color="#2fa9a8"/>
+      <stop offset="1" stop-color="#157b82"/>
+    </linearGradient>
+    <linearGradient id="salt" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#d9e6e4"/>
+    </linearGradient>
+    <radialGradient id="skin" cx="0.4" cy="0.35" r="0.7">
+      <stop offset="0" stop-color="#e7b48c"/>
+      <stop offset="1" stop-color="#c98a62"/>
+    </radialGradient>
+    <linearGradient id="paper" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#e9e6da"/>
+    </linearGradient>
+    <linearGradient id="trunks" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d7472e"/>
+      <stop offset="1" stop-color="#a8331f"/>
+    </linearGradient>
+  </defs>
+
+  <!-- distant arid hills, background only in upper area -->
+  <path d="M0 30 Q 14 20 28 27 T 56 24 T 80 29 L80 42 L0 42 Z" fill="url(#hills)" opacity="0.8"/>
+  <path d="M0 34 Q 20 27 40 33 T 80 32 L80 46 L0 46 Z" fill="#a9895f" opacity="0.55"/>
+
+  <!-- salt rock formations left -->
+  <path d="M-2 46 L6 36 L12 44 L18 38 L24 47 L24 56 L-2 56 Z" fill="url(#salt)" stroke="#bcd0ce" stroke-width="0.5"/>
+  <path d="M-2 46 L6 36 L12 44 L18 38 L24 47" fill="none" stroke="#f3fbfa" stroke-width="0.6" opacity="0.7"/>
+
+  <!-- salt rock formations right -->
+  <path d="M58 48 L64 39 L70 45 L75 37 L82 46 L82 58 L58 58 Z" fill="url(#salt)" stroke="#bcd0ce" stroke-width="0.5"/>
+  <path d="M58 48 L64 39 L70 45 L75 37 L82 46" fill="none" stroke="#f3fbfa" stroke-width="0.6" opacity="0.7"/>
+
+  <!-- water body fills to bottom -->
+  <rect x="0" y="44" width="80" height="36" fill="url(#water)"/>
+
+  <!-- ripples -->
+  <g stroke="#bdf0ea" stroke-width="0.9" fill="none" opacity="0.55">
+    <path d="M4 58 Q 14 56 24 58 T 44 58">
+      <animate attributeName="d" dur="3.2s" repeatCount="indefinite"
+        values="M4 58 Q 14 56 24 58 T 44 58;
+                M4 59 Q 14 61 24 59 T 44 59;
+                M4 58 Q 14 56 24 58 T 44 58"/>
+    </path>
+    <path d="M46 64 Q 58 62 70 64 T 90 64">
+      <animate attributeName="d" dur="3.6s" repeatCount="indefinite"
+        values="M46 64 Q 58 62 70 64 T 90 64;
+                M46 65 Q 58 67 70 65 T 90 65;
+                M46 64 Q 58 62 70 64 T 90 64"/>
+    </path>
+    <path d="M2 72 Q 16 70 30 72 T 58 71">
+      <animate attributeName="d" dur="4s" repeatCount="indefinite"
+        values="M2 72 Q 16 70 30 72 T 58 71;
+                M2 73 Q 16 75 30 73 T 58 73;
+                M2 72 Q 16 70 30 72 T 58 71"/>
+    </path>
+  </g>
+
+  <!-- subtle light shimmer -->
+  <g fill="#eafffb" opacity="0.5">
+    <ellipse cx="18" cy="52" rx="3" ry="0.7">
+      <animate attributeName="opacity" values="0.2;0.6;0.2" dur="2.4s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="60" cy="56" rx="3.5" ry="0.8">
+      <animate attributeName="opacity" values="0.5;0.15;0.5" dur="2.8s" repeatCount="indefinite"/>
+    </ellipse>
+  </g>
+
+  <!-- floating person: lying on back, head left, legs right, slight tilt -->
+  <g transform="translate(40,60) rotate(-4)">
+    <!-- ripple ring right under body -->
+    <ellipse cx="0" cy="7" rx="24" ry="4.2" fill="#1f8a8a" opacity="0.35"/>
+    <ellipse cx="0" cy="6.5" rx="20" ry="3.2" fill="#55c7bf" opacity="0.4">
+      <animate attributeName="rx" values="20;21.5;20" dur="3s" repeatCount="indefinite"/>
+    </ellipse>
+
+    <!-- torso / swimsuit -->
+    <ellipse cx="-2" cy="4" rx="12" ry="5.6" fill="#2c5f6b"/>
+    <!-- head -->
+    <circle cx="-15" cy="3" r="4.6" fill="url(#skin)" stroke="#9c6a47" stroke-width="0.4"/>
+    <!-- hair -->
+    <path d="M-19 1 Q -18 -3 -14 -2.5 Q -17 -1 -18.5 2 Z" fill="#3a2a22"/>
+    <!-- legs -->
+    <path d="M9 2 Q 17 1 23 4 Q 17 5 9 6 Z" fill="url(#skin)" stroke="#9c6a47" stroke-width="0.3"/>
+    <path d="M8 6 Q 15 7 20 10 Q 14 9.5 8 8.5 Z" fill="url(#skin)" stroke="#9c6a47" stroke-width="0.3"/>
+    <!-- feet floating at surface -->
+    <ellipse cx="23" cy="4.3" rx="2.2" ry="1" fill="#c98a62"/>
+    <ellipse cx="20.5" cy="10" rx="2" ry="1" fill="#c98a62"/>
+
+    <!-- arms raised holding newspaper -->
+    <path d="M-10 0 Q -8 -9 -3 -14" stroke="url(#skin)" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+    <path d="M2 0 Q 3 -9 6 -14" stroke="url(#skin)" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+
+    <!-- newspaper -->
+    <g transform="translate(2,-17)">
+      <path d="M-10 0 L10 -2 L11 10 L-9 12 Z" fill="url(#paper)" stroke="#b9b6a8" stroke-width="0.4">
+        <animateTransform attributeName="transform" type="rotate" values="-2 0 5;2 0 5;-2 0 5" dur="2.6s" repeatCount="indefinite"/>
+      </path>
+      <g stroke="#8d8a7c" stroke-width="0.4" opacity="0.8">
+        <line x1="-7" y1="2" x2="4" y2="1"/>
+        <line x1="-7" y1="4.5" x2="6" y2="3.2"/>
+        <line x1="-7" y1="7" x2="6" y2="5.8"/>
+        <line x1="-7" y1="9.3" x2="5" y2="8.3"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- gentle water glints across front -->
+  <g fill="#ffffff" opacity="0.4">
+    <circle cx="10" cy="68" r="0.8">
+      <animate attributeName="opacity" values="0.1;0.5;0.1" dur="1.8s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="66" cy="72" r="0.9">
+      <animate attributeName="opacity" values="0.45;0.1;0.45" dur="2.1s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="30" cy="76" r="0.7">
+      <animate attributeName="opacity" values="0.2;0.55;0.2" dur="1.6s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+</svg>

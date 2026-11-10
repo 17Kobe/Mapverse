@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="skyGlow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#cfe8f7"/>
+      <stop offset="1" stop-color="#eaf6e0"/>
+    </linearGradient>
+    <linearGradient id="hillGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8fc55a"/>
+      <stop offset="0.55" stop-color="#5fa13a"/>
+      <stop offset="1" stop-color="#3f7a26"/>
+    </linearGradient>
+    <radialGradient id="canopyGrad" cx="0.35" cy="0.3" r="0.8">
+      <stop offset="0" stop-color="#a7d66b"/>
+      <stop offset="0.6" stop-color="#5f9c3a"/>
+      <stop offset="1" stop-color="#3a6b24"/>
+    </radialGradient>
+    <linearGradient id="trunkGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#7a5a3a"/>
+      <stop offset="1" stop-color="#4a3420"/>
+    </linearGradient>
+    <radialGradient id="doorGrad" cx="0.4" cy="0.35" r="0.8">
+      <stop offset="0" stop-color="#7fae46"/>
+      <stop offset="0.7" stop-color="#4f7d28"/>
+      <stop offset="1" stop-color="#355419"/>
+    </radialGradient>
+    <radialGradient id="windowGrad" cx="0.4" cy="0.35" r="0.8">
+      <stop offset="0" stop-color="#fff4c2"/>
+      <stop offset="0.6" stop-color="#f3cf5e"/>
+      <stop offset="1" stop-color="#c79a2a"/>
+    </radialGradient>
+    <linearGradient id="fenceGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#c9a877"/>
+      <stop offset="1" stop-color="#8a6a42"/>
+    </linearGradient>
+    <linearGradient id="stoneGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e4ded0"/>
+      <stop offset="1" stop-color="#b9b19c"/>
+    </linearGradient>
+  </defs>
+
+  <!-- distant soft sky patch only behind tree top, not a full background -->
+  <ellipse cx="40" cy="12" rx="22" ry="10" fill="url(#skyGlow)" opacity="0.35"/>
+
+  <!-- main hill, base reaches the bottom edge -->
+  <path d="M0,80 L0,58 C6,36 24,20 40,17 C56,20 76,32 80,54 L80,80 Z"
+        fill="url(#hillGrad)" stroke="#2f5720" stroke-width="0.6"/>
+
+  <!-- darker grass texture tufts on the slope -->
+  <path d="M8,60 C10,55 14,53 17,54 C14,57 11,60 8,60Z" fill="#3f7a26" opacity="0.6"/>
+  <path d="M60,46 C64,41 70,40 74,43 C69,45 64,47 60,46Z" fill="#3f7a26" opacity="0.6"/>
+  <path d="M22,38 C25,33 30,31 34,33 C30,36 26,38 22,38Z" fill="#3f7a26" opacity="0.55"/>
+
+  <!-- signature tree on hilltop -->
+  <path d="M39,33 C38,27 38,22 40,16 C42,22 42,27 41,33 Z" fill="url(#trunkGrad)" stroke="#2c1e10" stroke-width="0.4"/>
+  <circle cx="40" cy="14" r="13" fill="url(#canopyGrad)" stroke="#2c4d18" stroke-width="0.5"/>
+  <circle cx="33" cy="9" r="6" fill="url(#canopyGrad)" opacity="0.9"/>
+  <circle cx="48" cy="11" r="6.5" fill="url(#canopyGrad)" opacity="0.9"/>
+
+  <!-- tiny chimney on the slope -->
+  <rect x="56" y="24" width="6" height="11" rx="1" fill="#8a6a4a" stroke="#4a3420" stroke-width="0.5"/>
+  <rect x="55.3" y="23" width="7.4" height="2" fill="#6b4e32"/>
+
+  <!-- curling smoke, animated -->
+  <g>
+    <circle cx="59" cy="21" r="1.8" fill="#eef0ec" opacity="0">
+      <animate attributeName="cy" values="21;11;4" dur="3.2s" repeatCount="indefinite"/>
+      <animate attributeName="cx" values="59;61;58" dur="3.2s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;0.55;0" dur="3.2s" repeatCount="indefinite"/>
+      <animate attributeName="r" values="1.2;2.6;3.4" dur="3.2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="59" cy="21" r="1.8" fill="#eef0ec" opacity="0">
+      <animate attributeName="cy" values="21;11;4" dur="3.2s" begin="-1.1s" repeatCount="indefinite"/>
+      <animate attributeName="cx" values="59;57;60" dur="3.2s" begin="-1.1s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;0.5;0" dur="3.2s" begin="-1.1s" repeatCount="indefinite"/>
+      <animate attributeName="r" values="1.2;2.4;3.2" dur="3.2s" begin="-1.1s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="59" cy="21" r="1.8" fill="#eef0ec" opacity="0">
+      <animate attributeName="cy" values="21;11;4" dur="3.2s" begin="-2.2s" repeatCount="indefinite"/>
+      <animate attributeName="cx" values="59;60;57" dur="3.2s" begin="-2.2s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;0.5;0" dur="3.2s" begin="-2.2s" repeatCount="indefinite"/>
+      <animate attributeName="r" values="1.2;2.4;3.2" dur="3.2s" begin="-2.2s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <!-- small round window -->
+  <circle cx="60" cy="52" r="6" fill="url(#windowGrad)" stroke="#5a431a" stroke-width="0.6"/>
+  <line x1="54.5" y1="52" x2="65.5" y2="52" stroke="#5a431a" stroke-width="0.6"/>
+  <line x1="60" y1="46.5" x2="60" y2="57.5" stroke="#5a431a" stroke-width="0.6"/>
+  <circle cx="60" cy="52" r="6" fill="none" stroke="#8a6a3a" stroke-width="1.2" opacity="0.5"/>
+
+  <!-- round hobbit door -->
+  <circle cx="38" cy="63" r="15" fill="url(#doorGrad)" stroke="#263f12" stroke-width="0.7"/>
+  <circle cx="38" cy="63" r="15" fill="none" stroke="#2d4a16" stroke-width="2.2" opacity="0.35"/>
+  <circle cx="44" cy="63" r="1.6" fill="#f3cf5e" stroke="#8a6a1a" stroke-width="0.4"/>
+  <path d="M38,48 C44,49 48,55 48,63 C48,71 44,77 38,78" fill="none" stroke="#2d4a16" stroke-width="0.5" opacity="0.5"/>
+
+  <!-- stepping stone path -->
+  <ellipse cx="38" cy="79" rx="6" ry="1.6" fill="url(#stoneGrad)" stroke="#8a8370" stroke-width="0.4"/>
+  <ellipse cx="34" cy="74" rx="4.5" ry="1.4" fill="url(#stoneGrad)" stroke="#8a8370" stroke-width="0.4"/>
+  <ellipse cx="41" cy="70" rx="4" ry="1.2" fill="url(#stoneGrad)" stroke="#8a8370" stroke-width="0.4"/>
+
+  <!-- little fence -->
+  <g>
+    <rect x="12" y="63" width="2" height="12" fill="url(#fenceGrad)" stroke="#5a4426" stroke-width="0.3"/>
+    <rect x="19" y="65" width="2" height="10" fill="url(#fenceGrad)" stroke="#5a4426" stroke-width="0.3"/>
+    <rect x="11" y="67" width="11" height="1.6" fill="url(#fenceGrad)" stroke="#5a4426" stroke-width="0.3"/>
+    <rect x="58" y="65" width="2" height="10" fill="url(#fenceGrad)" stroke="#5a4426" stroke-width="0.3"/>
+    <rect x="65" y="63" width="2" height="12" fill="url(#fenceGrad)" stroke="#5a4426" stroke-width="0.3"/>
+    <rect x="57" y="68" width="11" height="1.6" fill="url(#fenceGrad)" stroke="#5a4426" stroke-width="0.3"/>
+  </g>
+
+  <!-- flowers along the garden, gently swaying -->
+  <g>
+    <g transform="translate(16,71)">
+      <animateTransform attributeName="transform" type="rotate" values="-5 16 71;5 16 71;-5 16 71" dur="2.6s" repeatCount="indefinite"/>
+      <circle cx="0" cy="0" r="1.6" fill="#e8617e"/>
+      <circle cx="0" cy="0" r="0.6" fill="#fff3b0"/>
+    </g>
+    <g transform="translate(24,76)">
+      <animateTransform attributeName="transform" type="rotate" values="4 24 76;-4 24 76;4 24 76" dur="2.2s" repeatCount="indefinite"/>
+      <circle cx="0" cy="0" r="1.4" fill="#f6d84a"/>
+      <circle cx="0" cy="0" r="0.5" fill="#8a6a1a"/>
+    </g>
+    <g transform="translate(55,74)">
+      <animateTransform attributeName="transform" type="rotate" values="-4 55 74;4 55 74;-4 55 74" dur="2.4s" repeatCount="indefinite"/>
+      <circle cx="0" cy="0" r="1.5" fill="#f3f3f3"/>
+      <circle cx="0" cy="0" r="0.5" fill="#f6d84a"/>
+    </g>
+    <g transform="translate(63,70)">
+      <animateTransform attributeName="transform" type="rotate" values="5 63 70;-5 63 70;5 63 70" dur="2.8s" repeatCount="indefinite"/>
+      <circle cx="0" cy="0" r="1.4" fill="#e8617e"/>
+      <circle cx="0" cy="0" r="0.5" fill="#fff3b0"/>
+    </g>
+    <g transform="translate(70,76)">
+      <animateTransform attributeName="transform" type="rotate" values="-3 70 76;3 70 76;-3 70 76" dur="2.3s" repeatCount="indefinite"/>
+      <circle cx="0" cy="0" r="1.3" fill="#9b6fe0"/>
+      <circle cx="0" cy="0" r="0.5" fill="#fff3b0"/>
+    </g>
+  </g>
+</svg>

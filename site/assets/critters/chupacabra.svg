@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="skin" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#93ab7c"/>
+      <stop offset="0.55" stop-color="#6c8358"/>
+      <stop offset="1" stop-color="#43563a"/>
+    </linearGradient>
+    <linearGradient id="skinDark" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5c7350"/>
+      <stop offset="1" stop-color="#32422a"/>
+    </linearGradient>
+    <radialGradient id="eyeGlow" cx="0.35" cy="0.35" r="0.65">
+      <stop offset="0" stop-color="#ff6a52"/>
+      <stop offset="0.55" stop-color="#8a1a10"/>
+      <stop offset="1" stop-color="#190603"/>
+    </radialGradient>
+    <linearGradient id="dirt" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9c8456"/>
+      <stop offset="1" stop-color="#6e5a36"/>
+    </linearGradient>
+    <linearGradient id="bush" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8ea14e"/>
+      <stop offset="1" stop-color="#596b31"/>
+    </linearGradient>
+  </defs>
+
+  <ellipse cx="40" cy="77" rx="37" ry="3" fill="url(#dirt)" opacity="0.6"/>
+
+  <g opacity="0.85">
+    <path d="M58 78 Q60 62 68 59 Q65 68 72 66 Q68 74 77 73 Q74 79 78 79 L58 79 Z" fill="url(#bush)" stroke="#45521f" stroke-width="0.4"/>
+  </g>
+  <g opacity="0.85">
+    <path d="M2 79 Q3 65 9 62 Q7 70 13 68 Q9 76 16 76 L16 79 Z" fill="url(#bush)" stroke="#45521f" stroke-width="0.4"/>
+  </g>
+
+  <g id="tailGroup">
+    <path d="M51 50 Q65 45 74 55 Q79 61 72 66 Q71 58 60 55 Q53 54 48 51 Z" fill="url(#skin)" stroke="#2c3922" stroke-width="0.5"/>
+  </g>
+
+  <path d="M45 52 Q48 62 44 70 Q41 77 48 79 Q53 79 51 72 Q54 64 53 54 Z" fill="url(#skinDark)" stroke="#2c3922" stroke-width="0.5"/>
+  <ellipse cx="47" cy="78.5" rx="6" ry="2.4" fill="#2c3922"/>
+
+  <path d="M19 54 Q17 64 15 70 Q13 77 20 79 Q25 79 23 72 Q25 64 24 55 Z" fill="url(#skinDark)" stroke="#2c3922" stroke-width="0.5"/>
+  <ellipse cx="19" cy="78.5" rx="6" ry="2.4" fill="#2c3922"/>
+
+  <path d="M9 48 Q6 40 13 35 Q17 29 28 29 Q26 23 34 19 Q42 15 48 23 Q54 29 52 37 Q59 39 56 48 Q53 55 45 55 Q33 57 23 55 Q13 55 9 48 Z"
+        fill="url(#skin)" stroke="#2c3922" stroke-width="0.6"/>
+
+  <g id="spikes" fill="url(#skinDark)" stroke="#20291a" stroke-width="0.4">
+    <path d="M27 24 L30 15 L33 25 Z"/>
+    <path d="M34 20 L37 10 L40 21 Z"/>
+    <path d="M41 19 L44 11 L47 21 Z"/>
+    <path d="M48 22 L51 15 L53 24 Z"/>
+    <animateTransform attributeName="transform" type="translate" values="0 0;0 -1.4;0 0" dur="1.3s" repeatCount="indefinite"/>
+  </g>
+
+  <path d="M9 48 Q3 46 2 40 Q1 34 7 31 Q13 28 19 32 Q24 35 21 41 Q21 47 15 49 Z" fill="url(#skin)" stroke="#2c3922" stroke-width="0.6"/>
+
+  <path d="M2 40 Q-1 39 0 42 Q1 44 4 43 Z" fill="#43563a" stroke="#2c3922" stroke-width="0.4"/>
+
+  <circle cx="8" cy="38" r="3.1" fill="url(#eyeGlow)"/>
+  <circle cx="8" cy="38" r="1" fill="#190603"/>
+
+  <g fill="#32422a" opacity="0.5">
+    <ellipse cx="19" cy="41" rx="2.8" ry="1.8"/>
+    <ellipse cx="33" cy="34" rx="2.4" ry="1.6"/>
+    <ellipse cx="43" cy="40" rx="2.8" ry="1.8"/>
+    <ellipse cx="29" cy="47" rx="2.2" ry="1.4"/>
+  </g>
+
+  <animateTransform xlink:href="#tailGroup" attributeName="transform" type="rotate" values="-5 50 54;7 50 54;-5 50 54" dur="1.7s" repeatCount="indefinite"/>
+</svg>

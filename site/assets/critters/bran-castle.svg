@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="48%" r="60%">
+      <stop offset="0%" stop-color="#4a3a68" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#4a3a68" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="cliffGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#777da0"/>
+      <stop offset="55%" stop-color="#4c4d66"/>
+      <stop offset="100%" stop-color="#262633"/>
+    </linearGradient>
+    <linearGradient id="wallGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#a8adbb"/>
+      <stop offset="60%" stop-color="#787d8d"/>
+      <stop offset="100%" stop-color="#454a58"/>
+    </linearGradient>
+    <linearGradient id="roofGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#c0392b"/>
+      <stop offset="100%" stop-color="#6b1f16"/>
+    </linearGradient>
+    <linearGradient id="treeGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#20392d"/>
+      <stop offset="100%" stop-color="#0a1711"/>
+    </linearGradient>
+    <radialGradient id="fogGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#eef3fb" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#eef3fb" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <ellipse cx="40" cy="36" rx="30" ry="26" fill="url(#glow)"/>
+
+  <path d="M2,80 L2,72 C8,66 10,70 16,60 C20,54 24,58 28,52 C32,48 36,50 40,44 C44,50 48,48 52,52 C56,58 60,54 64,60 C70,70 72,66 78,72 L78,80 Z"
+        fill="url(#cliffGrad)" stroke="#20202c" stroke-width="0.6"/>
+  <path d="M10,68 C14,62 17,64 20,58 L24,66 C21,70 15,72 10,70 Z" fill="url(#cliffGrad)" opacity="0.6"/>
+  <path d="M58,66 C62,60 66,63 70,58 L73,68 C69,72 62,72 58,66 Z" fill="url(#cliffGrad)" opacity="0.6"/>
+
+  <g>
+    <path d="M1,80 L1,74 L7,62 L11,70 L8,80 Z" fill="url(#treeGrad)" stroke="#06100a" stroke-width="0.4"/>
+    <path d="M6,80 L6,66 L12,54 L17,66 L14,80 Z" fill="url(#treeGrad)" stroke="#06100a" stroke-width="0.4"/>
+    <path d="M13,80 L13,70 L18,60 L22,70 L20,80 Z" fill="url(#treeGrad)" stroke="#06100a" stroke-width="0.4"/>
+  </g>
+  <g>
+    <path d="M79,80 L79,74 L73,62 L69,70 L72,80 Z" fill="url(#treeGrad)" stroke="#06100a" stroke-width="0.4"/>
+    <path d="M74,80 L74,66 L68,54 L63,66 L66,80 Z" fill="url(#treeGrad)" stroke="#06100a" stroke-width="0.4"/>
+    <path d="M67,80 L67,70 L62,60 L58,70 L60,80 Z" fill="url(#treeGrad)" stroke="#06100a" stroke-width="0.4"/>
+  </g>
+
+  <rect x="29" y="40" width="5" height="14" fill="url(#wallGrad)" stroke="#333744" stroke-width="0.4"/>
+  <rect x="29.5" y="37" width="1.6" height="3.2" fill="url(#wallGrad)"/>
+  <rect x="32" y="37" width="1.6" height="3.2" fill="url(#wallGrad)"/>
+  <rect x="46" y="38" width="5" height="16" fill="url(#wallGrad)" stroke="#333744" stroke-width="0.4"/>
+  <rect x="46.5" y="35" width="1.6" height="3.2" fill="url(#wallGrad)"/>
+  <rect x="49" y="35" width="1.6" height="3.2" fill="url(#wallGrad)"/>
+
+  <rect x="19" y="24" width="10" height="30" fill="url(#wallGrad)" stroke="#333744" stroke-width="0.5"/>
+  <path d="M19,24 L29,24 L24,12 Z" fill="url(#roofGrad)" stroke="#4a140e" stroke-width="0.5"/>
+  <line x1="21" y1="20" x2="27" y2="20" stroke="#4a140e" stroke-width="0.6" opacity="0.5"/>
+  <rect x="22" y="36" width="4" height="7" rx="2" fill="#12111a" stroke="#000008" stroke-width="0.3"/>
+
+  <rect x="51" y="22" width="10" height="32" fill="url(#wallGrad)" stroke="#333744" stroke-width="0.5"/>
+  <path d="M51,22 L61,22 L56,8 Z" fill="url(#roofGrad)" stroke="#4a140e" stroke-width="0.5"/>
+  <line x1="53" y1="17" x2="59" y2="17" stroke="#4a140e" stroke-width="0.6" opacity="0.5"/>
+  <rect x="54" y="34" width="4" height="7" rx="2" fill="#12111a" stroke="#000008" stroke-width="0.3"/>
+
+  <rect x="34" y="16" width="12" height="38" fill="url(#wallGrad)" stroke="#333744" stroke-width="0.5"/>
+  <path d="M34,16 L46,16 L40,2 Z" fill="url(#roofGrad)" stroke="#4a140e" stroke-width="0.5"/>
+  <line x1="36.5" y1="11" x2="43.5" y2="11" stroke="#4a140e" stroke-width="0.6" opacity="0.5"/>
+  <line x1="37.5" y1="7" x2="42.5" y2="7" stroke="#4a140e" stroke-width="0.6" opacity="0.4"/>
+  <rect x="38" y="29" width="4" height="7" rx="1.5" fill="#f3c66b" stroke="#7a5420" stroke-width="0.3">
+    <animate attributeName="opacity" values="0.6;1;0.7;1;0.6" dur="3s" repeatCount="indefinite"/>
+  </rect>
+
+  <g transform="translate(14,20)">
+    <animateTransform attributeName="transform" type="translate"
+      values="14,20; 30,14; 50,24; 66,16; 50,28; 30,20; 14,20"
+      keyTimes="0;0.17;0.33;0.5;0.67;0.83;1" dur="10s" repeatCount="indefinite"/>
+    <g>
+      <animateTransform attributeName="transform" type="scale" values="1,1;1,0.3;1,1" dur="0.3s" repeatCount="indefinite"/>
+      <path d="M -9 0 Q -4 -4 -10 -3 Q -5 0 0 2 Q 5 0 10 -3 Q 4 -4 9 0 Z" fill="#171521" stroke="#000008" stroke-width="0.3"/>
+    </g>
+  </g>
+
+  <g>
+    <animateTransform attributeName="transform" type="translate" values="0,0; 4,0; 0,0; -4,0; 0,0" dur="12s" repeatCount="indefinite"/>
+    <ellipse cx="38" cy="70" rx="14" ry="5" fill="url(#fogGrad)" opacity="0.4"/>
+    <ellipse cx="22" cy="74" rx="16" ry="6" fill="url(#fogGrad)" opacity="0.55"/>
+    <ellipse cx="54" cy="76" rx="18" ry="6" fill="url(#fogGrad)" opacity="0.5"/>
+  </g>
+</svg>

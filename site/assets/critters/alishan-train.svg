@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="farMtn" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#436b61"/>
+      <stop offset="1" stop-color="#223a30"/>
+    </linearGradient>
+    <linearGradient id="midMtn" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5a8752"/>
+      <stop offset="1" stop-color="#355a3a"/>
+    </linearGradient>
+    <linearGradient id="groundGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7a5637"/>
+      <stop offset="1" stop-color="#432c1b"/>
+    </linearGradient>
+    <linearGradient id="trunkGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#9a5a37"/>
+      <stop offset="1" stop-color="#5c2a1a"/>
+    </linearGradient>
+    <linearGradient id="foliageGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4a7a52"/>
+      <stop offset="1" stop-color="#1f3e2a"/>
+    </linearGradient>
+    <linearGradient id="railGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#b7bcc0"/>
+      <stop offset="1" stop-color="#5c6066"/>
+    </linearGradient>
+    <linearGradient id="trainBody" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ff9a52"/>
+      <stop offset="1" stop-color="#d9481f"/>
+    </linearGradient>
+    <linearGradient id="trainRoof" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9a3418"/>
+      <stop offset="1" stop-color="#5c1a0a"/>
+    </linearGradient>
+    <radialGradient id="windowGlow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fff2b0"/>
+      <stop offset="1" stop-color="#ffb347"/>
+    </radialGradient>
+    <radialGradient id="mistGrad" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="lightGlow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fff6da" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#fff6da" stop-opacity="0"/>
+    </radialGradient>
+    <g id="cypress">
+      <rect x="-1.5" y="30" width="3" height="10" fill="url(#trunkGrad)" stroke="#43200f" stroke-width="0.4"/>
+      <path d="M-10,32 L0,10 L10,32 Z" fill="url(#foliageGrad)" stroke="#16281c" stroke-width="0.5"/>
+      <path d="M-8,24 L0,4 L8,24 Z" fill="url(#foliageGrad)" stroke="#16281c" stroke-width="0.5"/>
+      <path d="M-6,16 L0,-2 L6,16 Z" fill="url(#foliageGrad)" stroke="#16281c" stroke-width="0.5"/>
+    </g>
+  </defs>
+
+  <ellipse cx="42" cy="18" rx="30" ry="18" fill="url(#lightGlow)">
+    <animate attributeName="opacity" values="0.5;0.9;0.5" dur="4s" repeatCount="indefinite"/>
+  </ellipse>
+
+  <path d="M0,40 Q12,24 22,30 Q32,20 44,26 Q56,18 68,27 Q76,22 80,26 L80,55 L0,55 Z" fill="url(#farMtn)"/>
+  <path d="M18,32 L21,24 L24,32 Z" fill="#2a4a33"/>
+  <path d="M30,30 L33,21 L36,30 Z" fill="#2a4a33"/>
+  <path d="M50,29 L53,20 L56,29 Z" fill="#2a4a33"/>
+  <path d="M62,31 L65,23 L68,31 Z" fill="#2a4a33"/>
+
+  <path d="M0,52 Q18,34 34,42 Q50,32 66,40 Q74,36 80,40 L80,68 L0,68 Z" fill="url(#midMtn)"/>
+
+  <use href="#cypress" transform="translate(44,32) scale(0.45)" opacity="0.8"/>
+
+  <g opacity="0.85">
+    <ellipse cx="25" cy="50" rx="16" ry="5" fill="url(#mistGrad)">
+      <animateTransform attributeName="transform" type="translate" values="-3,0;3,0;-3,0" dur="9s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="58" cy="46" rx="14" ry="4.5" fill="url(#mistGrad)">
+      <animateTransform attributeName="transform" type="translate" values="3,0;-3,0;3,0" dur="7s" repeatCount="indefinite"/>
+    </ellipse>
+  </g>
+
+  <use href="#cypress" transform="translate(18,36) scale(0.75)" opacity="0.9"/>
+  <use href="#cypress" transform="translate(58,36) scale(0.7)" opacity="0.9"/>
+
+  <path d="M0,64 Q20,58 40,63 Q60,58 80,62 L80,80 L0,80 Z" fill="url(#groundGrad)"/>
+
+  <g stroke-linecap="round">
+    <line x1="13" y1="53" x2="16" y2="58" stroke="#3a2414" stroke-width="1.6"/>
+    <line x1="20" y1="55" x2="23" y2="60" stroke="#3a2414" stroke-width="1.6"/>
+    <line x1="27" y1="57" x2="30" y2="62" stroke="#3a2414" stroke-width="1.6"/>
+    <line x1="34" y1="60" x2="37" y2="65" stroke="#3a2414" stroke-width="1.6"/>
+    <line x1="41" y1="63" x2="44" y2="68" stroke="#3a2414" stroke-width="1.6"/>
+    <line x1="48" y1="66" x2="51" y2="71" stroke="#3a2414" stroke-width="1.6"/>
+    <line x1="55" y1="69" x2="58" y2="74" stroke="#3a2414" stroke-width="1.6"/>
+    <line x1="62" y1="72" x2="65" y2="77" stroke="#3a2414" stroke-width="1.6"/>
+    <path d="M12,53 Q30,57 46,63 Q60,69 71,77" fill="none" stroke="url(#railGrad)" stroke-width="1.1"/>
+    <path d="M12,56 Q30,60 46,66 Q60,72 71,80" fill="none" stroke="url(#railGrad)" stroke-width="1.1"/>
+  </g>
+
+  <g transform="translate(31,56) rotate(20) scale(0.8)">
+    <circle cx="-6" cy="10" r="2.4" fill="#2a1f1a"/>
+    <circle cx="5" cy="10" r="2.4" fill="#2a1f1a"/>
+    <rect x="-9" y="1" width="18" height="8" rx="2" fill="url(#trainRoof)" stroke="#43180a" stroke-width="0.4"/>
+    <rect x="-4" y="2.5" width="4" height="3.5" rx="0.8" fill="url(#windowGlow)"/>
+  </g>
+
+  <g transform="translate(44,64) rotate(20)">
+    <g>
+      <animateTransform attributeName="transform" type="translate" values="0,0;1.2,0.3;0,0" dur="1.6s" repeatCount="indefinite"/>
+      <circle cx="-7" cy="10" r="2.7" fill="#2a1f1a"/>
+      <circle cx="0" cy="10" r="2.7" fill="#2a1f1a"/>
+      <circle cx="7" cy="10" r="2.7" fill="#2a1f1a"/>
+      <rect x="-10" y="0" width="20" height="9" rx="2.5" fill="url(#trainBody)" stroke="#7a2a12" stroke-width="0.4"/>
+      <rect x="-10" y="-4" width="8" height="5" rx="1.5" fill="url(#trainRoof)" stroke="#43180a" stroke-width="0.4"/>
+      <rect x="-7.5" y="-8" width="2.2" height="4.5" rx="1" fill="url(#trainRoof)"/>
+      <rect x="-2" y="1.5" width="3.5" height="3" rx="0.8" fill="url(#windowGlow)"/>
+      <rect x="3" y="1.5" width="3.5" height="3" rx="0.8" fill="url(#windowGlow)"/>
+      <circle cx="10.4" cy="4" r="1.3" fill="url(#windowGlow)"/>
+      <circle cx="-6.4" cy="-9" r="1.6" fill="#ffffff" opacity="0.6">
+        <animateTransform attributeName="transform" type="translate" values="0,0;-1,-6;-2,-10" dur="2.2s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.6;0.3;0" dur="2.2s" repeatCount="indefinite"/>
+        <animate attributeName="r" values="1.2;2.2;3" dur="2.2s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="-6.4" cy="-9" r="1.6" fill="#ffffff" opacity="0.6">
+        <animateTransform attributeName="transform" type="translate" values="0,0;-1,-6;-2,-10" dur="2.2s" begin="-1.1s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.6;0.3;0" dur="2.2s" begin="-1.1s" repeatCount="indefinite"/>
+        <animate attributeName="r" values="1.2;2.2;3" dur="2.2s" begin="-1.1s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+  </g>
+
+  <use href="#cypress" transform="translate(6,36) scale(1.1)"/>
+  <use href="#cypress" transform="translate(75,34) scale(1.15)"/>
+</svg>

@@ -540,6 +540,32 @@
         { src: 'critters/fennec-fox.svg', lon: 20.0, lat: 18.0, mode: 'wander', s: 0.8, deco: true, maxDeg: 2 }, // 撒哈拉：耳廓狐
         { src: 'critters/grizzly-salmon.svg', lon: -155.8, lat: 58.6, mode: 'still', face: 'F', s: 1.1, sea: true, deco: true, landmark: true }, // 阿拉斯加：灰熊抓鮭魚
         { src: 'critters/amazon-rainforest.svg', lon: -71.0, lat: -8.0, mode: 'still', face: 'F', s: 1.8, deco: true, landmark: true }, // 亞馬遜雨林
+        // ── 第六批補充（股市重鎮地標 + 傳說生物 + 動物） ──────────────────
+        { src: 'critters/merlion.svg', lon: 103.854, lat: 1.287, mode: 'still', face: 'F', s: 1.1, sea: true, deco: true, landmark: true }, // 新加坡：魚尾獅
+        { src: 'critters/petronas-towers.svg', lon: 101.712, lat: 3.158, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 馬來西亞：雙峰塔
+        { src: 'critters/bran-castle.svg', lon: 25.367, lat: 45.514, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 羅馬尼亞：布蘭城堡
+        { src: 'critters/djenne-mosque.svg', lon: -4.555, lat: 13.906, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 馬利：傑內大清真寺
+        { src: 'critters/persepolis.svg', lon: 52.891, lat: 29.935, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 伊朗：波斯波利斯
+        { src: 'critters/bigfoot.svg', lon: -122.5, lat: 48.0, mode: 'wander', s: 1.1, deco: true, maxDeg: 2 }, // 北美森林：大腳怪
+        { src: 'critters/mermaid.svg', lon: 5.0, lat: 61.0, mode: 'bob', face: 'F', s: 1.0, sea: true, deco: true }, // 北歐海域：美人魚
+        { src: 'critters/chupacabra.svg', lon: -66.5, lat: 18.2, mode: 'wander', s: 0.95, deco: true, maxDeg: 2 }, // 波多黎各：卓柏卡布拉
+        { src: 'critters/kiwi-bird.svg', lon: 173.5, lat: -41.2, mode: 'wander', gait: 'waddle', s: 0.85, deco: true, maxDeg: 2 }, // 紐西蘭：奇異鳥
+        { src: 'critters/platypus.svg', lon: 151.0, lat: -33.5, mode: 'bob', face: 'F', s: 0.85, sea: true, deco: true }, // 澳洲：鴨嘴獸
+        { src: 'critters/snow-leopard.svg', lon: 78.0, lat: 39.0, mode: 'wander', s: 1.0, deco: true, maxDeg: 2 }, // 中亞帕米爾高原：雪豹
+        { src: 'critters/puffin.svg', lon: -14.0, lat: 65.5, mode: 'bob', face: 'F', s: 0.8, sea: true, deco: true }, // 冰島：海鸚
+        // ── 第七批補充（用戶列的 12 個世界地標） ──────────────────────
+        { src: 'critters/grand-palace.svg', lon: 100.49, lat: 13.75, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 泰國：大皇宮與玉佛寺
+        { src: 'critters/wat-arun.svg', lon: 100.47, lat: 13.74, mode: 'still', face: 'F', s: 1.1, sea: true, deco: true, landmark: true }, // 泰國：鄭王廟（黎明寺）
+        { src: 'critters/brandenburg-gate.svg', lon: 13.35, lat: 52.50, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 德國：布蘭登堡門
+        { src: 'critters/tower-bridge.svg', lon: -0.0754, lat: 51.5055, mode: 'still', face: 'F', s: 1.1, sea: true, deco: true, landmark: true }, // 英國：倫敦塔橋
+        { src: 'critters/venice-canal.svg', lon: 12.3155, lat: 45.4408, mode: 'still', face: 'F', s: 1.1, sea: true, deco: true, landmark: true }, // 義大利：威尼斯水都
+        { src: 'critters/empire-state.svg', lon: -73.9857, lat: 40.7484, mode: 'still', face: 'F', s: 1.2, deco: true, landmark: true }, // 美國：帝國大廈
+        { src: 'critters/hollywood-sign.svg', lon: -118.3215, lat: 34.1341, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 美國：好萊塢標誌
+        { src: 'critters/alishan-train.svg', lon: 120.8025, lat: 23.5088, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 台灣：阿里山森林小火車
+        { src: 'critters/itsukushima-torii.svg', lon: 132.32, lat: 34.296, mode: 'still', face: 'F', s: 1.1, sea: true, deco: true, landmark: true }, // 日本：嚴島神社大鳥居
+        { src: 'critters/burj-al-arab.svg', lon: 55.1853, lat: 25.1412, mode: 'still', face: 'F', s: 1.1, sea: true, deco: true, landmark: true }, // 阿聯：帆船飯店
+        { src: 'critters/hobbiton.svg', lon: 175.6818, lat: -37.8722, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 紐西蘭：哈比村
+        { src: 'critters/dead-sea.svg', lon: 35.5, lat: 31.5, mode: 'still', face: 'F', s: 1.1, sea: true, deco: true, landmark: true }, // 死海
     ];
     // 原住民小人（natives.js）：該國主要指數漲就歡呼跳舞、跌就沮喪哭泣，平盤時散步 / 揮手 / 眨眼
     // mode 'folk'；market = 看哪個指數；ox / oy = 相對位置點的偏移（單位：小角色基準大小）；minK = 縮小到這個倍率以下就收起來

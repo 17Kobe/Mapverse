@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7fb8d6"/>
+      <stop offset="55%" stop-color="#386f8f"/>
+      <stop offset="100%" stop-color="#113246"/>
+    </linearGradient>
+    <linearGradient id="feather" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#4c4c4e"/>
+      <stop offset="55%" stop-color="#1c1c1e"/>
+      <stop offset="100%" stop-color="#050505"/>
+    </linearGradient>
+    <radialGradient id="belly" cx="38%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#cfd4d8"/>
+    </radialGradient>
+    <linearGradient id="beakGrey" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#8d8d8d"/>
+      <stop offset="100%" stop-color="#5c5c5c"/>
+    </linearGradient>
+    <linearGradient id="beakOrange" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#f9933a"/>
+      <stop offset="100%" stop-color="#e8671a"/>
+    </linearGradient>
+    <linearGradient id="beakYellow" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ffd85c"/>
+      <stop offset="100%" stop-color="#ffbd3d"/>
+    </linearGradient>
+    <linearGradient id="foot" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffb14a"/>
+      <stop offset="100%" stop-color="#e06f10"/>
+    </linearGradient>
+  </defs>
+
+  <path d="M0,59 C12,51 26,67 40,59 C54,51 68,67 80,59 L80,80 L0,80 Z" fill="url(#sea)"/>
+
+  <g stroke="#cdeaf6" stroke-width="0.8" fill="none" opacity="0.5">
+    <ellipse cx="42" cy="62" rx="20" ry="3.2">
+      <animate attributeName="rx" values="16;22;16" dur="3.2s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.55;0.15;0.55" dur="3.2s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="40" cy="67" rx="26" ry="3.6" opacity="0.3">
+      <animate attributeName="rx" values="22;28;22" dur="4s" repeatCount="indefinite"/>
+    </ellipse>
+  </g>
+
+  <g>
+    <animateTransform attributeName="transform" type="translate" values="0,0;0,-2.2;0,0.4;0,0" keyTimes="0;0.4;0.75;1" dur="3.4s" repeatCount="indefinite"/>
+
+    <path d="M40,60 Q45,58 49,61 Q46,64 42,63 Q40,62 40,60 Z" fill="url(#foot)" stroke="#9c4a06" stroke-width="0.4"/>
+
+    <path d="M55,44 Q62,46 60,52 Q55,51 53,47 Z" fill="url(#feather)" stroke="#000000" stroke-width="0.3"/>
+
+    <ellipse cx="43" cy="49" rx="15.5" ry="19" fill="url(#feather)" stroke="#000000" stroke-width="0.4"/>
+
+    <path d="M30,45 Q24,55 30,64 Q38,68 44,60 Q40,50 36,45 Q33,43 30,45 Z" fill="url(#belly)"/>
+
+    <g>
+      <animateTransform attributeName="transform" type="rotate" values="0 50 42;0 50 42;-28 50 42;8 50 42;0 50 42;0 50 42" keyTimes="0;0.55;0.65;0.72;0.8;1" dur="5s" repeatCount="indefinite"/>
+      <path d="M50,34 Q60,38 58,50 Q52,52 48,46 Q46,38 50,34 Z" fill="url(#feather)" stroke="#000000" stroke-width="0.3"/>
+    </g>
+
+    <circle cx="26" cy="29" r="11.5" fill="url(#feather)" stroke="#000000" stroke-width="0.4"/>
+
+    <ellipse cx="22.5" cy="32.5" rx="7.3" ry="7.8" fill="url(#belly)"/>
+
+    <path d="M18.5,25.5 L20.5,27.5 L18.3,28.8 Z" fill="#e2572c"/>
+    <path d="M18,32.5 L20.3,31 L18.6,35 Z" fill="#e2572c"/>
+    <circle cx="19.3" cy="29.3" r="1.7" fill="#161311"/>
+    <circle cx="19.8" cy="28.8" r="0.5" fill="#ffffff" opacity="0.8"/>
+
+    <path d="M16,24.5 Q8,25.5 3,29.5 L16,32 Z" fill="url(#beakGrey)" stroke="#3a3a3a" stroke-width="0.35"/>
+    <path d="M12.5,25.6 Q5.5,27 2,31 L13.5,33.2 Z" fill="url(#beakOrange)" stroke="#7a3b0d" stroke-width="0.3"/>
+    <path d="M8,27.3 Q3,29 0.8,32 L9.5,34.3 Z" fill="url(#beakYellow)" stroke="#a9780f" stroke-width="0.3"/>
+    <path d="M16,28 Q8,29.2 1.5,31.4" fill="none" stroke="#2a1a0a" stroke-width="0.4" opacity="0.55"/>
+  </g>
+</svg>
