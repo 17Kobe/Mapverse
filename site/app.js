@@ -2471,14 +2471,8 @@
                 // ── 煙火：發射上升 → 爆炸成圓球 → 慢慢變大 → 閃爍淡出 ──
                 const sh = stepFw(m.s, T, dt, sx, skyY);
                 if (sh.phase === 'launch') {
-                    // 上升軌跡：淡淡深色暈 + 亮點 + 拖尾
+                    // 上升軌跡：亮點 + 拖尾（原本墊了一層深色暈提升對比，但在亮色底圖上看起來像黑煙，拿掉）
                     const spr = fwSprite(sh.col);
-                    ctx.globalCompositeOperation = 'source-over';
-                    ctx.globalAlpha = 0.15;
-                    ctx.beginPath();
-                    ctx.arc(sh.x, sh.y, 4, 0, Math.PI * 2);
-                    ctx.fillStyle = 'rgba(15,15,35,1)';
-                    ctx.fill();
                     ctx.globalCompositeOperation = 'lighter';
                     ctx.globalAlpha = 1;
                     ctx.drawImage(spr, 0, 0, 16, 16, sh.x - 3.5, sh.y - 3.5, 7, 7);
@@ -2500,14 +2494,7 @@
                                   py = sh.by + Math.sin(a) * radius * 0.85; // 略扁一點更像煙火
                             const twinkle = 0.5 + 0.5 * Math.sin(T * 9 + sh.seeds[ri][i]);
                             const sz = 4.2 + twinkle * 2.2;
-                            // 先畫淡淡的深色暈墊底，只是微微提升對比，不是實心黑圈
-                            ctx.globalCompositeOperation = 'source-over';
-                            ctx.globalAlpha = sh.fade * 0.18;
-                            ctx.beginPath();
-                            ctx.arc(px, py, sz * 0.85, 0, Math.PI * 2);
-                            ctx.fillStyle = 'rgba(15,15,35,1)';
-                            ctx.fill();
-                            // 再疊上亮點（lighter，發光感）
+                            // 亮點用 lighter 疊加發光感（原本墊的深色暈拿掉了，亮色底圖上不會再有黑圈）
                             ctx.globalCompositeOperation = 'lighter';
                             const alpha = sh.fade * (0.7 + twinkle * 0.3); // 基礎亮度拉高
                             ctx.globalAlpha = alpha;
