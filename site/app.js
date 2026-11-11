@@ -649,7 +649,7 @@
         { src: 'critters/steve-jobs.svg', lon: -122.03, lat: 37.33, mode: 'still', face: 'F', s: 1.0, deco: true }, // 史蒂夫‧賈伯斯
         { src: 'critters/bill-gates.svg', lon: -122.12, lat: 47.67, mode: 'still', face: 'F', s: 1.0, deco: true }, // 比爾‧蓋茲
         { src: 'critters/hokkaido-king-crab.svg', lon: 141.5, lat: 43.8, mode: 'bob', s: 1.0, sea: true, deco: true }, // 北海道帝王蟹
-        { src: 'critters/dalai-lama.svg', lon: 91.12, lat: 29.65, mode: 'still', face: 'F', s: 1.0, deco: true }, // 達賴喇嘛
+        { src: 'critters/dalai-lama.svg', lon: 76.32, lat: 32.22, mode: 'still', face: 'F', s: 1.0, deco: true }, // 達賴喇嘛：原座標跟布達拉宮完全重疊，改放到他流亡後長居的印度達蘭薩拉
     ];
     // 原住民小人（natives.js）：該國主要指數漲就歡呼跳舞、跌就沮喪哭泣，平盤時散步 / 揮手 / 眨眼
     // mode 'folk'；market = 看哪個指數；ox / oy = 相對位置點的偏移（單位：小角色基準大小）；minK = 縮小到這個倍率以下就收起來
