@@ -5162,13 +5162,26 @@
         const LOD_MIN = 50;
         const LOD_FULL_K = 3;
         const lodBudget = k >= LOD_FULL_K ? Infinity : Math.round(LOD_MIN + (k - 1) * ((critters.length - LOD_MIN) / (LOD_FULL_K - 1)));
-        // 優先層級：地標（世界奇觀等）> 有名有姓的人物／船艦／科技里程碑 > 一般代表性動物
+        // 優先層級：全球公認最知名的那一批（鐵達尼號、艾菲爾鐵塔…）> 其它世界地標 > 有名有姓的
+        // 人物／船艦／科技里程碑 > 一般代表性動物。同一層內才用固定雜湊決定順序，不會讓「鐵達尼號」
+        // 這種超知名但只是普通 deco（不是 landmark）的項目，跟隨便一個地區級船艦拿去拚運氣雜湊
+        const LOD_MEGA = new Set([
+            'critters/eiffel-tower.svg', 'critters/statue-liberty.svg', 'critters/great-wall.svg',
+            'critters/taj-mahal.svg', 'critters/pyramid.svg', 'critters/colosseum.svg',
+            'critters/big-ben.svg', 'critters/opera-house.svg', 'critters/fuji.svg',
+            'critters/christ-redeemer.svg', 'critters/machu-picchu.svg', 'critters/stonehenge.svg',
+            'critters/leaning-tower.svg', 'critters/golden-gate.svg', 'critters/forbidden-city.svg',
+            'critters/tokyo-tower.svg', 'critters/grand-canyon.svg', 'critters/chichen-itza.svg',
+            'critters/angkor-wat.svg', 'critters/niagara-falls.svg', 'critters/titanic.svg',
+            'critters/empire-state.svg', 'critters/acropolis.svg', 'critters/rushmore.svg',
+        ]);
         const LOD_TIER2_CATS = new Set([
             '人物文化', '歷史', '歷史人物', '歷史人物／科學家', '體育／籃球', '體育／棒球',
             '體育／拳擊', '體育／賽車', '船艦', '科技', '神話傳說', '傳說生物',
         ]);
         const lodTips = window.CRITTER_TIPS || {};
         const critterPri = (c) => {
+            if (LOD_MEGA.has(c.d.src)) return 4;
             if (c.d.landmark) return 3;
             const cat = lodTips[c.d.src] && lodTips[c.d.src][2];
             return cat && LOD_TIER2_CATS.has(cat) ? 2 : 1;
@@ -5203,18 +5216,19 @@
             recs.push({ c, folk, fs, size, sp, z, x0, y0, x, y, hide });
         }
         // 套用全域總量上限：不是「地標先搶完名額，動物/人物完全沒機會」的硬排序——世界地標有 155 個，
-        // 單獨就會超過預設的 100 個上限，所以改用「每個層級保留一定配額」：地標最多拿 70%，人物/船艦等
-        // 有名有姓的最多拿 20%，其餘一般代表動物拿剩下的；某層候選不夠就把名額讓給下一層，名額不會浪費。
-        // 配額內用固定雜湊挑選，避免永遠都是陣列裡最早加入的那幾個佔滿名額，結果穩定、不會每幀閃爍
+        // 單獨就會超過預設的 50 個上限，所以改用「每個層級保留一定配額」：最知名的那批（鐵達尼號、
+        // 艾菲爾鐵塔…）優先拿到快一半名額，確保一定會出現；其它地標、人物/船艦、一般動物依序拿剩下的；
+        // 某層候選不夠就把名額讓給下一層，名額不會浪費。配額內用固定雜湊挑選，避免永遠都是陣列裡
+        // 最早加入的那幾個佔滿名額，結果穩定、不會每幀閃爍
         const budgetPool = recs.filter((rec) => !rec.folk && !rec.hide);
         if (budgetPool.length > lodBudget) {
-            const byTier = { 3: [], 2: [], 1: [] };
+            const byTier = { 4: [], 3: [], 2: [], 1: [] };
             for (const rec of budgetPool) byTier[critterPri(rec.c)].push(rec);
-            for (const tier of [3, 2, 1]) byTier[tier].sort((a, b) => hash(a.c.d.src) - hash(b.c.d.src));
-            const SHARE = { 3: 0.7, 2: 0.2, 1: 0.1 };
+            for (const tier of [4, 3, 2, 1]) byTier[tier].sort((a, b) => hash(a.c.d.src) - hash(b.c.d.src));
+            const SHARE = { 4: 0.48, 3: 0.3, 2: 0.14, 1: 0.08 };
             let remaining = lodBudget,
                 carry = 0;
-            for (const tier of [3, 2, 1]) {
+            for (const tier of [4, 3, 2, 1]) {
                 const quota = Math.round(lodBudget * SHARE[tier]) + carry;
                 const take = Math.min(quota, byTier[tier].length, remaining);
                 byTier[tier].slice(take).forEach((rec) => (rec.hide = true));
