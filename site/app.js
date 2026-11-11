@@ -2113,6 +2113,7 @@
         }
         return Math.min(1, cv * 1.2);
     }
+    let cloudsHadContent = true; // 放大超過門檻、雲清空之後，後面每一幀都不用再 clearRect 了
     function drawClouds(dt) {
         cloudHits.length = 0;
         if (!cctx || !W || !projection) return;
@@ -2120,10 +2121,19 @@
             t = state.t,
             k = t.k,
             ww = S0 * k;
+        const fade = Math.max(0, Math.min(1, (4.5 - k) / 2.5)); // 放大到 4.5 倍以上就看不到雲
+        if (!fade) {
+            // 畫布已經是空的就什麼都不用做；只有「剛跨過門檻」那一次需要清一次舊畫面
+            if (cloudsHadContent) {
+                ctx.setTransform(1, 0, 0, 1, 0, 0);
+                ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                cloudsHadContent = false;
+            }
+            return;
+        }
+        cloudsHadContent = true;
         ctx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        const fade = Math.max(0, Math.min(1, (4.5 - k) / 2.5)); // 放大到 4.5 倍以上就看不到雲
-        if (!fade) return;
         if (state.anim && !reduceMotion.matches) cloudT += dt;
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         const sc = Math.pow(k, 0.6); // 位置完全跟著地圖；大小只略微放大，免得近看時整片白
@@ -2152,7 +2162,7 @@
     }
 
     // 北歐極光：用低解析度的大張畫布畫結光簾（預先繪好的 1×128 漸層條拉伸、疊加），24fps，不在畫面內或放大太多就不畫
-    const AURORA = { cv: null, ctx: null, sprites: null, acc: 0, t: 0, drawn: false };
+    const AURORA = { cv: null, ctx: null, sprites: null, acc: 0, t: 0, drawn: false, freshFrame: false };
     function auroraSprites() {
         const mk = (stops) => {
             const c = document.createElement('canvas');
@@ -2193,8 +2203,13 @@
         if (!W || !projection) return;
         if (state.anim && !reduceMotion.matches) A.t += dt;
         A.acc += dt;
+        // 藍眼淚（drawBiolum）跟極光共用這張畫布，但它本身沒有節流：如果極光這一幀被節流跳過（沒有
+        // clearRect），藍眼淚卻還是每幀都照畫，疊加在沒清除的舊畫面上，會越疊越亮、而且等於沒被節流，
+        // 用 freshFrame 告訴它「這幀沒有真的清版，先別畫」，兩邊共用同一個 24fps 節奏
+        A.freshFrame = false;
         if (A.acc < 1 / 24 && A.drawn) return;
         A.acc = 0;
+        A.freshFrame = true;
         const S = 0.4,
             cw = Math.max(1, Math.ceil(W * S)),
             ch = Math.max(1, Math.ceil(H * S));
@@ -2271,6 +2286,7 @@
     function drawBiolum(dt) {
         const A = AURORA; // 共用 canvas / ctx / acc / t
         if (!A.cv || !W || !projection) return;
+        if (!A.freshFrame) return; // 這幀極光沒有真的清版重畫，藍眼淚也跟著跳過，不然會疊加變亮
         const fade0 = Math.max(0, Math.min(1, (9 - state.t.k) / 3)); // 放大太多就淡出
         if (!fade0) return;
         const ctx = A.ctx, S = 0.4, T = A.t;
@@ -2307,7 +2323,7 @@
     // ── 煙火 & 烏雲效果 ───────────────────────────────────────────────────────
     // 主要指數漲≥2%：上空放煙火；跌≥2%：上空出現烏雲+雨滴
     // 使用 #fx canvas（在 SVG 之上），確保烏雲覆蓋船隻/動物
-    const WEATHER_T = { t: 0, cv: null, ctx: null }; // 獨立時間，不和極光共用
+    const WEATHER_T = { t: 0, cv: null, ctx: null, hadFx: false }; // 獨立時間，不和極光共用
 
     // 預繪 sprite：煙火粒子（小圓點漸層）、雨滴（垂直線）
     let _fwSprites = new Map(), _rainSprite = null, _cloudSprite = null;
@@ -2422,6 +2438,10 @@
         }
         if (!W || !projection) return;
         if (!state.maps || !state.maps.length) return;
+        // 先檢查這一幀有沒有任何 pin 的市場漲跌幅達標：完全沒有、而且上一幀也沒東西要清，
+        // 就整個跳過（連 resize / clearRect 都不用），不要每幀都空轉清一張其實沒畫東西的畫布
+        const active = state.maps.some((m) => m.pin && state.quotes[m.s] && Math.abs(state.quotes[m.s].pct) >= BIG_MOVE);
+        if (!active && !WT.hadFx) return;
         WT.t += dt;
         const T = WT.t;
         const ctx = WT.ctx;
@@ -2432,6 +2452,8 @@
         }
         ctx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.clearRect(0, 0, cw, ch);
+        WT.hadFx = active;
+        if (!active) return; // 剛清掉最後一次效果，這幀本身沒有東西要畫
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         const rspr = rainSprite(), cspr = cloudSprite();
 
