@@ -5150,7 +5150,7 @@
         // LOD_MIN 個（使用者自訂的「不會lag」基準值，可調），放大到 LOD_FULL_K 倍以上就不再限制數量
         // （畫面本來就塞不下那麼多，其它規則會自然篩掉）。只有一般裝飾物件會被這層限制，原住民小人
         // （folk）是另一套避讓邏輯，不受影響。
-        const LOD_MIN = 100;
+        const LOD_MIN = 50;
         const LOD_FULL_K = 3;
         const lodBudget = k >= LOD_FULL_K ? Infinity : Math.round(LOD_MIN + (k - 1) * ((critters.length - LOD_MIN) / (LOD_FULL_K - 1)));
         // 優先層級：地標（世界奇觀等）> 有名有姓的人物／船艦／科技里程碑 > 一般代表性動物
