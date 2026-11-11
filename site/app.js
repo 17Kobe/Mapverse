@@ -1534,8 +1534,10 @@
                 img = body
                     .append('image')
                     .attr('href', 'assets/' + d.src)
-                    .attr('preserveAspectRatio', 'xMidYMax meet')
-                    .attr('filter', 'url(#cast)');
+                    .attr('preserveAspectRatio', 'xMidYMax meet');
+                // 原本這裡還有 .attr('filter', 'url(#cast)')：feDropShadow 套在持續跑 SMIL 動畫的圖片上，
+                // 瀏覽器沒法把這層濾鏡快取住，每個動畫幀都要重新跑一次模糊運算。拿掉後只靠下面的貼地陰影橢圓
+                // （soft 濾鏡套在不會動的橢圓上，可以被瀏覽器快取），視覺差異很小，但省下大量 GPU 負擔。
             }
             if (d.alt) new Image().src = 'assets/' + d.alt; // 先載入另一張（鯨魚噴水 / 不噴水）
             critters.push({
@@ -2610,8 +2612,8 @@
                     .append('image')
                     .attr('class', 'beast')
                     .attr('href', info.src)
-                    .attr('filter', 'url(#cast)')
                     .attr('preserveAspectRatio', 'xMidYMax meet');
+                // 同上：拿掉 feDropShadow，只靠貼地陰影橢圓（soft 濾鏡），省下持續重算模糊的 GPU 負擔
                 // 圖檔載入失敗就退回 emoji
                 img.on('error', () => {
                     img.remove();
@@ -5854,6 +5856,12 @@
     }
     async function init() {
         document.body.classList.toggle('noanim', !state.anim);
+        // 分頁真的被背景化（切到別的視窗 / 最小化）時，整個地圖 SVG 跟所有 canvas 直接拿掉渲染，
+        // 不只是停掉程式碼驅動的動畫——這樣瀏覽器才會真的停止解碼裝飾動物圖片裡的 SMIL 動畫
+        document.body.classList.toggle('tab-hidden', document.hidden);
+        document.addEventListener('visibilitychange', () => {
+            document.body.classList.toggle('tab-hidden', document.hidden);
+        });
         I18n.applyDom();
         const [cfg, topo] = await Promise.all([fetchJSON('markets.json'), d3.json(TOPO_URL)]);
         localizeCfg(cfg);

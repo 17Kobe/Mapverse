@@ -2148,49 +2148,6 @@
       "card": "rt-us"
     },
     {
-      "id": "lm-ecb",
-      "icon": "classical_building",
-      "label": "歐洲央行",
-      "lon": 8.68,
-      "lat": 50.11,
-      "card": "rt-eu"
-    },
-    {
-      "id": "lm-boe",
-      "icon": "classical_building",
-      "label": "英國央行",
-      "lon": -0.09,
-      "lat": 51.51,
-      "dx": -14,
-      "card": "rt-uk"
-    },
-    {
-      "id": "lm-boj",
-      "icon": "classical_building",
-      "label": "日本央行",
-      "lon": 139.77,
-      "lat": 35.68,
-      "dx": 16,
-      "card": "rt-jp"
-    },
-    {
-      "id": "lm-pboc",
-      "icon": "classical_building",
-      "label": "中國人行",
-      "lon": 116.4,
-      "lat": 39.9,
-      "card": "rt-cn"
-    },
-    {
-      "id": "lm-cbc",
-      "icon": "classical_building",
-      "label": "台灣央行",
-      "lon": 121.5,
-      "lat": 25.05,
-      "dx": 16,
-      "card": "rt-tw"
-    },
-    {
       "id": "lm-trade",
       "icon": "dove",
       "label": "美中休戰",

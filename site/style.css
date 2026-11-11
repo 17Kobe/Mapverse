@@ -641,6 +641,12 @@ body.noanim .corps .bk,body.noanim .corps .flame{animation:none}
 
 body.noanim *,body.noanim *::before{animation:none!important;transition:none!important}
 
+/* 分頁真正切到背景（document.hidden）時，整個地圖 SVG 跟所有 canvas 圖層直接不渲染：
+   裝飾動物圖片是用 <image href="critters/xxx.svg"> 外部參照載入的，裡面的 SMIL 動畫不受
+   JS 的 requestAnimationFrame 節流控制，只有真的從渲染樹拿掉才會讓瀏覽器停止解碼動畫，
+   省下持續的 CPU / GPU 負擔 */
+body.tab-hidden #map,body.tab-hidden #terrain,body.tab-hidden #aurora,body.tab-hidden #clouds,body.tab-hidden #wfx,body.tab-hidden #fx{display:none!important}
+
 /* ---------- 嵌入模式（?embed=1）：只留股市地圖，隱藏概況卡與圖層列（也就沒有旅遊等其它圖層、設定按鈕） ---------- */
 html.embed #rail,html.embed #hud{display:none}
 @media (max-width:899px){
