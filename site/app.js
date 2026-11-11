@@ -1552,6 +1552,9 @@
                 body: body.node(),
                 shadow: shadow.node(),
                 img: img.node(),
+                // 非原住民小人才有外部 SVG 參照：收起來（畫面外 / 被擋住）時連 href 一起拔掉，
+                // 讓瀏覽器真的釋放掉那個動畫圖片的解碼資源，不是只靠 display:none 盲目信任瀏覽器會自己停
+                href: d.folk ? null : 'assets/' + d.src,
                 face: d.face || 'L',
                 gait: d.gait || 'walk',
                 x: 0,
@@ -5239,7 +5242,15 @@
                 }
             }
             const disp = hide ? 'none' : '';
-            if (c.g.style.display !== disp) c.g.style.display = disp;
+            if (c.g.style.display !== disp) {
+                c.g.style.display = disp;
+                // 只在「顯示/隱藏狀態真的切換」那一刻才動 href，不是每幀都檢查：
+                // 收起來就拔掉圖片參照（讓瀏覽器釋放這個動畫資源），顯示回來再補上（本機快取過，秒載）
+                if (c.href) {
+                    if (hide) c.img.removeAttribute('href');
+                    else if (c.img.getAttribute('href') !== c.href) c.img.setAttribute('href', c.href);
+                }
+            }
             if (hide) continue;
             setQ(c.g, 'transform', `translate(${x.toFixed(1)},${y.toFixed(1)})`);
             setQ(c.img, 'x', -z / 2);
