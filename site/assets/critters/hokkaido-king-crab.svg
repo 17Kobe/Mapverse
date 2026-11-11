@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <radialGradient id="crabShell" cx="40%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#e8674a"/><stop offset="100%" stop-color="#a02e1c"/>
+    </radialGradient>
+    <linearGradient id="crabLeg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d85a3e"/><stop offset="100%" stop-color="#8a2816"/>
+    </linearGradient>
+    <linearGradient id="crabIce" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#eafcff"/><stop offset="100%" stop-color="#bfe6f0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 北海道海面浮冰，帝王蟹棲息的寒冷海域 -->
+  <path d="M0,80 L0,70 Q20,66 40,70 Q60,74 80,69 L80,80 Z" fill="url(#crabIce)" stroke="#9cd0de" stroke-width="0.4"/>
+
+  <!-- 左右長腿，帝王蟹最具辨識度的特徵：粗壯多節、尖端帶刺 -->
+  <g stroke="#6e1c0e" stroke-width="0.5">
+    <path d="M28,46 C16,42 6,44 2,54 C10,52 18,52 26,54 Z" fill="url(#crabLeg)"/>
+    <path d="M30,52 C18,52 9,58 7,68 C14,63 22,60 30,60 Z" fill="url(#crabLeg)"/>
+    <path d="M52,46 C64,42 74,44 78,54 C70,52 62,52 54,54 Z" fill="url(#crabLeg)"/>
+    <path d="M50,52 C62,52 71,58 73,68 C66,63 58,60 50,60 Z" fill="url(#crabLeg)"/>
+  </g>
+  <g stroke="#6e1c0e" stroke-width="0.4" opacity="0.6" fill="none">
+    <path d="M10,47 L6,44 M12,53 L7,52 M14,58 L9,60"/>
+    <path d="M70,47 L74,44 M68,53 L73,52 M66,58 L71,60"/>
+  </g>
+
+  <!-- 一對招牌大螯，微微張合 -->
+  <g>
+    <animateTransform attributeName="transform" type="rotate" values="-3 18 46;2 18 46;-3 18 46" dur="3s" repeatCount="indefinite"/>
+    <path d="M30,44 C22,40 14,38 9,32 C14,34 18,30 16,25 C22,28 26,35 29,42 Z" fill="url(#crabShell)" stroke="#6e1c0e" stroke-width="0.5"/>
+  </g>
+  <g>
+    <animateTransform attributeName="transform" type="rotate" values="3 62 46;-2 62 46;3 62 46" dur="3.2s" repeatCount="indefinite"/>
+    <path d="M50,44 C58,40 66,38 71,32 C66,34 62,30 64,25 C58,28 54,35 51,42 Z" fill="url(#crabShell)" stroke="#6e1c0e" stroke-width="0.5"/>
+  </g>
+
+  <!-- 寬大隆起的甲殼背部，布滿尖刺顆粒 -->
+  <path d="M20,54 C18,44 26,34 40,33 C54,34 62,44 60,54 C58,62 50,66 40,66 C30,66 22,62 20,54 Z"
+        fill="url(#crabShell)" stroke="#6e1c0e" stroke-width="0.6"/>
+  <g fill="#6e1c0e" opacity="0.7">
+    <circle cx="30" cy="42" r="1"/><circle cx="40" cy="39" r="1.1"/><circle cx="50" cy="42" r="1"/>
+    <circle cx="33" cy="50" r="1"/><circle cx="47" cy="50" r="1"/><circle cx="40" cy="55" r="1.1"/>
+    <circle cx="25" cy="48" r="0.8"/><circle cx="55" cy="48" r="0.8"/>
+  </g>
+  <!-- 眼睛 -->
+  <circle cx="35" cy="36" r="1.6" fill="#1a1008"/>
+  <circle cx="45" cy="36" r="1.6" fill="#1a1008"/>
+
+  <!-- 氣泡，表現海中生物的動感 -->
+  <g fill="#eafcff" opacity="0.6">
+    <circle cx="14" cy="38">
+      <animate attributeName="cy" values="40;20;40" dur="3.6s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;0.6;0" dur="3.6s" repeatCount="indefinite"/>
+      <animate attributeName="r" values="0.6;1.2;0.6" dur="3.6s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+</svg>

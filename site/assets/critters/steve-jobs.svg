@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="sjSweater" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3a3a3e"/><stop offset="100%" stop-color="#121214"/>
+    </linearGradient>
+    <linearGradient id="sjJeans" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4a5d7a"/><stop offset="100%" stop-color="#28364a"/>
+    </linearGradient>
+    <radialGradient id="sjFace" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#e7bd91"/><stop offset="100%" stop-color="#b98a5c"/>
+    </radialGradient>
+    <radialGradient id="sjScreenGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#eaf6ff" stop-opacity="0.9"/><stop offset="100%" stop-color="#eaf6ff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <ellipse cx="40" cy="77" rx="16" ry="3.2" fill="#15151a" opacity="0.3"/>
+
+  <g>
+    <animateTransform attributeName="transform" type="rotate" values="-1 40 76;1 40 76;-1 40 76" dur="4.6s" repeatCount="indefinite"/>
+
+    <path d="M30,54 L28,78 L37,78 L38,58 L42,58 L43,78 L52,78 L50,54 Z" fill="url(#sjJeans)" stroke="#121a26" stroke-width="0.4"/>
+    <rect x="27" y="76" width="11" height="3" rx="1" fill="#eceae4"/>
+    <rect x="42" y="76" width="11" height="3" rx="1" fill="#eceae4"/>
+
+    <path d="M27,33 Q22,55 27,70 L34,70 L32,37 Z" fill="url(#sjSweater)" stroke="#060606" stroke-width="0.4"/>
+    <path d="M53,33 Q58,55 53,70 L46,70 L48,37 Z" fill="url(#sjSweater)" stroke="#060606" stroke-width="0.4"/>
+    <path d="M28,32 L52,32 L50,56 L30,56 Z" fill="url(#sjSweater)" stroke="#060606" stroke-width="0.5"/>
+    <path d="M36,32 Q40,36 44,32" fill="none" stroke="#060606" stroke-width="1.4"/>
+
+    <!-- 一手自然下垂，另一手微抬，掌心朝上展示新產品的手勢 -->
+    <path d="M28,36 C22,40 19,47 20,55" fill="none" stroke="url(#sjSweater)" stroke-width="4.8" stroke-linecap="round"/>
+    <path d="M52,36 C57,34 61,36 63,41" fill="none" stroke="url(#sjSweater)" stroke-width="4.8" stroke-linecap="round"/>
+    <circle cx="63" cy="40" r="2.8" fill="url(#sjFace)" stroke="#9a6a40" stroke-width="0.3"/>
+
+    <!-- 展示一台發亮的平板裝置 -->
+    <rect x="58" y="24" width="10" height="14" rx="1.6" fill="#d8dde0" stroke="#8a9094" stroke-width="0.4"/>
+    <rect x="59.2" y="25.4" width="7.6" height="10.6" rx="0.6" fill="url(#sjScreenGlow)">
+      <animate attributeName="opacity" values="0.6;1;0.6" dur="2.2s" repeatCount="indefinite"/>
+    </rect>
+
+    <rect x="37" y="26" width="6" height="6" fill="url(#sjFace)"/>
+    <circle cx="40" cy="21" r="7.2" fill="url(#sjFace)" stroke="#9a6a40" stroke-width="0.4"/>
+
+    <!-- 招牌圓框眼鏡 -->
+    <circle cx="36.8" cy="20.5" r="2.6" fill="none" stroke="#2a2420" stroke-width="0.8"/>
+    <circle cx="43.2" cy="20.5" r="2.6" fill="none" stroke="#2a2420" stroke-width="0.8"/>
+    <line x1="39.4" y1="20.5" x2="40.6" y2="20.5" stroke="#2a2420" stroke-width="0.7"/>
+    <circle cx="36.8" cy="20.5" r="0.6" fill="#201810"/>
+    <circle cx="43.2" cy="20.5" r="0.6" fill="#201810"/>
+
+    <path d="M33,15 Q40,11 47,15 Q45,13 40,13 Q35,13 33,15 Z" fill="#1c1c1c"/>
+    <path d="M35,24.5 Q40,26.5 45,24.5" stroke="#9a6a40" stroke-width="0.5" fill="none"/>
+  </g>
+</svg>

@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="dlRobeMaroon" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#9c3a2e"/><stop offset="100%" stop-color="#641e16"/>
+    </linearGradient>
+    <linearGradient id="dlRobeSaffron" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e8a84a"/><stop offset="100%" stop-color="#b9742a"/>
+    </linearGradient>
+    <radialGradient id="dlFace" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#e8c79a"/><stop offset="100%" stop-color="#c0945e"/>
+    </radialGradient>
+  </defs>
+
+  <ellipse cx="40" cy="77" rx="16" ry="3.2" fill="#2a2016" opacity="0.3"/>
+
+  <g>
+    <animateTransform attributeName="transform" type="rotate" values="-1 40 76;1 40 76;-1 40 76" dur="4.8s" repeatCount="indefinite"/>
+
+    <!-- 藏傳佛教僧袍：深紅色主袍，右肩斜披橙黃色袒肩布 -->
+    <path d="M27,40 C22,52 20,64 23,74 L57,74 C60,64 58,52 53,40 Z" fill="url(#dlRobeMaroon)" stroke="#4a140e" stroke-width="0.5"/>
+    <path d="M40,44 L37,74 M40,44 L43,74" stroke="#7a2a1e" stroke-width="0.4" opacity="0.6" fill="none"/>
+    <path d="M27,38 C33,46 47,46 53,38 L56,46 C47,55 33,55 24,46 Z" fill="url(#dlRobeSaffron)" stroke="#8a521a" stroke-width="0.4"/>
+
+    <!-- 雙手合十於胸前，掌心持念珠 -->
+    <path d="M30,40 C27,44 26,49 28,54" fill="none" stroke="url(#dlRobeMaroon)" stroke-width="4.6" stroke-linecap="round"/>
+    <path d="M50,40 C53,44 54,49 52,54" fill="none" stroke="url(#dlRobeMaroon)" stroke-width="4.6" stroke-linecap="round"/>
+    <ellipse cx="40" cy="53" rx="5.5" ry="4" fill="url(#dlFace)" stroke="#9a6a3a" stroke-width="0.4"/>
+    <g fill="#3a2a1a" opacity="0.85">
+      <circle cx="36" cy="50" r="1"/><circle cx="38.5" cy="48.5" r="1"/><circle cx="41.5" cy="48.5" r="1"/><circle cx="44" cy="50" r="1"/>
+    </g>
+
+    <rect x="37" y="28" width="6" height="6" fill="url(#dlFace)"/>
+    <circle cx="40" cy="23" r="7.4" fill="url(#dlFace)" stroke="#9a6a3a" stroke-width="0.4"/>
+
+    <!-- 平頭短髮，招牌圓框眼鏡與親切笑容 -->
+    <path d="M33,19 Q40,16 47,19 Q44,17.5 40,17.5 Q36,17.5 33,19 Z" fill="#2a2420"/>
+    <circle cx="36.8" cy="22.5" r="2.4" fill="none" stroke="#1c1c1c" stroke-width="0.7"/>
+    <circle cx="43.2" cy="22.5" r="2.4" fill="none" stroke="#1c1c1c" stroke-width="0.7"/>
+    <line x1="39.2" y1="22.5" x2="40.8" y2="22.5" stroke="#1c1c1c" stroke-width="0.6"/>
+    <circle cx="36.8" cy="22.5" r="0.55" fill="#201810"/>
+    <circle cx="43.2" cy="22.5" r="0.55" fill="#201810"/>
+    <path d="M35,27 Q40,30 45,27" stroke="#9a6a40" stroke-width="0.8" fill="none" stroke-linecap="round"/>
+    <path d="M36,30.5 Q40,32.8 44,30.5" stroke="#5a3a22" stroke-width="0.8" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

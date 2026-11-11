@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="jcRobe" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f3efe3"/><stop offset="100%" stop-color="#d7cfb8"/>
+    </linearGradient>
+    <linearGradient id="jcSash" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5a7fae"/><stop offset="100%" stop-color="#2e4f72"/>
+    </linearGradient>
+    <radialGradient id="jcFace" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#e8bb8d"/><stop offset="100%" stop-color="#b98a5c"/>
+    </radialGradient>
+    <radialGradient id="jcHalo" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff6c8" stop-opacity="0.9"/><stop offset="100%" stop-color="#fff6c8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <ellipse cx="40" cy="77" rx="16" ry="3.2" fill="#2a2016" opacity="0.3"/>
+
+  <!-- 柔和光暈，不刻意強調宗教符號，單純表現莊嚴氣質 -->
+  <circle cx="40" cy="16" r="13" fill="url(#jcHalo)">
+    <animate attributeName="opacity" values="0.5;0.85;0.5" dur="3.2s" repeatCount="indefinite"/>
+  </circle>
+
+  <g>
+    <animateTransform attributeName="transform" type="rotate" values="-1 40 76;1 40 76;-1 40 76" dur="4.8s" repeatCount="indefinite"/>
+
+    <!-- 長袍垂地 -->
+    <path d="M28,40 C23,53 20,67 22,78 L58,78 C60,67 57,53 52,40 Z" fill="url(#jcRobe)" stroke="#b2a884" stroke-width="0.4"/>
+    <path d="M40,44 L37,78 M40,44 L43,78" stroke="#c9bf9e" stroke-width="0.4" opacity="0.6" fill="none"/>
+
+    <!-- 披肩外袍，從肩膀斜垂到身側 -->
+    <path d="M27,38 C33,46 47,46 53,38 L56,46 C47,56 33,56 24,46 Z" fill="url(#jcSash)" stroke="#1c3450" stroke-width="0.4"/>
+
+    <!-- 雙手自然下垂，掌心微張作祝福手勢 -->
+    <path d="M28,40 C22,44 18,51 18,58" fill="none" stroke="url(#jcRobe)" stroke-width="5" stroke-linecap="round"/>
+    <path d="M52,40 C58,44 61,50 60,57" fill="none" stroke="url(#jcRobe)" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="17" cy="59" r="2.6" fill="url(#jcFace)"/>
+    <path d="M58,57 L62,54 M58,57 L63,58" stroke="url(#jcFace)" stroke-width="1.6" stroke-linecap="round"/>
+
+    <rect x="37" y="30" width="6" height="6" fill="url(#jcFace)"/>
+    <circle cx="40" cy="25" r="7.4" fill="url(#jcFace)" stroke="#9a6a40" stroke-width="0.4"/>
+
+    <!-- 中分長髮與落腮鬍，傳統溫和聖像畫法 -->
+    <path d="M32,21 C30,14 34,10 40,10 C46,10 50,14 48,21 C46,23 44,22 44,19 C42,21 38,21 36,19 C36,22 34,23 32,21 Z" fill="#4a3522" stroke="#2e2113" stroke-width="0.3"/>
+    <path d="M32,20 C28,24 27,30 30,34 L33,32 C31,28 32,24 34,21 Z" fill="#4a3522" opacity="0.9"/>
+    <path d="M48,20 C52,24 53,30 50,34 L47,32 C49,28 48,24 46,21 Z" fill="#4a3522" opacity="0.9"/>
+    <path d="M35,28 C36,32 38,34 40,34 C42,34 44,32 45,28 C43,31 37,31 35,28 Z" fill="#4a3522" opacity="0.85"/>
+
+    <path d="M34.5,23.5 Q36,22.5 37.5,23.5" stroke="#3a2a1a" stroke-width="0.8" fill="none"/>
+    <path d="M42.5,23.5 Q44,22.5 45.5,23.5" stroke="#3a2a1a" stroke-width="0.8" fill="none"/>
+    <circle cx="36.8" cy="25" r="0.6" fill="#201810"/>
+    <circle cx="43.2" cy="25" r="0.6" fill="#201810"/>
+    <path d="M37,30 Q40,31.6 43,30" stroke="#5a3a22" stroke-width="0.6" fill="none"/>
+  </g>
+</svg>

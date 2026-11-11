@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="paPlatoRobe" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#b14a4a"/><stop offset="100%" stop-color="#6e2424"/>
+    </linearGradient>
+    <linearGradient id="paAriRobe" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5a7fae"/><stop offset="100%" stop-color="#2e4f72"/>
+    </linearGradient>
+    <radialGradient id="paFace" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#e8c79a"/><stop offset="100%" stop-color="#c0945e"/>
+    </radialGradient>
+    <linearGradient id="paStep" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d7cfb8"/><stop offset="100%" stop-color="#a69662"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 雅典學院的石階，呼應《雅典學院》這幅名畫的場景 -->
+  <path d="M0,80 L0,74 L80,74 L80,80 Z" fill="url(#paStep)" stroke="#8a7a52" stroke-width="0.4"/>
+  <path d="M0,74 L0,69 L80,69 L80,74 Z" fill="url(#paStep)" opacity="0.85"/>
+
+  <!-- 柏拉圖：年長者，手指向上，象徵理型世界 -->
+  <g>
+    <animateTransform attributeName="transform" type="rotate" values="-0.6 22 73;0.6 22 73;-0.6 22 73" dur="5s" repeatCount="indefinite"/>
+    <path d="M12,42 C8,54 7,64 10,73 L34,73 C36,64 34,54 30,42 Z" fill="url(#paPlatoRobe)" stroke="#4a1818" stroke-width="0.5"/>
+    <path d="M12,42 C9,48 9,54 11,60 L15,58 C14,52 15,47 17,43 Z" fill="#8a3232" opacity="0.8"/>
+    <rect x="23" y="56" width="6" height="8" rx="1" fill="#c9a24a" stroke="#8a6a1a" stroke-width="0.4"/>
+    <path d="M11,44 C6,40 3,34 4,27" fill="none" stroke="url(#paFace)" stroke-width="3.2" stroke-linecap="round"/>
+    <path d="M3,28 Q1,24 3,20" stroke="url(#paFace)" stroke-width="3" stroke-linecap="round" fill="none">
+      <animateTransform attributeName="transform" type="rotate" values="0 4 27;-6 4 27;0 4 27" dur="3s" repeatCount="indefinite"/>
+    </path>
+    <circle cx="14" cy="28" r="6.6" fill="url(#paFace)" stroke="#9a6a3a" stroke-width="0.4"/>
+    <path d="M8,24 C7,17 11,13 14,13 C17,13 21,17 20,24 C18,20 16,19 14,19 C12,19 10,20 8,24 Z" fill="#e7e2d4" stroke="#c9c3b2" stroke-width="0.3"/>
+    <path d="M9,30 C8,35 9,39 13,40 C10,37 9,33 10,29 Z" fill="#e7e2d4" opacity="0.9"/>
+    <path d="M12,26.5 Q13,25.7 14,26.5" stroke="#6a665a" stroke-width="0.6" fill="none"/>
+    <path d="M10,32 Q14,34 17,32" stroke="#6a665a" stroke-width="0.6" fill="none"/>
+  </g>
+
+  <!-- 亞里斯多德：較年輕，手掌向下，象徵經驗與現世 -->
+  <g>
+    <animateTransform attributeName="transform" type="rotate" values="0.6 58 73;-0.6 58 73;0.6 58 73" dur="5.4s" repeatCount="indefinite"/>
+    <path d="M46,40 C42,53 41,64 44,73 L70,73 C72,64 70,53 65,40 Z" fill="url(#paAriRobe)" stroke="#1c3450" stroke-width="0.5"/>
+    <path d="M65,40 C68,46 68,52 66,58 L62,56 C64,50 63,45 61,41 Z" fill="#3a5f86" opacity="0.8"/>
+    <path d="M66,43 C72,46 75,51 75,57" fill="none" stroke="url(#paFace)" stroke-width="3.2" stroke-linecap="round"/>
+    <path d="M44,42 C39,46 37,52 38,58" fill="none" stroke="url(#paFace)" stroke-width="3.2" stroke-linecap="round"/>
+    <path d="M34,59 L42,58 L41,61 L34,62 Z" fill="url(#paFace)" opacity="0.95"/>
+
+    <circle cx="55" cy="26" r="6.8" fill="url(#paFace)" stroke="#9a6a3a" stroke-width="0.4"/>
+    <path d="M49,23 C48,17 51,12 55,12 C59,12 62,17 61,23 C59,19 57,18 55,18 C53,18 51,19 49,23 Z" fill="#3a2a1a"/>
+    <path d="M50,28 C50,33 52,37 55,38 C53,34 52,30 53,26 Z" fill="#3a2a1a" opacity="0.9"/>
+    <path d="M50,24.5 Q51,23.7 52,24.5" stroke="#241a10" stroke-width="0.6" fill="none"/>
+    <path d="M58,24.5 Q59,23.7 60,24.5" stroke="#241a10" stroke-width="0.6" fill="none"/>
+    <path d="M52,31 Q55,33 58,31" stroke="#5a3a22" stroke-width="0.6" fill="none"/>
+  </g>
+</svg>

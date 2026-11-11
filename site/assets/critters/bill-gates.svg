@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="bgVest" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6a8fae"/><stop offset="100%" stop-color="#355170"/>
+    </linearGradient>
+    <linearGradient id="bgShirt" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f3ead8"/><stop offset="100%" stop-color="#d8c9a8"/>
+    </linearGradient>
+    <linearGradient id="bgPants" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3a4452"/><stop offset="100%" stop-color="#1a2028"/>
+    </linearGradient>
+    <radialGradient id="bgFace" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#e7bd91"/><stop offset="100%" stop-color="#b98a5c"/>
+    </radialGradient>
+    <radialGradient id="bgScreenGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#cdeaff" stop-opacity="0.9"/><stop offset="100%" stop-color="#cdeaff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <ellipse cx="40" cy="77" rx="16" ry="3.2" fill="#15151a" opacity="0.3"/>
+
+  <g>
+    <animateTransform attributeName="transform" type="rotate" values="-1 40 76;1 40 76;-1 40 76" dur="4.6s" repeatCount="indefinite"/>
+
+    <path d="M30,54 L28,78 L37,78 L38,58 L42,58 L43,78 L52,78 L50,54 Z" fill="url(#bgPants)" stroke="#0c1016" stroke-width="0.4"/>
+    <path d="M27,76 L38,76 L38,79 L26,79 Z" fill="#141a20"/>
+    <path d="M42,76 L53,76 L54,79 L42,79 Z" fill="#141a20"/>
+
+    <path d="M27,33 Q22,55 27,70 L34,70 L32,37 Z" fill="url(#bgVest)" stroke="#20344a" stroke-width="0.4"/>
+    <path d="M53,33 Q58,55 53,70 L46,70 L48,37 Z" fill="url(#bgVest)" stroke="#20344a" stroke-width="0.4"/>
+    <path d="M28,32 L52,32 L50,56 L30,56 Z" fill="url(#bgVest)" stroke="#20344a" stroke-width="0.5"/>
+    <path d="M35,33 L45,33 L43,56 L37,56 Z" fill="url(#bgShirt)" stroke="#a89566" stroke-width="0.4"/>
+    <path d="M37,34 L40,37 L43,34" stroke="#20344a" stroke-width="1" fill="none"/>
+
+    <!-- 一手持筆電，另一手自然下垂 -->
+    <path d="M28,36 C22,40 19,47 20,55" fill="none" stroke="url(#bgVest)" stroke-width="4.8" stroke-linecap="round"/>
+    <path d="M52,36 C57,38 60,43 60,49" fill="none" stroke="url(#bgVest)" stroke-width="4.8" stroke-linecap="round"/>
+    <circle cx="60" cy="49" r="2.8" fill="url(#bgFace)" stroke="#9a6a40" stroke-width="0.3"/>
+
+    <!-- 打開的筆記型電腦，螢幕微微發光 -->
+    <path d="M52,52 L68,48 L70,58 L54,62 Z" fill="#cfd4d8" stroke="#8a9094" stroke-width="0.4"/>
+    <path d="M52,52 L68,48 L68,52 L52,56 Z" fill="url(#bgScreenGlow)">
+      <animate attributeName="opacity" values="0.6;1;0.6" dur="2.4s" repeatCount="indefinite"/>
+    </path>
+    <path d="M54,62 L70,58 L70,61 L54,65 Z" fill="#9aa0a6" stroke="#6a7278" stroke-width="0.4"/>
+
+    <rect x="37" y="26" width="6" height="6" fill="url(#bgFace)"/>
+    <circle cx="40" cy="21" r="7.2" fill="url(#bgFace)" stroke="#9a6a40" stroke-width="0.4"/>
+
+    <!-- 招牌方框眼鏡與親切笑容 -->
+    <path d="M33.5,19 L40,19 L40,22.6 L33.5,22.6 Z" fill="none" stroke="#2a2420" stroke-width="0.8"/>
+    <path d="M40,19 L46.5,19 L46.5,22.6 L40,22.6 Z" fill="none" stroke="#2a2420" stroke-width="0.8"/>
+    <circle cx="36.8" cy="20.8" r="0.6" fill="#201810"/>
+    <circle cx="43.2" cy="20.8" r="0.6" fill="#201810"/>
+
+    <path d="M33,16 Q40,12 47,16 Q44,14 40,14 Q36,14 33,16 Z" fill="#8a6a3c"/>
+    <path d="M34,25.5 Q40,28.5 46,25.5" stroke="#9a6a40" stroke-width="0.8" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

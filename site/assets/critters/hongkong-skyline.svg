@@ -6,34 +6,65 @@
     <linearGradient id="hkGlass2" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#b9d9ec"/><stop offset="100%" stop-color="#5f8fb5"/>
     </linearGradient>
+    <linearGradient id="hkBoc" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#7fa8c9"/><stop offset="50%" stop-color="#d4ecf8"/><stop offset="100%" stop-color="#5f8fb5"/>
+    </linearGradient>
+    <linearGradient id="hkPlaza" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#8fb8cf"/><stop offset="100%" stop-color="#3f6f8f"/>
+    </linearGradient>
     <linearGradient id="hkWater" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#1c4a6e"/><stop offset="100%" stop-color="#0d2b45"/>
     </linearGradient>
   </defs>
+
+  <!-- 維多利亞港水面 -->
   <rect x="0" y="73" width="80" height="7" fill="url(#hkWater)"/>
   <path d="M0,76 Q10,74.5 20,76 T40,76 T60,76 T80,76" stroke="#cfe8f8" stroke-width="0.5" opacity="0.4" fill="none">
     <animate attributeName="opacity" values="0.25;0.55;0.25" dur="3s" repeatCount="indefinite"/>
   </path>
-  <rect x="0" y="40" width="11" height="34" fill="url(#hkGlass2)" stroke="#355f7a" stroke-width="0.4"/>
-  <rect x="11" y="50" width="12" height="24" fill="url(#hkGlass1)" stroke="#355f7a" stroke-width="0.4"/>
-  <path d="M23,74 L23,22 L32,14 L41,22 L41,74 Z" fill="url(#hkGlass2)" stroke="#2c4f66" stroke-width="0.4"/>
-  <rect x="41" y="44" width="11" height="30" fill="url(#hkGlass1)" stroke="#355f7a" stroke-width="0.4"/>
-  <rect x="52" y="18" width="10" height="56" fill="url(#hkGlass2)" stroke="#2c4f66" stroke-width="0.4"/>
-  <line x1="57" y1="18" x2="57" y2="10" stroke="#2c4f66" stroke-width="1"/>
-  <rect x="62" y="52" width="9" height="22" fill="url(#hkGlass1)" stroke="#355f7a" stroke-width="0.4"/>
-  <rect x="71" y="36" width="9" height="38" fill="url(#hkGlass2)" stroke="#2c4f66" stroke-width="0.4"/>
+
+  <!-- 後排陪襯樓群，襯托前景三棟招牌建築 -->
+  <rect x="0" y="48" width="8" height="26" fill="url(#hkGlass2)" stroke="#355f7a" stroke-width="0.4"/>
+  <rect x="8" y="54" width="7" height="20" fill="url(#hkGlass1)" stroke="#355f7a" stroke-width="0.4"/>
+  <rect x="62" y="50" width="8" height="24" fill="url(#hkGlass1)" stroke="#355f7a" stroke-width="0.4"/>
+  <rect x="70" y="56" width="10" height="18" fill="url(#hkGlass2)" stroke="#355f7a" stroke-width="0.4"/>
+
+  <!-- 中銀大廈：四片三角稜面層層削切、頂端雙天線，是最具識別度的香港地標之一 -->
+  <path d="M16,74 L16,52 L20,44 L24,52 L24,74 Z" fill="url(#hkBoc)" stroke="#2c4f66" stroke-width="0.4"/>
+  <path d="M20,44 L17,30 L23,30 Z" fill="url(#hkBoc)" stroke="#2c4f66" stroke-width="0.4"/>
+  <path d="M17,30 L18.4,18 L21.6,18 L23,30 Z" fill="url(#hkBoc)" stroke="#2c4f66" stroke-width="0.4"/>
+  <path d="M18.4,18 L19.4,9 L20.6,9 L21.6,18 Z" fill="url(#hkBoc)" stroke="#2c4f66" stroke-width="0.4"/>
+  <line x1="19.4" y1="9" x2="19.4" y2="3" stroke="#2c4f66" stroke-width="0.7"/>
+  <line x1="20.6" y1="9" x2="20.6" y2="4.5" stroke="#2c4f66" stroke-width="0.7"/>
+  <path d="M16,52 L20,44 L20,74 Z" fill="#ffffff" opacity="0.12"/>
+  <path d="M17,30 L20,44 L20,18 Z" fill="#ffffff" opacity="0.12"/>
+
+  <!-- 國際金融中心二期（IFC Two）：筆直向上，頂端削出一個斜角缺口收尖 -->
+  <path d="M32,74 L32,24 L38,24 L38,18 L41,12 L44,18 L44,24 L47,24 L47,74 Z" fill="url(#hkGlass2)" stroke="#2c4f66" stroke-width="0.4"/>
   <g stroke="#2c4f66" stroke-width="0.3" opacity="0.5">
-    <line x1="0" y1="48" x2="11" y2="48"/><line x1="0" y1="56" x2="11" y2="56"/><line x1="0" y1="64" x2="11" y2="64"/>
-    <line x1="52" y1="26" x2="62" y2="26"/><line x1="52" y1="36" x2="62" y2="36"/><line x1="52" y1="46" x2="62" y2="46"/><line x1="52" y1="56" x2="62" y2="56"/><line x1="52" y1="66" x2="62" y2="66"/>
-    <line x1="71" y1="44" x2="80" y2="44"/><line x1="71" y1="54" x2="80" y2="54"/><line x1="71" y1="64" x2="80" y2="64"/>
+    <line x1="32" y1="32" x2="47" y2="32"/><line x1="32" y1="42" x2="47" y2="42"/>
+    <line x1="32" y1="52" x2="47" y2="52"/><line x1="32" y1="62" x2="47" y2="62"/>
   </g>
-  <rect x="4" y="52" width="2.5" height="2.5" fill="#ffd97a">
-    <animate attributeName="opacity" values="0.4;1;0.4" dur="2.2s" repeatCount="indefinite"/>
-  </rect>
-  <rect x="55" y="40" width="2.5" height="2.5" fill="#ffd97a">
-    <animate attributeName="opacity" values="1;0.4;1" dur="2.6s" repeatCount="indefinite"/>
-  </rect>
-  <rect x="74" y="58" width="2.5" height="2.5" fill="#ffd97a">
-    <animate attributeName="opacity" values="0.5;1;0.5" dur="1.9s" repeatCount="indefinite"/>
-  </rect>
+  <line x1="41" y1="12" x2="41" y2="5" stroke="#2c4f66" stroke-width="0.8"/>
+  <circle cx="41" cy="4" r="0.9" fill="#ffd97a">
+    <animate attributeName="opacity" values="1;0.3;1" dur="1.6s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- 中環廣場：六邊形截面向上收窄成金字塔頂，頂端豎立燈柱 -->
+  <path d="M54,74 L54,40 L58,36 L66,36 L70,40 L70,74 Z" fill="url(#hkPlaza)" stroke="#20465c" stroke-width="0.4"/>
+  <path d="M58,36 L62,22 L66,36 Z" fill="url(#hkPlaza)" stroke="#20465c" stroke-width="0.4"/>
+  <line x1="62" y1="22" x2="62" y2="14" stroke="#20465c" stroke-width="0.8"/>
+  <g fill="#ffb84d" opacity="0.85">
+    <rect x="62" y="14" width="1.6" height="2.2"/>
+    <animate attributeName="opacity" values="0.4;1;0.4" dur="2.4s" repeatCount="indefinite"/>
+  </g>
+  <g stroke="#20465c" stroke-width="0.3" opacity="0.5">
+    <line x1="54" y1="50" x2="70" y2="50"/><line x1="54" y1="60" x2="70" y2="60"/>
+  </g>
+
+  <!-- 窗燈點點 -->
+  <rect x="2" y="56" width="2" height="2" fill="#ffd97a"><animate attributeName="opacity" values="0.4;1;0.4" dur="2.2s" repeatCount="indefinite"/></rect>
+  <rect x="34" y="46" width="2" height="2" fill="#ffd97a"><animate attributeName="opacity" values="1;0.4;1" dur="2.6s" repeatCount="indefinite"/></rect>
+  <rect x="73" y="60" width="2" height="2" fill="#ffd97a"><animate attributeName="opacity" values="0.5;1;0.5" dur="1.9s" repeatCount="indefinite"/></rect>
+  <rect x="42" y="58" width="2" height="2" fill="#ffd97a"><animate attributeName="opacity" values="0.3;0.9;0.3" dur="3s" repeatCount="indefinite"/></rect>
 </svg>

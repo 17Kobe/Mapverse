@@ -622,7 +622,7 @@
         { src: 'critters/harbin-ice-world.svg', lon: 126.6, lat: 45.75, mode: 'still', face: 'F', s: 1.0, deco: true, landmark: true }, // 哈爾濱冰雪大世界
         { src: 'critters/red-crowned-crane.svg', lon: 144.3, lat: 43.3, mode: 'wander', s: 1.0, deco: true, maxDeg: 2 }, // 丹頂鶴
         { src: 'critters/siberian-tiger.svg', lon: 130.5, lat: 45, mode: 'wander', s: 1.0, deco: true, maxDeg: 2 }, // 東北虎
-        { src: 'critters/genghis-khan.svg', lon: 106.9, lat: 47.9, mode: 'still', face: 'F', s: 1.0, deco: true }, // 成吉思汗
+        { src: 'critters/genghis-khan.svg', lon: 102.5, lat: 46.0, mode: 'still', face: 'F', s: 1.0, deco: true }, // 成吉思汗：原座標跟蒙古包完全重疊，往西南移開
         { src: 'critters/abraham-lincoln.svg', lon: -77, lat: 38.9, mode: 'still', face: 'F', s: 1.0, deco: true }, // 亞伯拉罕·林肯
         { src: 'critters/marco-polo.svg', lon: 11, lat: 44.5, mode: 'still', face: 'F', s: 1.0, deco: true }, // 馬可·波羅
         { src: 'critters/napoleon-bonaparte.svg', lon: 1.5, lat: 48, mode: 'still', face: 'F', s: 1.0, deco: true }, // 拿破崙·波拿巴
@@ -635,12 +635,21 @@
         { src: 'critters/isaac-newton.svg', lon: -0.63, lat: 52.8, mode: 'still', face: 'F', s: 1.0, deco: true }, // 伊薩克·牛頓
         { src: 'critters/albert-einstein.svg', lon: 9.99, lat: 48.4, mode: 'still', face: 'F', s: 1.0, deco: true }, // 愛因斯坦
         { src: 'critters/thomas-edison.svg', lon: -74.5, lat: 41, mode: 'still', face: 'F', s: 1.0, deco: true }, // 湯瑪斯·愛迪生
-        { src: 'critters/nikola-tesla.svg', lon: -73.98, lat: 40.75, mode: 'still', face: 'F', s: 1.0, deco: true }, // 尼古拉·特斯拉：原座標跟尼加拉瀑布完全重疊，改放到他長年生活工作的紐約曼哈頓
+        { src: 'critters/nikola-tesla.svg', lon: -104.82, lat: 38.83, mode: 'still', face: 'F', s: 1.0, deco: true }, // 尼古拉·特斯拉：改放到他著名的科羅拉多泉實驗站，避開與帝國大廈重疊
         { src: 'critters/michael-jordan.svg', lon: -87.65, lat: 41.88, mode: 'still', face: 'F', s: 1.0, deco: true }, // 麥可·喬丹
         { src: 'critters/babe-ruth.svg', lon: -76.6, lat: 39.28, mode: 'still', face: 'F', s: 1.0, deco: true }, // 貝比·魯斯
         { src: 'critters/shohei-ohtani.svg', lon: 141.13, lat: 39.14, mode: 'still', face: 'F', s: 1.0, deco: true }, // 大谷翔平
         { src: 'critters/muhammad-ali.svg', lon: -85.76, lat: 38.25, mode: 'still', face: 'F', s: 1.0, deco: true }, // 穆罕默德·阿里
         { src: 'critters/michael-schumacher.svg', lon: 6.65, lat: 50.87, mode: 'still', face: 'F', s: 1.0, deco: true }, // 麥可·舒馬赫
+        { src: 'critters/wright-brothers.svg', lon: -75.67, lat: 36.02, mode: 'still', face: 'F', s: 1.0, deco: true }, // 萊特兄弟
+        { src: 'critters/jesus-christ.svg', lon: 35.3, lat: 32.7, mode: 'still', face: 'F', s: 1.0, deco: true }, // 耶穌
+        { src: 'critters/buddha-siddhartha.svg', lon: 83.28, lat: 27.47, mode: 'still', face: 'F', s: 1.0, deco: true }, // 釋迦牟尼
+        { src: 'critters/plato-aristotle.svg', lon: 23.73, lat: 37.98, mode: 'still', face: 'F', s: 1.0, deco: true }, // 柏拉圖與亞里斯多德
+        { src: 'critters/beethoven.svg', lon: 16.37, lat: 48.21, mode: 'still', face: 'F', s: 1.0, deco: true }, // 貝多芬
+        { src: 'critters/steve-jobs.svg', lon: -122.03, lat: 37.33, mode: 'still', face: 'F', s: 1.0, deco: true }, // 史蒂夫‧賈伯斯
+        { src: 'critters/bill-gates.svg', lon: -122.12, lat: 47.67, mode: 'still', face: 'F', s: 1.0, deco: true }, // 比爾‧蓋茲
+        { src: 'critters/hokkaido-king-crab.svg', lon: 141.5, lat: 43.8, mode: 'bob', s: 1.0, sea: true, deco: true }, // 北海道帝王蟹
+        { src: 'critters/dalai-lama.svg', lon: 91.12, lat: 29.65, mode: 'still', face: 'F', s: 1.0, deco: true }, // 達賴喇嘛
     ];
     // 原住民小人（natives.js）：該國主要指數漲就歡呼跳舞、跌就沮喪哭泣，平盤時散步 / 揮手 / 眨眼
     // mode 'folk'；market = 看哪個指數；ox / oy = 相對位置點的偏移（單位：小角色基準大小）；minK = 縮小到這個倍率以下就收起來
