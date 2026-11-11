@@ -5143,6 +5143,25 @@
         // 小角色比市場動物大一點，世界視角也看得出在做什麼
         if (!desktopMQ.matches) placeFolk(rects.concat([...vis.values()].filter((o) => o.b).map((o) => o.b.r)), true);
         const lmPlaced = []; // 已顯示的地標框：擠在一起時前面的優先，後面的等放大再出現，避免互相蓋住
+        // 全域裝飾物總量上限：地標、動物、人物、船艦全部放在一起評比，縮到接近全球視角時最多同時顯示
+        // LOD_MIN 個（使用者自訂的「不會lag」基準值，可調），放大到 LOD_FULL_K 倍以上就不再限制數量
+        // （畫面本來就塞不下那麼多，其它規則會自然篩掉）。只有一般裝飾物件會被這層限制，原住民小人
+        // （folk）是另一套避讓邏輯，不受影響。
+        const LOD_MIN = 100;
+        const LOD_FULL_K = 3;
+        const lodBudget = k >= LOD_FULL_K ? Infinity : Math.round(LOD_MIN + (k - 1) * ((critters.length - LOD_MIN) / (LOD_FULL_K - 1)));
+        // 優先層級：地標（世界奇觀等）> 有名有姓的人物／船艦／科技里程碑 > 一般代表性動物
+        const LOD_TIER2_CATS = new Set([
+            '人物文化', '歷史', '歷史人物', '歷史人物／科學家', '體育／籃球', '體育／棒球',
+            '體育／拳擊', '體育／賽車', '船艦', '科技', '神話傳說', '傳說生物',
+        ]);
+        const lodTips = window.CRITTER_TIPS || {};
+        const critterPri = (c) => {
+            if (c.d.landmark) return 3;
+            const cat = lodTips[c.d.src] && lodTips[c.d.src][2];
+            return cat && LOD_TIER2_CATS.has(cat) ? 2 : 1;
+        };
+        const recs = [];
         for (const c of critters) {
             const folk = c.d.mode === 'folk';
             const fs = folk ? folkShift.get(c.d.market) : null;
@@ -5169,6 +5188,30 @@
                 (!folk && !c.d.landmark && rects.some((q) => !(c.d.deco && q.an) && inter(r, q) / (r.w * r.h) > 0.15)) ||
                 (c.d.landmark && lmPlaced.some((q) => inter(lr, q) / (lr.w * lr.h) > 0.55));
             if (!hide && c.d.landmark) lmPlaced.push(lr);
+            recs.push({ c, folk, fs, size, sp, z, x0, y0, x, y, hide });
+        }
+        // 套用全域總量上限：不是「地標先搶完名額，動物/人物完全沒機會」的硬排序——世界地標有 155 個，
+        // 單獨就會超過預設的 100 個上限，所以改用「每個層級保留一定配額」：地標最多拿 70%，人物/船艦等
+        // 有名有姓的最多拿 20%，其餘一般代表動物拿剩下的；某層候選不夠就把名額讓給下一層，名額不會浪費。
+        // 配額內用固定雜湊挑選，避免永遠都是陣列裡最早加入的那幾個佔滿名額，結果穩定、不會每幀閃爍
+        const budgetPool = recs.filter((rec) => !rec.folk && !rec.hide);
+        if (budgetPool.length > lodBudget) {
+            const byTier = { 3: [], 2: [], 1: [] };
+            for (const rec of budgetPool) byTier[critterPri(rec.c)].push(rec);
+            for (const tier of [3, 2, 1]) byTier[tier].sort((a, b) => hash(a.c.d.src) - hash(b.c.d.src));
+            const SHARE = { 3: 0.7, 2: 0.2, 1: 0.1 };
+            let remaining = lodBudget,
+                carry = 0;
+            for (const tier of [3, 2, 1]) {
+                const quota = Math.round(lodBudget * SHARE[tier]) + carry;
+                const take = Math.min(quota, byTier[tier].length, remaining);
+                byTier[tier].slice(take).forEach((rec) => (rec.hide = true));
+                remaining -= take;
+                carry = quota - take; // 這層名額沒用完，讓給下一層
+            }
+        }
+        for (const rec of recs) {
+            const { c, folk, fs, size, sp, z, x0, y0, x, y, hide } = rec;
             c.vis = !hide;
             c.size = z;
             c.sx = x;
