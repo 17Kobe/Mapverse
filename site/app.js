@@ -592,7 +592,7 @@
         { src: 'critters/guilin-karst.svg', lon: 110.3, lat: 25.27, mode: 'bob', s: 1.1, sea: true, deco: true, landmark: true }, // 中國：桂林山水與竹筏
         // ── 第十二批補充（用戶列的清單：主題樂園、K-pop、中國景點、南北美洲、俄羅斯） ──
         { src: 'critters/universal-studios-osaka.svg', lon: 134.468, lat: 35.527, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 日本：大阪環球影城：原座標跟大阪城太近，實測要放到 k>=9 才會出現，拉開距離修正
-        { src: 'critters/tokyo-disneyland.svg', lon: 141.669, lat: 36.531, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 日本：東京迪士尼樂園：原座標跟東京鐵塔太近，實測要放到 k>=17.5 才會出現，拉開距離修正
+        { src: 'critters/tokyo-disneyland.svg', lon: 140.15, lat: 35.75, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 日本：東京迪士尼樂園：改放在真實的東京灣千葉縣位置附近，同時跟東京鐵塔、雷門保持安全距離
         { src: 'critters/lotte-world-tower.svg', lon: 128.519, lat: 36.794, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 南韓：樂天世界塔：原座標跟首爾一帶地標太近，實測要放到 k>=9.5 才會出現，拉開距離修正
         { src: 'critters/kpop-concert.svg', lon: 126.0, lat: 36.2, mode: 'still', face: 'F', s: 1.0, deco: true }, // 南韓：K-pop 演唱會
         { src: 'critters/mogao-crescent-lake.svg', lon: 94.66, lat: 40.03, mode: 'still', face: 'F', s: 1.1, sea: true, deco: true, landmark: true }, // 中國：敦煌莫高窟及月牙泉
@@ -609,6 +609,38 @@
         { src: 'critters/moscow-red-square.svg', lon: 38.3, lat: 56.6, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true }, // 俄羅斯：莫斯科紅場
         { src: 'critters/russian-matryoshka.svg', lon: 48.0, lat: 57.5, mode: 'still', face: 'F', s: 1.0, deco: true }, // 俄羅斯：傳統套娃
         { src: 'critters/lake-baikal-ice-railway.svg', lon: 104.3, lat: 53.5, mode: 'still', face: 'F', s: 1.1, sea: true, deco: true, landmark: true }, // 俄羅斯：貝加爾湖與結冰鐵道
+        { src: 'critters/fram-polar-ship.svg', lon: 15, lat: 78, mode: 'bob', s: 1.0, sea: true, deco: true }, // 極地探險船・前進號
+        { src: 'critters/evergreen-container-ship.svg', lon: 120.3, lat: 24, mode: 'boat', s: 1.0, sea: true, deco: true }, // 長榮海運貨櫃輪
+        { src: 'critters/rms-olympic.svg', lon: -40, lat: 48, mode: 'boat', s: 1.0, sea: true, deco: true }, // 奧林匹克號
+        { src: 'critters/venice-gondola.svg', lon: 12.5, lat: 45.5, mode: 'boat', s: 1.0, sea: true, deco: true }, // 威尼斯貢多拉
+        { src: 'critters/nile-felucca.svg', lon: 32.64, lat: 25.69, mode: 'boat', s: 1.0, sea: true, deco: true }, // 尼羅河路卡索帆船
+        { src: 'critters/viking-longship.svg', lon: 6.5, lat: 61, mode: 'boat', s: 1.0, sea: true, deco: true }, // 維京龍頭長船
+        { src: 'critters/greek-trireme.svg', lon: 24, lat: 37.5, mode: 'boat', s: 1.0, sea: true, deco: true }, // 希臘三列槳座戰船
+        { src: 'critters/haikou-arcade-street.svg', lon: 110.35, lat: 20.02, mode: 'still', face: 'F', s: 1.0, deco: true, landmark: true }, // 海口騎樓老街
+        { src: 'critters/hongkong-skyline.svg', lon: 114.05, lat: 22.35, mode: 'still', face: 'F', s: 1.0, sea: true, deco: true, landmark: true }, // 香港摩天大樓群
+        { src: 'critters/hakodate-night-view.svg', lon: 140.73, lat: 41.76, mode: 'still', face: 'F', s: 1.0, sea: true, deco: true, landmark: true }, // 函館山夜景纜車
+        { src: 'critters/harbin-ice-world.svg', lon: 126.6, lat: 45.75, mode: 'still', face: 'F', s: 1.0, deco: true, landmark: true }, // 哈爾濱冰雪大世界
+        { src: 'critters/red-crowned-crane.svg', lon: 144.3, lat: 43.3, mode: 'wander', s: 1.0, deco: true, maxDeg: 2 }, // 丹頂鶴
+        { src: 'critters/siberian-tiger.svg', lon: 130.5, lat: 45, mode: 'wander', s: 1.0, deco: true, maxDeg: 2 }, // 東北虎
+        { src: 'critters/genghis-khan.svg', lon: 106.9, lat: 47.9, mode: 'still', face: 'F', s: 1.0, deco: true }, // 成吉思汗
+        { src: 'critters/abraham-lincoln.svg', lon: -77, lat: 38.9, mode: 'still', face: 'F', s: 1.0, deco: true }, // 亞伯拉罕·林肯
+        { src: 'critters/marco-polo.svg', lon: 11, lat: 44.5, mode: 'still', face: 'F', s: 1.0, deco: true }, // 馬可·波羅
+        { src: 'critters/napoleon-bonaparte.svg', lon: 1.5, lat: 48, mode: 'still', face: 'F', s: 1.0, deco: true }, // 拿破崙·波拿巴
+        { src: 'critters/william-shakespeare.svg', lon: -1.7, lat: 52.2, mode: 'still', face: 'F', s: 1.0, deco: true }, // 威廉·莎士比亞
+        { src: 'critters/mahatma-gandhi.svg', lon: 69.6, lat: 21.64, mode: 'still', face: 'F', s: 1.0, deco: true }, // 聖雄甘地
+        { src: 'critters/confucius.svg', lon: 117, lat: 35.6, mode: 'still', face: 'F', s: 1.0, deco: true }, // 孔子
+        { src: 'critters/leonardo-da-vinci.svg', lon: 10.93, lat: 43.78, mode: 'still', face: 'F', s: 1.0, deco: true }, // 李奧納多·達文西
+        { src: 'critters/aristotle.svg', lon: 23.55, lat: 40.57, mode: 'still', face: 'F', s: 1.0, deco: true }, // 亞里斯多德
+        { src: 'critters/michelangelo.svg', lon: 12.5, lat: 41.9, mode: 'still', face: 'F', s: 1.0, deco: true }, // 米開朗基羅
+        { src: 'critters/isaac-newton.svg', lon: -0.63, lat: 52.8, mode: 'still', face: 'F', s: 1.0, deco: true }, // 伊薩克·牛頓
+        { src: 'critters/albert-einstein.svg', lon: 9.99, lat: 48.4, mode: 'still', face: 'F', s: 1.0, deco: true }, // 愛因斯坦
+        { src: 'critters/thomas-edison.svg', lon: -74.5, lat: 41, mode: 'still', face: 'F', s: 1.0, deco: true }, // 湯瑪斯·愛迪生
+        { src: 'critters/nikola-tesla.svg', lon: -79.07, lat: 43.08, mode: 'still', face: 'F', s: 1.0, deco: true }, // 尼古拉·特斯拉
+        { src: 'critters/michael-jordan.svg', lon: -87.65, lat: 41.88, mode: 'still', face: 'F', s: 1.0, deco: true }, // 麥可·喬丹
+        { src: 'critters/babe-ruth.svg', lon: -76.6, lat: 39.28, mode: 'still', face: 'F', s: 1.0, deco: true }, // 貝比·魯斯
+        { src: 'critters/shohei-ohtani.svg', lon: 141.13, lat: 39.14, mode: 'still', face: 'F', s: 1.0, deco: true }, // 大谷翔平
+        { src: 'critters/muhammad-ali.svg', lon: -85.76, lat: 38.25, mode: 'still', face: 'F', s: 1.0, deco: true }, // 穆罕默德·阿里
+        { src: 'critters/michael-schumacher.svg', lon: 6.65, lat: 50.87, mode: 'still', face: 'F', s: 1.0, deco: true }, // 麥可·舒馬赫
     ];
     // 原住民小人（natives.js）：該國主要指數漲就歡呼跳舞、跌就沮喪哭泣，平盤時散步 / 揮手 / 眨眼
     // mode 'folk'；market = 看哪個指數；ox / oy = 相對位置點的偏移（單位：小角色基準大小）；minK = 縮小到這個倍率以下就收起來

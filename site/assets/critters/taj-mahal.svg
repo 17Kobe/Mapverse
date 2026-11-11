@@ -8,6 +8,10 @@
       <stop offset="0%" stop-color="#3a2a1a"/>
       <stop offset="100%" stop-color="#1e150a"/>
     </linearGradient>
+    <linearGradient id="tj-pool" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#9fcfe3"/>
+      <stop offset="100%" stop-color="#4a8aab"/>
+    </linearGradient>
   </defs>
 
   <!-- ── 四角獨立尖塔 ─────────────────────────── -->
@@ -92,8 +96,18 @@
   <rect x="50" y="51" width="5" height="7" rx="0" fill="#c9a86c" opacity="0.5"/>
   <ellipse cx="52.5" cy="51" rx="2.5" ry="2" fill="#c9a86c" opacity="0.5"/>
 
-  <!-- ── 倒映池：細藍線 ────────────────────────── -->
-  <line x1="22" y1="68" x2="58" y2="68" stroke="#7ab8d8" stroke-width="2.2" stroke-linecap="round"/>
-  <line x1="25" y1="72" x2="55" y2="72" stroke="#7ab8d8" stroke-width="1.4" stroke-linecap="round" opacity="0.6"/>
-  <line x1="29" y1="75.5" x2="51" y2="75.5" stroke="#7ab8d8" stroke-width="1" stroke-linecap="round" opacity="0.4"/>
+  <!-- ── 倒映池：直接貼齊主殿底部往下鋪滿到畫面底，消除「建築飄浮」的空隙 ────────────────────────── -->
+  <path d="M8,58 L72,58 L76,79 L4,79 Z" fill="url(#tj-pool)" stroke="#3f7891" stroke-width="0.4"/>
+  <!-- 倒映的圓頂輪廓，淡化疊在池面上 -->
+  <path d="M40,58 C45,58 49,61 49,65 C49,68 46,70 44,71 C46,71 48,72 48,73 C48,74 45,75 40,75 C35,75 32,74 32,73 C32,72 34,71 36,71 C34,70 31,68 31,65 C31,61 35,58 40,58 Z"
+        fill="#cfe6f0" opacity="0.4"/>
+  <line x1="12" y1="63" x2="68" y2="63" stroke="#d6eef7" stroke-width="1" stroke-linecap="round" opacity="0.5">
+    <animate attributeName="opacity" values="0.25;0.55;0.25" dur="2.6s" repeatCount="indefinite"/>
+  </line>
+  <line x1="10" y1="70" x2="70" y2="70" stroke="#d6eef7" stroke-width="1.2" stroke-linecap="round" opacity="0.4">
+    <animate attributeName="opacity" values="0.5;0.2;0.5" dur="3.1s" repeatCount="indefinite"/>
+  </line>
+  <line x1="7" y1="76" x2="73" y2="76" stroke="#d6eef7" stroke-width="1.4" stroke-linecap="round" opacity="0.35">
+    <animate attributeName="opacity" values="0.2;0.5;0.2" dur="2.3s" repeatCount="indefinite"/>
+  </line>
 </svg>

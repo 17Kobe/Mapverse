@@ -40,41 +40,41 @@
 <ellipse cx="40" cy="47" rx="2.2" ry="1.8" fill="#e8d24a" stroke="#8a7a1f" stroke-width="0.4"/>
 <ellipse cx="50" cy="33" rx="2" ry="1.6" fill="#e8d24a" stroke="#8a7a1f" stroke-width="0.4"/>
 
-<!-- 頭 -->
-<circle cx="20" cy="30" r="10" fill="url(#chamHead)" stroke="#1f4a33" stroke-width="0.7"/>
+<!-- 頭：楔形吻部 + 頭盔狀稜脊（casque），比圓球頭更像變色龍 -->
+<path d="M30,22 C34,26 33,36 27,40 Q17,43 8,38 Q3,34 6,29 Q9,25 16,24 L22,20 Q27,18 30,22 Z" fill="url(#chamHead)" stroke="#1f4a33" stroke-width="0.7"/>
 
-<!-- 頭頂角狀突起 -->
-<path d="M14,20 Q19,7 25,20 Z" fill="#2f7a56" stroke="#163926" stroke-width="0.6"/>
+<!-- 頭盔狀稜脊（casque） -->
+<path d="M22,21 Q24,10 31,13 Q33,17 29,22 Q25,20 22,21 Z" fill="#2f7a56" stroke="#163926" stroke-width="0.6"/>
 
 <!-- 嘴巴 -->
-<path d="M9,32 Q12,35 15,33" fill="none" stroke="#163926" stroke-width="1" stroke-linecap="round"/>
+<path d="M5,33 Q8,36 12,34" fill="none" stroke="#163926" stroke-width="1" stroke-linecap="round"/>
 
 <!-- 眼睛（突出大眼，可朝不同方向看） -->
-<circle cx="16" cy="27" r="5.5" fill="#f3f3e6" stroke="#1f4a33" stroke-width="0.6"/>
-<circle cx="17" cy="27" r="2.8" fill="#1a1a1a">
-  <animate attributeName="cx" values="17;19;15;17" dur="4s" repeatCount="indefinite"/>
-  <animate attributeName="cy" values="27;25;29;27" dur="4s" repeatCount="indefinite"/>
+<circle cx="15" cy="29" r="5.2" fill="#f3f3e6" stroke="#1f4a33" stroke-width="0.6"/>
+<circle cx="16" cy="29" r="2.6" fill="#1a1a1a">
+  <animate attributeName="cx" values="16;18;14;16" dur="4s" repeatCount="indefinite"/>
+  <animate attributeName="cy" values="29;27;31;29" dur="4s" repeatCount="indefinite"/>
 </circle>
 
 <!-- 舌頭（伸縮抓蟲動畫） -->
-<line x1="9" y1="32" x2="9" y2="32" stroke="#ff6f91" stroke-width="2.2" stroke-linecap="round">
-  <animate attributeName="x2" values="9;0;0;9;9" keyTimes="0;0.3;0.45;0.6;1" dur="3s" repeatCount="indefinite"/>
-  <animate attributeName="y2" values="32;27;27;32;32" keyTimes="0;0.3;0.45;0.6;1" dur="3s" repeatCount="indefinite"/>
+<line x1="5" y1="33" x2="5" y2="33" stroke="#ff6f91" stroke-width="2.2" stroke-linecap="round">
+  <animate attributeName="x2" values="5;0;0;5;5" keyTimes="0;0.3;0.45;0.6;1" dur="3s" repeatCount="indefinite"/>
+  <animate attributeName="y2" values="33;28;28;33;33" keyTimes="0;0.3;0.45;0.6;1" dur="3s" repeatCount="indefinite"/>
 </line>
-<circle cx="9" cy="32" r="2" fill="#e8405f" stroke="#8f1f36" stroke-width="0.4">
-  <animate attributeName="cx" values="9;0;0;9;9" keyTimes="0;0.3;0.45;0.6;1" dur="3s" repeatCount="indefinite"/>
-  <animate attributeName="cy" values="32;27;27;32;32" keyTimes="0;0.3;0.45;0.6;1" dur="3s" repeatCount="indefinite"/>
+<circle cx="5" cy="33" r="2" fill="#e8405f" stroke="#8f1f36" stroke-width="0.4">
+  <animate attributeName="cx" values="5;0;0;5;5" keyTimes="0;0.3;0.45;0.6;1" dur="3s" repeatCount="indefinite"/>
+  <animate attributeName="cy" values="33;28;28;33;33" keyTimes="0;0.3;0.45;0.6;1" dur="3s" repeatCount="indefinite"/>
 </circle>
 
 <!-- 被抓的小蟲 -->
 <g>
-  <ellipse cx="3" cy="28" rx="2.2" ry="1.5" fill="#3a2a1a" stroke="#1c140d" stroke-width="0.4">
+  <ellipse cx="1.5" cy="29" rx="2" ry="1.4" fill="#3a2a1a" stroke="#1c140d" stroke-width="0.4">
     <animate attributeName="opacity" values="1;1;0;0;1" keyTimes="0;0.3;0.45;0.6;1" dur="3s" repeatCount="indefinite"/>
   </ellipse>
-  <line x1="2" y1="27" x2="0" y2="25" stroke="#3a2a1a" stroke-width="0.7">
+  <line x1="0.5" y1="28" x2="-1" y2="26" stroke="#3a2a1a" stroke-width="0.6">
     <animate attributeName="opacity" values="1;1;0;0;1" keyTimes="0;0.3;0.45;0.6;1" dur="3s" repeatCount="indefinite"/>
   </line>
-  <line x1="4" y1="27" x2="6" y2="25" stroke="#3a2a1a" stroke-width="0.7">
+  <line x1="2.5" y1="28" x2="4" y2="26" stroke="#3a2a1a" stroke-width="0.6">
     <animate attributeName="opacity" values="1;1;0;0;1" keyTimes="0;0.3;0.45;0.6;1" dur="3s" repeatCount="indefinite"/>
   </line>
 </g>

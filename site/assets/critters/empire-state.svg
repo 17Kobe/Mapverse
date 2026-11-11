@@ -1,9 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
   <defs>
-    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#8fb3d9" stop-opacity="0"/>
-      <stop offset="100%" stop-color="#8fb3d9" stop-opacity="0"/>
-    </linearGradient>
     <linearGradient id="stoneMain" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0%" stop-color="#9c8a72"/>
       <stop offset="45%" stop-color="#cdbda0"/>
@@ -30,131 +26,111 @@
       <stop offset="55%" stop-color="#ffd84d" stop-opacity="0.55"/>
       <stop offset="100%" stop-color="#ffd84d" stop-opacity="0"/>
     </radialGradient>
-    <linearGradient id="groundShadow" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#3a332b" stop-opacity="0.35"/>
-      <stop offset="100%" stop-color="#3a332b" stop-opacity="0"/>
-    </linearGradient>
   </defs>
 
   <!-- soft base shadow anchoring to ground -->
-  <ellipse cx="40" cy="78" rx="26" ry="3.6" fill="#2d2823" opacity="0.28"/>
+  <ellipse cx="40" cy="78" rx="24" ry="3.4" fill="#2d2823" opacity="0.28"/>
 
-  <!-- neighbouring low buildings for scale (reach near bottom too) -->
-  <rect x="4" y="60" width="12" height="19" fill="#6b6f78" opacity="0.8"/>
-  <rect x="6" y="63" width="2" height="2" fill="#dcdfe6" opacity="0.6"/>
-  <rect x="10" y="63" width="2" height="2" fill="#dcdfe6" opacity="0.6"/>
-  <rect x="6" y="68" width="2" height="2" fill="#dcdfe6" opacity="0.6"/>
-  <rect x="10" y="68" width="2" height="2" fill="#dcdfe6" opacity="0.6"/>
-  <rect x="64" y="55" width="13" height="24" fill="#5f6570" opacity="0.8"/>
-  <rect x="67" y="59" width="2" height="2" fill="#dcdfe6" opacity="0.5"/>
-  <rect x="72" y="59" width="2" height="2" fill="#dcdfe6" opacity="0.5"/>
-  <rect x="67" y="64" width="2" height="2" fill="#dcdfe6" opacity="0.5"/>
-  <rect x="72" y="64" width="2" height="2" fill="#dcdfe6" opacity="0.5"/>
-  <rect x="67" y="69" width="2" height="2" fill="#dcdfe6" opacity="0.5"/>
-  <rect x="72" y="69" width="2" height="2" fill="#dcdfe6" opacity="0.5"/>
+  <!-- neighbouring low buildings for scale, kept further out so the tower itself reads narrow -->
+  <rect x="2" y="62" width="10" height="17" fill="#6b6f78" opacity="0.8"/>
+  <rect x="4" y="65" width="1.8" height="1.8" fill="#dcdfe6" opacity="0.6"/>
+  <rect x="7.5" y="65" width="1.8" height="1.8" fill="#dcdfe6" opacity="0.6"/>
+  <rect x="4" y="70" width="1.8" height="1.8" fill="#dcdfe6" opacity="0.6"/>
+  <rect x="7.5" y="70" width="1.8" height="1.8" fill="#dcdfe6" opacity="0.6"/>
+  <rect x="68" y="58" width="11" height="21" fill="#5f6570" opacity="0.8"/>
+  <rect x="70.5" y="61" width="1.8" height="1.8" fill="#dcdfe6" opacity="0.5"/>
+  <rect x="75" y="61" width="1.8" height="1.8" fill="#dcdfe6" opacity="0.5"/>
+  <rect x="70.5" y="66" width="1.8" height="1.8" fill="#dcdfe6" opacity="0.5"/>
+  <rect x="75" y="66" width="1.8" height="1.8" fill="#dcdfe6" opacity="0.5"/>
+  <rect x="70.5" y="71" width="1.8" height="1.8" fill="#dcdfe6" opacity="0.5"/>
+  <rect x="75" y="71" width="1.8" height="1.8" fill="#dcdfe6" opacity="0.5"/>
 
-  <!-- base wide tier -->
-  <path d="M19 79 L19 50 L61 50 L61 79 Z" fill="url(#stoneMain)" stroke="#5f5346" stroke-width="0.5"/>
-  <!-- base setback cap -->
-  <path d="M17 50 L63 50 L59 46 L21 46 Z" fill="url(#stoneMid)" stroke="#5f5346" stroke-width="0.4"/>
+  <!-- base tier: narrowed so the tower reads tall, not stocky -->
+  <path d="M27 79 L27 50 L53 50 L53 79 Z" fill="url(#stoneMain)" stroke="#5f5346" stroke-width="0.5"/>
+  <path d="M25 50 L55 50 L51 46 L29 46 Z" fill="url(#stoneMid)" stroke="#5f5346" stroke-width="0.4"/>
 
   <!-- window grid on base -->
   <g fill="#3c4450" opacity="0.55">
-    <rect x="22" y="53" width="2.3" height="3.2"/>
-    <rect x="26.3" y="53" width="2.3" height="3.2"/>
-    <rect x="30.6" y="53" width="2.3" height="3.2"/>
-    <rect x="34.9" y="53" width="2.3" height="3.2"/>
-    <rect x="39.2" y="53" width="2.3" height="3.2"/>
-    <rect x="43.5" y="53" width="2.3" height="3.2"/>
-    <rect x="47.8" y="53" width="2.3" height="3.2"/>
-    <rect x="52.1" y="53" width="2.3" height="3.2"/>
-    <rect x="56.4" y="53" width="2.3" height="3.2"/>
+    <rect x="29.3" y="53" width="1.8" height="3"/>
+    <rect x="32.6" y="53" width="1.8" height="3"/>
+    <rect x="35.9" y="53" width="1.8" height="3"/>
+    <rect x="39.2" y="53" width="1.8" height="3"/>
+    <rect x="42.5" y="53" width="1.8" height="3"/>
+    <rect x="45.8" y="53" width="1.8" height="3"/>
+    <rect x="49.1" y="53" width="1.8" height="3"/>
 
-    <rect x="22" y="59" width="2.3" height="3.2"/>
-    <rect x="26.3" y="59" width="2.3" height="3.2"/>
-    <rect x="30.6" y="59" width="2.3" height="3.2"/>
-    <rect x="34.9" y="59" width="2.3" height="3.2"/>
-    <rect x="39.2" y="59" width="2.3" height="3.2"/>
-    <rect x="43.5" y="59" width="2.3" height="3.2"/>
-    <rect x="47.8" y="59" width="2.3" height="3.2"/>
-    <rect x="52.1" y="59" width="2.3" height="3.2"/>
-    <rect x="56.4" y="59" width="2.3" height="3.2"/>
+    <rect x="29.3" y="59" width="1.8" height="3"/>
+    <rect x="32.6" y="59" width="1.8" height="3"/>
+    <rect x="35.9" y="59" width="1.8" height="3"/>
+    <rect x="39.2" y="59" width="1.8" height="3"/>
+    <rect x="42.5" y="59" width="1.8" height="3"/>
+    <rect x="45.8" y="59" width="1.8" height="3"/>
+    <rect x="49.1" y="59" width="1.8" height="3"/>
 
-    <rect x="22" y="65" width="2.3" height="3.2"/>
-    <rect x="26.3" y="65" width="2.3" height="3.2"/>
-    <rect x="30.6" y="65" width="2.3" height="3.2"/>
-    <rect x="34.9" y="65" width="2.3" height="3.2"/>
-    <rect x="39.2" y="65" width="2.3" height="3.2"/>
-    <rect x="43.5" y="65" width="2.3" height="3.2"/>
-    <rect x="47.8" y="65" width="2.3" height="3.2"/>
-    <rect x="52.1" y="65" width="2.3" height="3.2"/>
-    <rect x="56.4" y="65" width="2.3" height="3.2"/>
+    <rect x="29.3" y="65" width="1.8" height="3"/>
+    <rect x="32.6" y="65" width="1.8" height="3"/>
+    <rect x="35.9" y="65" width="1.8" height="3"/>
+    <rect x="39.2" y="65" width="1.8" height="3"/>
+    <rect x="42.5" y="65" width="1.8" height="3"/>
+    <rect x="45.8" y="65" width="1.8" height="3"/>
+    <rect x="49.1" y="65" width="1.8" height="3"/>
 
-    <rect x="22" y="71" width="2.3" height="3.2"/>
-    <rect x="26.3" y="71" width="2.3" height="3.2"/>
-    <rect x="30.6" y="71" width="2.3" height="3.2"/>
-    <rect x="34.9" y="71" width="2.3" height="3.2"/>
-    <rect x="39.2" y="71" width="2.3" height="3.2"/>
-    <rect x="43.5" y="71" width="2.3" height="3.2"/>
-    <rect x="47.8" y="71" width="2.3" height="3.2"/>
-    <rect x="52.1" y="71" width="2.3" height="3.2"/>
-    <rect x="56.4" y="71" width="2.3" height="3.2"/>
+    <rect x="29.3" y="71" width="1.8" height="3"/>
+    <rect x="32.6" y="71" width="1.8" height="3"/>
+    <rect x="35.9" y="71" width="1.8" height="3"/>
+    <rect x="39.2" y="71" width="1.8" height="3"/>
+    <rect x="42.5" y="71" width="1.8" height="3"/>
+    <rect x="45.8" y="71" width="1.8" height="3"/>
+    <rect x="49.1" y="71" width="1.8" height="3"/>
   </g>
 
   <!-- second tier (stepped setback) -->
-  <path d="M24 46 L24 32 L56 32 L56 46 Z" fill="url(#stoneMain)" stroke="#5f5346" stroke-width="0.45"/>
-  <path d="M22 32 L58 32 L54 28 L26 28 Z" fill="url(#stoneMid)" stroke="#5f5346" stroke-width="0.35"/>
+  <path d="M30 46 L30 32 L50 32 L50 46 Z" fill="url(#stoneMain)" stroke="#5f5346" stroke-width="0.45"/>
+  <path d="M28.5 32 L51.5 32 L48 28 L32 28 Z" fill="url(#stoneMid)" stroke="#5f5346" stroke-width="0.35"/>
   <g fill="#3c4450" opacity="0.55">
-    <rect x="26.5" y="35" width="2" height="2.8"/>
-    <rect x="30" y="35" width="2" height="2.8"/>
-    <rect x="33.5" y="35" width="2" height="2.8"/>
-    <rect x="37" y="35" width="2" height="2.8"/>
-    <rect x="40.5" y="35" width="2" height="2.8"/>
-    <rect x="44" y="35" width="2" height="2.8"/>
-    <rect x="47.5" y="35" width="2" height="2.8"/>
-    <rect x="51" y="35" width="2" height="2.8"/>
+    <rect x="32" y="35" width="1.6" height="2.6"/>
+    <rect x="34.9" y="35" width="1.6" height="2.6"/>
+    <rect x="37.8" y="35" width="1.6" height="2.6"/>
+    <rect x="40.7" y="35" width="1.6" height="2.6"/>
+    <rect x="43.6" y="35" width="1.6" height="2.6"/>
+    <rect x="46.5" y="35" width="1.6" height="2.6"/>
 
-    <rect x="26.5" y="40" width="2" height="2.8"/>
-    <rect x="30" y="40" width="2" height="2.8"/>
-    <rect x="33.5" y="40" width="2" height="2.8"/>
-    <rect x="37" y="40" width="2" height="2.8"/>
-    <rect x="40.5" y="40" width="2" height="2.8"/>
-    <rect x="44" y="40" width="2" height="2.8"/>
-    <rect x="47.5" y="40" width="2" height="2.8"/>
-    <rect x="51" y="40" width="2" height="2.8"/>
+    <rect x="32" y="40" width="1.6" height="2.6"/>
+    <rect x="34.9" y="40" width="1.6" height="2.6"/>
+    <rect x="37.8" y="40" width="1.6" height="2.6"/>
+    <rect x="40.7" y="40" width="1.6" height="2.6"/>
+    <rect x="43.6" y="40" width="1.6" height="2.6"/>
+    <rect x="46.5" y="40" width="1.6" height="2.6"/>
   </g>
 
   <!-- third tier -->
-  <path d="M29 28 L29 18 L51 18 L51 28 Z" fill="url(#stoneMid)" stroke="#5f5346" stroke-width="0.4"/>
-  <path d="M27.5 18 L52.5 18 L49.5 15 L30.5 15 Z" fill="url(#stoneTop)" stroke="#5f5346" stroke-width="0.3"/>
+  <path d="M33.5 28 L33.5 18 L46.5 18 L46.5 28 Z" fill="url(#stoneMid)" stroke="#5f5346" stroke-width="0.4"/>
+  <path d="M32.5 18 L47.5 18 L45 15 L35 15 Z" fill="url(#stoneTop)" stroke="#5f5346" stroke-width="0.3"/>
   <g fill="#3c4450" opacity="0.5">
-    <rect x="31" y="21" width="1.8" height="2.5"/>
-    <rect x="34" y="21" width="1.8" height="2.5"/>
-    <rect x="37" y="21" width="1.8" height="2.5"/>
-    <rect x="40" y="21" width="1.8" height="2.5"/>
-    <rect x="43" y="21" width="1.8" height="2.5"/>
-    <rect x="46" y="21" width="1.8" height="2.5"/>
+    <rect x="35.5" y="21" width="1.4" height="2.3"/>
+    <rect x="38" y="21" width="1.4" height="2.3"/>
+    <rect x="40.5" y="21" width="1.4" height="2.3"/>
+    <rect x="43" y="21" width="1.4" height="2.3"/>
   </g>
 
   <!-- narrow tower top -->
-  <path d="M33 15 L33 8 L47 8 L47 15 Z" fill="url(#stoneTop)" stroke="#574c3f" stroke-width="0.35"/>
-  <path d="M35 8 L45 8 L43 5 L37 5 Z" fill="url(#stoneTop)" stroke="#574c3f" stroke-width="0.3"/>
+  <path d="M36.5 15 L36.5 8 L43.5 8 L43.5 15 Z" fill="url(#stoneTop)" stroke="#574c3f" stroke-width="0.35"/>
+  <path d="M37.5 8 L42.5 8 L41 5 L39 5 Z" fill="url(#stoneTop)" stroke="#574c3f" stroke-width="0.3"/>
 
   <!-- spire antenna -->
-  <path d="M38.3 5 L38.9 -1 L41.1 -1 L41.7 5 Z" fill="url(#spireGrad)" stroke="#2f2a24" stroke-width="0.3" transform="translate(0,1)"/>
-  <line x1="40" y1="3" x2="40" y2="-7" stroke="url(#spireGrad)" stroke-width="1" stroke-linecap="round"/>
+  <line x1="40" y1="5" x2="40" y2="-7" stroke="url(#spireGrad)" stroke-width="1" stroke-linecap="round"/>
 
   <!-- beacon glow -->
-  <circle cx="40" cy="-6" r="5.5" fill="url(#beacon)">
-    <animate attributeName="r" values="4.5;6.5;4.5" dur="2.2s" repeatCount="indefinite"/>
+  <circle cx="40" cy="-6" r="5" fill="url(#beacon)">
+    <animate attributeName="r" values="4;5.8;4" dur="2.2s" repeatCount="indefinite"/>
     <animate attributeName="opacity" values="0.6;1;0.6" dur="2.2s" repeatCount="indefinite"/>
   </circle>
-  <circle cx="40" cy="-6.3" r="1.1" fill="#fff9df">
+  <circle cx="40" cy="-6.3" r="1" fill="#fff9df">
     <animate attributeName="opacity" values="0.7;1;0.7" dur="2.2s" repeatCount="indefinite"/>
   </circle>
 
   <!-- subtle facade light sheen sweep -->
-  <rect x="19" y="46" width="42" height="33" fill="#ffffff" opacity="0">
+  <rect x="27" y="46" width="26" height="33" fill="#ffffff" opacity="0">
     <animate attributeName="opacity" values="0;0.05;0" dur="4s" repeatCount="indefinite"/>
   </rect>
 </svg>

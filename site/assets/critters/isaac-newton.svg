@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="nwCoat" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2e3a52"/>
+      <stop offset="1" stop-color="#19202e"/>
+    </linearGradient>
+    <radialGradient id="nwFace" cx="0.5" cy="0.35" r="0.65">
+      <stop offset="0" stop-color="#f1c49a"/>
+      <stop offset="1" stop-color="#d9a876"/>
+    </radialGradient>
+    <radialGradient id="nwApple" cx="0.4" cy="0.3" r="0.7">
+      <stop offset="0" stop-color="#ef5a4a"/>
+      <stop offset="1" stop-color="#b8261c"/>
+    </radialGradient>
+  </defs>
+  <ellipse cx="34" cy="78" rx="6" ry="2.4" fill="#111318"/>
+  <ellipse cx="48" cy="78" rx="6" ry="2.4" fill="#111318"/>
+  <path d="M28 42 C23 55 20 68 22 78 L60 78 C62 68 59 55 54 42 Z" fill="url(#nwCoat)" stroke="#0e1218" stroke-width="0.4"/>
+  <path d="M40 44 L40 78" stroke="#0e1218" stroke-width="0.6"/>
+  <circle cx="40" cy="52" r="1" fill="#c9a24a"/>
+  <circle cx="40" cy="60" r="1" fill="#c9a24a"/>
+  <circle cx="40" cy="68" r="1" fill="#c9a24a"/>
+  <path d="M28 46 C20 48 16 54 16 60 L23 60 C24 54 26 50 30 47 Z" fill="url(#nwCoat)" stroke="#0e1218" stroke-width="0.4"/>
+  <path d="M54 46 C62 48 66 54 66 60 L59 60 C58 54 56 50 52 47 Z" fill="url(#nwCoat)" stroke="#0e1218" stroke-width="0.4"/>
+  <circle cx="18" cy="61" r="2.6" fill="#eac095"/>
+  <circle cx="64" cy="61" r="2.6" fill="#eac095"/>
+  <path d="M33 38 L40 44 L47 38 L44 36 L40 39 L36 36 Z" fill="#f3f0e6" stroke="#cfcab8" stroke-width="0.4"/>
+  <rect x="36" y="30" width="8" height="7" fill="#eac095"/>
+  <circle cx="40" cy="21" r="9.5" fill="url(#nwFace)" stroke="#b08858" stroke-width="0.4"/>
+  <path d="M34 18.5 Q36 17.5 38 18.5" stroke="#4a4a4a" stroke-width="0.9" fill="none"/>
+  <path d="M42 18.5 Q44 17.5 46 18.5" stroke="#4a4a4a" stroke-width="0.9" fill="none"/>
+  <path d="M34.5 21 Q36 20 37.5 21" stroke="#3a2a1a" stroke-width="0.8" fill="none"/>
+  <path d="M42.5 21 Q44 20 45.5 21" stroke="#3a2a1a" stroke-width="0.8" fill="none"/>
+  <path d="M40 20.5 L39 25.5 L41 25.5" stroke="#b08858" stroke-width="0.6" fill="none"/>
+  <path d="M35.5 28 Q40 30 44.5 28" stroke="#b08858" stroke-width="0.7" fill="none"/>
+  <path d="M26 20 C24 10 30 3 40 3 C50 3 56 10 54 20 C56 24 54 29 50 30 C52 22 50 14 46 11 C44 16 36 16 34 11 C30 14 28 22 30 30 C26 29 24 24 26 20 Z" fill="#e7e2d4" stroke="#c9c3b2" stroke-width="0.4"/>
+  <circle cx="62" cy="20" r="3.4" fill="url(#nwApple)" stroke="#8a1a14" stroke-width="0.3">
+    <animate attributeName="cy" values="14;30;14" dur="3s" repeatCount="indefinite"/>
+  </circle>
+</svg>

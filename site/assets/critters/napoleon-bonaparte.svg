@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="npCoat" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2a3f6b"/>
+      <stop offset="100%" stop-color="#121d36"/>
+    </linearGradient>
+    <linearGradient id="npVest" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f3ead8"/>
+      <stop offset="100%" stop-color="#d8c9a8"/>
+    </linearGradient>
+    <linearGradient id="npHat" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2c2c30"/>
+      <stop offset="100%" stop-color="#0a0a0c"/>
+    </linearGradient>
+    <radialGradient id="npFace" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#e7bd91"/>
+      <stop offset="100%" stop-color="#b98a5c"/>
+    </radialGradient>
+  </defs>
+
+  <ellipse cx="40" cy="77" rx="17" ry="3.4" fill="#141414" opacity="0.35"/>
+
+  <g>
+    <animateTransform attributeName="transform" type="rotate" values="-1 40 76;1 40 76;-1 40 76" dur="4.8s" repeatCount="indefinite"/>
+
+    <path d="M33,55 L31,72 L38,72 L39,58 L41,58 L42,72 L49,72 L47,55 Z" fill="url(#npVest)" stroke="#a89566" stroke-width="0.4"/>
+    <path d="M29,70 L39,70 L39,78 L28,78 Z" fill="#0a0a0a"/>
+    <path d="M41,70 L51,70 L52,78 L41,78 Z" fill="#0a0a0a"/>
+
+    <path d="M27,36 Q23,55 27,70 L34,70 L33,40 Z" fill="url(#npCoat)" stroke="#060a14" stroke-width="0.4"/>
+    <path d="M53,36 Q57,55 53,70 L46,70 L47,40 Z" fill="url(#npCoat)" stroke="#060a14" stroke-width="0.4"/>
+
+    <path d="M35,33 L45,33 L44,56 L36,56 Z" fill="url(#npVest)" stroke="#a89566" stroke-width="0.4"/>
+
+    <path d="M28,34 L33,56 L37,56 L35,36 Z" fill="url(#npCoat)" stroke="#060a14" stroke-width="0.4"/>
+    <path d="M52,34 L47,56 L43,56 L45,36 Z" fill="url(#npCoat)" stroke="#060a14" stroke-width="0.4"/>
+    <g fill="#d8b23c">
+      <circle cx="38" cy="38" r="0.9"/>
+      <circle cx="38" cy="43" r="0.9"/>
+      <circle cx="38" cy="48" r="0.9"/>
+      <circle cx="42" cy="38" r="0.9"/>
+      <circle cx="42" cy="43" r="0.9"/>
+      <circle cx="42" cy="48" r="0.9"/>
+    </g>
+
+    <path d="M29,36 C26,40 27,46 33,48 C36,47 37,44 35,41 Z" fill="url(#npCoat)" stroke="#060a14" stroke-width="0.4"/>
+    <path d="M30,44 L36,43" stroke="url(#npFace)" stroke-width="2.6" stroke-linecap="round"/>
+
+    <path d="M51,36 C55,41 56,48 54,55" fill="none" stroke="url(#npCoat)" stroke-width="4.6" stroke-linecap="round"/>
+    <ellipse cx="51" cy="35" rx="3.2" ry="1.8" fill="#d8b23c" stroke="#8a6a1a" stroke-width="0.3"/>
+
+    <rect x="37" y="27" width="6" height="6" fill="url(#npFace)"/>
+    <circle cx="40" cy="22" r="7" fill="url(#npFace)" stroke="#9a6a40" stroke-width="0.4"/>
+    <path d="M34,20 Q33,25 35,28" stroke="#3a2a1a" stroke-width="1" fill="none"/>
+    <path d="M46,20 Q47,25 45,28" stroke="#3a2a1a" stroke-width="1" fill="none"/>
+    <circle cx="37" cy="21" r="0.7" fill="#201810"/>
+    <circle cx="43" cy="21" r="0.7" fill="#201810"/>
+    <path d="M38,25 Q40,26 42,25" stroke="#9a6a40" stroke-width="0.6" fill="none"/>
+
+    <path d="M24,16 Q32,9 40,13 Q48,9 56,16 Q48,19 40,16 Q32,19 24,16 Z" fill="url(#npHat)" stroke="#000" stroke-width="0.4"/>
+    <path d="M38,13.4 Q40,11.5 42,13.4" stroke="#d8b23c" stroke-width="0.8" fill="none"/>
+  </g>
+</svg>

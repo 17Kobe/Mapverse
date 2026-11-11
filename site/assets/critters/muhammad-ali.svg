@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="alShorts" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e2362f"/>
+      <stop offset="100%" stop-color="#9c1a16"/>
+    </linearGradient>
+    <linearGradient id="alGlove" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e2362f"/>
+      <stop offset="100%" stop-color="#8a1410"/>
+    </linearGradient>
+    <linearGradient id="alShoe" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f4f1e8"/>
+      <stop offset="100%" stop-color="#c8c4b6"/>
+    </linearGradient>
+    <radialGradient id="alSkin" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#8a5a36"/>
+      <stop offset="100%" stop-color="#4a2e18"/>
+    </radialGradient>
+    <radialGradient id="alGround" cx="50%" cy="25%" r="75%">
+      <stop offset="0%" stop-color="#8a7a6a"/>
+      <stop offset="100%" stop-color="#3c3226"/>
+    </radialGradient>
+  </defs>
+
+  <ellipse cx="40" cy="77" rx="17" ry="4" fill="#15120d" opacity="0.4"/>
+  <ellipse cx="40" cy="76" rx="23" ry="6" fill="url(#alGround)" opacity="0.4"/>
+
+  <g>
+    <animateTransform attributeName="transform" type="translate" values="0,0;0,-1;0,0" dur="1s" repeatCount="indefinite"/>
+
+    <rect x="26" y="63" width="11" height="15" rx="3" fill="url(#alShoe)" stroke="#9c988a" stroke-width="0.5"/>
+    <rect x="43" y="63" width="11" height="15" rx="3" fill="url(#alShoe)" stroke="#9c988a" stroke-width="0.5"/>
+
+    <path d="M28,49 C23,54 23,60 27,64 L37,64 L37,55 L43,55 L43,64 L53,64 C57,60 57,54 52,49 Z"
+          fill="url(#alShorts)" stroke="#6e1511" stroke-width="0.5"/>
+    <rect x="27" y="49" width="26" height="3" fill="#fdfdfb"/>
+
+    <path d="M28,31 L52,31 L50,49 L30,49 Z" fill="url(#alSkin)" stroke="#2a1a0e" stroke-width="0.5"/>
+    <path d="M40,33 L40,47 M33,36 Q40,39 47,36" stroke="#2a1a0e" stroke-width="0.4" opacity="0.5" fill="none"/>
+
+    <path d="M29,33 C25,30 23,25 25,20 L30,22 C29,26 30,30 33,33 Z" fill="url(#alSkin)" stroke="#2a1a0e" stroke-width="0.5"/>
+    <circle cx="25" cy="19" r="4" fill="url(#alGlove)" stroke="#5c0f0c" stroke-width="0.5"/>
+
+    <path d="M50,34 L62,30 L61,25 L48,30 Z" fill="url(#alSkin)" stroke="#2a1a0e" stroke-width="0.5"/>
+    <circle cx="63" cy="27.5" r="4" fill="url(#alGlove)" stroke="#5c0f0c" stroke-width="0.5"/>
+
+    <rect x="37" y="25" width="6" height="5" fill="url(#alSkin)"/>
+    <circle cx="40" cy="21" r="7.3" fill="url(#alSkin)" stroke="#2a1a0e" stroke-width="0.45"/>
+    <path d="M35.8,24 Q40,26.5 44.2,24" fill="none" stroke="#1a100a" stroke-width="0.8" stroke-linecap="round"/>
+    <circle cx="37" cy="20" r="0.7" fill="#140d08"/>
+    <circle cx="43" cy="20" r="0.7" fill="#140d08"/>
+  </g>
+</svg>

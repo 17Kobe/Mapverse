@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="davRobe" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7a5230"/>
+      <stop offset="1" stop-color="#4f341d"/>
+    </linearGradient>
+    <radialGradient id="davFace" cx="0.5" cy="0.35" r="0.65">
+      <stop offset="0" stop-color="#f1c49a"/>
+      <stop offset="1" stop-color="#d9a876"/>
+    </radialGradient>
+  </defs>
+  <ellipse cx="33" cy="78" rx="6" ry="2.4" fill="#2b1c10"/>
+  <ellipse cx="47" cy="78" rx="6" ry="2.4" fill="#2b1c10"/>
+  <path d="M27 42 C22 55 19 68 21 78 L59 78 C61 68 58 55 53 42 Z" fill="url(#davRobe)" stroke="#3a2512" stroke-width="0.5"/>
+  <path d="M21 78 L59 78" stroke="#caa24a" stroke-width="2"/>
+  <path d="M40 42 L40 78" stroke="#caa24a" stroke-width="1" opacity="0.6"/>
+  <path d="M27 46 C18 48 14 54 14 60 L22 60 C23 54 25 50 29 47 Z" fill="url(#davRobe)" stroke="#3a2512" stroke-width="0.4"/>
+  <rect x="7" y="52" width="14" height="10" rx="0.6" fill="#e8dcc0" stroke="#8a7550" stroke-width="0.5"/>
+  <path d="M9 57 L13 54 M14 59 L19 55 M11 60 L15 57" stroke="#6a5a3a" stroke-width="0.5" fill="none"/>
+  <path d="M53 46 C62 48 66 52 68 58 L61 60 C59 54 57 50 51 47 Z" fill="url(#davRobe)" stroke="#3a2512" stroke-width="0.4"/>
+  <line x1="68" y1="58" x2="73" y2="51" stroke="#8a5a2a" stroke-width="1.4" stroke-linecap="round"/>
+  <path d="M73 51 L75 48" stroke="#c99a5a" stroke-width="1.6" stroke-linecap="round"/>
+  <rect x="36" y="30" width="8" height="8" fill="#e8b98a"/>
+  <path d="M29 29 C26 44 30 58 40 60 C50 58 54 44 51 29 C46 34 34 34 29 29 Z" fill="#d9d4c6" stroke="#b0ab9a" stroke-width="0.4">
+    <animateTransform attributeName="transform" type="rotate" values="-1 40 29; 1 40 29; -1 40 29" dur="4.5s" repeatCount="indefinite"/>
+  </path>
+  <circle cx="40" cy="22" r="10" fill="url(#davFace)" stroke="#b9875a" stroke-width="0.4"/>
+  <path d="M33 18 Q36 16.5 39 18" stroke="#5a5244" stroke-width="1" fill="none"/>
+  <path d="M41 18 Q44 16.5 47 18" stroke="#5a5244" stroke-width="1" fill="none"/>
+  <path d="M34.5 21 Q36 20 37.5 21" stroke="#3a2a1a" stroke-width="0.8" fill="none"/>
+  <path d="M42.5 21 Q44 20 45.5 21" stroke="#3a2a1a" stroke-width="0.8" fill="none"/>
+  <path d="M40 21 L38.5 26 L41.5 26" stroke="#b9875a" stroke-width="0.6" fill="none"/>
+  <path d="M33 27 Q40 31 47 27" stroke="#cfc9ba" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+  <path d="M30 14 C26 18 25 26 27 30 L30 29 C28 24 29 17 32 13 Z" fill="#cfc9ba" stroke="#b0ab9a" stroke-width="0.3"/>
+  <path d="M50 14 C54 18 55 26 53 30 L50 29 C52 24 51 17 48 13 Z" fill="#cfc9ba" stroke="#b0ab9a" stroke-width="0.3"/>
+  <path d="M28 13 C28 7 34 4 40 4 C46 4 52 7 52 13 C47 10 33 10 28 13 Z" fill="#6a2a2a" stroke="#4a1818" stroke-width="0.4"/>
+</svg>

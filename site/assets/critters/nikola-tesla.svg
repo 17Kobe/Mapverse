@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="tsJacket" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2d3a52"/>
+      <stop offset="100%" stop-color="#121a2b"/>
+    </linearGradient>
+    <linearGradient id="tsPants" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#23283a"/>
+      <stop offset="100%" stop-color="#0d1019"/>
+    </linearGradient>
+    <linearGradient id="tsShoe" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3a2b1d"/>
+      <stop offset="100%" stop-color="#19100a"/>
+    </linearGradient>
+    <radialGradient id="tsFace" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#ffdcb3"/>
+      <stop offset="100%" stop-color="#dba274"/>
+    </radialGradient>
+    <linearGradient id="tsCoil" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#cfd6e0"/>
+      <stop offset="100%" stop-color="#7c8898"/>
+    </linearGradient>
+    <radialGradient id="tsGround" cx="50%" cy="25%" r="75%">
+      <stop offset="0%" stop-color="#5c6a80"/>
+      <stop offset="100%" stop-color="#1c2230"/>
+    </radialGradient>
+  </defs>
+
+  <ellipse cx="40" cy="77" rx="18" ry="4" fill="#0a0d14" opacity="0.4"/>
+  <ellipse cx="38" cy="76" rx="24" ry="6" fill="url(#tsGround)" opacity="0.45"/>
+
+  <g>
+    <rect x="58" y="60" width="12" height="16" rx="2" fill="url(#tsCoil)" stroke="#48525f" stroke-width="0.5"/>
+    <rect x="60" y="38" width="8" height="24" rx="2" fill="#8a94a2" stroke="#48525f" stroke-width="0.5"/>
+    <ellipse cx="64" cy="37" rx="9" ry="4" fill="url(#tsCoil)" stroke="#48525f" stroke-width="0.6"/>
+    <path d="M57,43 L71,47 M57,47 L71,51 M57,51 L71,55" stroke="#48525f" stroke-width="0.6" opacity="0.6"/>
+    <path d="M64,33 L61,24 L66,22 L63,13" stroke="#aee3ff" stroke-width="1.1" fill="none" stroke-linecap="round">
+      <animate attributeName="opacity" values="0.2;1;0.2;0.9;0.2" dur="1.1s" repeatCount="indefinite"/>
+    </path>
+    <path d="M64,33 L68,26 L64,23 L69,16" stroke="#e8f8ff" stroke-width="0.8" fill="none" stroke-linecap="round" opacity="0.7">
+      <animate attributeName="opacity" values="0.1;0.8;0.1;0.6;0.1" dur="1.3s" repeatCount="indefinite"/>
+    </path>
+  </g>
+
+  <g>
+    <animateTransform attributeName="transform" type="rotate" values="-1.2 32 75;1.2 32 75;-1.2 32 75" dur="4.3s" repeatCount="indefinite"/>
+
+    <rect x="19" y="64" width="11" height="14" rx="3" fill="url(#tsShoe)" stroke="#0c0804" stroke-width="0.5"/>
+    <rect x="34" y="64" width="11" height="14" rx="3" fill="url(#tsShoe)" stroke="#0c0804" stroke-width="0.5"/>
+
+    <path d="M21,50 C17,55 16,61 20,65 L29,65 L29,56 L35,56 L35,65 L44,65 C48,61 47,55 43,50 Z"
+          fill="url(#tsPants)" stroke="#060810" stroke-width="0.5"/>
+
+    <path d="M20,32 L15,49 L20,51 L25,34 Z" fill="url(#tsJacket)" stroke="#060810" stroke-width="0.5"/>
+    <path d="M44,32 C49,27 51,21 50,16 L45,17 C46,21 44,26 40,30 Z" fill="url(#tsJacket)" stroke="#060810" stroke-width="0.5"/>
+    <circle cx="15.5" cy="49.5" r="3" fill="url(#tsFace)" stroke="#b08354" stroke-width="0.4"/>
+    <circle cx="50" cy="16" r="3" fill="url(#tsFace)" stroke="#b08354" stroke-width="0.4"/>
+
+    <path d="M20,31 L44,31 L42,51 L22,51 Z" fill="url(#tsJacket)" stroke="#060810" stroke-width="0.5"/>
+    <path d="M27,31 L37,31 L34,26 L30,26 Z" fill="#fdfdfb" stroke="#c9c9c3" stroke-width="0.3"/>
+    <path d="M30,27 L32,33 L34,27 Z" fill="#0d1018"/>
+
+    <rect x="29" y="25" width="6" height="5" fill="url(#tsFace)"/>
+    <circle cx="32" cy="21" r="7.3" fill="url(#tsFace)" stroke="#b08354" stroke-width="0.45"/>
+    <path d="M25,19 C24,12 28,7 32,7 C36,7 40,12 39,19 C37,16 34.5,15.3 32,15.3 C29.5,15.3 27,16 25,19 Z" fill="#1c1c22"/>
+    <path d="M26.5,22.5 Q32,25 37.5,22.5" fill="none" stroke="#1c1c22" stroke-width="0.8" stroke-linecap="round"/>
+    <circle cx="29.2" cy="20" r="0.6" fill="#1a1a1a"/>
+    <circle cx="34.8" cy="20" r="0.6" fill="#1a1a1a"/>
+  </g>
+</svg>

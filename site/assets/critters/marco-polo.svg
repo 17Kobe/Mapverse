@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="mpRobe" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7a4a9c"/>
+      <stop offset="100%" stop-color="#432058"/>
+    </linearGradient>
+    <linearGradient id="mpCloak" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#c4442f"/>
+      <stop offset="100%" stop-color="#7a1f16"/>
+    </linearGradient>
+    <linearGradient id="mpFur" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e8d6b0"/>
+      <stop offset="100%" stop-color="#b89862"/>
+    </linearGradient>
+    <radialGradient id="mpFace" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#e8b98a"/>
+      <stop offset="100%" stop-color="#bc8858"/>
+    </radialGradient>
+    <linearGradient id="mpBoot" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5a3c24"/>
+      <stop offset="100%" stop-color="#2a1a0e"/>
+    </linearGradient>
+  </defs>
+
+  <ellipse cx="40" cy="77" rx="18" ry="3.4" fill="#2a1a10" opacity="0.32"/>
+
+  <g>
+    <animateTransform attributeName="transform" type="rotate" values="-1 40 76;1 40 76;-1 40 76" dur="4.2s" repeatCount="indefinite"/>
+
+    <path d="M30,70 L30,78 L37,78 L37,70 Z" fill="url(#mpBoot)" stroke="#1a0f08" stroke-width="0.4"/>
+    <path d="M43,70 L43,78 L50,78 L50,70 Z" fill="url(#mpBoot)" stroke="#1a0f08" stroke-width="0.4"/>
+
+    <path d="M28,33 L24,55 Q22,64 26,72 L35,72 L35,56 L45,56 L45,72 L54,72 Q58,64 56,55 L52,33 Z" fill="url(#mpRobe)" stroke="#2a1038" stroke-width="0.5"/>
+    <rect x="27" y="49" width="26" height="3.6" fill="#caa23c" stroke="#8a6a1a" stroke-width="0.4"/>
+
+    <path d="M30,34 L52,52" stroke="#5a3c24" stroke-width="1.6"/>
+    <rect x="48" y="48" width="9" height="8" rx="1.4" fill="#6b4a2a" stroke="#3a260f" stroke-width="0.4"/>
+
+    <path d="M28,30 Q40,38 52,30 L55,36 Q40,46 25,36 Z" fill="url(#mpCloak)" stroke="#5c0f0c" stroke-width="0.5"/>
+    <path d="M28,30 Q40,38 52,30" fill="none" stroke="url(#mpFur)" stroke-width="2.4" opacity="0.9"/>
+
+    <path d="M29,34 C23,38 20,45 21,52" fill="none" stroke="url(#mpRobe)" stroke-width="4.6" stroke-linecap="round"/>
+    <path d="M14,48 L24,52" stroke="#e8d6b0" stroke-width="3.4" stroke-linecap="round"/>
+    <path d="M14,48 L24,52" stroke="#b89862" stroke-width="0.6" opacity="0.6"/>
+
+    <path d="M51,34 C57,39 59,46 57,53" fill="none" stroke="url(#mpRobe)" stroke-width="4.6" stroke-linecap="round"/>
+
+    <rect x="37" y="25" width="6" height="6" fill="url(#mpFace)"/>
+    <circle cx="40" cy="20" r="7" fill="url(#mpFace)" stroke="#9a6a40" stroke-width="0.4"/>
+    <path d="M34,22 Q34,28 40,29 Q46,28 46,22 Q43,27 40,27 Q37,27 34,22 Z" fill="#4a2e18" stroke="#241408" stroke-width="0.3"/>
+    <circle cx="37" cy="19" r="0.8" fill="#201810"/>
+    <circle cx="43" cy="19" r="0.8" fill="#201810"/>
+
+    <path d="M32,16 Q33,8 40,7 Q47,8 48,16 Q40,13 32,16 Z" fill="url(#mpFur)" stroke="#9a7a42" stroke-width="0.4"/>
+    <circle cx="40" cy="7" r="1.6" fill="#c4442f"/>
+  </g>
+</svg>

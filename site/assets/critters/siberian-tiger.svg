@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="tigerBody" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffb46a"/><stop offset="100%" stop-color="#e8873f"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="76" width="80" height="4" fill="#eef5f8"/>
+  <g fill="#2f4a3a" opacity="0.7">
+    <path d="M6,76 L10,62 L14,76 Z"/>
+    <path d="M66,76 L70,60 L74,76 Z"/>
+  </g>
+  <g>
+    <path d="M60,48 Q72,44 70,30" fill="none" stroke="url(#tigerBody)" stroke-width="4" stroke-linecap="round"/>
+    <path d="M68,32 Q70,28 69,24" fill="none" stroke="#1c1c1c" stroke-width="2.6" stroke-linecap="round"/>
+    <animateTransform attributeName="transform" type="rotate" values="0 60 48;-5 60 48;0 60 48" dur="3s" repeatCount="indefinite"/>
+  </g>
+  <g fill="url(#tigerBody)" stroke="#6b3a18" stroke-width="0.4">
+    <rect x="22" y="58" width="6" height="18" rx="2"/>
+    <rect x="52" y="58" width="6" height="18" rx="2"/>
+    <rect x="30" y="60" width="6" height="16" rx="2"/>
+    <rect x="46" y="60" width="6" height="16" rx="2"/>
+  </g>
+  <g fill="#fff8ee" opacity="0.9">
+    <rect x="22" y="72" width="6" height="4" rx="1"/><rect x="52" y="72" width="6" height="4" rx="1"/>
+  </g>
+  <ellipse cx="42" cy="54" rx="24" ry="14" fill="url(#tigerBody)" stroke="#6b3a18" stroke-width="0.4">
+    <animate attributeName="ry" values="14;14.6;14" dur="3.2s" repeatCount="indefinite"/>
+  </ellipse>
+  <path d="M22,58 Q42,66 62,58 Q42,62 22,58 Z" fill="#fff8ee" opacity="0.9"/>
+  <g stroke="#1c1c1c" stroke-width="2" fill="none" stroke-linecap="round">
+    <path d="M24,44 L28,54"/>
+    <path d="M32,42 L36,56"/>
+    <path d="M42,41 L44,57"/>
+    <path d="M52,43 L54,56"/>
+    <path d="M60,46 L58,55"/>
+  </g>
+  <circle cx="16" cy="44" r="12" fill="url(#tigerBody)" stroke="#6b3a18" stroke-width="0.4"/>
+  <circle cx="8" cy="34" r="3.4" fill="#e8873f" stroke="#1c1c1c" stroke-width="0.4"/>
+  <circle cx="22" cy="34" r="3.4" fill="#e8873f" stroke="#1c1c1c" stroke-width="0.4"/>
+  <circle cx="8" cy="34.5" r="1.6" fill="#1c1c1c"/>
+  <circle cx="22" cy="34.5" r="1.6" fill="#1c1c1c"/>
+  <g stroke="#1c1c1c" stroke-width="1.6" fill="none">
+    <path d="M9,38 L12,44"/>
+    <path d="M23,38 L20,44"/>
+  </g>
+  <ellipse cx="16" cy="49" rx="7" ry="5" fill="#fff8ee"/>
+  <circle cx="11.5" cy="42" r="1.4" fill="#1c1c1c"/>
+  <circle cx="20.5" cy="42" r="1.4" fill="#1c1c1c"/>
+  <circle cx="12" cy="41.5" r="0.4" fill="#fff8ee"/>
+  <circle cx="21" cy="41.5" r="0.4" fill="#fff8ee"/>
+  <path d="M14,47 L18,47 L16,49.5 Z" fill="#1c1c1c"/>
+  <g stroke="#fff8ee" stroke-width="0.3" opacity="0.6">
+    <line x1="10" y1="49" x2="2" y2="47"/><line x1="10" y1="51" x2="2" y2="52"/>
+    <line x1="22" y1="49" x2="30" y2="47"/><line x1="22" y1="51" x2="30" y2="52"/>
+  </g>
+</svg>

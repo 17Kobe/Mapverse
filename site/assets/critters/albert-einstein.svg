@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="enSweater" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8a8f94"/>
+      <stop offset="1" stop-color="#5c6166"/>
+    </linearGradient>
+    <radialGradient id="enFace" cx="0.5" cy="0.35" r="0.65">
+      <stop offset="0" stop-color="#f1c49a"/>
+      <stop offset="1" stop-color="#d9a876"/>
+    </radialGradient>
+    <linearGradient id="enBoard" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2f4a3a"/>
+      <stop offset="1" stop-color="#1c2f24"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="46" width="18" height="14" rx="0.8" fill="url(#enBoard)" stroke="#132019" stroke-width="0.5"/>
+  <text x="13" y="55" font-size="6" fill="#eef0e8" text-anchor="middle" font-family="serif">E=mc²</text>
+  <ellipse cx="34" cy="78" rx="6" ry="2.4" fill="#2a2a2a"/>
+  <ellipse cx="48" cy="78" rx="6" ry="2.4" fill="#2a2a2a"/>
+  <path d="M28 42 C23 55 20 68 22 78 L60 78 C62 68 59 55 54 42 Z" fill="url(#enSweater)" stroke="#444a4e" stroke-width="0.4"/>
+  <path d="M34 42 L30 78 M46 42 L50 78" stroke="#444a4e" stroke-width="0.4" opacity="0.5" fill="none"/>
+  <circle cx="40" cy="50" r="1" fill="#44494d"/>
+  <path d="M28 46 C20 48 17 53 17 59 L24 60 C25 54 27 50 30 47 Z" fill="url(#enSweater)" stroke="#444a4e" stroke-width="0.4"/>
+  <path d="M54 46 C62 48 65 53 65 59 L58 60 C57 54 55 50 52 47 Z" fill="url(#enSweater)" stroke="#444a4e" stroke-width="0.4"/>
+  <circle cx="19" cy="60" r="2.6" fill="#eac095"/>
+  <circle cx="63" cy="60" r="2.6" fill="#eac095"/>
+  <rect x="36" y="30" width="8" height="7" fill="#eac095"/>
+  <path d="M33 27.5 Q40 32 47 27.5" stroke="#e4e4de" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+  <circle cx="40" cy="21" r="9.5" fill="url(#enFace)" stroke="#b08858" stroke-width="0.4"/>
+  <path d="M34.5 20.5 Q36 19.5 37.5 20.5" stroke="#3a2a1a" stroke-width="0.8" fill="none"/>
+  <path d="M42.5 20.5 Q44 19.5 45.5 20.5" stroke="#3a2a1a" stroke-width="0.8" fill="none"/>
+  <path d="M40 20.5 L38.8 25.5 L41.2 25.5" stroke="#b08858" stroke-width="0.6" fill="none"/>
+  <path d="M24 18 C20 10 26 2 40 2 C54 2 60 10 56 18 C58 14 59 8 54 6 C55 10 52 14 49 10 C50 13 47 16 44 12 C45 15 42 17 39 13 C39 16 36 18 33 14 C33 17 30 18 27 14 C27 17 24 18 22 15 C22 17 23 18 24 18 Z" fill="#eceae4" stroke="#c9c6ba" stroke-width="0.4">
+    <animateTransform attributeName="transform" type="rotate" values="-1 40 10; 1 40 10; -1 40 10" dur="5s" repeatCount="indefinite"/>
+  </path>
+</svg>

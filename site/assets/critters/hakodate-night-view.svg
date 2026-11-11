@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="hkdSea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0d2140"/><stop offset="100%" stop-color="#050f22"/>
+    </linearGradient>
+    <linearGradient id="hkdLand" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2a3550"/><stop offset="100%" stop-color="#171f36"/>
+    </linearGradient>
+    <radialGradient id="hkdGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff2c0"/><stop offset="100%" stop-color="#fff2c0" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <path d="M4,20 Q20,34 20,50 Q20,66 4,78 L2,78 Q16,62 16,50 Q16,38 2,22 Z" fill="url(#hkdSea)"/>
+  <path d="M76,20 Q60,34 60,50 Q60,66 76,78 L78,78 Q64,62 64,50 Q64,38 78,22 Z" fill="url(#hkdSea)"/>
+  <path d="M16,16 Q40,8 64,16 Q68,40 64,66 Q40,76 16,66 Q12,40 16,16 Z" fill="url(#hkdLand)" stroke="#3a4668" stroke-width="0.4"/>
+  <g fill="#ffe08a">
+    <circle cx="26" cy="26" r="0.9"/><circle cx="34" cy="22" r="0.8"/><circle cx="42" cy="24" r="0.9"/><circle cx="50" cy="28" r="0.8"/>
+    <circle cx="22" cy="38" r="0.9"/><circle cx="30" cy="36" r="0.8"/><circle cx="40" cy="38" r="1"/><circle cx="48" cy="40" r="0.8"/><circle cx="56" cy="36" r="0.9"/>
+    <circle cx="26" cy="50" r="0.9"/><circle cx="36" cy="52" r="1"/><circle cx="44" cy="50" r="0.8"/><circle cx="54" cy="48" r="0.9"/>
+    <circle cx="24" cy="60" r="0.8"/><circle cx="32" cy="62" r="0.9"/><circle cx="42" cy="62" r="0.8"/><circle cx="50" cy="60" r="0.9"/><circle cx="58" cy="58" r="0.8"/>
+  </g>
+  <circle cx="40" cy="42" r="10" fill="url(#hkdGlow)" opacity="0.5">
+    <animate attributeName="opacity" values="0.3;0.6;0.3" dur="3.4s" repeatCount="indefinite"/>
+  </circle>
+  <path d="M0,80 L0,70 Q10,62 22,68 L22,80 Z" fill="#141a28" stroke="#0a0e18" stroke-width="0.5"/>
+  <path d="M58,80 L58,66 Q68,60 80,66 L80,80 Z" fill="#141a28" stroke="#0a0e18" stroke-width="0.5"/>
+  <path d="M6,68 Q36,64 66,62" stroke="#5a6478" stroke-width="0.6" fill="none"/>
+  <g>
+    <rect x="-3" y="-2.5" width="6" height="5" rx="1" fill="#d94f3a" stroke="#7a271a" stroke-width="0.4"/>
+    <line x1="0" y1="-2.5" x2="0" y2="-5" stroke="#5a6478" stroke-width="0.5"/>
+    <animateMotion dur="5s" repeatCount="indefinite" path="M6,68 Q36,64 66,62"/>
+  </g>
+</svg>

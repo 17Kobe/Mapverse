@@ -14,12 +14,12 @@
       <stop offset="100%" stop-color="#e0b24a"/>
     </linearGradient>
     <linearGradient id="groundGrad" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#7a9c57"/>
-      <stop offset="100%" stop-color="#3c5a2a"/>
+      <stop offset="0%" stop-color="#8a7a63"/>
+      <stop offset="100%" stop-color="#5c4d3a"/>
     </linearGradient>
   </defs>
 
-  <path d="M3,80 L3,70 Q20,59 37,65 Q51,57 65,65 Q73,59 77,70 L77,80 Z" fill="url(#groundGrad)" stroke="#2c4320" stroke-width="0.5"/>
+  <path d="M3,80 L3,70 Q20,59 37,65 Q51,57 65,65 Q73,59 77,70 L77,80 Z" fill="url(#groundGrad)" stroke="#423627" stroke-width="0.5"/>
 
   <g>
     <animateTransform attributeName="transform" type="rotate" values="-2 42 78;2 42 78;-2 42 78" dur="2.2s" repeatCount="indefinite"/>

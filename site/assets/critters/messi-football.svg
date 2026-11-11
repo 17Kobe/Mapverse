@@ -1,54 +1,77 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
   <defs>
     <linearGradient id="mfSkin" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#e8b48a"/>
-      <stop offset="100%" stop-color="#b8784a"/>
-    </linearGradient>
-    <linearGradient id="mfShirt" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#9fd0ea"/>
-      <stop offset="100%" stop-color="#5a9fc9"/>
+      <stop offset="0%" stop-color="#e3b98f"/>
+      <stop offset="100%" stop-color="#b8824f"/>
     </linearGradient>
     <linearGradient id="mfGrass" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#8fd27f"/>
       <stop offset="100%" stop-color="#3f8a3f"/>
     </linearGradient>
+    <clipPath id="mfShirtClip">
+      <path d="M33,38 C29,46 30,54 35,59 C41,63 49,61 52,55 C55,49 53,41 47,37 C42,34 36,35 33,38 Z"/>
+    </clipPath>
   </defs>
 
   <!-- pitch patch -->
   <ellipse cx="40" cy="77" rx="37" ry="4.6" fill="url(#mfGrass)" stroke="#2c6a2c" stroke-width="0.5"/>
   <path d="M8,77 Q40,73 72,77" fill="none" stroke="#ffffff" stroke-width="1.4" opacity="0.6"/>
 
-  <!-- trailing leg, mid-stride -->
-  <path d="M34,58 C26,62 20,68 18,76 L24,78 C28,71 33,65 38,61 Z" fill="url(#mfSkin)" stroke="#8a5a34" stroke-width="0.4"/>
-  <path d="M18,76 L24,78 L22,80 L15,80 Z" fill="#2a2a2a"/>
+  <!-- trailing leg, mid stride -->
+  <path d="M35,56 C28,60 22,65 19,72 L25,75 C29,69 34,63 39,58 Z" fill="url(#mfSkin)" stroke="#8a5a34" stroke-width="0.4"/>
+  <path d="M19,72 L25,75 L23,78 L15,77 Z" fill="#fdfdfd" stroke="#c9c9c9" stroke-width="0.3"/>
+  <path d="M15,77 L23,78 L22,80 L14,80 Z" fill="#1c1c1c"/>
 
-  <!-- torso, leaning into the kick -->
-  <path d="M34,40 C30,48 31,55 36,60 C42,64 50,62 53,56 C56,50 54,42 48,38 C43,35 37,36 34,40 Z"
-        fill="url(#mfShirt)" stroke="#2f6f93" stroke-width="0.5"/>
-  <path d="M38,40 L36,54" stroke="#2f6f93" stroke-width="1" opacity="0.5"/>
-  <path d="M44,38 L47,58" stroke="#2f6f93" stroke-width="1" opacity="0.5"/>
+  <!-- near/kicking leg, planted close to the ball -->
+  <path d="M45,56 C49,62 51,68 49,74 L43,74 C43,68 41,62 41,58 Z" fill="url(#mfSkin)" stroke="#8a5a34" stroke-width="0.4"/>
+  <path d="M43,74 L49,74 L50,77 L42,78 Z" fill="#fdfdfd" stroke="#c9c9c9" stroke-width="0.3"/>
+  <path d="M42,78 L50,77 L52,80 L41,80 Z" fill="#1c1c1c"/>
+
+  <!-- shorts -->
+  <path d="M34,52 L50,52 L52,58 L43,60 L41,58 L38,60 L32,58 Z" fill="#1a2b52" stroke="#0e1a36" stroke-width="0.4"/>
+  <path d="M34,52 L50,52" stroke="#9fd0ea" stroke-width="1.2"/>
+
+  <!-- torso: white base + Argentina light-blue vertical stripes -->
+  <path d="M33,38 C29,46 30,54 35,59 C41,63 49,61 52,55 C55,49 53,41 47,37 C42,34 36,35 33,38 Z"
+        fill="#fdfdfd" stroke="#2f5f93" stroke-width="0.5"/>
+  <g clip-path="url(#mfShirtClip)" stroke="#6fb8df" stroke-width="2.6">
+    <line x1="34" y1="34" x2="34" y2="64"/>
+    <line x1="39" y1="33" x2="39" y2="65"/>
+    <line x1="44" y1="33" x2="44" y2="65"/>
+    <line x1="49" y1="34" x2="49" y2="63"/>
+  </g>
+  <text x="46" y="50" text-anchor="middle" font-family="Arial,sans-serif" font-weight="700" font-size="7" fill="#1a2b52">10</text>
+  <path d="M35,38 L31,34 M36,59 L33,63" stroke="#fdfdfd" stroke-width="3.2" stroke-linecap="round"/>
+  <path d="M46,37 L50,33 M50,58 L53,62" stroke="#fdfdfd" stroke-width="3.2" stroke-linecap="round"/>
 
   <!-- arms, out for balance -->
-  <path d="M36,42 C30,40 24,41 20,45" fill="none" stroke="url(#mfSkin)" stroke-width="3.6" stroke-linecap="round"/>
-  <path d="M50,40 C56,38 61,40 64,45" fill="none" stroke="url(#mfSkin)" stroke-width="3.6" stroke-linecap="round"/>
+  <path d="M34,40 C28,39 23,41 20,46" fill="none" stroke="url(#mfSkin)" stroke-width="3.4" stroke-linecap="round"/>
+  <path d="M48,38 C54,37 59,40 62,46" fill="none" stroke="url(#mfSkin)" stroke-width="3.4" stroke-linecap="round"/>
 
-  <!-- head -->
-  <circle cx="44" cy="30" r="7" fill="url(#mfSkin)" stroke="#8a5a34" stroke-width="0.4"/>
-  <path d="M38,27 Q44,22 51,27 Q51,24 44,23 Q38,24 38,27 Z" fill="#2a1d12"/>
+  <!-- neck + head -->
+  <rect x="40" y="29" width="4.5" height="5" fill="url(#mfSkin)"/>
+  <circle cx="42.5" cy="24" r="7.2" fill="url(#mfSkin)" stroke="#8a5a34" stroke-width="0.4"/>
+  <!-- hair -->
+  <path d="M35.5,22 Q35,14 42.5,13.5 Q50,14 49.5,22 Q47,17 42.5,17.5 Q38,17 35.5,22 Z" fill="#2a1d12"/>
+  <path d="M36.2,20.5 Q38,19 40,20" fill="none" stroke="#2a1d12" stroke-width="0.6"/>
+  <!-- face -->
+  <ellipse cx="39.6" cy="24.5" rx="1" ry="1.2" fill="#241a10"/>
+  <ellipse cx="45.4" cy="24.5" rx="1" ry="1.2" fill="#241a10"/>
+  <path d="M38.6,22.2 Q39.6,21.3 40.8,22" stroke="#4a2f16" stroke-width="0.6" fill="none" stroke-linecap="round"/>
+  <path d="M44.2,22 Q45.4,21.3 46.4,22.2" stroke="#4a2f16" stroke-width="0.6" fill="none" stroke-linecap="round"/>
+  <path d="M42,25 L41.3,27.5 L42.7,27.8" stroke="#8a5a34" stroke-width="0.5" fill="none"/>
+  <path d="M39.8,29.8 Q42.5,31.3 45.2,29.8" stroke="#6a3a22" stroke-width="0.9" fill="none" stroke-linecap="round"/>
+  <path d="M40.5,30.8 Q41,31.6 42.5,31.6 Q44,31.6 44.5,30.8" stroke="#6a3a22" stroke-width="0.6" fill="none"/>
 
-  <!-- kicking leg, extended forward with the ball -->
-  <path d="M48,56 C56,58 62,62 66,68 L61,72 C56,67 50,63 46,59 Z" fill="url(#mfSkin)" stroke="#8a5a34" stroke-width="0.4"/>
-  <path d="M61,72 L66,68 L70,72 L65,78 Z" fill="#2a2a2a"/>
-
-  <!-- the ball, flying off the boot -->
+  <!-- the ball, tucked right at the planted foot for close control -->
   <g>
-    <animateTransform attributeName="transform" type="translate" values="0,0; 6,-3; 0,0" dur="1.6s" repeatCount="indefinite"/>
-    <circle cx="74" cy="66" r="3.4" fill="#fdfdfd" stroke="#333" stroke-width="0.5"/>
-    <path d="M72,64 L76,64 L77,67 L74,69 L71,67 Z" fill="#333" opacity="0.85"/>
+    <animateTransform attributeName="transform" type="translate" values="0,0; 1.5,-0.8; 0,0" dur="0.9s" repeatCount="indefinite"/>
+    <circle cx="53" cy="74.5" r="3.6" fill="#fdfdfd" stroke="#333" stroke-width="0.5"/>
+    <path d="M51,72.6 L55,72.6 L56,75.4 L53,77.4 L50,75.4 Z" fill="#333" opacity="0.85"/>
   </g>
 
-  <!-- motion streak -->
-  <path d="M58,70 L70,67" stroke="#ffffff" stroke-width="1" opacity="0.5" stroke-linecap="round">
-    <animate attributeName="opacity" values="0.6;0;0.6" dur="1.6s" repeatCount="indefinite"/>
+  <!-- quick motion streak at the trailing foot -->
+  <path d="M10,76 L18,74" stroke="#ffffff" stroke-width="1" opacity="0.5" stroke-linecap="round">
+    <animate attributeName="opacity" values="0.6;0;0.6" dur="1.3s" repeatCount="indefinite"/>
   </path>
 </svg>

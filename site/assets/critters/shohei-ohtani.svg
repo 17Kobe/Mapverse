@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="shJersey" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3f6fd1"/>
+      <stop offset="100%" stop-color="#1c3a80"/>
+    </linearGradient>
+    <linearGradient id="shPants" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f4f1e8"/>
+      <stop offset="100%" stop-color="#d8d4c6"/>
+    </linearGradient>
+    <linearGradient id="shCap" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3f6fd1"/>
+      <stop offset="100%" stop-color="#1c3a80"/>
+    </linearGradient>
+    <linearGradient id="shShoe" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e8e8e8"/>
+      <stop offset="100%" stop-color="#9a9a9a"/>
+    </linearGradient>
+    <radialGradient id="shSkin" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#ffdcb3"/>
+      <stop offset="100%" stop-color="#dba274"/>
+    </radialGradient>
+    <linearGradient id="shBat" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#d9a661"/>
+      <stop offset="100%" stop-color="#8a5a2e"/>
+    </linearGradient>
+    <radialGradient id="shGround" cx="50%" cy="25%" r="75%">
+      <stop offset="0%" stop-color="#8fa05a"/>
+      <stop offset="100%" stop-color="#4a5a2a"/>
+    </radialGradient>
+  </defs>
+
+  <ellipse cx="40" cy="77" rx="17" ry="4" fill="#15150d" opacity="0.4"/>
+  <ellipse cx="40" cy="76" rx="23" ry="6" fill="url(#shGround)" opacity="0.4"/>
+
+  <g>
+    <animateTransform attributeName="transform" type="rotate" values="-1.5 40 75;1.5 40 75;-1.5 40 75" dur="4s" repeatCount="indefinite"/>
+
+    <rect x="26.5" y="63" width="11" height="15" rx="3" fill="url(#shShoe)" stroke="#555" stroke-width="0.5"/>
+    <rect x="42.5" y="63" width="11" height="15" rx="3" fill="url(#shShoe)" stroke="#555" stroke-width="0.5"/>
+
+    <path d="M29,49 C24,54 23,60 27,64 L37,64 L37,55 L43,55 L43,64 L53,64 C57,60 56,54 51,49 Z"
+          fill="url(#shPants)" stroke="#9c988a" stroke-width="0.5"/>
+
+    <path d="M52,16 L66,8" stroke="url(#shBat)" stroke-width="3.2" stroke-linecap="round"/>
+
+    <path d="M29,32 C24,30 20,24 22,15 L27,16 C26,23 29,27 33,30 Z" fill="url(#shJersey)" stroke="#102456" stroke-width="0.5"/>
+    <circle cx="22" cy="14" r="3" fill="url(#shSkin)" stroke="#b08354" stroke-width="0.4"/>
+    <circle cx="22" cy="14" r="2.4" fill="#fdfdfb" stroke="#c0392b" stroke-width="0.4"/>
+
+    <path d="M51,31 L55,15 L50,14 L47,33 Z" fill="url(#shJersey)" stroke="#102456" stroke-width="0.5"/>
+    <circle cx="53" cy="13.5" r="3" fill="url(#shSkin)" stroke="#b08354" stroke-width="0.4"/>
+
+    <path d="M28,31 L52,31 L50,49 L30,49 Z" fill="url(#shJersey)" stroke="#102456" stroke-width="0.5"/>
+    <text x="40" y="43" font-size="7" font-weight="700" fill="#fff" text-anchor="middle" font-family="Arial, sans-serif">17</text>
+
+    <rect x="37" y="25" width="6" height="5" fill="url(#shSkin)"/>
+    <circle cx="40" cy="21" r="7.3" fill="url(#shSkin)" stroke="#b08354" stroke-width="0.45"/>
+    <path d="M32,19.5 C31.7,14.5 35,11.8 40,11.8 C45,11.8 48.3,14.5 48,19.5 L48,17.5 Q40,13.8 32,17.5 Z" fill="url(#shCap)" stroke="#0e1e4a" stroke-width="0.4"/>
+    <path d="M44,17 Q52,17 52,20.5 Q48,19.5 44,20 Z" fill="url(#shCap)" stroke="#0e1e4a" stroke-width="0.4"/>
+    <path d="M35.5,23.5 Q40,25.8 44.5,23.5" fill="none" stroke="#9a6a46" stroke-width="0.7" stroke-linecap="round"/>
+  </g>
+</svg>

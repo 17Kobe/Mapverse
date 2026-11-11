@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="alCoat" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3a3a3e"/>
+      <stop offset="100%" stop-color="#101012"/>
+    </linearGradient>
+    <linearGradient id="alHat" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2c2c30"/>
+      <stop offset="100%" stop-color="#0a0a0c"/>
+    </linearGradient>
+    <radialGradient id="alFace" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#e7bd91"/>
+      <stop offset="100%" stop-color="#b98a5c"/>
+    </radialGradient>
+    <linearGradient id="alVest" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f3ead8"/>
+      <stop offset="100%" stop-color="#d8c9a8"/>
+    </linearGradient>
+  </defs>
+
+  <ellipse cx="40" cy="77" rx="18" ry="3.4" fill="#141414" opacity="0.35"/>
+
+  <g>
+    <animateTransform attributeName="transform" type="rotate" values="-1 40 76;1 40 76;-1 40 76" dur="4.6s" repeatCount="indefinite"/>
+
+    <path d="M32,55 L29,78 L37,78 L39,58 L41,58 L43,78 L51,78 L48,55 Z" fill="url(#alCoat)" stroke="#000" stroke-width="0.4"/>
+    <path d="M28,76 L38,76 L38,79 L27,79 Z" fill="#0a0a0a"/>
+    <path d="M42,76 L52,76 L53,79 L42,79 Z" fill="#0a0a0a"/>
+
+    <path d="M25,55 Q22,66 25,78 L34,78 L34,58 L46,58 L46,78 L55,78 Q58,66 55,55 Z" fill="url(#alCoat)" stroke="#000" stroke-width="0.5" opacity="0.97"/>
+
+    <path d="M35,32 L45,32 L44,56 L36,56 Z" fill="url(#alVest)" stroke="#a89566" stroke-width="0.4"/>
+    <path d="M37,33 L40,36 L43,33 L43,35 L40,38 L37,35 Z" fill="#101012"/>
+
+    <path d="M26,33 L30,56 L36,56 L34,34 Z" fill="url(#alCoat)" stroke="#000" stroke-width="0.4"/>
+    <path d="M54,33 L50,56 L44,56 L46,34 Z" fill="url(#alCoat)" stroke="#000" stroke-width="0.4"/>
+    <path d="M34,31 L40,40 L36,56 L30,56 L31,34 Z" fill="url(#alCoat)" stroke="#000" stroke-width="0.4"/>
+    <path d="M46,31 L40,40 L44,56 L50,56 L49,34 Z" fill="url(#alCoat)" stroke="#000" stroke-width="0.4"/>
+
+    <path d="M27,34 C22,40 20,48 22,56" fill="none" stroke="url(#alCoat)" stroke-width="5" stroke-linecap="round"/>
+    <path d="M53,34 C58,40 60,48 58,56" fill="none" stroke="url(#alCoat)" stroke-width="5" stroke-linecap="round"/>
+
+    <rect x="37" y="26" width="6" height="6" fill="url(#alFace)"/>
+    <circle cx="40" cy="21" r="7.2" fill="url(#alFace)" stroke="#9a6a40" stroke-width="0.4"/>
+    <path d="M33,23 Q33,32 40,33 Q47,32 47,23 Q44,30 40,30 Q36,30 33,23 Z" fill="#2a2420" stroke="#141210" stroke-width="0.3"/>
+    <path d="M35,19 L38,19.6" stroke="#2a2420" stroke-width="0.9" stroke-linecap="round"/>
+    <path d="M45,19 L42,19.6" stroke="#2a2420" stroke-width="0.9" stroke-linecap="round"/>
+    <circle cx="36.8" cy="21" r="0.7" fill="#201810"/>
+    <circle cx="43.2" cy="21" r="0.7" fill="#201810"/>
+    <path d="M34,25 Q36,27 38,26" stroke="#9a6a40" stroke-width="0.4" fill="none" opacity="0.6"/>
+
+    <ellipse cx="40" cy="14.5" rx="9" ry="2.3" fill="url(#alHat)" stroke="#000" stroke-width="0.4"/>
+    <rect x="34" y="1" width="12" height="14" fill="url(#alHat)" stroke="#000" stroke-width="0.4"/>
+    <rect x="34" y="10.5" width="12" height="2.2" fill="#6b1f1f"/>
+  </g>
+</svg>

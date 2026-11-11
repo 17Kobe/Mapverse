@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="edJacket" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4b4b58"/>
+      <stop offset="100%" stop-color="#1e1e26"/>
+    </linearGradient>
+    <linearGradient id="edPants" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#34343f"/>
+      <stop offset="100%" stop-color="#15151b"/>
+    </linearGradient>
+    <linearGradient id="edShoe" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3a2b1d"/>
+      <stop offset="100%" stop-color="#19100a"/>
+    </linearGradient>
+    <radialGradient id="edFace" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#ffdcb3"/>
+      <stop offset="100%" stop-color="#dba274"/>
+    </radialGradient>
+    <radialGradient id="edBulbGlass" cx="40%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#fff7cf"/>
+      <stop offset="70%" stop-color="#ffe17a"/>
+      <stop offset="100%" stop-color="#d8a63a"/>
+    </radialGradient>
+    <radialGradient id="edGround" cx="50%" cy="25%" r="75%">
+      <stop offset="0%" stop-color="#7a6a58"/>
+      <stop offset="100%" stop-color="#3c3226"/>
+    </radialGradient>
+  </defs>
+
+  <ellipse cx="40" cy="77" rx="16" ry="4" fill="#15120d" opacity="0.4"/>
+  <ellipse cx="40" cy="76" rx="22" ry="6" fill="url(#edGround)" opacity="0.5"/>
+
+  <g>
+    <animateTransform attributeName="transform" type="rotate" values="-1.2 40 75;1.2 40 75;-1.2 40 75" dur="4.5s" repeatCount="indefinite"/>
+
+    <rect x="27" y="64" width="11" height="14" rx="3" fill="url(#edShoe)" stroke="#0c0804" stroke-width="0.5"/>
+    <rect x="42" y="64" width="11" height="14" rx="3" fill="url(#edShoe)" stroke="#0c0804" stroke-width="0.5"/>
+
+    <path d="M29,50 C25,55 24,61 28,65 L37,65 L37,56 L43,56 L43,65 L52,65 C56,61 55,55 51,50 Z"
+          fill="url(#edPants)" stroke="#0a0a0e" stroke-width="0.5"/>
+
+    <path d="M28,32 L23,49 L28,51 L33,34 Z" fill="url(#edJacket)" stroke="#0a0a10" stroke-width="0.5"/>
+    <circle cx="23.5" cy="49.5" r="3" fill="url(#edFace)" stroke="#b08354" stroke-width="0.4"/>
+
+    <path d="M51,32 C57,28 60,21 59,15 L54,16 C55,21 52,26 48,29 Z" fill="url(#edJacket)" stroke="#0a0a10" stroke-width="0.5"/>
+    <circle cx="59" cy="14" r="3" fill="url(#edFace)" stroke="#b08354" stroke-width="0.4"/>
+
+    <g transform="translate(60,9)">
+      <path d="M-3.4,-1 C-3.4,-4.6 -0.2,-7.2 0,-7.2 C0.2,-7.2 3.4,-4.6 3.4,-1 C3.4,2 1.6,3.6 1.6,5.6 L-1.6,5.6 C-1.6,3.6 -3.4,2 -3.4,-1 Z"
+            fill="url(#edBulbGlass)" stroke="#9c7a22" stroke-width="0.35">
+        <animate attributeName="opacity" values="0.75;1;0.75" dur="1.6s" repeatCount="indefinite"/>
+      </path>
+      <rect x="-1.6" y="5.6" width="3.2" height="1.6" fill="#8a7a6a"/>
+      <path d="M-1.3,-4 Q0,-1.5 1.3,-4" stroke="#b5731a" stroke-width="0.5" fill="none">
+        <animate attributeName="stroke" values="#b5731a;#ffbf4d;#b5731a" dur="1.6s" repeatCount="indefinite"/>
+      </path>
+    </g>
+
+    <path d="M28,31 L52,31 L50,51 L30,51 Z" fill="url(#edJacket)" stroke="#0a0a10" stroke-width="0.5"/>
+    <path d="M35,31 L45,31 L42,26 L38,26 Z" fill="#fdfdfb" stroke="#c9c9c3" stroke-width="0.3"/>
+    <path d="M38,27 L40,33 L42,27 Z" fill="#111115"/>
+
+    <rect x="37" y="25" width="6" height="5" fill="url(#edFace)"/>
+    <circle cx="40" cy="21" r="7.3" fill="url(#edFace)" stroke="#b08354" stroke-width="0.45"/>
+    <path d="M32.5,19 C31,13 34,8 40,8 C46,8 49,13 47.5,19 C45,15.5 42,15 40,15 C38,15 35,15.5 32.5,19 Z" fill="#cfd2d6" stroke="#9a9ea4" stroke-width="0.3" opacity="0.9"/>
+    <path d="M34.5,23.5 Q40,26.5 45.5,23.5 Q44,25.5 40,25.3 Q36,25.5 34.5,23.5 Z" fill="#c9ccd0" stroke="#9a9ea4" stroke-width="0.3"/>
+    <circle cx="37.2" cy="20" r="0.6" fill="#2a2a2a"/>
+    <circle cx="42.8" cy="20" r="0.6" fill="#2a2a2a"/>
+  </g>
+</svg>

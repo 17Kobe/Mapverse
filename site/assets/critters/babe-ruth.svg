@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <defs>
+    <linearGradient id="brJersey" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f4f1e8"/>
+      <stop offset="100%" stop-color="#d8d4c6"/>
+    </linearGradient>
+    <linearGradient id="brCap" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2d4373"/>
+      <stop offset="100%" stop-color="#162040"/>
+    </linearGradient>
+    <linearGradient id="brShoe" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3a2b1d"/>
+      <stop offset="100%" stop-color="#19100a"/>
+    </linearGradient>
+    <radialGradient id="brSkin" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#ffdcb3"/>
+      <stop offset="100%" stop-color="#dba274"/>
+    </radialGradient>
+    <linearGradient id="brBat" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#d9a661"/>
+      <stop offset="100%" stop-color="#8a5a2e"/>
+    </linearGradient>
+    <radialGradient id="brGround" cx="50%" cy="25%" r="75%">
+      <stop offset="0%" stop-color="#8fa05a"/>
+      <stop offset="100%" stop-color="#4a5a2a"/>
+    </radialGradient>
+  </defs>
+
+  <ellipse cx="40" cy="77" rx="17" ry="4" fill="#15150d" opacity="0.4"/>
+  <ellipse cx="40" cy="76" rx="23" ry="6" fill="url(#brGround)" opacity="0.4"/>
+
+  <g>
+    <animateTransform attributeName="transform" type="rotate" values="-2 40 75;2 40 75;-2 40 75" dur="3.6s" repeatCount="indefinite"/>
+
+    <rect x="26" y="63" width="11" height="15" rx="3" fill="url(#brShoe)" stroke="#0c0804" stroke-width="0.5"/>
+    <rect x="43" y="63" width="11" height="15" rx="3" fill="url(#brShoe)" stroke="#0c0804" stroke-width="0.5"/>
+
+    <path d="M27,49 C22,55 22,61 27,65 L37,65 L37,55 L43,55 L43,65 L53,65 C58,61 58,55 53,49 Z"
+          fill="url(#brJersey)" stroke="#9c988a" stroke-width="0.5"/>
+    <g stroke="#2d4373" stroke-width="0.4" opacity="0.6">
+      <line x1="31" y1="51" x2="29" y2="64"/>
+      <line x1="40" y1="51" x2="40" y2="65"/>
+      <line x1="49" y1="51" x2="51" y2="64"/>
+    </g>
+
+    <path d="M18,22 L60,46" stroke="url(#brBat)" stroke-width="3.6" stroke-linecap="round"/>
+    <circle cx="60" cy="46" r="2" fill="#6a4320"/>
+
+    <path d="M30,33 L20,24 L24,20 L35,30 Z" fill="url(#brJersey)" stroke="#9c988a" stroke-width="0.5"/>
+    <path d="M50,33 L58,44 L55,47 L45,37 Z" fill="url(#brJersey)" stroke="#9c988a" stroke-width="0.5"/>
+    <circle cx="21.5" cy="22" r="3" fill="url(#brSkin)" stroke="#b08354" stroke-width="0.4"/>
+    <circle cx="57" cy="45.5" r="3" fill="url(#brSkin)" stroke="#b08354" stroke-width="0.4"/>
+
+    <path d="M27,31 L53,31 C55,38 55,44 51,49 L29,49 C25,44 25,38 27,31 Z" fill="url(#brJersey)" stroke="#9c988a" stroke-width="0.5"/>
+    <text x="40" y="43" font-size="7" font-weight="700" fill="#2d4373" text-anchor="middle" font-family="Georgia, serif">3</text>
+
+    <rect x="37" y="25" width="6" height="5" fill="url(#brSkin)"/>
+    <circle cx="40" cy="22" r="7.6" fill="url(#brSkin)" stroke="#b08354" stroke-width="0.45"/>
+    <path d="M32,20 C31.5,15 35,12 40,12 C45,12 48.5,15 48,20 L48,18 Q40,14 32,18 Z" fill="url(#brCap)" stroke="#0e1428" stroke-width="0.4"/>
+    <path d="M44,17.5 Q52,17.5 52,21 Q48,20 44,20.5 Z" fill="url(#brCap)" stroke="#0e1428" stroke-width="0.4"/>
+    <path d="M36.5,24.3 Q40,26.6 43.5,24.3" fill="none" stroke="#9a6a46" stroke-width="0.7" stroke-linecap="round"/>
+  </g>
+</svg>
