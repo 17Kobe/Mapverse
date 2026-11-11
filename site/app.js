@@ -635,7 +635,7 @@
         { src: 'critters/isaac-newton.svg', lon: -0.63, lat: 52.8, mode: 'still', face: 'F', s: 1.0, deco: true }, // 伊薩克·牛頓
         { src: 'critters/albert-einstein.svg', lon: 9.99, lat: 48.4, mode: 'still', face: 'F', s: 1.0, deco: true }, // 愛因斯坦
         { src: 'critters/thomas-edison.svg', lon: -74.5, lat: 41, mode: 'still', face: 'F', s: 1.0, deco: true }, // 湯瑪斯·愛迪生
-        { src: 'critters/nikola-tesla.svg', lon: -79.07, lat: 43.08, mode: 'still', face: 'F', s: 1.0, deco: true }, // 尼古拉·特斯拉
+        { src: 'critters/nikola-tesla.svg', lon: -73.98, lat: 40.75, mode: 'still', face: 'F', s: 1.0, deco: true }, // 尼古拉·特斯拉：原座標跟尼加拉瀑布完全重疊，改放到他長年生活工作的紐約曼哈頓
         { src: 'critters/michael-jordan.svg', lon: -87.65, lat: 41.88, mode: 'still', face: 'F', s: 1.0, deco: true }, // 麥可·喬丹
         { src: 'critters/babe-ruth.svg', lon: -76.6, lat: 39.28, mode: 'still', face: 'F', s: 1.0, deco: true }, // 貝比·魯斯
         { src: 'critters/shohei-ohtani.svg', lon: 141.13, lat: 39.14, mode: 'still', face: 'F', s: 1.0, deco: true }, // 大谷翔平

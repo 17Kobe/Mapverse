@@ -8,35 +8,23 @@
       <stop offset="0%" stop-color="#4a3824"/>
       <stop offset="100%" stop-color="#241a0e"/>
     </linearGradient>
-    <linearGradient id="bsGrass" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#c4a85f"/>
-      <stop offset="100%" stop-color="#8a703a"/>
-    </linearGradient>
   </defs>
-
-  <!-- dry prairie grass tuft -->
-  <path d="M0,80 L0,70 Q40,65 80,70 L80,80 Z" fill="url(#bsGrass)"/>
-  <g stroke="#9c8248" stroke-width="0.7" opacity="0.6">
-    <line x1="6" y1="70" x2="4" y2="63"/>
-    <line x1="12" y1="71" x2="11" y2="64"/>
-    <line x1="68" y1="71" x2="70" y2="64"/>
-  </g>
 
   <!-- tail -->
   <path d="M60,46 C66,50 68,58 65,66" fill="none" stroke="url(#bsBody)" stroke-width="2.2" stroke-linecap="round"/>
   <path d="M63,62 L68,68" stroke="#241a0e" stroke-width="2" stroke-linecap="round"/>
 
-  <!-- hind legs -->
-  <path d="M55,56 C53,62 53,68 54,74 L59,74 C60,68 60,62 59,56 Z" fill="url(#bsBody)" stroke="#2e2113" stroke-width="0.4"/>
-  <path d="M47,58 C46,64 46,70 47,76 L52,76 C53,70 53,64 52,58 Z" fill="url(#bsBody)" stroke="#2e2113" stroke-width="0.4"/>
+  <!-- hind legs：直接站在地圖上，不另外畫草地色塊，腳底延伸到接近畫面底部 -->
+  <path d="M55,56 C53,63 53,70 54,78 L59,78 C60,70 60,63 59,56 Z" fill="url(#bsBody)" stroke="#2e2113" stroke-width="0.4"/>
+  <path d="M47,58 C46,65 46,72 47,79 L52,79 C53,72 53,65 52,58 Z" fill="url(#bsBody)" stroke="#2e2113" stroke-width="0.4"/>
 
   <!-- large sloped body, higher at the shoulder than the hip (signature bison silhouette) -->
   <path d="M26,52 C27,42 36,34 48,35 C56,36 60,42 59,50 C58,58 50,62 40,62 C32,62 26,59 26,52 Z"
         fill="url(#bsBody)" stroke="#2e2113" stroke-width="0.5"/>
 
   <!-- front legs, stocky -->
-  <path d="M22,56 C20,62 20,69 21,76 L27,76 C28,69 28,62 27,56 Z" fill="url(#bsBody)" stroke="#2e2113" stroke-width="0.4"/>
-  <path d="M31,58 C30,64 30,70 31,77 L36,77 C37,70 37,64 36,58 Z" fill="url(#bsBody)" stroke="#2e2113" stroke-width="0.4"/>
+  <path d="M22,56 C20,63 20,71 21,79 L27,79 C28,71 28,63 27,56 Z" fill="url(#bsBody)" stroke="#2e2113" stroke-width="0.4"/>
+  <path d="M31,58 C30,65 30,72 31,80 L36,80 C37,72 37,65 36,58 Z" fill="url(#bsBody)" stroke="#2e2113" stroke-width="0.4"/>
 
   <!-- massive shaggy shoulder hump -->
   <path d="M25,52 C23,44 26,34 36,30 C34,36 33,42 34,48 Z" fill="url(#bsMane)" opacity="0.9"/>
