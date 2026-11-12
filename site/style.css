@@ -307,14 +307,22 @@ button{font:inherit;color:inherit;cursor:pointer}
   55% {transform:translateY(-125px)}
   100%{transform:translateY(0)}
 }
+/* 固定不變的小傾角，只負責「整體看起來有立體感」，CSS 寫死、JS 完全不會去改它。
+   跟 #diceCube 的「哪一面朝前」旋轉分開兩層，兩個 rotateX/rotateY 才不會疊在一起
+   產生不可預期的角度（疊在一起時，某些點數會轉到四角朝鏡頭的怪角度，看不出是幾點）。
+   這個角度調大一點才看得出真的有立體感（太小在這個小尺寸下幾乎看不出來跟平面差別） */
+#diceTilt{width:68px;height:68px;position:relative;transform-style:preserve-3d;transform:rotateX(-14deg) rotateY(18deg)}
 #diceCube{
   width:68px;height:68px;position:relative;transform-style:preserve-3d;
   transition:transform .9s cubic-bezier(.3,1.6,.4,1);
 }
 /* 6 個面：固定點數（對面相加為 7），旋轉立方體本身來決定哪一面朝前，不是切換圖案。
-   每面是 fw（只負責旋轉，不放 translateZ）包兩層：fback（幾乎不圓角、精確貼合立方體邊界）+ df（真正可見的圓角面，同樣精確貼合）。
-   兩層大小精確等於立方體邊長（68px），不重疊也不留縫；df 的圓角是唯一的圓角來源，旋轉中每一面都保有自己的圓角，
-   fback 和 df 的 translateZ 差距拉大一點（28 / 34，6px 差距而不是 3px）降低 z-fighting 閃爍的風險 */
+   每面是 fw（只負責旋轉，不放 translateZ）包兩層：fback（墊在後面補洞的背板）+ df（真正可見的圓角面，同樣精確貼合）。
+   兩層大小精確等於立方體邊長（68px），不重疊也不留縫；fback 跟 df 用「同一個圓角 + 相近色調」，
+   不然兩層圓角大小不一致，轉動時角落會看到背板的尖角從圓角面後面透出來，變成兩種顏色疊在一起的醜角。
+   fback 和 df 的 translateZ 差距改小（31 / 34，3px）：原本拉到 6px 是為了避免 z-fighting 閃爍，
+   但配合現在的小傾角一起看，6px 的落差在側邊看起來像是「表面那層薄片跟本體分開、浮在上面」，
+   縮小落差同時保留一點點避免閃爍的安全距離 */
 .fw{position:absolute;inset:0;transform-style:preserve-3d}
 .fw.f1{transform:rotateX(0deg) rotateY(0deg)}
 .fw.f2{transform:rotateX(-90deg)}
@@ -323,11 +331,11 @@ button{font:inherit;color:inherit;cursor:pointer}
 .fw.f5{transform:rotateX(90deg)}
 .fw.f6{transform:rotateY(180deg)}
 .fback{
-  position:absolute;inset:0;width:68px;height:68px;border-radius:4px;
-  background:#ece6d6;transform:translateZ(28px);backface-visibility:hidden;
+  position:absolute;inset:0;width:68px;height:68px;border-radius:22px;
+  background:#e2ddc8;transform:translateZ(31px);backface-visibility:hidden;
 }
 .df{
-  position:absolute;inset:0;width:68px;height:68px;border-radius:18px;transform:translateZ(34px);
+  position:absolute;inset:0;width:68px;height:68px;border-radius:22px;transform:translateZ(34px);
   background:
     radial-gradient(circle at 28% 22%, rgba(255,255,255,.95) 0%, rgba(255,255,255,0) 45%),
     linear-gradient(160deg,#ffffff 0%,#f3f0e6 55%,#e2ddc8 100%);

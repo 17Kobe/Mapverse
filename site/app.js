@@ -2786,8 +2786,8 @@
         6: [0, 180],
     };
     let diceRolling = false,
-        diceSpinX = -18, // 目前累積角度，靜止時維持一個小傾角比較好看
-        diceSpinY = 28;
+        diceSpinX = 0, // 累積角度：只負責「哪一面朝前」，整體的小傾角交給 index.html 的 #diceTilt 固定層
+        diceSpinY = 0;
     // 把目前角度往「前方」（正向增加）轉到 target（0~359 內的目標角度），外加 extraSpins 整圈，回傳新的累積角度
     function spinTo(current, target, extraSpins) {
         const forward = (((target % 360) - (current % 360)) % 360 + 360) % 360;
@@ -2806,6 +2806,8 @@
             const result = 1 + Math.floor(Math.random() * 6);
             const [showX, showY] = DICE_SHOW_ROT[result];
             const spins = reduce ? 0 : 2 + Math.floor(Math.random() * 2); // 多轉幾圈營造翻滾感
+            // #diceCube 只管哪一面朝前，用原本就驗證過正確的角度，不额外疊加傾角
+            // （疊加傾角會跟 rotateX/rotateY 混在一起變成不可預期的角度，某些點數會轉到四角朝鏡頭看不出點數）
             diceSpinX = spinTo(diceSpinX, showX, spins);
             diceSpinY = spinTo(diceSpinY, showY, spins);
             cube.style.transition = reduce ? 'none' : '';

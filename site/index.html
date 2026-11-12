@@ -19,7 +19,7 @@
             href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Barlow+Semi+Condensed:wght@600;700&display=swap"
             rel="stylesheet"
         />
-        <link rel="stylesheet" href="style.css?v=20251111a" />
+        <link rel="stylesheet" href="style.css?v=20251111f" />
     </head>
     <body>
         <!-- 左側直式圖層列（手機版變成底部導覽列），內容由 app.js 的 LAYERS 產生 -->
@@ -44,11 +44,16 @@
             <div id="attrib">地形資料 © Mapzen/AWS Terrain Tiles · Esri, Maxar, Earthstar Geographics</div>
 
             <!-- 骰子（原「上帝之手」的位置）：真正的 CSS 3D 立方體，點擊會翻滾並轉到對應點數那一面朝前。
-                 每面是 fw（只負責旋轉）包 fback（幾乎不圓角的背板，墊住 df 圓角四角缺口）+ df（真正可見的圓角面）。
+                 每面是 fw（只負責旋轉）包 fback（墊在後面補洞的背板）+ df（真正可見的圓角面）。
                  圓角一定要做在「每個面自己身上」才行：翻滾時鏡頭看到的是立方體的透視輪廓（菱形/斜面），
-                 不是正面那個 68x68 的方框，所以靠外層固定視窗裁切在旋轉中完全對不上，只有停止、正面朝鏡頭時才碰巧吻合 -->
+                 不是正面那個 68x68 的方框，所以靠外層固定視窗裁切在旋轉中完全對不上，只有停止、正面朝鏡頭時才碰巧吻合。
+                 #diceTilt 是一層固定不變的外層（CSS 寫死、JS 完全不碰），只負責「整體看起來有點立體感」的小傾角；
+                 #diceCube 自己只負責「哪一面要朝前」這件事，兩層分開才不會因為 rotateX/rotateY 疊在一起變成
+                 不可預期的角度（之前把傾角直接加進 rotateX/rotateY 裡，兩個旋轉疊起來偏偏在某些點數會轉到
+                 四角朝鏡頭的怪角度，看不出是幾點）-->
             <button id="diceBtn" aria-label="擲骰子" title="擲骰子">
                 <div id="diceScene">
+                  <div id="diceTilt">
                     <div id="diceCube">
                         <div class="fw f1"><div class="fback"></div><div class="df"><span class="pip p-c"></span></div></div>
                         <div class="fw f2"><div class="fback"></div><div class="df"><span class="pip p-tl"></span><span class="pip p-br"></span></div></div>
@@ -57,6 +62,7 @@
                         <div class="fw f5"><div class="fback"></div><div class="df"><span class="pip p-tl"></span><span class="pip p-tr"></span><span class="pip p-c"></span><span class="pip p-bl"></span><span class="pip p-br"></span></div></div>
                         <div class="fw f6"><div class="fback"></div><div class="df"><span class="pip p-tl"></span><span class="pip p-ml"></span><span class="pip p-bl"></span><span class="pip p-tr"></span><span class="pip p-mr"></span><span class="pip p-br"></span></div></div>
                     </div>
+                  </div>
                 </div>
             </button>
 
@@ -94,6 +100,6 @@
         <script src="corps.js"></script>
         <script src="natives.js"></script>
         <script src="tips.js?v=20251111f"></script>
-        <script src="app.js?v=20251111t"></script>
+        <script src="app.js?v=20251111v"></script>
     </body>
 </html>
