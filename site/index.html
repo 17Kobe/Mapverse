@@ -19,7 +19,7 @@
             href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Barlow+Semi+Condensed:wght@600;700&display=swap"
             rel="stylesheet"
         />
-        <link rel="stylesheet" href="style.css?v=20251111f" />
+        <link rel="stylesheet" href="style.css?v=20251111i" />
     </head>
     <body>
         <!-- 左側直式圖層列（手機版變成底部導覽列），內容由 app.js 的 LAYERS 產生 -->
@@ -50,9 +50,13 @@
                  #diceTilt 是一層固定不變的外層（CSS 寫死、JS 完全不碰），只負責「整體看起來有點立體感」的小傾角；
                  #diceCube 自己只負責「哪一面要朝前」這件事，兩層分開才不會因為 rotateX/rotateY 疊在一起變成
                  不可預期的角度（之前把傾角直接加進 rotateX/rotateY 裡，兩個旋轉疊起來偏偏在某些點數會轉到
-                 四角朝鏡頭的怪角度，看不出是幾點）-->
+                 四角朝鏡頭的怪角度，看不出是幾點）。#diceCore 是墊在最底下的實心圓，故意放在 #diceTilt
+                 外面、完全不參與 3D 旋轉（一直都是正對鏡頭的平面圓），角與角之間露出的縫隙看到的就是
+                 這個圓，不會穿透看到背景——上一版做錯的地方是把它放進會旋轉的 3D 空間裡，一個沒有厚度的
+                 圓形轉到側面就會退化成一條線，這次移到 3D 範圍外面，不管骰子轉到哪個角度都一樣是圓 -->
             <button id="diceBtn" aria-label="擲骰子" title="擲骰子">
                 <div id="diceScene">
+                  <div id="diceCore"></div>
                   <div id="diceTilt">
                     <div id="diceCube">
                         <div class="fw f1"><div class="fback"></div><div class="df"><span class="pip p-c"></span></div></div>
