@@ -321,6 +321,11 @@ button{font:inherit;color:inherit;cursor:pointer}
    產生不可預期的角度（疊在一起時，某些點數會轉到四角朝鏡頭的怪角度，看不出是幾點）。
    X 角度負責「往下看頂面」的程度：-58° 太過頭、看起來不自然，改回比較自然的 -36°，
    頂面還是清楚朝向鏡頭、但不會扭曲成怪異的俯視感 */
+/* 固定不變的「正前方→正上方」搬移層：DICE_SHOW_ROT 只會把結果轉到立方體本地正前方（+Z），
+   但使用者讀點數是看畫面上的頂面，不是正前方那一面——這裡用寫死的 rotateX(90deg) 把正前方
+   整個搬到正上方的位置，搬完後再套 #diceTilt 的小傾角，骰到的點數才會正確顯示在頂面，
+   跟下面文字訊息的點數一致 */
+#diceFaceUp{width:68px;height:68px;position:relative;transform-style:preserve-3d;transform:rotateX(90deg)}
 #diceTilt{width:68px;height:68px;position:relative;transform-style:preserve-3d;transform:rotateX(-36deg) rotateY(14deg)}
 #diceCube{
   width:68px;height:68px;position:relative;transform-style:preserve-3d;

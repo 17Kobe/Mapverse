@@ -19,7 +19,7 @@
             href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Barlow+Semi+Condensed:wght@600;700&display=swap"
             rel="stylesheet"
         />
-        <link rel="stylesheet" href="style.css?v=20251111l" />
+        <link rel="stylesheet" href="style.css?v=20251111m" />
     </head>
     <body>
         <!-- 左側直式圖層列（手機版變成底部導覽列），內容由 app.js 的 LAYERS 產生 -->
@@ -53,12 +53,18 @@
                  四角朝鏡頭的怪角度，看不出是幾點）。#diceCore 是墊在最底下的實心圓，故意放在 #diceTilt
                  外面、完全不參與 3D 旋轉（一直都是正對鏡頭的平面圓），角與角之間露出的縫隙看到的就是
                  這個圓，不會穿透看到背景。
+                 #diceFaceUp 是新加的固定層（同樣 CSS 寫死、JS 不碰）：DICE_SHOW_ROT 原本只負責把結果
+                 轉到立方體本地「正前方」（+Z），但使用者讀點數是看「正上方」那一面，正前方跟正上方
+                 不是同一個位置——結果變成畫面上顯示的「上面」其實是正前方旁邊相鄰的另一個面，不是
+                 真正骰到的點數，跟下面的文字訊息對不起來。這裡用寫死的 rotateX(90deg) 把「正前方」
+                 整個搬到「正上方」的位置，搬完才套外層的小傾角，點數結果就會正確顯示在視覺上的頂面。
                  （曾經試過加兩條固定在立方體內部的斜角倒角條去模擬真正圓角，但手動算的 3D 角度/位置
                  一直兌不準，不是完全被擋住看不見，就是變成浮在表面上的怪異色塊，拿掉了） -->
             <button id="diceBtn" aria-label="擲骰子" title="擲骰子">
                 <div id="diceScene">
                   <div id="diceCore"></div>
                   <div id="diceTilt">
+                   <div id="diceFaceUp">
                     <div id="diceCube">
                         <div class="fw f1"><div class="fback"></div><div class="df"><span class="pip p-c"></span></div></div>
                         <div class="fw f2"><div class="fback"></div><div class="df"><span class="pip p-tl"></span><span class="pip p-br"></span></div></div>
@@ -67,6 +73,7 @@
                         <div class="fw f5"><div class="fback"></div><div class="df"><span class="pip p-tl"></span><span class="pip p-tr"></span><span class="pip p-c"></span><span class="pip p-bl"></span><span class="pip p-br"></span></div></div>
                         <div class="fw f6"><div class="fback"></div><div class="df"><span class="pip p-tl"></span><span class="pip p-ml"></span><span class="pip p-bl"></span><span class="pip p-tr"></span><span class="pip p-mr"></span><span class="pip p-br"></span></div></div>
                     </div>
+                   </div>
                   </div>
                 </div>
             </button>
