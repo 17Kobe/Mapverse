@@ -169,13 +169,13 @@
         // 非洲莽原：獵人追斑馬，旁邊有長頸鹿散步
         { src: 'critters/zebra.png', lon: 33.5, lat: -6, mode: 'chase', lag: 0, s: 0.95 },
         { src: 'critters/hunter.png', lon: 33.5, lat: -6, mode: 'chase', lag: 1.05, s: 0.85 },
-        { src: 'critters/giraffe.png', lon: 29, lat: -10, mode: 'wander', s: 1.2 },
+        { src: 'critters/giraffe.png', lon: 29, lat: -10, mode: 'wander', s: 1.2, maxDeg: 2 }, // 原本沒設 maxDeg，長時間開著頁面會不設限亂走
         { src: 'critters/lion.svg', lon: 38.5, lat: -3.5, mode: 'wander', gait: 'heavy', s: 1.05, deco: true, maxDeg: 2 }, // 非洲獅
         { src: 'animals/leopard.png', lon: 26, lat: 3, mode: 'wander', s: 0.95, deco: true, maxDeg: 2 }, // 非洲豹
         { src: 'animals/rhinoceros.png', lon: 22, lat: -19, mode: 'wander', gait: 'heavy', s: 1.15, deco: true, maxDeg: 2 }, // 犀牛
         // 北極：因紐特（愛斯基摩）人在冰屋旁走來走去
         { src: 'people/igloo.svg', lon: -74, lat: 68.5, mode: 'still', face: 'F', s: 1 },
-        { src: 'people/eskimo.svg', lon: -69, lat: 67.6, mode: 'wander', face: 'F', gait: 'waddle', s: 0.85 },
+        { src: 'people/eskimo.svg', lon: -69, lat: 67.6, mode: 'wander', face: 'F', gait: 'waddle', s: 0.85, maxDeg: 2 }, // 原本沒設 maxDeg
         // 其他特別的人
         { src: 'critters/rower.png', lon: -62, lat: -3.3, mode: 'boat', face: 'F', s: 0.9 }, // 亞馬遜河划船
         { src: 'critters/surfer.png', lon: 155.8, lat: -30, mode: 'surf', face: 'R', s: 0.9, sea: true }, // 澳洲黃金海岸外海衝浪
@@ -184,8 +184,8 @@
         { src: 'critters/koala.svg', lon: 147.5, lat: -36, mode: 'climb', face: 'F', s: 0.55, deco: true, noShadow: true },
         { src: 'critters/skier.png', lon: 14, lat: 65, mode: 'ski', face: 'R', s: 0.85 }, // 挪威山上滑雪
         // 各地代表動物
-        { src: 'critters/panda.svg', lon: 101.2, lat: 30.8, mode: 'wander', gait: 'waddle', s: 1.05, deco: true }, // 四川的貓熊
-        { src: 'critters/brown-bear.svg', lon: 100, lat: 54, mode: 'wander', gait: 'heavy', s: 1.15, deco: true }, // 俄羅斯的棕熊
+        { src: 'critters/panda.svg', lon: 101.2, lat: 30.8, mode: 'wander', gait: 'waddle', s: 1.05, deco: true, maxDeg: 2 }, // 四川的貓熊：原本沒設 maxDeg
+        { src: 'critters/brown-bear.svg', lon: 100, lat: 54, mode: 'wander', gait: 'heavy', s: 1.15, deco: true, maxDeg: 2 }, // 俄羅斯的棕熊：原本沒設 maxDeg
         // 蘭嶼外海的飛魚：幾隻輪流躍出水面、貼著海面滑翔一段再入水
         { src: 'critters/flying-fish.svg', lon: 122.1, lat: 22.0, mode: 'flyfish', s: 0.5, sea: true, ph: 0, deco: true },
         { src: 'critters/flying-fish.svg', lon: 122.1, lat: 22.0, mode: 'flyfish', s: 0.45, sea: true, ph: 1.1, deco: true },
@@ -492,7 +492,7 @@
         { src: 'critters/bagan.svg', lon: 94.86, lat: 21.17, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },             // 蒲甘
         { src: 'critters/abu-simbel.svg', lon: 31.63, lat: 22.34, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },        // 阿布辛貝
         { src: 'critters/samarkand.svg', lon: 66.97, lat: 39.65, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },         // 撒馬爾罕
-        { src: 'critters/komodo-dragon.svg', lon: 119.49, lat: -8.55, mode: 'wander', face: 'R', gait: 'heavy', s: 1.0, deco: true, landmark: true }, // 科莫多巨蜥（素材朝右畫）
+        { src: 'critters/komodo-dragon.svg', lon: 119.49, lat: -8.55, mode: 'wander', face: 'R', gait: 'heavy', s: 1.0, deco: true, landmark: true, maxDeg: 2 }, // 科莫多巨蜥（素材朝右畫）：原本漏了 maxDeg，長時間開著頁面會不設限亂走，難怪跑到墨西哥那邊去
         { src: 'critters/socotra.svg', lon: 53.87, lat: 12.47, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },           // 索科特拉島
         { src: 'critters/maasai.svg', lon: 36.8, lat: -2.5, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },              // 馬賽族
         { src: 'critters/angel-falls.svg', lon: -62.54, lat: 5.97, mode: 'still', face: 'F', s: 1.1, deco: true, landmark: true },       // 安赫爾瀑布
@@ -2113,7 +2113,6 @@
         }
         return Math.min(1, cv * 1.2);
     }
-    let cloudsHadContent = true; // 放大超過門檻、雲清空之後，後面每一幀都不用再 clearRect 了
     function drawClouds(dt) {
         cloudHits.length = 0;
         if (!cctx || !W || !projection) return;
@@ -2121,22 +2120,14 @@
             t = state.t,
             k = t.k,
             ww = S0 * k;
-        const fade = Math.max(0, Math.min(1, (4.5 - k) / 2.5)); // 放大到 4.5 倍以上就看不到雲
-        if (!fade) {
-            // 畫布已經是空的就什麼都不用做；只有「剛跨過門檻」那一次需要清一次舊畫面
-            if (cloudsHadContent) {
-                ctx.setTransform(1, 0, 0, 1, 0, 0);
-                ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-                cloudsHadContent = false;
-            }
-            return;
-        }
-        cloudsHadContent = true;
+        // 不再放大到一定倍率就完全消失——保留一個最低亮度，放大再多也還是看得到雲
+        // （這會讓原本「縮到一定程度就整個跳過不畫」的效能優化失效，放大時雲會持續佔用一點點效能）
+        const fade = Math.max(0.25, Math.min(1, (4.5 - k) / 2.5));
         ctx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
         if (state.anim && !reduceMotion.matches) cloudT += dt;
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        const sc = Math.pow(k, 0.6); // 位置完全跟著地圖；大小只略微放大，免得近看時整片白
+        const sc = Math.pow(Math.min(k, 30), 0.6); // 位置完全跟著地圖；大小只略微放大，放大超過30倍就不再變大，免得整片白
         const list = [];
         for (const c of clouds) {
             const lon = c.lon + cloudT * CLOUD_WIND * c.v;
@@ -2221,8 +2212,8 @@
         ctx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.clearRect(0, 0, cw, ch);
         A.drawn = true;
-        const fade = Math.max(0, Math.min(1, (9 - state.t.k) / 3));
-        if (!fade) return;
+        // 不再放大到一定倍率就完全淡出看不到——保留一個最低亮度，放大再多也還是看得到極光
+        const fade = Math.max(0.35, Math.min(1, (9 - state.t.k) / 3));
         const LON0 = -6,
             LON1 = 44,
             N = 72;
@@ -2233,7 +2224,8 @@
         if (xb < 0 || xa > W || yBot < 0 || yTop > H || xb <= xa) return;
         const T = A.t,
             gap = (xb - xa) / (N - 1),
-            colW = Math.max(1.6, gap * 1.9),
+            // 放大很多時 gap 會跟著變很大，這裡設一個上限，不然光簾會寬到塞滿整個畫面
+            colW = Math.min(Math.max(1.6, gap * 1.9), 40),
             night = 0.7 + 0.3 * (1 - nightBrightAt(18, 69));
         ctx.globalCompositeOperation = 'lighter';
         for (let cu = 0; cu < 3; cu++) {
@@ -2243,7 +2235,8 @@
                 const lon = LON0 + ((LON1 - LON0) * i) / (N - 1),
                     lat = 66.5 + cu * 2.2 + 2.4 * Math.sin(lon * 0.085 + cu * 1.9) + 0.9 * Math.sin(lon * 0.31 + T * 0.4 + cu);
                 const [x, y] = screenXY(lon, lat),
-                    hpx = (y - screenXY(lon, lat + 9)[1]) * 1.15;
+                    // 放大很多時這個高度也會跟著爆增，設一個上限避免光柱塞滿整個畫面
+                    hpx = Math.min((y - screenXY(lon, lat + 9)[1]) * 1.15, 260);
                 const env = Math.pow(Math.sin((Math.PI * i) / (N - 1)), 0.7),
                     ray = 0.55 + 0.3 * Math.sin(i * 0.45 + T * 0.9 + cu * 2) + 0.15 * Math.sin(i * 1.7 - T * 1.6),
                     h = hpx * ray,
@@ -2287,8 +2280,8 @@
         const A = AURORA; // 共用 canvas / ctx / acc / t
         if (!A.cv || !W || !projection) return;
         if (!A.freshFrame) return; // 這幀極光沒有真的清版重畫，藍眼淚也跟著跳過，不然會疊加變亮
-        const fade0 = Math.max(0, Math.min(1, (9 - state.t.k) / 3)); // 放大太多就淡出
-        if (!fade0) return;
+        // 不再放大到一定倍率就完全淡出看不到——保留一個最低亮度
+        const fade0 = Math.max(0.35, Math.min(1, (9 - state.t.k) / 3));
         const ctx = A.ctx, S = 0.4, T = A.t;
         const spr = biolumSprite();
         ctx.globalCompositeOperation = 'lighter';
@@ -2311,7 +2304,8 @@
                 // 波光：每個點高度隨時間 sin 波動
                 const wave = 0.45 + 0.35 * Math.sin(i * 0.65 + T * 2.2 + sp.lon * 0.1)
                            + 0.2  * Math.sin(i * 1.3  - T * 1.5);
-                const hpx = Math.max(4, (screenXY(lon, lat + r * 0.5)[1] - y) * -1.2);
+                // 放大很多時高度也會爆增，設一個上限避免整條變成一大片色塊
+                const hpx = Math.min(Math.max(4, (screenXY(lon, lat + r * 0.5)[1] - y) * -1.2), 50);
                 const env = Math.pow(Math.sin((Math.PI * i) / N), 0.5); // 淡入淡出
                 const colW = Math.max(2, hpx * 0.9);
                 ctx.globalAlpha = Math.max(0, fade * env * wave * 0.75);
@@ -5208,7 +5202,6 @@
             const r = { x: x - size * reach, y: y - size * 1.1, w: size * reach * 2, h: size * 1.4 };
             const lr = { x: x - z * 0.5, y: y - z, w: z, h: z };
             const hide =
-                (folk || c.d.landmark ? k > FOLK_MAX_K : k > 20) ||
                 (folk && !fs) || // 找不到空位（或國家縮得只剩一個點）就先收起來
                 x < -size * 3 ||
                 x > W + size * 3 ||
