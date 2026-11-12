@@ -2260,7 +2260,7 @@
     // 效能：24fps 節流、低解析度、放大太多（k>8）就不畫
     const BIOLUM_SPOTS = [
         // [中心經度, 中心緯度, 半徑度數, 方向角（光帶方向，0=水平）]
-        { lon: 119.9, lat: 26.2, r: 0.8  },  // 馬祖列島
+        { lon: 119.95, lat: 26.15, r: 0.15 },  // 馬祖列島：原本 r=0.8 太大，整個光環會畫到對岸陸地上，縮小到只貼著小島周邊海面
         { lon: 121.5, lat: 25.1, r: 0.5  },  // 台灣東北海岸
         { lon: -65.4, lat: 18.1, r: 1.0  },  // 波多黎各 Vieques
         { lon:  73.5, lat:  4.0, r: 1.2  },  // 馬爾地夫 Vaadhoo
@@ -2293,6 +2293,10 @@
         const spr = biolumSprite();
         ctx.globalCompositeOperation = 'lighter';
         for (const sp of BIOLUM_SPOTS) {
+            // 這個點本身就離畫面很遠（例如看東亞的時候，馬爾地夫/波多黎各根本不在螢幕附近），
+            // 先用一次 screenXY 判斷就跳過整組 28 個點，不用每個點都算一次 screenXY
+            const [scx, scy] = screenXY(sp.lon, sp.lat);
+            if (scx < -300 || scx > W + 300 || scy < -300 || scy > H + 300) continue;
             const night = 1 - nightBrightAt(sp.lon, sp.lat);
             if (night < 0.3) continue; // 白天跳過
             const fade = fade0 * Math.max(0, (night - 0.3) / 0.7);
@@ -5160,8 +5164,10 @@
         // （畫面本來就塞不下那麼多，其它規則會自然篩掉）。只有一般裝飾物件會被這層限制，原住民小人
         // （folk）是另一套避讓邏輯，不受影響。
         const LOD_MIN = 50;
-        const LOD_FULL_K = 3;
-        const lodBudget = k >= LOD_FULL_K ? Infinity : Math.round(LOD_MIN + (k - 1) * ((critters.length - LOD_MIN) / (LOD_FULL_K - 1)));
+        const LOD_MAX = 150; // 放大再多也設一個上限：像這次東亞一帶塞了很多裝飾物，區域視角密度太高一樣會lag，
+        // 不應該讓它完全不設限（之前是放大到 LOD_FULL_K 倍以上就直接 Infinity，密集地區反而完全不受控）
+        const LOD_FULL_K = 6;
+        const lodBudget = k >= LOD_FULL_K ? LOD_MAX : Math.round(LOD_MIN + (k - 1) * ((LOD_MAX - LOD_MIN) / (LOD_FULL_K - 1)));
         // 優先層級：全球公認最知名的那一批（鐵達尼號、艾菲爾鐵塔…）> 其它世界地標 > 有名有姓的
         // 人物／船艦／科技里程碑 > 一般代表性動物。同一層內才用固定雜湊決定順序，不會讓「鐵達尼號」
         // 這種超知名但只是普通 deco（不是 landmark）的項目，跟隨便一個地區級船艦拿去拚運氣雜湊
