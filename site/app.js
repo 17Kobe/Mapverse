@@ -5656,6 +5656,7 @@
             const b = e.target.closest('.chip');
             if (!b) return;
             state.activeRegion = b.dataset.k;
+            store.set('activeRegion', state.activeRegion); // 記住使用者手動選的篩選，下次開/重整要還原
             updateChips();
             applyRegion(true);
             renderHud();
@@ -5970,8 +5971,10 @@
         state.countries = topojson.feature(topo, topo.objects.countries).features;
         await Promise.all([loadQuotes(), loadTwTop(), loadTops(), loadEcon(), loadFng()]);
 
-        // 預設從「全球」開始；開啟 autoRegionOn() 時改選「現在正在開盤」的區域（都休市就選最快開盤的），之後由使用者自己切換
-        state.activeRegion = autoRegionOn() ? pickAutoRegion() : 'all';
+        // 預設從「全球」開始；開啟 autoRegionOn() 時改選「現在正在開盤」的區域（都休市就選最快開盤的）。
+        // 沒開自動選區域的話，改用使用者上次手動選的篩選（存在 localStorage，點篩選列時會存），
+        // 重新整理或下次打開都要維持上次選的，不是每次都跳回全球；都沒存過才回退到全球
+        state.activeRegion = autoRegionOn() ? pickAutoRegion() : store.get('activeRegion', 'all');
         // 網址加上 #fx、#geo、#asia… 可以直接開在指定的篩選
         const hash = location.hash.slice(1);
         if (TOPICS[hash] || ['all', 'asia', 'americas', 'europe', 'mea'].includes(hash)) state.activeRegion = hash;
