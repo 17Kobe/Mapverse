@@ -4159,17 +4159,29 @@
         if (on) isCard ? showCardTip(d, d.__lastEv) : showMarketTip(d, d.__lastEv);
         else hideCtip();
     }
+    // 國旗主動物的 emoji 常常是通用符號（🦎 蜥蜴、🦜 鸚鵡、🦌 鹿…），同一個 emoji 可能對應到完全
+    // 不同的物種，下面用「圖示 emoji + 分類」在 CRITTER_TIPS 裡找第一個符合的項目，找到的其實是
+    // 「隨便一個同 emoji 的裝飾動物」，不一定是正確的物種（例如墨西哥的蜥蜴曾被誤標成科莫多巨蜥、
+    // 巴西的鸚鵡被誤標成巨嘴鳥）。這裡針對目前已知會撞到的 emoji 先給正確說明，比對時優先使用
+    const MARKET_ANIMAL_OVERRIDE = {
+        '🦌': ['鹿', '鹿科動物，四肢修長、擅長奔跑跳躍，是許多國家森林與草原邊緣常見的代表性野生動物。'],
+        '🐒': ['猴子', '靈活好動、群居生活的靈長類動物，森林與城市邊緣都能見到牠們的蹤跡。'],
+        '🦫': ['河狸', '擅長用樹枝與泥土築水壩、勤奮築巢的大型鼠科動物，是加拿大的國家象徵動物。'],
+        '🦜': ['鸚鵡', '色彩鮑豐富、叫聲響亮的熱帶鳥類，雨林是牠們重要的棲息地，也是當地生態多樣性的代表。'],
+        '🦎': ['蜥蜴', '種類繁多的爬蟲類，適應力強，從沙漠到高原都能見到牠們的蹤跡，是當地生態系的重要成員。'],
+    };
     // 市場動物（walker）的 tooltip：顯示國家名稱 + 動物 emoji + 說明
     function showMarketTip(d, ev) {
         if (!ev) return;
         ctipEl = ctipEl || $('#ctip');
         const icon = d.a || '🐾';
         const name = d.short || d.zh || '';
-        // 從 CRITTER_TIPS 找動物對應說明（以 emoji 比對）
+        const override = MARKET_ANIMAL_OVERRIDE[icon];
+        // 從 CRITTER_TIPS 找動物對應說明（以 emoji 比對），只在沒有上面的 override 時才用這個備援
         const tips = window.CRITTER_TIPS || {};
-        const tipKey = Object.keys(tips).find(k => tips[k][0] === icon && tips[k][2] === '動物');
-        const animalName = tipKey ? tips[tipKey][1] : '';
-        const desc = tipKey ? tips[tipKey][3] : `${name}的代表動物，點擊旗幟可看更多資訊。`;
+        const tipKey = override ? null : Object.keys(tips).find(k => tips[k][0] === icon && tips[k][2] === '動物');
+        const animalName = override ? override[0] : tipKey ? tips[tipKey][1] : '';
+        const desc = override ? override[1] : tipKey ? tips[tipKey][3] : `${name}的代表動物，點擊旗幟可看更多資訊。`;
         ctipOwner = null;
         ctipEl.innerHTML =
             `<div class="th"><div class="ti">${esc(icon)}</div><div class="tt">` +
