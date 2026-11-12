@@ -307,37 +307,25 @@ button{font:inherit;color:inherit;cursor:pointer}
   55% {transform:translateY(-125px)}
   100%{transform:translateY(0)}
 }
-/* 墊在最底下的實心填充，刻意放在 #diceTilt 外面、不參與 3D 旋轉，一直都是正對鏡頭的平面。
-   骰子的 6 片面彼此之間沒有側邊牆連起來，角與角交會處會露出小縫隙；這塊墊板放在骰子正後方，
-   縫隙漏出來的是它的顏色，不會穿透看到背景。因為它本身不轉動，不會有「扁平物體轉到側面
-   變成一條線」的問題。形狀改成跟面一樣的圓角方形（不是圓形）：圓形再怎麼放大，四個角本來
-   就比圓形的邊緣更遠離中心，圓形永遠補不滿方形的角；圓角方形跟面本身形狀一致，才能真正貼滿 */
-#diceCore{
-  position:absolute;left:50%;top:50%;width:80px;height:80px;margin:-40px 0 0 -40px;border-radius:26px;
-  background:radial-gradient(circle at 32% 24%,#fdfbf4 0%,#e7e0cc 70%,#cfc6a8 100%);
-}
-/* 固定不變的小傾角，只負責「整體看起來有立體感」，CSS 寫死、JS 完全不會去改它。
-   跟 #diceCube 的「哪一面朝前」旋轉分開兩層，兩個 rotateX/rotateY 才不會疊在一起
-   產生不可預期的角度（疊在一起時，某些點數會轉到四角朝鏡頭的怪角度，看不出是幾點）。
-   X 角度負責「往下看頂面」的程度：-58° 太過頭、看起來不自然，改回比較自然的 -36°，
-   頂面還是清楚朝向鏡頭、但不會扭曲成怪異的俯視感 */
 /* 固定不變的「正前方→正上方」搬移層：DICE_SHOW_ROT 只會把結果轉到立方體本地正前方（+Z），
    但使用者讀點數是看畫面上的頂面，不是正前方那一面——這裡用寫死的 rotateX(90deg) 把正前方
    整個搬到正上方的位置，搬完後再套 #diceTilt 的小傾角，骰到的點數才會正確顯示在頂面，
-   跟下面文字訊息的點數一致 */
+   跟下面文字訊息的點數一致。
+   #diceTilt：固定不變的小傾角，只負責整體立體感，跟 #diceCube 的「哪一面朝前」分兩層，
+   rotateX/rotateY 才不會疊在一起轉出四角朝鏡頭的怪角度 */
 #diceFaceUp{width:68px;height:68px;position:relative;transform-style:preserve-3d;transform:rotateX(90deg)}
 #diceTilt{width:68px;height:68px;position:relative;transform-style:preserve-3d;transform:rotateX(-36deg) rotateY(14deg)}
+/* 圓角立方體 = 6 片平面 + 12 條圓柱邊 + 8 個球角，三種零件剛好拼成一個封閉表面：
+   --dh 半邊長、--dr 圓角半徑、--da 圓角圓心離中心的距離（= dh - dr）。
+   之前是「6 片整面各自 border-radius」，兩面交界其實是直角硬邊，三面交會的頂點則被圓角各削掉一塊，
+   露出後面的墊板，停下來時角落看起來像缺口或突出一片，不平滑 */
 #diceCube{
+  --dh:34px;--dr:14px;--da:20px;
   width:68px;height:68px;position:relative;transform-style:preserve-3d;
   transition:transform .9s cubic-bezier(.3,1.6,.4,1);
 }
 /* 6 個面：固定點數（對面相加為 7），旋轉立方體本身來決定哪一面朝前，不是切換圖案。
-   每面是 fw（只負責旋轉，不放 translateZ）包兩層：fback（墊在後面補洞的背板）+ df（真正可見的圓角面，同樣精確貼合）。
-   兩層大小精確等於立方體邊長（68px），不重疊也不留縫；fback 跟 df 用「同一個圓角 + 相近色調」，
-   不然兩層圓角大小不一致，轉動時角落會看到背板的尖角從圓角面後面透出來，變成兩種顏色疊在一起的醜角。
-   fback 和 df 的 translateZ 差距改小（31 / 34，3px）：原本拉到 6px 是為了避免 z-fighting 閃爍，
-   但配合現在的小傾角一起看，6px 的落差在側邊看起來像是「表面那層薄片跟本體分開、浮在上面」，
-   縮小落差同時保留一點點避免閃爍的安全距離 */
+   fw 只負責旋轉方向；df 是平面部分（邊長 68 - 2×14 = 40px，多放 0.5px 跟圓柱邊重疊，避免接縫露出細線） */
 .fw{position:absolute;inset:0;transform-style:preserve-3d}
 .fw.f1{transform:rotateX(0deg) rotateY(0deg)}
 .fw.f2{transform:rotateX(-90deg)}
@@ -345,35 +333,60 @@ button{font:inherit;color:inherit;cursor:pointer}
 .fw.f4{transform:rotateY(-90deg)}
 .fw.f5{transform:rotateX(90deg)}
 .fw.f6{transform:rotateY(180deg)}
-.fback{
-  position:absolute;inset:0;width:68px;height:68px;border-radius:22px;
-  background:#e2ddc8;transform:translateZ(31px);backface-visibility:hidden;
-}
 .df{
-  position:absolute;inset:0;width:68px;height:68px;border-radius:22px;transform:translateZ(34px);
-  background:
-    radial-gradient(circle at 30% 24%, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 55%),
-    linear-gradient(160deg,#fbf8ee 0%,#f1ede0 55%,#ddd7c3 100%);
-  border:2px solid #f3efe2;
-  /* 邊緣的暗邊加重、加寬，每一面自己邊框附近都會暗下去一圈，兩面交接處才會像一條凹下去的溝，
-     不是兩塊顏色很生硬地直接切齊；同時把原本的高光调弱、調中性，减少每一面「自己亮一塊」
-     跟鄰面對不起來的生硬感 */
-  box-shadow:inset 0 0 7px rgba(90,80,55,.28),inset 0 -5px 8px rgba(120,110,80,.2);
+  position:absolute;left:13.5px;top:13.5px;width:41px;height:41px;transform:translateZ(var(--dh));
+  /* 中央亮、往四邊漸暗到跟圓柱邊/球角同一個顏色（#e6dfca），平面跟圓角接縫處才不會有色差 */
+  background:radial-gradient(circle closest-side at 50% 50%,#fffdf8 0%,#f8f4ea 50%,#ece6d4 85%,#e6dfca 100%);
   backface-visibility:hidden;
 }
+/* 12 條邊：每條是 1/4 圓柱，用 4 片細長條（每片 22.5°）圍出來；
+   .eg 先定義「前面與上面交界、沿 X 軸」那一條，再用 90° 旋轉複製到其餘 11 條 */
+.eg,.cn{position:absolute;inset:0;transform-style:preserve-3d;pointer-events:none}
+.eg i{
+  position:absolute;left:13.5px;top:31px;width:41px;height:6px;background:#e6dfca;
+  transform:translateY(calc(-1 * var(--da))) translateZ(var(--da)) rotateX(var(--p)) translateZ(var(--dr));
+}
+.eg i:nth-child(1){--p:11.25deg}
+.eg i:nth-child(2){--p:33.75deg}
+.eg i:nth-child(3){--p:56.25deg}
+.eg i:nth-child(4){--p:78.75deg}
+.e1{transform:rotateX(0deg)}.e2{transform:rotateX(90deg)}.e3{transform:rotateX(180deg)}.e4{transform:rotateX(270deg)}
+.e5{transform:rotateZ(90deg) rotateX(0deg)}.e6{transform:rotateZ(90deg) rotateX(90deg)}
+.e7{transform:rotateZ(90deg) rotateX(180deg)}.e8{transform:rotateZ(90deg) rotateX(270deg)}
+.e9{transform:rotateY(90deg) rotateX(0deg)}.e10{transform:rotateY(90deg) rotateX(90deg)}
+.e11{transform:rotateY(90deg) rotateX(180deg)}.e12{transform:rotateY(90deg) rotateX(270deg)}
+/* 8 個角：每個是 1/8 球。CSS 沒有球體，改用 6 片同心圓盤，每片的法線剛好是「6 種停止姿勢之一」時的鏡頭方向
+   （由 #diceTilt × #diceFaceUp × DICE_SHOW_ROT 算出），所以停下來時一定有一片正對鏡頭，角的輪廓就是正圓，
+   跟圓柱邊的輪廓接得起來。圓盤都在圓角立方體內部，立方體是凸的，不會擋到表面。
+   之前用固定的軸向/對角線圓盤，停止時大多是斜著看，輪廓變扁，角落會凹一塊，邊看起來像凸出一片。
+   改了 #diceTilt / #diceFaceUp 的角度或 DICE_SHOW_ROT，這 6 個角度要跟著重算 */
+.cn i{
+  position:absolute;left:19.75px;top:19.75px;width:28.5px;height:28.5px;border-radius:50%;background:#e6dfca;
+}
+.cn i:nth-child(1){transform:rotateY(-18.42deg) rotateX(-51.72deg)}
+.cn i:nth-child(2){transform:rotateY(-166deg) rotateX(-36deg)}
+.cn i:nth-child(3){transform:rotateY(71.58deg) rotateX(-51.72deg)}
+.cn i:nth-child(4){transform:rotateY(-108.42deg) rotateX(-51.72deg)}
+.cn i:nth-child(5){transform:rotateY(-14deg) rotateX(36deg)}
+.cn i:nth-child(6){transform:rotateY(161.58deg) rotateX(-51.72deg)}
+.c1{transform:translate3d(20px,-20px,20px)}.c2{transform:translate3d(-20px,-20px,20px)}
+.c3{transform:translate3d(20px,20px,20px)}.c4{transform:translate3d(-20px,20px,20px)}
+.c5{transform:translate3d(20px,-20px,-20px)}.c6{transform:translate3d(-20px,-20px,-20px)}
+.c7{transform:translate3d(20px,20px,-20px)}.c8{transform:translate3d(-20px,20px,-20px)}
 .pip{
   position:absolute;width:10px;height:10px;border-radius:50%;background:#262632;
   box-shadow:inset 0 1px 1.5px rgba(0,0,0,.5),inset 0 -0.5px 0 rgba(255,255,255,.08);
 }
 /* 大富翁骰子習慣：1 點和 4 點是紅色 */
 .f1 .pip,.f4 .pip{background:#d4262a;box-shadow:inset 0 1px 1.5px rgba(0,0,0,.35),inset 0 -0.5px 0 rgba(255,180,180,.25)}
+/* 點的位置以 40px 平面為準（點中心離平面邊 8px） */
 .p-c {left:50%;top:50%;margin:-5px 0 0 -5px}
-.p-tl{left:20%;top:20%}
-.p-tr{right:20%;top:20%}
-.p-bl{left:20%;bottom:20%}
-.p-br{right:20%;bottom:20%}
-.p-ml{left:20%;top:50%;margin-top:-5px}
-.p-mr{right:20%;top:50%;margin-top:-5px}
+.p-tl{left:3px;top:3px}
+.p-tr{right:3px;top:3px}
+.p-bl{left:3px;bottom:3px}
+.p-br{right:3px;bottom:3px}
+.p-ml{left:3px;top:50%;margin-top:-5px}
+.p-mr{right:3px;top:50%;margin-top:-5px}
 @media (prefers-reduced-motion:reduce){#diceBtn.rolling #diceScene{animation:none}#diceCube{transition:none}}
 .dz-it:focus-visible{outline:2px solid var(--gold-l);outline-offset:-2px}
 .dz-it.on{background:linear-gradient(180deg,#43669b 0%,#27436f 100%);border-color:var(--gold-l);color:var(--gold-l)}

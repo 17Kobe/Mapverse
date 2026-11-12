@@ -43,35 +43,32 @@
             <canvas id="fx" aria-hidden="true"></canvas>
             <div id="attrib">地形資料 © Mapzen/AWS Terrain Tiles · Esri, Maxar, Earthstar Geographics</div>
 
-            <!-- 骰子（原「上帝之手」的位置）：真正的 CSS 3D 立方體，點擊會翻滾並轉到對應點數那一面朝前。
-                 每面是 fw（只負責旋轉）包 fback（墊在後面補洞的背板）+ df（真正可見的圓角面）。
-                 圓角一定要做在「每個面自己身上」才行：翻滾時鏡頭看到的是立方體的透視輪廓（菱形/斜面），
-                 不是正面那個 68x68 的方框，所以靠外層固定視窗裁切在旋轉中完全對不上，只有停止、正面朝鏡頭時才碰巧吻合。
-                 #diceTilt 是一層固定不變的外層（CSS 寫死、JS 完全不碰），只負責「整體看起來有點立體感」的小傾角；
-                 #diceCube 自己只負責「哪一面要朝前」這件事，兩層分開才不會因為 rotateX/rotateY 疊在一起變成
-                 不可預期的角度（之前把傾角直接加進 rotateX/rotateY 裡，兩個旋轉疊起來偏偏在某些點數會轉到
-                 四角朝鏡頭的怪角度，看不出是幾點）。#diceCore 是墊在最底下的實心圓，故意放在 #diceTilt
-                 外面、完全不參與 3D 旋轉（一直都是正對鏡頭的平面圓），角與角之間露出的縫隙看到的就是
-                 這個圓，不會穿透看到背景。
-                 #diceFaceUp 是新加的固定層（同樣 CSS 寫死、JS 不碰）：DICE_SHOW_ROT 原本只負責把結果
-                 轉到立方體本地「正前方」（+Z），但使用者讀點數是看「正上方」那一面，正前方跟正上方
-                 不是同一個位置——結果變成畫面上顯示的「上面」其實是正前方旁邊相鄰的另一個面，不是
-                 真正骰到的點數，跟下面的文字訊息對不起來。這裡用寫死的 rotateX(90deg) 把「正前方」
-                 整個搬到「正上方」的位置，搬完才套外層的小傾角，點數結果就會正確顯示在視覺上的頂面。
-                 （曾經試過加兩條固定在立方體內部的斜角倒角條去模擬真正圓角，但手動算的 3D 角度/位置
-                 一直兌不準，不是完全被擋住看不見，就是變成浮在表面上的怪異色塊，拿掉了） -->
+            <!-- 骰子（原「上帝之手」的位置）：真正的 CSS 3D 圓角立方體，點擊會翻滾並轉到對應點數那一面朝上。
+                 圓角立方體由 6 片平面（.fw > .df，帶點數）+ 12 條圓柱邊（.eg，各 4 片細長條）+ 8 個球角（.cn，各 6 片圓盤）
+                 拼成封閉表面，任何角度看輪廓都是圓滑的（形狀與顏色見 style.css）。
+                 #diceTilt：固定小傾角（CSS 寫死、JS 不碰）；#diceFaceUp：把立方體本地正前方搬到正上方；
+                 #diceCube：JS 只轉這層，決定哪一面朝前。三層分開，rotateX/rotateY 才不會疊出怪角度。 -->
             <button id="diceBtn" aria-label="擲骰子" title="擲骰子">
                 <div id="diceScene">
-                  <div id="diceCore"></div>
                   <div id="diceTilt">
                    <div id="diceFaceUp">
                     <div id="diceCube">
-                        <div class="fw f1"><div class="fback"></div><div class="df"><span class="pip p-c"></span></div></div>
-                        <div class="fw f2"><div class="fback"></div><div class="df"><span class="pip p-tl"></span><span class="pip p-br"></span></div></div>
-                        <div class="fw f3"><div class="fback"></div><div class="df"><span class="pip p-tl"></span><span class="pip p-c"></span><span class="pip p-br"></span></div></div>
-                        <div class="fw f4"><div class="fback"></div><div class="df"><span class="pip p-tl"></span><span class="pip p-tr"></span><span class="pip p-bl"></span><span class="pip p-br"></span></div></div>
-                        <div class="fw f5"><div class="fback"></div><div class="df"><span class="pip p-tl"></span><span class="pip p-tr"></span><span class="pip p-c"></span><span class="pip p-bl"></span><span class="pip p-br"></span></div></div>
-                        <div class="fw f6"><div class="fback"></div><div class="df"><span class="pip p-tl"></span><span class="pip p-ml"></span><span class="pip p-bl"></span><span class="pip p-tr"></span><span class="pip p-mr"></span><span class="pip p-br"></span></div></div>
+                        <div class="fw f1"><div class="df"><span class="pip p-c"></span></div></div>
+                        <div class="fw f2"><div class="df"><span class="pip p-tl"></span><span class="pip p-br"></span></div></div>
+                        <div class="fw f3"><div class="df"><span class="pip p-tl"></span><span class="pip p-c"></span><span class="pip p-br"></span></div></div>
+                        <div class="fw f4"><div class="df"><span class="pip p-tl"></span><span class="pip p-tr"></span><span class="pip p-bl"></span><span class="pip p-br"></span></div></div>
+                        <div class="fw f5"><div class="df"><span class="pip p-tl"></span><span class="pip p-tr"></span><span class="pip p-c"></span><span class="pip p-bl"></span><span class="pip p-br"></span></div></div>
+                        <div class="fw f6"><div class="df"><span class="pip p-tl"></span><span class="pip p-ml"></span><span class="pip p-bl"></span><span class="pip p-tr"></span><span class="pip p-mr"></span><span class="pip p-br"></span></div></div>
+                        <div class="eg e1"><i></i><i></i><i></i><i></i></div><div class="eg e2"><i></i><i></i><i></i><i></i></div>
+                        <div class="eg e3"><i></i><i></i><i></i><i></i></div><div class="eg e4"><i></i><i></i><i></i><i></i></div>
+                        <div class="eg e5"><i></i><i></i><i></i><i></i></div><div class="eg e6"><i></i><i></i><i></i><i></i></div>
+                        <div class="eg e7"><i></i><i></i><i></i><i></i></div><div class="eg e8"><i></i><i></i><i></i><i></i></div>
+                        <div class="eg e9"><i></i><i></i><i></i><i></i></div><div class="eg e10"><i></i><i></i><i></i><i></i></div>
+                        <div class="eg e11"><i></i><i></i><i></i><i></i></div><div class="eg e12"><i></i><i></i><i></i><i></i></div>
+                        <div class="cn c1"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="cn c2"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+                        <div class="cn c3"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="cn c4"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+                        <div class="cn c5"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="cn c6"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+                        <div class="cn c7"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="cn c8"><i></i><i></i><i></i><i></i><i></i><i></i></div>
                     </div>
                    </div>
                   </div>
