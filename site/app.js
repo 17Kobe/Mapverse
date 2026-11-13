@@ -2521,17 +2521,33 @@
                 if (breath < 0.03) continue; // 幾乎消散時直接跳過，省運算，也確保卡片完全看得清楚
 
                 const k = state.t.k;
-                const cloudW = Math.max(22, Math.min(58, 42 / Math.sqrt(Math.max(1, k * 0.7)))) * (0.7 + breath * 0.3);
+                // 雲的視覺範圍至少要跟煙火爆炸範圍（半徑約 42px）差不多大，不然旁邊有煙火對比會顯得烏雲很小
+                const cloudW = Math.max(40, Math.min(100, 76 / Math.sqrt(Math.max(1, k * 0.7)))) * (0.7 + breath * 0.3);
                 const rainW  = cloudW * 0.92;
-                const CLOUD_H = 32 * (0.7 + breath * 0.3);
+                const CLOUD_H = 58 * (0.7 + breath * 0.3);
                 ctx.globalCompositeOperation = 'source-over';
-                for (let ci = 0; ci < 3; ci++) {
-                    const cx2 = sx + (ci - 1) * cloudW * 0.55 + Math.sin(T * 0.2 + ci) * 3,
-                          cy2 = skyY + Math.cos(T * 0.18 + ci * 1.5) * 2.5;
+                // 兩顆大小、形狀不同的雲疊在一起比較自然：主雲正常大小，
+                // 副雲縮小並水平翻轉（同一張 sprite 翻轉後輪廓不同），偏移也不對稱
+                const CLOUD_DEFS = [
+                    { dx: -0.16, dy: -0.08, scale: 1,    flip: false },
+                    { dx: 0.34,  dy: 0.12,  scale: 0.68, flip: true  },
+                ];
+                for (let ci = 0; ci < CLOUD_DEFS.length; ci++) {
+                    const d = CLOUD_DEFS[ci];
+                    const w = cloudW * d.scale, h = CLOUD_H * d.scale;
+                    const cx2 = sx + d.dx * cloudW + Math.sin(T * 0.2 + ci) * 3,
+                          cy2 = skyY + d.dy * CLOUD_H + Math.cos(T * 0.18 + ci * 1.5) * 2.5;
                     ctx.globalAlpha = 0.82 * breath;
-                    ctx.drawImage(cspr, 0, 0, 64, 40,
-                        cx2 - cloudW / 2, cy2 - CLOUD_H / 2,
-                        cloudW, CLOUD_H);
+                    if (d.flip) {
+                        ctx.save();
+                        ctx.translate(cx2, cy2);
+                        ctx.scale(-1, 1);
+                        ctx.drawImage(cspr, 0, 0, 64, 40, -w / 2, -h / 2, w, h);
+                        ctx.restore();
+                    } else {
+                        ctx.drawImage(cspr, 0, 0, 64, 40,
+                            cx2 - w / 2, cy2 - h / 2, w, h);
+                    }
                 }
                 const N_RAIN = 20;
                 for (let ri = 0; ri < N_RAIN; ri++) {
