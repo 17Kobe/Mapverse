@@ -52,7 +52,7 @@ function db() {
   if (!dbP) dbP = new Promise((res) => {
     try {
       if (typeof indexedDB === 'undefined') { res(null); return; }
-      const rq = indexedDB.open('mapverse-terrain', 1);
+      const rq = indexedDB.open('stockv-terrain', 1);
       rq.onupgradeneeded = () => rq.result.createObjectStore(DB_STORE).createIndex('t', 't');
       rq.onsuccess = () => res(rq.result);
       rq.onerror = rq.onblocked = () => res(null);
@@ -88,7 +88,7 @@ async function diskSave(key, base, spr) {
 // 主執行緒：原始碼改版就清空；超過上限刪掉最舊的
 function diskMaintain() {
   let old = null;
-  try { old = localStorage.getItem('mapverse.terrainVer'); localStorage.setItem('mapverse.terrainVer', SRC_VER); } catch (err) { /* 無痕模式等 */ }
+  try { old = localStorage.getItem('stockv.terrainVer'); localStorage.setItem('stockv.terrainVer', SRC_VER); } catch (err) { /* 無痕模式等 */ }
   if (old !== SRC_VER) diskReq('readwrite', (s) => s.clear());
   setTimeout(() => {
     db().then((d) => {

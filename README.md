@@ -23,7 +23,7 @@
 
 ## 部署步驟（Cloudflare Pages，約 5 分鐘）
 
-1. Cloudflare Dashboard → **Workers & Pages → Create → Pages → Connect to Git**，選這個儲存庫（`17Kobe/Mapverse`）。
+1. Cloudflare Dashboard → **Workers & Pages → Create → Pages → Connect to Git**，選這個儲存庫（`17Kobe/StockV`）。
 2. Production branch：`main`；Framework preset：`None`；Build command：留空；**Build output directory：`site`**。
 3. **Save and Deploy**，完成後開啟 `https://<專案名>.pages.dev/`，手機用「新增到主螢幕」就像 App。
 

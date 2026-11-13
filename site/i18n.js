@@ -25,7 +25,7 @@
         { code: 'ko', name: '한국어', intl: 'ko-KR' },
         { code: 'zh-CN', name: '简体中文', intl: 'zh-CN' },
     ];
-    var KEY = 'mapverse.lang';
+    var KEY = 'stockv.lang';
     var byCode = {};
     LANGS.forEach(function (l) {
         byCode[l.code.toLowerCase()] = l.code;

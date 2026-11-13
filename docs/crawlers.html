@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Mapverse 資料來源與爬蟲總覽</title>
+<title>StockV 資料來源與爬蟲總覽</title>
 <style>
   :root{
     --bg:#0f1727; --panel:#17233a; --panel2:#1d2c47; --line:#2c3f63; --text:#e8eefc; --dim:#9fb0cf;
@@ -51,9 +51,9 @@
 </head>
 <body>
 <header>
-  <h1>Mapverse 資料來源與爬蟲總覽</h1>
+  <h1>StockV 資料來源與爬蟲總覽</h1>
   <p>目的：確認畫面上每一項資料是「真的抓來的」還是「寫死的」，並列出所有爬蟲。</p>
-  <p>盤點時間：2026-11-04。依據：<code>iKDx-realtime</code> 與 <code>Mapverse</code> 兩個專案的程式碼、設定檔，以及當天實際連線的測試結果。</p>
+  <p>盤點時間：2026-11-04。依據：<code>iKDx-realtime</code> 與 <code>StockV</code> 兩個專案的程式碼、設定檔，以及當天實際連線的測試結果。</p>
 </header>
 
 <nav>
@@ -113,7 +113,7 @@
   <div class="arrow">→</div>
   <div class="box"><b>JSON 檔</b>爬蟲把結果 commit 回 <code>public/data/</code>，Cloudflare Pages 發佈到 <code>ikdx-realtime.pages.dev</code></div>
   <div class="arrow">→</div>
-  <div class="box"><b>Mapverse 前端</b>瀏覽器直接 fetch 5 個檔：<code>quotes.json</code>、<code>tw-top.json</code>、<code>top10.json</code>、<code>econ.json</code>、<code>fng.json</code></div>
+  <div class="box"><b>StockV 前端</b>瀏覽器直接 fetch 5 個檔：<code>quotes.json</code>、<code>tw-top.json</code>、<code>top10.json</code>、<code>econ.json</code>、<code>fng.json</code></div>
 </div>
 <p class="dim">前端讀取週期：<code>quotes.json</code> 每 60 秒；<code>top10.json</code> 最多每 4 分鐘；<code>econ.json</code> 最多每 10 分鐘；<code>tw-top.json</code> 只在開啟網頁時讀一次（見「發現的問題」）。</p>
 <div class="note">cloudflare-cron-worker 不在這兩個專案裡，我無法確認它實際的 cron 設定。iKDx-realtime 的 README 已改成「由外部 worker 約每 10 分鐘觸發，頻率以 worker 設定為準」。</div>
@@ -121,7 +121,7 @@
 <h2 id="crawlers">爬蟲清單</h2>
 <p>共 9 支抓取腳本、2 支同步工具，都在 <code>iKDx-realtime/scripts/</code>。沒有瀏覽器式爬蟲，全部是 HTTP 請求或 <code>curl</code>。只有美股個股需要金鑰（<code>FINNHUB_TOKEN</code>）。</p>
 <div class="table-wrap"><table>
-<thead><tr><th>腳本</th><th>抓什麼</th><th>來源</th><th>輸出檔</th><th>失敗時</th><th>Mapverse 用嗎</th></tr></thead>
+<thead><tr><th>腳本</th><th>抓什麼</th><th>來源</th><th>輸出檔</th><th>失敗時</th><th>StockV 用嗎</th></tr></thead>
 <tbody>
 <tr><td class="grp" colspan="6">世界資料（workflow：fetch-world-realtime，24 小時；平日約每 10 分鐘、週末約每小時）</td></tr>
 <tr><td><code>fetch-world-quotes.js</code><br><span class="dim">npm run fetch-world</span></td>
@@ -187,7 +187,7 @@
   <td>失敗沿用上一版</td>
   <td><span class="tag none">否</span>（iKDx 主站用）</td></tr>
 <tr><td class="grp" colspan="6">同步工具（手動執行、不連網）</td></tr>
-<tr><td><code>sync-world-markets.js</code></td><td>把 Mapverse 的 <code>markets.json</code> 新代碼補進 <code>world_markets.json</code></td><td>讀本機檔</td><td><code>world_markets.json</code></td><td colspan="2">新增代碼後要執行，否則網頁抓不到該代碼的報價</td></tr>
+<tr><td><code>sync-world-markets.js</code></td><td>把 StockV 的 <code>markets.json</code> 新代碼補進 <code>world_markets.json</code></td><td>讀本機檔</td><td><code>world_markets.json</code></td><td colspan="2">新增代碼後要執行，否則網頁抓不到該代碼的報價</td></tr>
 <tr><td><code>sync-stock-lists.js</code></td><td>從 iKDx 主專案同步台股、美股名單</td><td>讀本機檔</td><td><code>target_stock_ids.json</code>、<code>us_stock_list.json</code></td><td colspan="2"><code>stock_list.json</code>（3000 檔）沒有任何腳本會更新</td></tr>
 </tbody></table></div>
 
@@ -228,7 +228,7 @@
 </tbody></table></div>
 
 <h2 id="hardcoded">寫死的值：逐項清單</h2>
-<p>以下都在 <code>Mapverse/site/markets.json</code> 的 <code>topics</code>。</p>
+<p>以下都在 <code>StockV/site/markets.json</code> 的 <code>topics</code>。</p>
 <h3>利率卡片：六家央行已改成爬取，只剩「12 月升息機率」是手寫</h3>
 <div class="table-wrap"><table>
 <thead><tr><th>卡片</th><th>指標代碼</th><th>來源</th><th>今天抓到的值</th><th>期間</th></tr></thead>
@@ -317,7 +317,7 @@
 <tbody>
 <tr><td>1</td><td>台股前十大只在開啟網頁時讀一次，不會更新</td><td><span class="tag live">已修</span></td><td><code>loadTwTop()</code> 加進 60 秒輪詢與切回分頁的更新，最多每 4 分鐘讀一次（和 <code>top10.json</code> 一致）</td></tr>
 <tr><td>2</td><td>讀不到 <code>tw-top.json</code> 時悄悄用備用數字</td><td><span class="tag live">已修</span></td><td>旗幟上的分隔標題改成「台股市值前十大（備用）」。詳情卡原本就有「約略數字」的說明</td></tr>
-<tr><td>3</td><td>說明文件互相矛盾</td><td><span class="tag live">已修</span></td><td>Mapverse README：經濟數據與央行利率改寫成自動更新，只有地緣、白宮、升息機率是手動。iKDx-realtime README：排程改成「由外部 cloudflare-cron-worker 約每 10 分鐘觸發，頻率以 worker 設定為準」，移除「每 6 分鐘」；補上央行利率的說明</td></tr>
+<tr><td>3</td><td>說明文件互相矛盾</td><td><span class="tag live">已修</span></td><td>StockV README：經濟數據與央行利率改寫成自動更新，只有地緣、白宮、升息機率是手動。iKDx-realtime README：排程改成「由外部 cloudflare-cron-worker 約每 10 分鐘觸發，頻率以 worker 設定為準」，移除「每 6 分鐘」；補上央行利率的說明</td></tr>
 <tr><td>4</td><td>景氣燈號在 GitHub Actions 上被擋，固定沿用舊值（<code>TW_LIGHT</code> 期間 2026-09）</td><td><span class="tag hard">未修</span></td><td>我找了國發會的其他取得管道，只找到每月的 PDF 月刊，沒有可用程式讀取的資料。本機執行可以抓到（今天實測 41 分，紅燈）。維持 README 說明的做法：國發會公布後在本機執行 <code>FORCE=1 npm run fetch-world-econ</code> 再 push</td></tr>
 <tr><td>5</td><td>「聯邦基金利率 4.00%」只是目標區間上緣</td><td><span class="tag live">已修</span></td><td>改成顯示區間「3.75–4.00%」</td></tr>
 <tr><td>6</td><td>利率卡片寫 Trading Economics，實際是手寫</td><td><span class="tag live">已修</span></td><td>出處改成「iKDx-realtime（FRED、Trading Economics）」，與實際來源一致；聯準會卡片的說明文字註明升息機率是手動整理</td></tr>
@@ -339,7 +339,7 @@
 
 <h2 id="next">接下來可以做的（尚未做）</h2>
 <ol>
-  <li><b>推送到線上</b>：iKDx-realtime 與 Mapverse 的修改都還沒 commit。iKDx-realtime 要先 push 並讓 workflow 跑一次，線上才有新的利率資料；Mapverse 之後再 push，順序不能反，否則線上的利率卡片會暫時顯示「--」。</li>
+  <li><b>推送到線上</b>：iKDx-realtime 與 StockV 的修改都還沒 commit。iKDx-realtime 要先 push 並讓 workflow 跑一次，線上才有新的利率資料；StockV 之後再 push，順序不能反，否則線上的利率卡片會暫時顯示「--」。</li>
   <li><b>12 月升息機率</b>：新增一支腳本，抓 Yahoo 聯邦基金期貨與聯準會會議日程，推算機率並標示「依期貨推算」。</li>
   <li><b>地緣卡片</b>：需要你決定方向——（a）改成顯示市場指標；（b）保留手寫狀態，加上自動抓的最新新聞標題；（c）維持手寫，但在卡片上明確標示「手動整理」與日期。</li>
   <li><b>刪除經濟數據的 13 列備用值</b>（選擇性）。</li>
@@ -347,7 +347,7 @@
 
 <footer>
   本文件是靜態快照，不會自動更新。資料狀態以 2026-11-04 盤中至收盤後的檔案與連線測試為準；同日已更新一次（央行利率改為爬取、審查問題修正）。<br>
-  相關檔案：<code>iKDx-realtime/scripts/</code>、<code>iKDx-realtime/.github/workflows/</code>、<code>iKDx-realtime/world_markets.json</code>、<code>world_econ.json</code>、<code>world_top.json</code>、<code>Mapverse/site/markets.json</code>、<code>Mapverse/site/app.js</code>。
+  相關檔案：<code>iKDx-realtime/scripts/</code>、<code>iKDx-realtime/.github/workflows/</code>、<code>iKDx-realtime/world_markets.json</code>、<code>world_econ.json</code>、<code>world_top.json</code>、<code>StockV/site/markets.json</code>、<code>StockV/site/app.js</code>。
 </footer>
 </main>
 </body>

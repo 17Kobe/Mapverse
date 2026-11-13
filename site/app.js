@@ -6,8 +6,8 @@
 
     const TOPO_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json';
     // 行情資料由 iKDx-realtime 專案統一抓取並發佈（quotes.json 各國指數 / 商品 / 匯率 / 殖利率，tw-top.json 台股市值排行）。
-    // 本機要改用別的來源時，在 index.html 先設定 window.MAPVERSE_DATA_BASE
-    const DATA_BASE = window.MAPVERSE_DATA_BASE || 'https://ikdx-realtime.pages.dev/data/world/';
+    // 本機要改用別的來源時，在 index.html 先設定 window.STOCKV_DATA_BASE
+    const DATA_BASE = window.STOCKV_DATA_BASE || 'https://ikdx-realtime.pages.dev/data/world/';
 
     // 篩選：全球 / 亞太 / 美洲 / 歐洲 / 中東非洲只顯示股票（縮放範圍由該區市場的實際位置計算，見 regionTransform）。
     // 商品 / 債券 / 利率 / 匯率 / 地緣 / 經濟數據是另一組篩選，只顯示 markets.json 的 topics（股票動物與旗幟都收起來）。
