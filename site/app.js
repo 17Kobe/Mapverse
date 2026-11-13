@@ -2775,8 +2775,8 @@
         });
     }
 
-    // 3D 骰子：6 面是固定點數（對面相加為 7，1-6/3-4/2-5），用 CSS 轉動立方體本身讓對應那面朝前，
-    // 不是切換圖案；DICE_SHOW_ROT 是「要讓第 n 面朝前」所需的 [rotateX, rotateY] 角度（配合 index.html 裡 .f1~.f6 的固定位置）
+    // 3D 骰子：6 面是固定點數（對面相加為 7，1-6/3-4/2-5），轉動立方體本身讓對應那面朝前，
+    // 不是切換圖案；DICE_SHOW_ROT 是「要讓第 n 面朝前」所需的 [rotateX, rotateY] 角度（配合下面 DICE_FACES 的固定位置）
     const DICE_SHOW_ROT = {
         1: [0, 0],
         2: [90, 0],
@@ -2786,18 +2786,198 @@
         6: [0, 180],
     };
     let diceRolling = false,
-        diceSpinX = 0, // 累積角度：只負責「哪一面朝前」，整體的小傾角交給 index.html 的 #diceTilt 固定層
+        diceSpinX = 0, // 累積角度：只負責「哪一面朝前」，整體的小傾角是 DICE_BASE 固定的
         diceSpinY = 0;
     // 把目前角度往「前方」（正向增加）轉到 target（0~359 內的目標角度），外加 extraSpins 整圈，回傳新的累積角度
     function spinTo(current, target, extraSpins) {
         const forward = (((target % 360) - (current % 360)) % 360 + 360) % 360;
         return current + forward + 360 * extraSpins;
     }
+
+    // 圓角立方體用 canvas 自己做 3D 投影來畫，不用 CSS 3D 拼：上百片互相穿插的 preserve-3d 平面
+    // 會讓 Chrome 合成出錯，翻滾時畫面出現大片白幕 / 骰子上方白色直條殘影，角落也容易破洞。
+    // 座標系跟 CSS 相同（x 右、y 下、z 朝鏡頭），透視 380px；
+    // 姿勢 = 固定小傾角 rotateX(-36) rotateY(14) × 把正前方搬到頂面 rotateX(90) × 翻滾 rotateX(spinX) rotateY(spinY)
+    const DICE_H = 34, // 半邊長
+        DICE_R = 14, // 圓角半徑
+        DICE_A = DICE_H - DICE_R, // 圓角圓心離中心的距離（= 平面部分的半邊長）
+        DICE_PERSP = 380,
+        DICE_SIZE = 120; // canvas 的 CSS 尺寸，跟 style.css 的 #diceCanvas 一致
+    const m3rx = (deg) => {
+        const r = (deg * Math.PI) / 180, c = Math.cos(r), s = Math.sin(r);
+        return [1, 0, 0, 0, c, -s, 0, s, c];
+    };
+    const m3ry = (deg) => {
+        const r = (deg * Math.PI) / 180, c = Math.cos(r), s = Math.sin(r);
+        return [c, 0, s, 0, 1, 0, -s, 0, c];
+    };
+    const m3mul = (a, b) => {
+        const o = new Array(9);
+        for (let i = 0; i < 3; i++)
+            for (let j = 0; j < 3; j++) o[i * 3 + j] = a[i * 3] * b[j] + a[i * 3 + 1] * b[3 + j] + a[i * 3 + 2] * b[6 + j];
+        return o;
+    };
+    const m3ap = (m, v) => [
+        m[0] * v[0] + m[1] * v[1] + m[2] * v[2],
+        m[3] * v[0] + m[4] * v[1] + m[5] * v[2],
+        m[6] * v[0] + m[7] * v[1] + m[8] * v[2],
+    ];
+    const DICE_BASE = m3mul(m3mul(m3rx(-36), m3ry(14)), m3rx(90));
+    const DICE_PIP_POS = { c: [0, 0], tl: [-12.5, -12.5], tr: [12.5, -12.5], bl: [-12.5, 12.5], br: [12.5, 12.5], ml: [-12.5, 0], mr: [12.5, 0] };
+    // 6 個面的朝向（ex/ey = 面上的右/下方向，n = 法線），點的排法沿用原本 CSS 版；大富翁習慣 1 點和 4 點是紅色
+    const DICE_FACES = [
+        [m3rx(0), ['c']],
+        [m3rx(-90), ['tl', 'br']],
+        [m3ry(90), ['tl', 'c', 'br']],
+        [m3ry(-90), ['tl', 'tr', 'bl', 'br']],
+        [m3rx(90), ['tl', 'tr', 'c', 'bl', 'br']],
+        [m3ry(180), ['tl', 'ml', 'bl', 'tr', 'mr', 'br']],
+    ].map(([m, pips], i) => ({
+        ex: [m[0], m[3], m[6]],
+        ey: [m[1], m[4], m[7]],
+        n: [m[2], m[5], m[8]],
+        pips: pips.map((k) => DICE_PIP_POS[k]),
+        red: i === 0 || i === 3,
+    }));
+    // 立方體表面上的點 → 圓角立方體表面上的點與法線（平面部分不變，邊/角往圓心方向收成圓柱/球面）
+    function diceSurf(f, u, v) {
+        const p = [0, 1, 2].map((i) => f.n[i] * DICE_H + f.ex[i] * u + f.ey[i] * v);
+        const c = p.map((x) => Math.max(-DICE_A, Math.min(DICE_A, x)));
+        const d = [p[0] - c[0], p[1] - c[1], p[2] - c[2]];
+        const len = Math.hypot(d[0], d[1], d[2]);
+        const n = d.map((x) => x / len);
+        return { p: c.map((x, i) => x + DICE_R * n[i]), n };
+    }
+    // 每面切成 9×9 格：中間一格是平面，兩側圓角各 4 格（等角度切，邊緣輪廓才圓順）；網格只算一次
+    const DICE_MESH = (() => {
+        const arc = [];
+        for (let k = 0; k <= 4; k++) arc.push(DICE_A + DICE_R * Math.tan((k * 11.25 * Math.PI) / 180));
+        const g = [...arc.map((x) => -x).reverse(), ...arc];
+        const cells = [];
+        DICE_FACES.forEach((f) => {
+            for (let i = 0; i < g.length - 1; i++)
+                for (let j = 0; j < g.length - 1; j++) {
+                    if (i === 4 && j === 4) continue; // 平面另外畫（漸層 + 點數）
+                    const corners = [[g[i], g[j]], [g[i + 1], g[j]], [g[i + 1], g[j + 1]], [g[i], g[j + 1]]].map(([u, v]) => diceSurf(f, u, v));
+                    const mid = diceSurf(f, (g[i] + g[i + 1]) / 2, (g[j] + g[j + 1]) / 2);
+                    cells.push({ pts: corners.map((s) => s.p), ns: [mid.n, ...corners.map((s) => s.n)], c: mid.p, n: mid.n });
+                }
+            const A = DICE_A;
+            cells.push({
+                face: f,
+                pts: [[-A, -A], [A, -A], [A, A], [-A, A]].map(([u, v]) => diceSurf(f, u, v).p),
+                ns: [f.n],
+                c: f.n.map((x) => x * DICE_H),
+                n: f.n,
+            });
+        });
+        return cells;
+    })();
+    const DICE_EDGE_RGB = [230, 223, 202]; // 圓角部分的顏色，也是平面漸層最外圈的顏色（#e6dfca）
+    const DICE_GRAD = [[0, [255, 253, 248]], [0.5, [248, 244, 234]], [0.85, [236, 230, 212]], [1, DICE_EDGE_RGB]];
+    const DICE_LIGHT = (() => {
+        const v = [-0.35, -0.75, 0.55], l = Math.hypot(...v);
+        return v.map((x) => x / l);
+    })();
+    const diceRgb = (c, k) => `rgb(${Math.round(c[0] * k)},${Math.round(c[1] * k)},${Math.round(c[2] * k)})`;
+    function drawDice(canvas, spinX, spinY) {
+        const dpr = Math.min(3, window.devicePixelRatio || 1),
+            px = Math.round(DICE_SIZE * dpr);
+        if (canvas.width !== px) canvas.width = canvas.height = px;
+        const ctx = canvas.getContext('2d');
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.clearRect(0, 0, px, px);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.lineJoin = 'round';
+        ctx.lineWidth = 0.6; // 每格描一圈同色細邊，蓋掉相鄰格之間抗鋸齒露出的細縫
+        const M = m3mul(DICE_BASE, m3mul(m3rx(spinX), m3ry(spinY))),
+            half = DICE_SIZE / 2;
+        const proj = (q) => {
+            const v = m3ap(M, q), s = DICE_PERSP / (DICE_PERSP - v[2]);
+            return [half + v[0] * s, half + v[1] * s];
+        };
+        const shade = (n) => 0.76 + 0.24 * Math.max(0, n[0] * DICE_LIGHT[0] + n[1] * DICE_LIGHT[1] + n[2] * DICE_LIGHT[2]);
+        const path = (pts) => {
+            ctx.beginPath();
+            pts.forEach((q, i) => {
+                const s = proj(q);
+                if (i) ctx.lineTo(s[0], s[1]);
+                else ctx.moveTo(s[0], s[1]);
+            });
+            ctx.closePath();
+        };
+        // 圓角立方體是凸的：只畫朝向鏡頭的格子（任一頂點朝鏡頭就算，輪廓邊緣才不會缺角），由遠到近畫
+        const vis = [];
+        for (const cell of DICE_MESH) {
+            const P = m3ap(M, cell.c);
+            const facing = cell.ns.some((n0) => {
+                const n = m3ap(M, n0);
+                return -n[0] * P[0] - n[1] * P[1] + n[2] * (DICE_PERSP - P[2]) > 0;
+            });
+            if (facing) vis.push({ cell, z: P[2], n: m3ap(M, cell.n) });
+        }
+        vis.sort((a, b) => a.z - b.z);
+        for (const { cell, n } of vis) {
+            const k = shade(n);
+            path(cell.pts);
+            ctx.fillStyle = ctx.strokeStyle = diceRgb(DICE_EDGE_RGB, k);
+            ctx.stroke();
+            if (!cell.face) {
+                ctx.fill();
+                continue;
+            }
+            // 平面：中央亮、往外漸暗到跟圓角同色。漸層用面上的仿射座標建立，斜著看也會跟著變成橢圓
+            const f = cell.face,
+                o = proj(cell.c),
+                pu = proj(cell.c.map((x, i) => x + f.ex[i] * DICE_A)),
+                pv = proj(cell.c.map((x, i) => x + f.ey[i] * DICE_A));
+            ctx.setTransform(
+                (dpr * (pu[0] - o[0])) / DICE_A, (dpr * (pu[1] - o[1])) / DICE_A,
+                (dpr * (pv[0] - o[0])) / DICE_A, (dpr * (pv[1] - o[1])) / DICE_A,
+                dpr * o[0], dpr * o[1]
+            );
+            const grad = ctx.createRadialGradient(0, 0, 0, 0, 0, DICE_A);
+            for (const [at, c] of DICE_GRAD) grad.addColorStop(at, diceRgb(c, k));
+            ctx.fillStyle = grad;
+            ctx.fill();
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            ctx.fillStyle = f.red ? diceRgb([212, 38, 42], 0.9 + 0.1 * k) : diceRgb([38, 38, 50], 0.9 + 0.1 * k);
+            for (const [pu0, pv0] of f.pips) {
+                const pts = [];
+                for (let a = 0; a < 20; a++) {
+                    const t = (a / 20) * Math.PI * 2, u = pu0 + 5 * Math.cos(t), v = pv0 + 5 * Math.sin(t);
+                    pts.push(cell.c.map((x, i) => x + f.ex[i] * u + f.ey[i] * v));
+                }
+                path(pts);
+                ctx.fill();
+            }
+        }
+    }
+    // 跟 CSS 的 cubic-bezier() 相同的緩動（翻滾動畫原本是 CSS transition .9s cubic-bezier(.3,1.6,.4,1)）
+    function cubicBezier(x1, y1, x2, y2) {
+        const cx = 3 * x1, bx = 3 * (x2 - x1) - cx, ax = 1 - cx - bx;
+        const cy = 3 * y1, by = 3 * (y2 - y1) - cy, ay = 1 - cy - by;
+        return (x) => {
+            let t = x;
+            for (let i = 0; i < 8; i++) {
+                const e = ((ax * t + bx) * t + cx) * t - x,
+                    d = (3 * ax * t + 2 * bx) * t + cx;
+                if (Math.abs(e) < 1e-5 || Math.abs(d) < 1e-6) break;
+                t -= e / d;
+            }
+            t = Math.min(1, Math.max(0, t));
+            return ((ay * t + by) * t + cy) * t;
+        };
+    }
+    const diceEase = cubicBezier(0.3, 1.6, 0.4, 1);
     function initDice() {
         const btn = $('#diceBtn'),
-            cube = $('#diceCube');
-        if (!btn || !cube) return;
-        cube.style.transform = `rotateX(${diceSpinX}deg) rotateY(${diceSpinY}deg)`;
+            canvas = $('#diceCanvas');
+        if (!btn || !canvas || !canvas.getContext) return;
+        drawDice(canvas, diceSpinX, diceSpinY);
+        window.addEventListener('resize', () => {
+            if (!diceRolling) drawDice(canvas, diceSpinX, diceSpinY); // 縮放瀏覽器時 devicePixelRatio 會變，重畫才不會糊
+        });
         btn.addEventListener('click', () => {
             if (diceRolling) return;
             diceRolling = true;
@@ -2806,18 +2986,27 @@
             const result = 1 + Math.floor(Math.random() * 6);
             const [showX, showY] = DICE_SHOW_ROT[result];
             const spins = reduce ? 0 : 2 + Math.floor(Math.random() * 2); // 多轉幾圈營造翻滾感
-            // #diceCube 只管哪一面朝前，用原本就驗證過正確的角度，不额外疊加傾角
+            // 翻滾角度只管哪一面朝前，不额外疊加傾角
             // （疊加傾角會跟 rotateX/rotateY 混在一起變成不可預期的角度，某些點數會轉到四角朝鏡頭看不出點數）
+            const fromX = diceSpinX, fromY = diceSpinY;
             diceSpinX = spinTo(diceSpinX, showX, spins);
             diceSpinY = spinTo(diceSpinY, showY, spins);
-            cube.style.transition = reduce ? 'none' : '';
-            cube.style.transform = `rotateX(${diceSpinX}deg) rotateY(${diceSpinY}deg)`;
-            const DUR = reduce ? 0 : 900;
-            setTimeout(() => {
+            const finish = () => {
+                drawDice(canvas, diceSpinX, diceSpinY);
                 btn.classList.remove('rolling');
                 diceRolling = false;
                 toast(`🎲 ${$t('擲出 {n} 點！', { n: result })}`);
-            }, DUR);
+            };
+            if (reduce) return finish();
+            const DUR = 900, t0 = performance.now();
+            const step = (now) => {
+                const t = Math.min(1, (now - t0) / DUR);
+                if (t >= 1) return finish();
+                const e = diceEase(t);
+                drawDice(canvas, fromX + (diceSpinX - fromX) * e, fromY + (diceSpinY - fromY) * e);
+                requestAnimationFrame(step);
+            };
+            requestAnimationFrame(step);
         });
     }
 

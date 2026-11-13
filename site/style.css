@@ -283,12 +283,23 @@ button{font:inherit;color:inherit;cursor:pointer}
 .dz-it .dz-i{width:22px;font-size:18px;line-height:1;text-align:center;font-family:var(--emoji)}
 .dz-it:hover{background:rgba(255,231,163,.1)}
 
-/* ---------- 骰子（原「上帝之手」的位置，右下角）：真正的 CSS 3D 立方體，大富翁風格 ---------- */
+/* ---------- 骰子（原「上帝之手」的位置，右下角）：canvas 畫的 3D 圓角立方體，大富翁風格 ---------- */
 #diceBtn{
   position:absolute;z-index:5;right:14px;bottom:24px;display:none;align-items:center;justify-content:center;
   width:92px;height:92px;border:none;background:none;cursor:pointer;padding:0;
-  filter:drop-shadow(0 6px 10px rgba(0,0,0,.45));
-  transition:filter .15s,transform .15s;
+  transition:transform .15s;
+}
+/* 地上一顆獨立的橢圓陰影，跳起來時跟著縮小變淡（不用 filter:drop-shadow，避免整顆按鈕被離屏重繪） */
+#diceBtn::before{
+  content:'';position:absolute;left:50%;bottom:6px;width:62px;height:14px;margin-left:-31px;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(0,0,0,.5),rgba(0,0,0,0));pointer-events:none;
+}
+#diceBtn.rolling::before{animation:diceShadow .9s cubic-bezier(.3,1.6,.4,1)}
+@keyframes diceShadow{
+  0%  {transform:scale(1);opacity:1}
+  28% {transform:scale(.6);opacity:.45}
+  55% {transform:scale(.5);opacity:.35}
+  100%{transform:scale(1);opacity:1}
 }
 /* 骰子只在「遊戲」篩選才有意義（之後桃太郎電鐵式玩法），其他篩選下隱藏，避免佔位置又讓人誤以為是上帝之手 */
 #stage.region-game #diceBtn{display:flex}
@@ -296,10 +307,10 @@ button{font:inherit;color:inherit;cursor:pointer}
 #diceBtn:active{transform:translateY(1px) scale(.97)}
 #diceBtn:focus{outline:none}
 #diceBtn:focus-visible{outline:none;box-shadow:0 0 0 3px var(--gold-l)}
-/* 外層場景：只負責建立 3D 透視與翻滾時的上下跳動，不能加 overflow:hidden 裁切——
-   旋轉中立方體的透視輪廓會比正面的 68x68 方框大（斜角時投影寬度可能到 90 幾 px），
-   固定視窗硬裁會把轉到一半的立方體邊角切掉，看起來像方塊卡住，所以圓角完全交給每個面自己處理 */
-#diceScene{width:68px;height:68px;position:relative;perspective:380px}
+/* 外層場景只負責翻滾時的上下跳動（純 2D 位移）。立方體本身由 app.js 畫在 canvas 上，
+   canvas 比場景大一圈，轉到斜角時投影輪廓（最大約 112px）才不會被切掉 */
+#diceScene{width:68px;height:68px;position:relative;will-change:transform}
+#diceCanvas{position:absolute;left:-26px;top:-26px;width:120px;height:120px;pointer-events:none}
 #diceBtn.rolling #diceScene{animation:diceHop .9s cubic-bezier(.3,1.6,.4,1)}
 @keyframes diceHop{
   0%  {transform:translateY(0)}
@@ -307,87 +318,7 @@ button{font:inherit;color:inherit;cursor:pointer}
   55% {transform:translateY(-125px)}
   100%{transform:translateY(0)}
 }
-/* 固定不變的「正前方→正上方」搬移層：DICE_SHOW_ROT 只會把結果轉到立方體本地正前方（+Z），
-   但使用者讀點數是看畫面上的頂面，不是正前方那一面——這裡用寫死的 rotateX(90deg) 把正前方
-   整個搬到正上方的位置，搬完後再套 #diceTilt 的小傾角，骰到的點數才會正確顯示在頂面，
-   跟下面文字訊息的點數一致。
-   #diceTilt：固定不變的小傾角，只負責整體立體感，跟 #diceCube 的「哪一面朝前」分兩層，
-   rotateX/rotateY 才不會疊在一起轉出四角朝鏡頭的怪角度 */
-#diceFaceUp{width:68px;height:68px;position:relative;transform-style:preserve-3d;transform:rotateX(90deg)}
-#diceTilt{width:68px;height:68px;position:relative;transform-style:preserve-3d;transform:rotateX(-36deg) rotateY(14deg)}
-/* 圓角立方體 = 6 片平面 + 12 條圓柱邊 + 8 個球角，三種零件剛好拼成一個封閉表面：
-   --dh 半邊長、--dr 圓角半徑、--da 圓角圓心離中心的距離（= dh - dr）。
-   之前是「6 片整面各自 border-radius」，兩面交界其實是直角硬邊，三面交會的頂點則被圓角各削掉一塊，
-   露出後面的墊板，停下來時角落看起來像缺口或突出一片，不平滑 */
-#diceCube{
-  --dh:34px;--dr:14px;--da:20px;
-  width:68px;height:68px;position:relative;transform-style:preserve-3d;
-  transition:transform .9s cubic-bezier(.3,1.6,.4,1);
-}
-/* 6 個面：固定點數（對面相加為 7），旋轉立方體本身來決定哪一面朝前，不是切換圖案。
-   fw 只負責旋轉方向；df 是平面部分（邊長 68 - 2×14 = 40px，多放 0.5px 跟圓柱邊重疊，避免接縫露出細線） */
-.fw{position:absolute;inset:0;transform-style:preserve-3d}
-.fw.f1{transform:rotateX(0deg) rotateY(0deg)}
-.fw.f2{transform:rotateX(-90deg)}
-.fw.f3{transform:rotateY(90deg)}
-.fw.f4{transform:rotateY(-90deg)}
-.fw.f5{transform:rotateX(90deg)}
-.fw.f6{transform:rotateY(180deg)}
-.df{
-  position:absolute;left:13.5px;top:13.5px;width:41px;height:41px;transform:translateZ(var(--dh));
-  /* 中央亮、往四邊漸暗到跟圓柱邊/球角同一個顏色（#e6dfca），平面跟圓角接縫處才不會有色差 */
-  background:radial-gradient(circle closest-side at 50% 50%,#fffdf8 0%,#f8f4ea 50%,#ece6d4 85%,#e6dfca 100%);
-  backface-visibility:hidden;
-}
-/* 12 條邊：每條是 1/4 圓柱，用 4 片細長條（每片 22.5°）圍出來；
-   .eg 先定義「前面與上面交界、沿 X 軸」那一條，再用 90° 旋轉複製到其餘 11 條 */
-.eg,.cn{position:absolute;inset:0;transform-style:preserve-3d;pointer-events:none}
-.eg i{
-  position:absolute;left:13.5px;top:31px;width:41px;height:6px;background:#e6dfca;
-  transform:translateY(calc(-1 * var(--da))) translateZ(var(--da)) rotateX(var(--p)) translateZ(var(--dr));
-}
-.eg i:nth-child(1){--p:11.25deg}
-.eg i:nth-child(2){--p:33.75deg}
-.eg i:nth-child(3){--p:56.25deg}
-.eg i:nth-child(4){--p:78.75deg}
-.e1{transform:rotateX(0deg)}.e2{transform:rotateX(90deg)}.e3{transform:rotateX(180deg)}.e4{transform:rotateX(270deg)}
-.e5{transform:rotateZ(90deg) rotateX(0deg)}.e6{transform:rotateZ(90deg) rotateX(90deg)}
-.e7{transform:rotateZ(90deg) rotateX(180deg)}.e8{transform:rotateZ(90deg) rotateX(270deg)}
-.e9{transform:rotateY(90deg) rotateX(0deg)}.e10{transform:rotateY(90deg) rotateX(90deg)}
-.e11{transform:rotateY(90deg) rotateX(180deg)}.e12{transform:rotateY(90deg) rotateX(270deg)}
-/* 8 個角：每個是 1/8 球。CSS 沒有球體，改用 6 片同心圓盤，每片的法線剛好是「6 種停止姿勢之一」時的鏡頭方向
-   （由 #diceTilt × #diceFaceUp × DICE_SHOW_ROT 算出），所以停下來時一定有一片正對鏡頭，角的輪廓就是正圓，
-   跟圓柱邊的輪廓接得起來。圓盤都在圓角立方體內部，立方體是凸的，不會擋到表面。
-   之前用固定的軸向/對角線圓盤，停止時大多是斜著看，輪廓變扁，角落會凹一塊，邊看起來像凸出一片。
-   改了 #diceTilt / #diceFaceUp 的角度或 DICE_SHOW_ROT，這 6 個角度要跟著重算 */
-.cn i{
-  position:absolute;left:19.75px;top:19.75px;width:28.5px;height:28.5px;border-radius:50%;background:#e6dfca;
-}
-.cn i:nth-child(1){transform:rotateY(-18.42deg) rotateX(-51.72deg)}
-.cn i:nth-child(2){transform:rotateY(-166deg) rotateX(-36deg)}
-.cn i:nth-child(3){transform:rotateY(71.58deg) rotateX(-51.72deg)}
-.cn i:nth-child(4){transform:rotateY(-108.42deg) rotateX(-51.72deg)}
-.cn i:nth-child(5){transform:rotateY(-14deg) rotateX(36deg)}
-.cn i:nth-child(6){transform:rotateY(161.58deg) rotateX(-51.72deg)}
-.c1{transform:translate3d(20px,-20px,20px)}.c2{transform:translate3d(-20px,-20px,20px)}
-.c3{transform:translate3d(20px,20px,20px)}.c4{transform:translate3d(-20px,20px,20px)}
-.c5{transform:translate3d(20px,-20px,-20px)}.c6{transform:translate3d(-20px,-20px,-20px)}
-.c7{transform:translate3d(20px,20px,-20px)}.c8{transform:translate3d(-20px,20px,-20px)}
-.pip{
-  position:absolute;width:10px;height:10px;border-radius:50%;background:#262632;
-  box-shadow:inset 0 1px 1.5px rgba(0,0,0,.5),inset 0 -0.5px 0 rgba(255,255,255,.08);
-}
-/* 大富翁骰子習慣：1 點和 4 點是紅色 */
-.f1 .pip,.f4 .pip{background:#d4262a;box-shadow:inset 0 1px 1.5px rgba(0,0,0,.35),inset 0 -0.5px 0 rgba(255,180,180,.25)}
-/* 點的位置以 40px 平面為準（點中心離平面邊 8px） */
-.p-c {left:50%;top:50%;margin:-5px 0 0 -5px}
-.p-tl{left:3px;top:3px}
-.p-tr{right:3px;top:3px}
-.p-bl{left:3px;bottom:3px}
-.p-br{right:3px;bottom:3px}
-.p-ml{left:3px;top:50%;margin-top:-5px}
-.p-mr{right:3px;top:50%;margin-top:-5px}
-@media (prefers-reduced-motion:reduce){#diceBtn.rolling #diceScene{animation:none}#diceCube{transition:none}}
+@media (prefers-reduced-motion:reduce){#diceBtn.rolling #diceScene,#diceBtn.rolling::before{animation:none}}
 .dz-it:focus-visible{outline:2px solid var(--gold-l);outline-offset:-2px}
 .dz-it.on{background:linear-gradient(180deg,#43669b 0%,#27436f 100%);border-color:var(--gold-l);color:var(--gold-l)}
 #map{position:absolute;inset:0;width:100%;height:100%;touch-action:none;display:block;user-select:none;-webkit-user-select:none}

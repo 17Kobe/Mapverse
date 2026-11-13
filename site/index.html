@@ -19,7 +19,7 @@
             href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Barlow+Semi+Condensed:wght@600;700&display=swap"
             rel="stylesheet"
         />
-        <link rel="stylesheet" href="style.css?v=20251111m" />
+        <link rel="stylesheet" href="style.css?v=20251113b" />
     </head>
     <body>
         <!-- 左側直式圖層列（手機版變成底部導覽列），內容由 app.js 的 LAYERS 產生 -->
@@ -43,36 +43,10 @@
             <canvas id="fx" aria-hidden="true"></canvas>
             <div id="attrib">地形資料 © Mapzen/AWS Terrain Tiles · Esri, Maxar, Earthstar Geographics</div>
 
-            <!-- 骰子（原「上帝之手」的位置）：真正的 CSS 3D 圓角立方體，點擊會翻滾並轉到對應點數那一面朝上。
-                 圓角立方體由 6 片平面（.fw > .df，帶點數）+ 12 條圓柱邊（.eg，各 4 片細長條）+ 8 個球角（.cn，各 6 片圓盤）
-                 拼成封閉表面，任何角度看輪廓都是圓滑的（形狀與顏色見 style.css）。
-                 #diceTilt：固定小傾角（CSS 寫死、JS 不碰）；#diceFaceUp：把立方體本地正前方搬到正上方；
-                 #diceCube：JS 只轉這層，決定哪一面朝前。三層分開，rotateX/rotateY 才不會疊出怪角度。 -->
+            <!-- 骰子（原「上帝之手」的位置）：圓角立方體由 app.js 用 canvas 自己做 3D 投影畫出來，點擊會翻滾並轉到對應點數那一面朝上。
+                 不用 CSS 3D 拼：上百片互相穿插的 preserve-3d 平面會讓 Chrome 合成出錯，畫面出現大片白幕/白色直條殘影 -->
             <button id="diceBtn" aria-label="擲骰子" title="擲骰子">
-                <div id="diceScene">
-                  <div id="diceTilt">
-                   <div id="diceFaceUp">
-                    <div id="diceCube">
-                        <div class="fw f1"><div class="df"><span class="pip p-c"></span></div></div>
-                        <div class="fw f2"><div class="df"><span class="pip p-tl"></span><span class="pip p-br"></span></div></div>
-                        <div class="fw f3"><div class="df"><span class="pip p-tl"></span><span class="pip p-c"></span><span class="pip p-br"></span></div></div>
-                        <div class="fw f4"><div class="df"><span class="pip p-tl"></span><span class="pip p-tr"></span><span class="pip p-bl"></span><span class="pip p-br"></span></div></div>
-                        <div class="fw f5"><div class="df"><span class="pip p-tl"></span><span class="pip p-tr"></span><span class="pip p-c"></span><span class="pip p-bl"></span><span class="pip p-br"></span></div></div>
-                        <div class="fw f6"><div class="df"><span class="pip p-tl"></span><span class="pip p-ml"></span><span class="pip p-bl"></span><span class="pip p-tr"></span><span class="pip p-mr"></span><span class="pip p-br"></span></div></div>
-                        <div class="eg e1"><i></i><i></i><i></i><i></i></div><div class="eg e2"><i></i><i></i><i></i><i></i></div>
-                        <div class="eg e3"><i></i><i></i><i></i><i></i></div><div class="eg e4"><i></i><i></i><i></i><i></i></div>
-                        <div class="eg e5"><i></i><i></i><i></i><i></i></div><div class="eg e6"><i></i><i></i><i></i><i></i></div>
-                        <div class="eg e7"><i></i><i></i><i></i><i></i></div><div class="eg e8"><i></i><i></i><i></i><i></i></div>
-                        <div class="eg e9"><i></i><i></i><i></i><i></i></div><div class="eg e10"><i></i><i></i><i></i><i></i></div>
-                        <div class="eg e11"><i></i><i></i><i></i><i></i></div><div class="eg e12"><i></i><i></i><i></i><i></i></div>
-                        <div class="cn c1"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="cn c2"><i></i><i></i><i></i><i></i><i></i><i></i></div>
-                        <div class="cn c3"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="cn c4"><i></i><i></i><i></i><i></i><i></i><i></i></div>
-                        <div class="cn c5"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="cn c6"><i></i><i></i><i></i><i></i><i></i><i></i></div>
-                        <div class="cn c7"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="cn c8"><i></i><i></i><i></i><i></i><i></i><i></i></div>
-                    </div>
-                   </div>
-                  </div>
-                </div>
+                <div id="diceScene"><canvas id="diceCanvas" aria-hidden="true"></canvas></div>
             </button>
 
             <!-- 浮在地圖上的介面（仿 Google 地圖的位置） -->
@@ -109,6 +83,6 @@
         <script src="corps.js"></script>
         <script src="natives.js"></script>
         <script src="tips.js?v=20251111f"></script>
-        <script src="app.js?v=20251111x"></script>
+        <script src="app.js?v=20251113a"></script>
     </body>
 </html>
