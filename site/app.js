@@ -2432,8 +2432,8 @@
     // 使用 #fx canvas（在 SVG 之上），確保烏雲覆蓋船隻/動物
     const WEATHER_T = { t: 0, cv: null, ctx: null, hadFx: false }; // 獨立時間，不和極光共用
 
-    // 預繪 sprite：煙火粒子（小圓點漸層）、雨滴（垂直線）
-    let _fwSprites = new Map(), _rainSprite = null, _cloudSprite = null;
+    // 預繪 sprite：煙火粒子（小圓點漸層）、烏雲（積雨雲外形）
+    let _fwSprites = new Map(), _cloudSprite = null;
     // 依顏色快取 sprite（白核心 → 該顏色 → 透明），避免 shadowBlur 的昂貴即時運算
     function fwSprite(col) {
         const key = col.join(',');
@@ -2450,36 +2450,99 @@
         _fwSprites.set(key, c);
         return c;
     }
-    function rainSprite() {
-        if (_rainSprite) return _rainSprite;
-        const c = document.createElement('canvas');
-        c.width = 2; c.height = 18;
-        const g = c.getContext('2d'),
-            gr = g.createLinearGradient(0, 0, 0, 18);
-        gr.addColorStop(0,   'rgba(120,160,220,0)');
-        gr.addColorStop(0.3, 'rgba(140,180,240,.7)');
-        gr.addColorStop(1,   'rgba(100,140,200,0)');
-        g.fillStyle = gr;
-        g.fillRect(0, 0, 2, 18);
-        return (_rainSprite = c);
+    // 烏雲 sprite：像真的積雨雲一樣是「一整團」——一個偏一邊的高聳主雲塔、旁邊兩個中型肩部、
+    // 邊緣只有一兩個小雲團，大小都不一樣，再加一個靠下的雲團把底部連起來（底部高低不齊，不會一刀切平）。
+    // 每團上面受光偏亮，整朵雲下半部再壓暗。預先畫好 3 種外形，各國用不同的一張
+    const STORM_W = 192, STORM_H = 120;
+    // 共用一張離屏畫布畫整團烏雲（只會變大不會縮小，避免每幀重新配置）
+    let _stormBuf = null;
+    function stormBuf(w, h) {
+        if (!_stormBuf) _stormBuf = document.createElement('canvas');
+        if (_stormBuf.width < w) _stormBuf.width = w;
+        if (_stormBuf.height < h) _stormBuf.height = h;
+        return _stormBuf;
     }
-    function cloudSprite() {
+    function stormSprites() {
         if (_cloudSprite) return _cloudSprite;
-        const c = document.createElement('canvas');
-        c.width = 64; c.height = 40; // 高度從 32→40，更飽滿
-        const g = c.getContext('2d');
-        // 底層大橢圓（深灰，雲身主體）
-        g.fillStyle = 'rgba(50,50,72,.65)';
-        g.beginPath(); g.ellipse(32, 28, 28, 14, 0, 0, Math.PI * 2); g.fill();
-        // 頂部凸起（讓雲有立體感）
-        g.fillStyle = 'rgba(65,65,88,.7)';
-        g.beginPath(); g.ellipse(22, 20, 16, 13, 0, 0, Math.PI * 2); g.fill();
-        g.beginPath(); g.ellipse(38, 17, 15, 13, 0, 0, Math.PI * 2); g.fill();
-        g.beginPath(); g.ellipse(50, 22, 12, 10, 0, 0, Math.PI * 2); g.fill();
-        // 頂部亮邊（讓雲看起來有光感）
-        g.fillStyle = 'rgba(100,100,130,.3)';
-        g.beginPath(); g.ellipse(28, 17, 12, 8, 0, 0, Math.PI * 2); g.fill();
-        return (_cloudSprite = c);
+        const mk = (seed, side) => {
+            const r = rng(seed),
+                j = (v) => v + (r() - 0.5) * 0.05, // 位置微抖
+                s = (v) => v * (0.88 + r() * 0.24), // 大小微抖
+                tx = side > 0 ? 0.4 : 0.6;
+            // [x(寬度比例), y(高度比例), 半徑(高度比例)]，由後往前畫
+            const puffs = [
+                [j(tx), j(0.46), s(0.32)], // 主雲塔
+                [j(tx + side * 0.25), j(0.57), s(0.23)], // 肩部（中）
+                [j(tx - side * 0.21), j(0.62), s(0.19)], // 另一側（中偏小）
+                [j(tx + side * 0.37), j(0.66), s(0.13)], // 邊緣小雲團（只留一顆，太多小球反而不自然）
+                [j(tx + side * 0.05), j(0.68), s(0.2)], // 前下方把底部連起來
+            ];
+            const c = document.createElement('canvas');
+            c.width = STORM_W;
+            c.height = STORM_H;
+            const g = c.getContext('2d');
+            const P = puffs.map(([x, y, rr]) => {
+                const R = rr * STORM_H;
+                // 留邊：雲團（含邊緣小凸起）不要超出畫布被切掉
+                return [Math.max(R * 1.15 + 2, Math.min(STORM_W - R * 1.15 - 2, x * STORM_W)), y * STORM_H, R];
+            });
+            // 大雲團上緣再長幾顆不規則的小凸起（像花椰菜），輪廓才不會是一顆顆光滑的球；
+            // 小凸起只加在外形上、不另外打光，看起來是大雲團表面的起伏，不會變成一堆小球
+            const bumps = [];
+            for (const [x, y, R] of P) {
+                if (R < STORM_H * 0.17) continue;
+                const n = 2 + Math.floor(r() * 3);
+                for (let i = 0; i < n; i++) {
+                    const a = -Math.PI * (0.12 + r() * 0.76),
+                        br = R * (0.22 + r() * 0.2);
+                    bumps.push([x + Math.cos(a) * R * 0.86, Math.max(br + 1, y + Math.sin(a) * R * 0.86), br]);
+                }
+            }
+            // 先用統一的底色填滿整朵雲的外形，雲內部就不會有一圈一圈的硬邊（不然會像一串葡萄）
+            g.fillStyle = '#4a4f66';
+            g.beginPath();
+            for (const [x, y, rr] of P.concat(bumps)) {
+                g.moveTo(x + rr, y);
+                g.arc(x, y, rr, 0, Math.PI * 2);
+            }
+            g.fill();
+            g.globalCompositeOperation = 'source-atop';
+            // 整朵雲由上往下：頂部受光偏亮、往下漸暗
+            const sky = g.createLinearGradient(0, 0, 0, STORM_H);
+            sky.addColorStop(0, 'rgba(150,156,180,.55)');
+            sky.addColorStop(0.55, 'rgba(150,156,180,0)');
+            g.fillStyle = sky;
+            g.fillRect(0, 0, STORM_W, STORM_H);
+            // 每團雲球的上方加一塊柔和的受光（往外漸漸透明），由後往前畫，前排的亮頂會蓋在後排的暗部上
+            for (const [x, y, rr] of P) {
+                const gr = g.createRadialGradient(x - rr * 0.15, y - rr * 0.6, 0, x - rr * 0.1, y - rr * 0.35, rr * 1.15);
+                gr.addColorStop(0, 'rgba(172,178,200,.42)');
+                gr.addColorStop(0.5, 'rgba(128,134,158,.18)');
+                gr.addColorStop(1, 'rgba(128,134,158,0)');
+                g.fillStyle = gr;
+                g.fillRect(x - rr * 1.2, y - rr * 1.6, rr * 2.4, rr * 2.6);
+                // 雲球下緣一點點陰影，讓前後層次分得出來，但不畫出硬邊
+                const sh = g.createRadialGradient(x, y + rr * 0.9, 0, x, y + rr * 0.9, rr * 0.9);
+                sh.addColorStop(0, 'rgba(30,33,50,.35)');
+                sh.addColorStop(1, 'rgba(30,33,50,0)');
+                g.fillStyle = sh;
+                g.fillRect(x - rr, y, rr * 2, rr * 1.8);
+            }
+            const under = g.createLinearGradient(0, STORM_H * 0.45, 0, STORM_H);
+            under.addColorStop(0, 'rgba(16,18,30,0)');
+            under.addColorStop(1, 'rgba(16,18,30,.7)');
+            g.fillStyle = under;
+            g.fillRect(0, 0, STORM_W, STORM_H);
+            // 邊緣柔化一點，才不會像剪紙
+            const out = document.createElement('canvas');
+            out.width = STORM_W;
+            out.height = STORM_H;
+            const o = out.getContext('2d');
+            o.filter = 'blur(1.2px)';
+            o.drawImage(c, 0, 0);
+            return out;
+        };
+        return (_cloudSprite = [mk(11, 1), mk(29, -1), mk(47, 1)]);
     }
 
     // 煙火：每個國家同時只有一顆煙火（發射 → 升空 → 爆炸成多層同心圓 → 一起變大 → 閃爍淡出）
@@ -2568,7 +2631,7 @@
         WT.hadFx = active;
         if (!active) return; // 剛清掉最後一次效果，這幀本身沒有東西要畫
         ctx.setTransform(wd, 0, 0, wd, 0, 0);
-        const rspr = rainSprite(), cspr = cloudSprite();
+        const cspr = stormSprites();
 
         for (const m of state.maps) {
             if (!m.pin) continue;
@@ -2624,7 +2687,7 @@
                 }
                 ctx.globalCompositeOperation = 'source-over';
             } else {
-                // ── 烏雲 + 雨滴：有「形成→消散→重新形成」的呼吸週期，不會一直擋住卡片 ──
+                // ── 烏雲 + 雨 + 閃電：有「形成→消散→重新形成」的呼吸週期，不會一直擋住卡片 ──
                 const CYCLE = 7; // 一次呼吸週期秒數
                 // 每個國家用代碼算一個固定相位偏移，週期才不會同步，看起來更自然
                 let seed = 0;
@@ -2637,42 +2700,121 @@
 
                 const k = state.t.k;
                 // 雲的視覺範圍至少要跟煙火爆炸範圍（半徑約 42px）差不多大，不然旁邊有煙火對比會顯得烏雲很小
-                const cloudW = Math.max(40, Math.min(100, 76 / Math.sqrt(Math.max(1, k * 0.7)))) * (0.7 + breath * 0.3);
-                const rainW  = cloudW * 0.92;
-                const CLOUD_H = 58 * (0.7 + breath * 0.3);
-                ctx.globalCompositeOperation = 'source-over';
-                // 兩顆大小、形狀不同的雲疊在一起比較自然：主雲正常大小，
-                // 副雲縮小並水平翻轉（同一張 sprite 翻轉後輪廓不同），偏移也不對稱
-                const CLOUD_DEFS = [
-                    { dx: -0.16, dy: -0.08, scale: 1,    flip: false },
-                    { dx: 0.34,  dy: 0.12,  scale: 0.68, flip: true  },
-                ];
-                for (let ci = 0; ci < CLOUD_DEFS.length; ci++) {
-                    const d = CLOUD_DEFS[ci];
-                    const w = cloudW * d.scale, h = CLOUD_H * d.scale;
-                    const cx2 = sx + d.dx * cloudW + Math.sin(T * 0.2 + ci) * 3,
-                          cy2 = skyY + d.dy * CLOUD_H + Math.cos(T * 0.18 + ci * 1.5) * 2.5;
-                    ctx.globalAlpha = 0.82 * breath;
-                    if (d.flip) {
-                        ctx.save();
-                        ctx.translate(cx2, cy2);
-                        ctx.scale(-1, 1);
-                        ctx.drawImage(cspr, 0, 0, 64, 40, -w / 2, -h / 2, w, h);
-                        ctx.restore();
-                    } else {
-                        ctx.drawImage(cspr, 0, 0, 64, 40,
-                            cx2 - w / 2, cy2 - h / 2, w, h);
+                const grow = 0.82 + breath * 0.18; // 成形時雲慢慢鼓起來
+                const cloudW = Math.max(54, Math.min(124, 96 / Math.sqrt(Math.max(1, k * 0.7)))) * grow;
+                const cloudH = cloudW * (STORM_H / STORM_W);
+                const fade = Math.min(1, breath * 1.6); // 很快變濃，中間一段時間維持全濃
+                const rainAmt = Math.max(0, Math.min(1, (breath - 0.3) / 0.4)); // 雲夠濃了才開始下雨
+                const baseY = skyY + cloudH * 0.28; // 雲底大概的位置，雨從這裡往下（起點藏在雲裡）
+                const WIND = 0.28; // 雨被風吹斜
+
+                // 1) 雨幕：雲底下一條往下淡出的灰藍色斜帶，讓下雨的區域看起來有「一片雨」的感覺
+                if (rainAmt > 0) {
+                    const rw = cloudW * 0.6,
+                        rh = 46;
+                    const gr = ctx.createLinearGradient(0, baseY, 0, baseY + rh);
+                    gr.addColorStop(0, 'rgba(70,82,110,.32)');
+                    gr.addColorStop(1, 'rgba(70,82,110,0)');
+                    ctx.globalAlpha = rainAmt * fade;
+                    ctx.fillStyle = gr;
+                    ctx.beginPath();
+                    ctx.moveTo(sx - rw / 2, baseY);
+                    ctx.lineTo(sx + rw / 2, baseY);
+                    ctx.lineTo(sx + rw / 2 - rh * WIND, baseY + rh);
+                    ctx.lineTo(sx - rw / 2 - rh * WIND, baseY + rh);
+                    ctx.closePath();
+                    ctx.fill();
+
+                    // 2) 雨絲：遠近兩層（遠的細、淡、慢；近的長、亮、快），每滴 x 位置和速度都固定亂數，不會排成整齊一列
+                    ctx.lineCap = 'round';
+                    for (let layer = 0; layer < 2; layer++) {
+                        const near = layer === 1,
+                            n = near ? 14 : 18,
+                            len = near ? 12 : 8,
+                            fall = near ? 50 : 40;
+                        ctx.lineWidth = near ? 1.5 : 1;
+                        ctx.strokeStyle = near ? 'rgb(190,210,245)' : 'rgb(150,170,210)';
+                        const rr = rng(seed * 7 + layer * 101);
+                        for (let i = 0; i < n; i++) {
+                            const ux = rr() - 0.5,
+                                sp = (near ? 1.5 : 1.1) * (0.8 + rr() * 0.4),
+                                p = (rr() + T * sp) % 1;
+                            const y0 = baseY + p * fall,
+                                x0 = sx + ux * cloudW * 0.6 - p * fall * WIND;
+                            ctx.globalAlpha = Math.sin(p * Math.PI) * (near ? 0.85 : 0.55) * rainAmt * fade;
+                            ctx.beginPath();
+                            ctx.moveTo(x0, y0);
+                            ctx.lineTo(x0 - len * WIND, y0 + len);
+                            ctx.stroke();
+                        }
                     }
                 }
-                const N_RAIN = 20;
-                for (let ri = 0; ri < N_RAIN; ri++) {
-                    const r_phase = (ri / N_RAIN + T * 0.22 + ri * 0.11) % 1;
-                    const rx = sx + (ri / N_RAIN - 0.5) * rainW,
-                          ry = skyY + CLOUD_H / 2 + r_phase * 38;
-                    ctx.globalAlpha = Math.sin(r_phase * Math.PI) * 0.55 * breath;
-                    ctx.drawImage(rspr, 0, 0, 2, 18,
-                        rx - 1, ry, 2, 18);
+
+                // 3) 閃電：雲最濃的時候偶爾劈一下（亮一下 → 暗 → 再亮一下，像真的雷光閃兩次）
+                const lt = (T + offset * 1.7) % 3.4;
+                const flash = breath > 0.75 ? (lt < 0.1 ? 1 : lt < 0.17 ? 0 : lt < 0.32 ? 0.7 : 0) : 0;
+                if (flash > 0) {
+                    const strike = Math.floor((T + offset * 1.7) / 3.4);
+                    const br = rng(seed * 13 + strike);
+                    let bx = sx + (br() - 0.5) * cloudW * 0.4,
+                        by = baseY - 4;
+                    const pts = [[bx, by]];
+                    const segs = 5,
+                        dropY = 34 + br() * 14;
+                    for (let i = 1; i <= segs; i++) {
+                        bx += (br() - 0.5) * 12 - 1.5;
+                        by += dropY / segs;
+                        pts.push([bx, by]);
+                    }
+                    ctx.globalCompositeOperation = 'lighter';
+                    for (const [lw, col, a] of [
+                        [5, 'rgb(150,140,255)', 0.35],
+                        [1.6, 'rgb(255,255,235)', 1],
+                    ]) {
+                        ctx.lineWidth = lw;
+                        ctx.lineJoin = 'round';
+                        ctx.strokeStyle = col;
+                        ctx.globalAlpha = a * flash * fade;
+                        ctx.beginPath();
+                        pts.forEach(([x, y], i) => (i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)));
+                        ctx.stroke();
+                    }
+                    ctx.globalCompositeOperation = 'source-over';
                 }
+
+                // 4) 雲本體：一整團（各國用不同外形），緩慢飄動。
+                // 先在離屏畫布上以不透明畫好，閃電時才能只照亮雲的形狀（source-atop），再整團一起淡入淡出
+                const CLOUD_DEFS = [{ spr: seed % 3, dx: 0, dy: 0, scale: 1, a: 1 }];
+                const bw = Math.ceil(cloudW * 1.12),
+                    bh = Math.ceil(cloudH * 1.2);
+                const bpw = Math.ceil(bw * wd),
+                    bph = Math.ceil(bh * wd);
+                const buf = stormBuf(bpw, bph);
+                const bg = buf.getContext('2d');
+                bg.setTransform(1, 0, 0, 1, 0, 0);
+                bg.clearRect(0, 0, buf.width, buf.height);
+                bg.setTransform(wd, 0, 0, wd, 0, 0);
+                for (let ci = 0; ci < CLOUD_DEFS.length; ci++) {
+                    const d = CLOUD_DEFS[ci];
+                    const w = cloudW * d.scale,
+                        h = cloudH * d.scale;
+                    const cx2 = bw / 2 + d.dx * cloudW + Math.sin(T * 0.25 + ci * 2.1) * 3,
+                        cy2 = bh / 2 + d.dy * cloudH + Math.cos(T * 0.2 + ci * 1.5) * 2;
+                    bg.globalAlpha = d.a;
+                    bg.drawImage(cspr[d.spr], cx2 - w / 2, cy2 - h / 2, w, h);
+                }
+                // 打雷時整團雲從裡面被照亮
+                if (flash > 0) {
+                    bg.setTransform(1, 0, 0, 1, 0, 0);
+                    bg.globalCompositeOperation = 'source-atop';
+                    bg.globalAlpha = 0.3 * flash;
+                    bg.fillStyle = '#d8d4ff';
+                    bg.fillRect(0, 0, buf.width, buf.height);
+                    bg.globalCompositeOperation = 'source-over';
+                }
+                bg.globalAlpha = 1;
+                ctx.globalAlpha = fade;
+                ctx.drawImage(buf, 0, 0, bpw, bph, sx - bw / 2, skyY - bh / 2, bpw / wd, bph / wd);
             }
         }
         ctx.globalAlpha = 1;
