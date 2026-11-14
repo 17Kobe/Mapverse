@@ -611,6 +611,9 @@ body.noanim .corps .bk,body.noanim .corps .flame{animation:none}
 @keyframes slidein{from{transform:translateX(-24px);opacity:0}to{transform:none;opacity:1}}
 
 body.noanim *,body.noanim *::before{animation:none!important;transition:none!important}
+/* 視窗沒焦點（例如在旁邊看 YouTube）：地圖上的 CSS 無限循環動畫（光圈、企業特效、地標浮動…）先暫停，
+   SVG 圖檔裡的 SMIL 動畫則由 app.js 換成凍結版 */
+body.lowfx #stage *,body.lowfx #stage *::before{animation-play-state:paused!important}
 
 /* 分頁真正切到背景（document.hidden）時，整個地圖 SVG 跟所有 canvas 圖層直接不渲染：
    裝飾動物圖片是用 <image href="critters/xxx.svg"> 外部參照載入的，裡面的 SMIL 動畫不受

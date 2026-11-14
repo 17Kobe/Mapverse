@@ -1408,6 +1408,79 @@
     const fxFps = () => (winFocused ? 30 : 10);
     // 特效 canvas 本來就是柔邊 sprite，不需要用到 3 倍 DPR，最多 1.5 倍就看不出差別，像素量少很多
     const fxDpr = () => Math.min(dpr, 1.5);
+
+    // 小角色 / 地標 / 動物的外部 SVG 圖檔裡有大量 SMIL 動畫（<animate> 等），瀏覽器會照螢幕更新率去算，
+    // 程式這邊沒辦法暫停 <image> 裡的動畫。所以視窗沒焦點、動畫關閉、或系統要求減少動態時，
+    // 把 href 換成「凍結版」：在瀏覽器裡解析 SVG，把每個動畫固定在 t=0 的值後拿掉動畫元素，存成 Blob URL
+    const stillUrls = new Map(); // 原始網址 → 凍結版 Blob URL（建好之前是 Promise）
+    const animImgs = new Set(); // 所有用 setAnimHref 設過 href 的 <image>
+    let stillMode = false;
+    const wantStill = () => !winFocused || !state.anim || reduceMotion.matches;
+    function freezeSmil(doc) {
+        const atZero = (a) => (a.getAttribute('begin') || '0s').split(';').some((b) => /^\s*-?0*(\.0*)?(s|ms)?\s*$/.test(b) || /^\s*-/.test(b));
+        for (const a of [...doc.querySelectorAll('animate,animateTransform,animateMotion,animateColor,set')]) {
+            const ref = (a.getAttribute('href') || a.getAttributeNS('http://www.w3.org/1999/xlink', 'href') || '').replace(/^#/, '');
+            const tg = ref ? doc.getElementById(ref) : a.parentElement;
+            const vals = a.getAttribute('values');
+            const v = a.localName === 'set' ? a.getAttribute('to') : vals != null ? vals.split(';')[0].trim() : a.getAttribute('from');
+            a.remove();
+            if (!tg || v == null || !atZero(a)) continue; // 延遲開始的動畫在 t=0 時就是元素原本的樣子
+            if (a.localName === 'animateTransform') {
+                const tr = `${a.getAttribute('type') || 'translate'}(${v})`;
+                const cur = tg.getAttribute('transform');
+                tg.setAttribute('transform', a.getAttribute('additive') === 'sum' && cur ? `${cur} ${tr}` : tr);
+            } else if (a.localName === 'animateMotion') {
+                const p = (vals != null || a.hasAttribute('from') ? v : a.getAttribute('path') || '').match(/-?[\d.]+(?:e-?\d+)?/gi);
+                if (p && p.length >= 2) tg.setAttribute('transform', `translate(${p[0]},${p[1]}) ${tg.getAttribute('transform') || ''}`.trim());
+            } else {
+                const name = a.getAttribute('attributeName');
+                if (!name) continue;
+                if (tg.style && tg.style.getPropertyValue(name)) tg.style.setProperty(name, v);
+                else tg.setAttribute(name, v);
+            }
+        }
+    }
+    function stillUrl(url) {
+        const got = stillUrls.get(url);
+        if (typeof got === 'string') return got;
+        if (!got)
+            stillUrls.set(
+                url,
+                fetch(url)
+                    .then((r) => r.text())
+                    .then((txt) => {
+                        const doc = new DOMParser().parseFromString(txt, 'image/svg+xml');
+                        if (doc.querySelector('parsererror')) return url;
+                        if (!doc.querySelector('animate,animateTransform,animateMotion,animateColor,set')) return url; // 本來就沒動畫，直接用原檔
+                        freezeSmil(doc);
+                        return URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(doc)], { type: 'image/svg+xml' }));
+                    })
+                    .catch(() => url)
+                    .then((s) => {
+                        stillUrls.set(url, s);
+                        // 建好時如果還在凍結模式，把正在用這張圖的 <image> 換過去
+                        if (stillMode) for (const img of animImgs) if (img._src === url && img.hasAttribute('href')) img.setAttribute('href', s);
+                    }),
+            );
+        return null;
+    }
+    function setAnimHref(img, url) {
+        img._src = url;
+        animImgs.add(img);
+        const href = (stillMode && /\.svg$/i.test(url) && stillUrl(url)) || url;
+        if (img.getAttribute('href') !== href) img.setAttribute('href', href);
+    }
+    function applyStill() {
+        const want = wantStill();
+        document.body.classList.toggle('lowfx', !winFocused);
+        if (want === stillMode) return;
+        stillMode = want;
+        // 被收起來（href 拔掉）的不要補回去，等它顯示時再由 setAnimHref 處理
+        for (const img of animImgs) if (img.isConnected && img.hasAttribute('href')) setAnimHref(img, img._src);
+    }
+    window.addEventListener('focus', applyStill);
+    window.addEventListener('blur', applyStill);
+    if (reduceMotion.addEventListener) reduceMotion.addEventListener('change', applyStill);
     // 這一幀地圖有沒有平移/縮放：有的話特效要立刻跟著重畫，不然會跟地圖脫節
     let fxLastT = null,
         fxLastW = 0,
@@ -1557,8 +1630,8 @@
             } else {
                 img = body
                     .append('image')
-                    .attr('href', 'assets/' + d.src)
                     .attr('preserveAspectRatio', 'xMidYMax meet');
+                setAnimHref(img.node(), 'assets/' + d.src);
                 // 原本這裡還有 .attr('filter', 'url(#cast)')：feDropShadow 套在持續跑 SMIL 動畫的圖片上，
                 // 瀏覽器沒法把這層濾鏡快取住，每個動畫幀都要重新跑一次模糊運算。拿掉後只靠下面的貼地陰影橢圓
                 // （soft 濾鏡套在不會動的橢圓上，可以被瀏覽器快取），視覺差異很小，但省下大量 GPU 負擔。
@@ -1824,7 +1897,7 @@
                     const sp = (t + c.ph) % 8 < 2.4;
                     if (sp !== c.spout) {
                         c.spout = sp;
-                        c.img.setAttribute('href', 'assets/' + (sp ? c.d.src : c.d.alt));
+                        setAnimHref(c.img, 'assets/' + (sp ? c.d.src : c.d.alt));
                     }
                 }
             } else if (m === 'bob') {
@@ -1899,7 +1972,7 @@
                 if (T < 6 || T >= 11) c.y = 0;
                 if (flame !== !!c.fl) {
                     c.fl = flame;
-                    c.img.setAttribute('href', 'assets/' + (flame ? c.d.alt : c.d.src));
+                    setAnimHref(c.img, 'assets/' + (flame ? c.d.alt : c.d.src));
                 }
             } else if (m === 'ufo') {
                 // UFO：在沙漠上空緩緩飄移、上下浮動、微微傘斜
@@ -2679,8 +2752,8 @@
                 const img = body
                     .append('image')
                     .attr('class', 'beast')
-                    .attr('href', info.src)
                     .attr('preserveAspectRatio', 'xMidYMax meet');
+                setAnimHref(img.node(), info.src);
                 // 同上：拿掉 feDropShadow，只靠貼地陰影橢圓（soft 濾鏡），省下持續重算模糊的 GPU 負擔
                 // 圖檔載入失敗就退回 emoji
                 img.on('error', () => {
@@ -5532,7 +5605,7 @@
                 // 收起來就拔掉圖片參照（讓瀏覽器釋放這個動畫資源），顯示回來再補上（本機快取過，秒載）
                 if (c.href) {
                     if (hide) c.img.removeAttribute('href');
-                    else if (c.img.getAttribute('href') !== c.href) c.img.setAttribute('href', c.href);
+                    else setAnimHref(c.img, c.href);
                 }
             }
             if (hide) continue;
@@ -6166,6 +6239,7 @@
             state.anim = !state.anim;
             store.set('anim', state.anim);
             document.body.classList.toggle('noanim', !state.anim);
+            applyStill();
         }
         openSettings();
     }
@@ -6195,6 +6269,7 @@
     }
     async function init() {
         document.body.classList.toggle('noanim', !state.anim);
+        applyStill();
         // 分頁真的被背景化（切到別的視窗 / 最小化）時，整個地圖 SVG 跟所有 canvas 直接拿掉渲染，
         // 不只是停掉程式碼驅動的動畫——這樣瀏覽器才會真的停止解碼裝飾動物圖片裡的 SMIL 動畫
         document.body.classList.toggle('tab-hidden', document.hidden);
