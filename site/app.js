@@ -1398,6 +1398,21 @@
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)'); // 系統要求減少動態時，動物就待在原地
     let walkRaf = 0,
         walkLast = 0;
+    // 效能：PC 高更新率螢幕（120/144Hz）上主迴圈會跟著跑到 144fps，每幀都重畫全螢幕的雲/煙火 canvas，
+    // 跟同時開著的 YouTube 搶 GPU。這裡設上限：視窗有焦點時最多 60fps，沒焦點（例如在旁邊看影片）降到 20fps，
+    // 特效（雲、極光、藍眼淚、煙火、烏雲）再各自節流（見 fxFps）
+    let winFocused = document.hasFocus();
+    window.addEventListener('focus', () => (winFocused = true));
+    window.addEventListener('blur', () => (winFocused = false));
+    const loopFps = () => (winFocused ? 60 : 20);
+    const fxFps = () => (winFocused ? 30 : 10);
+    // 特效 canvas 本來就是柔邊 sprite，不需要用到 3 倍 DPR，最多 1.5 倍就看不出差別，像素量少很多
+    const fxDpr = () => Math.min(dpr, 1.5);
+    // 這一幀地圖有沒有平移/縮放：有的話特效要立刻跟著重畫，不然會跟地圖脫節
+    let fxLastT = null,
+        fxLastW = 0,
+        fxLastH = 0,
+        fxViewMoved = true;
     function startWalk() {
         if (!walkRaf) {
             walkLast = performance.now();
@@ -1406,6 +1421,15 @@
     }
     function walkStep(now) {
         walkRaf = 0;
+        // 還沒到下一幀的時間就先跳過（留 2ms 容差，避免 vsync 抖動讓 60Hz 螢幕被砍成 30fps）
+        if (now - walkLast < 1000 / loopFps() - 2) {
+            if (!document.hidden) walkRaf = requestAnimationFrame(walkStep);
+            return;
+        }
+        fxViewMoved = state.t !== fxLastT || W !== fxLastW || H !== fxLastH;
+        fxLastT = state.t;
+        fxLastW = W;
+        fxLastH = H;
         const dt = Math.min(0.1, (now - walkLast) / 1000);
         walkLast = now;
         const t = now / 1000;
@@ -2007,7 +2031,9 @@
 
     /* ---------- 雲：固定在地球上的卡通雲 + 地面上的雲影 ---------- */
     let cctx = null,
-        cloudT = 0;
+        cloudT = 0,
+        cloudAcc = 0,
+        cloudDrawn = false;
     const clouds = [];
     const rng = (seed) => {
         let s = seed >>> 0;
@@ -2114,8 +2140,17 @@
         return Math.min(1, cv * 1.2);
     }
     function drawClouds(dt) {
+        if (!cctx || !W || !projection) {
+            cloudHits.length = 0;
+            return;
+        }
+        // 雲飄得很慢，地圖沒動時用 fxFps 節流就夠了（cloudHits 沿用上一次的結果）
+        cloudAcc += dt;
+        if (cloudDrawn && !fxViewMoved && cloudAcc < 1 / fxFps()) return;
+        dt = cloudAcc;
+        cloudAcc = 0;
+        cloudDrawn = true;
         cloudHits.length = 0;
-        if (!cctx || !W || !projection) return;
         const ctx = cctx,
             t = state.t,
             k = t.k,
@@ -2126,7 +2161,8 @@
         ctx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
         if (state.anim && !reduceMotion.matches) cloudT += dt;
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        const cd = ctx.canvas.width / W;
+        ctx.setTransform(cd, 0, 0, cd, 0, 0);
         const sc = Math.pow(Math.min(k, 30), 0.6); // 位置完全跟著地圖；大小只略微放大，放大超過30倍就不再變大，免得整片白
         const list = [];
         for (const c of clouds) {
@@ -2198,7 +2234,7 @@
         // clearRect），藍眼淚卻還是每幀都照畫，疊加在沒清除的舊畫面上，會越疊越亮、而且等於沒被節流，
         // 用 freshFrame 告訴它「這幀沒有真的清版，先別畫」，兩邊共用同一個 24fps 節奏
         A.freshFrame = false;
-        if (A.acc < 1 / 24 && A.drawn) return;
+        if (A.acc < 1 / Math.min(24, fxFps()) && A.drawn && !fxViewMoved) return;
         A.acc = 0;
         A.freshFrame = true;
         const S = 0.4,
@@ -2440,10 +2476,16 @@
         // 就整個跳過（連 resize / clearRect 都不用），不要每幀都空轉清一張其實沒畫東西的畫布
         const active = state.maps.some((m) => m.pin && state.quotes[m.s] && Math.abs(state.quotes[m.s].pct) >= BIG_MOVE);
         if (!active && !WT.hadFx) return;
+        // 節流：地圖沒動時用 fxFps（有焦點 30fps、沒焦點 10fps），累積的 dt 一次補上，動畫速度不變
+        WT.acc = (WT.acc || 0) + dt;
+        if (active && WT.hadFx && !fxViewMoved && WT.acc < 1 / fxFps()) return;
+        dt = WT.acc;
+        WT.acc = 0;
         WT.t += dt;
         const T = WT.t;
         const ctx = WT.ctx;
-        const cw = Math.round(W * dpr), ch = Math.round(H * dpr);
+        const wd = fxDpr();
+        const cw = Math.round(W * wd), ch = Math.round(H * wd);
         if (WT.cv.width !== cw || WT.cv.height !== ch) {
             WT.cv.width = cw;
             WT.cv.height = ch;
@@ -2452,7 +2494,7 @@
         ctx.clearRect(0, 0, cw, ch);
         WT.hadFx = active;
         if (!active) return; // 剛清掉最後一次效果，這幀本身沒有東西要畫
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.setTransform(wd, 0, 0, wd, 0, 0);
         const rspr = rainSprite(), cspr = cloudSprite();
 
         for (const m of state.maps) {
@@ -3036,10 +3078,11 @@
 
         // 高 DPI canvas
         dpr = Math.min(window.devicePixelRatio || 1, 3);
-        for (const cv of [tctx.canvas, cctx.canvas]) {
-            cv.width = Math.round(W * dpr);
-            cv.height = Math.round(H * dpr);
-        }
+        tctx.canvas.width = Math.round(W * dpr);
+        tctx.canvas.height = Math.round(H * dpr);
+        cctx.canvas.width = Math.round(W * fxDpr());
+        cctx.canvas.height = Math.round(H * fxDpr());
+        cloudDrawn = false;
 
         // Web Mercator：世界是邊長 S0 的正方形，與圖磚座標完全對齊
         const unit = d3
